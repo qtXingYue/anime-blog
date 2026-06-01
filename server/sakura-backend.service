@@ -1,0 +1,15 @@
+[Unit]
+Description=Sakura Backend (FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/portfolio/server
+Environment=ADMIN_PASS=sakura2026
+ExecStart=/usr/bin/python3 /var/www/portfolio/server/main.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
