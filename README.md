@@ -1,16 +1,17 @@
-# 樱之日记 — Sakura Diary
+# 钟文清 — 个人作品集
 
-> 个人动漫博客 · 暗夜日系美学 · Apple 玻璃质感
+> 数据工程师 × 创意开发者 · 深圳 · Apple 玻璃质感单页作品集
 
-一个纯手写的前端博客项目，服务于动漫影评、创作记录和日语学习分享。
+一个精心设计的个人作品集前端页面，展示项目作品、技术栈、工作经历。
 
 ## 设计理念
 
-- **苹果风格玻璃效果**: 全站 `backdrop-filter` 毛玻璃 + 多层渐变背景
-- **冷蓝紫色调**: OKLCH 色彩空间，零纯黑零纯白
-- **日系杂志排版**: Zen Old Mincho + M PLUS Rounded 1c 字体组合
+- **编辑式排版**: 非对称布局，70/30 分割，戏剧化的空间节奏
+- **暗夜蓝紫色调**: OKLCH 色彩空间，零纯黑零纯白
+- **日系字体组合**: Zen Old Mincho + Zen Kaku Gothic New + M PLUS Rounded 1c
+- **Apple 玻璃质感**: `backdrop-filter` 毛玻璃 + 噪点纹理叠加层
 - **暗色/亮色双主题**: localStorage 记忆，一键切换
-- **零依赖**: 单文件 HTML + CSS + 少量原生 JS
+- **零依赖**: 单文件 HTML + CSS + 原生 JS
 
 ## 快速开始
 
@@ -19,29 +20,22 @@
 ```bash
 # Python 简单服务器
 python -m http.server 8080
-
-# 或 Node.js
-npx serve .
 ```
 
-## 功能特性
+## 功能分区
 
-| 功能 | 说明 |
+| 区域 | 内容 |
 |------|------|
-| 响应式布局 | 桌面双列 / 移动单列自适应 |
-| 滚动渐入动画 | Intersection Observer 驱动的文章卡片入场 |
-| 毛玻璃卡片 | 侧栏 + 文章卡片 hover 玻璃效果 |
-| 暗色/亮色切换 | 右上角按钮一键切换，记忆选择 |
-| 减动适配 | `prefers-reduced-motion` 完整支持 |
-| 无障碍 | `aria-label`、`focus-visible`、语义化 HTML |
-| 樱花粒子 | 纯 CSS 花瓣飘落动画（暗色模式） |
+| Hero | 非对称英雄区，带浮动技能标签动画 |
+| About | 个人简介 + 数据统计卡片（70/30 分栏） |
+| Skills | 四组技能标签云，核心技能高亮 |
+| Projects | 四个精选项目，交替左右布局 |
+| Experience | 垂直时间线 |
+| Contact | 联系信息卡片网格 |
 
-## 项目结构
+## 部署
 
-```
-anime-blog/
-└── index.html    # 全站单文件（HTML + CSS + JS）
-```
+单文件可直接部署到任何静态服务器（Nginx、GitHub Pages、Vercel 等）。
 
 ## License
 
