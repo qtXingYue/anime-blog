@@ -265,37 +265,37 @@ form button{padding:.75rem 2rem;background:#8b5cf6;border:none;border-radius:8px
 </style></head><body>
 <div class="login" id="login">
 <h1 style="color:#8b5cf6">Sakura Admin</h1>
-<input type="password" id="pass" placeholder="Password"><br>
-<button onclick="login()">Login</button>
+<input type="password" id="pass" placeholder="密码"><br>
+<button onclick="login()">登录</button>
 </div>
 <div id="app" style="display:none">
 <h1>Sakura Admin</h1>
 <div class="tabs">
-<button class="tab active" onclick="switchTab('analytics')">Analytics</button>
-<button class="tab" onclick="switchTab('articles')">Articles</button>
-<button class="tab" onclick="switchTab('new')">New Post</button>
-<button class="tab" onclick="switchTab('files')">Files</button>
+<button class="tab active" onclick="switchTab('analytics')">数据分析</button>
+<button class="tab" onclick="switchTab('articles')">文章管理</button>
+<button class="tab" onclick="switchTab('new')">新建文章</button>
+<button class="tab" onclick="switchTab('files')">文件管理</button>
 </div>
 <div class="panel active" id="analytics">
 <div class="stats-grid" id="stats"></div>
-<h3>Top Pages</h3><table id="toppages"><tbody></tbody></table>
+<h3>热门页面</h3><table id="toppages"><tbody></tbody></table>
 </div>
-<div class="panel" id="articles"><table id="articleTable"><thead><tr><th>ID</th><th>Title</th><th>Date</th><th>Actions</th></tr></thead><tbody></tbody></table></div>
-<div class="panel" id="new"><h3 id="editTitle">New Article</h3>
-<form id="articleForm"><input type="hidden" id="editId"><label>Title</label><input id="title" required><label>Slug</label><input id="slug" required><label>Excerpt</label><input id="excerpt"><label>Content (HTML)</label><textarea id="content" required></textarea><button type="submit">Save</button></form></div>
-<div class="panel" id="files"><h3>Upload</h3><input type="file" id="fileInput"><button onclick="uploadFile()">Upload</button><table id="fileTable" style="margin-top:1rem"><thead><tr><th>File</th><th>Size</th><th>URL</th></tr></thead><tbody></tbody></table></div>
+<div class="panel" id="articles"><table id="articleTable"><thead><tr><th>编号</th><th>标题</th><th>日期</th><th>操作</th></tr></thead><tbody></tbody></table></div>
+<div class="panel" id="new"><h3 id="editTitle">新建文章</h3>
+<form id="articleForm"><input type="hidden" id="editId"><label>标题</label><input id="title" required><label>别名</label><input id="slug" required><label>摘要</label><input id="excerpt"><label>内容 (HTML)</label><textarea id="content" required></textarea><button type="submit">保存</button></form></div>
+<div class="panel" id="files"><h3>上传文件</h3><input type="file" id="fileInput"><button onclick="uploadFile()">上传</button><table id="fileTable" style="margin-top:1rem"><thead><tr><th>文件名</th><th>大小</th><th>链接</th></tr></thead><tbody></tbody></table></div>
 </div>
 <script>
 let TOKEN="";
 function api(path,opt={}){return fetch(path,{...opt,credentials:'same-origin'}).then(r=>r.ok?r.json():r.json().then(e=>{throw e})).catch(e=>{if(e.error===alert(e.error),401===e.statusCode||'Unauthorized'===e.detail)document.getElementById('login').style.display='block',document.getElementById('app').style.display='none'})}
-async function login(){let r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pass').value}),credentials:'same-origin'});if(r.ok){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadAll()}else alert('Wrong password')}
+async function login(){let r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pass').value}),credentials:'same-origin'});if(r.ok){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadAll()}else alert('密码错误')}
 function loadAll(){loadAnalytics();loadArticles();loadFiles()}
-async function loadAnalytics(){let d=await api('/api/analytics/summary');document.getElementById('stats').innerHTML=`<div class="stat"><div class="num">${d.total_pv}</div><div class="label">Total PV</div></div><div class="stat"><div class="num">${d.total_uv}</div><div class="label">Total UV</div></div><div class="stat"><div class="num">${d.today_pv}</div><div class="label">Today PV</div></div><div class="stat"><div class="num">${d.today_uv}</div><div class="label">Today UV</div></div>`;document.getElementById('toppages').innerHTML=d.top_pages.map(p=>`<tr><td>${p.path}</td><td>${p.views}</td></tr>`).join('')}
-async function loadArticles(){let rows=await api('/api/admin/articles');document.querySelector('#articleTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.title}</td><td>${r.created_at?.slice(0,10)}</td><td><button class="btn" onclick="editArticle(${r.id})">Edit</button><button class="btn danger" onclick="delArticle(${r.id})">Del</button></td></tr>`).join('')}
-async function editArticle(id){let rows=await api('/api/admin/articles');let r=rows.find(x=>x.id===id);if(!r)return;switchTab('new');document.getElementById('editTitle').textContent='Edit Article';document.getElementById('editId').value=r.id;document.getElementById('title').value=r.title;document.getElementById('slug').value=r.slug;document.getElementById('excerpt').value=r.excerpt||'';document.getElementById('content').value=r.content}
-async function delArticle(id){if(!confirm('Delete?'))return;await api('/api/admin/articles/'+id,{method:'DELETE'});loadArticles()}
-document.getElementById('articleForm').onsubmit=async function(e){e.preventDefault();let id=document.getElementById('editId').value;let body={title:document.getElementById('title').value,slug:document.getElementById('slug').value,excerpt:document.getElementById('excerpt').value,content:document.getElementById('content').value};if(id)await api('/api/admin/articles/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});else await api('/api/admin/articles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});this.reset();document.getElementById('editId').value='';document.getElementById('editTitle').textContent='New Article';switchTab('articles');loadArticles()}
-async function uploadFile(){let f=document.getElementById('fileInput').files[0];if(!f)return;let fd=new FormData();fd.append('file',f);let r=await api('/api/admin/upload',{method:'POST',body:fd});loadFiles();alert('URL: '+r.url)}
+async function loadAnalytics(){let d=await api('/api/analytics/summary');document.getElementById('stats').innerHTML=`<div class="stat"><div class="num">${d.total_pv}</div><div class="label">总浏览量</div></div><div class="stat"><div class="num">${d.total_uv}</div><div class="label">总访客</div></div><div class="stat"><div class="num">${d.today_pv}</div><div class="label">今日浏览</div></div><div class="stat"><div class="num">${d.today_uv}</div><div class="label">今日访客</div></div>`;document.getElementById('toppages').innerHTML=d.top_pages.map(p=>`<tr><td>${p.path}</td><td>${p.views}</td></tr>`).join('')}
+async function loadArticles(){let rows=await api('/api/admin/articles');document.querySelector('#articleTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.title}</td><td>${r.created_at?.slice(0,10)}</td><td><button class="btn" onclick="editArticle(${r.id})">编辑</button><button class="btn danger" onclick="delArticle(${r.id})">删除</button></td></tr>`).join('')}
+async function editArticle(id){let rows=await api('/api/admin/articles');let r=rows.find(x=>x.id===id);if(!r)return;switchTab('new');document.getElementById('editTitle').textContent='编辑文章';document.getElementById('editId').value=r.id;document.getElementById('title').value=r.title;document.getElementById('slug').value=r.slug;document.getElementById('excerpt').value=r.excerpt||'';document.getElementById('content').value=r.content}
+async function delArticle(id){if(!confirm('确认删除？'))return;await api('/api/admin/articles/'+id,{method:'DELETE'});loadArticles()}
+document.getElementById('articleForm').onsubmit=async function(e){e.preventDefault();let id=document.getElementById('editId').value;let body={title:document.getElementById('title').value,slug:document.getElementById('slug').value,excerpt:document.getElementById('excerpt').value,content:document.getElementById('content').value};if(id)await api('/api/admin/articles/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});else await api('/api/admin/articles',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});this.reset();document.getElementById('editId').value='';document.getElementById('editTitle').textContent='新建文章';switchTab('articles');loadArticles()}
+async function uploadFile(){let f=document.getElementById('fileInput').files[0];if(!f)return;let fd=new FormData();fd.append('file',f);let r=await api('/api/admin/upload',{method:'POST',body:fd});loadFiles();alert('链接: '+r.url)}
 async function loadFiles(){let rows=await api('/api/admin/files');document.querySelector('#fileTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.original_name}</td><td>${(r.size/1024).toFixed(1)}KB</td><td><a href="${'/uploads/'+r.filename}" target="_blank">${'/uploads/'+r.filename}</a></td></tr>`).join('')}
 function switchTab(name){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));event.target.classList.add('active');document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(name).classList.add('active');if(name==='articles')loadArticles();if(name==='files')loadFiles();if(name==='analytics')loadAnalytics()}
 </script></body></html>""")
