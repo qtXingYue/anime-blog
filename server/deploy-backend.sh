@@ -16,18 +16,23 @@ echo "[2/5] Installing Python deps..."
 pip3 install fastapi uvicorn python-multipart -q
 
 # 3. 配置 Nginx (代理 /api /admin /uploads 到后端)
-echo "[3/5] Updating Nginx config..."
+echo "[3/6] Updating Nginx config..."
 cp "$(dirname "$0")/nginx-portfolio.conf" /etc/nginx/sites-available/portfolio
 nginx -t && systemctl reload nginx
 
-# 4. 安装 systemd 服务 (自动启动 + 崩溃重启)
-echo "[4/5] Installing systemd service..."
+# 4. 修复权限（git pull 后可能变成 root）
+echo "[4/6] Fixing permissions..."
+mkdir -p "$(dirname "$0")/uploads"
+chown -R www-data:www-data "$(dirname "$0")"
+
+# 5. 安装 systemd 服务 (自动启动 + 崩溃重启)
+echo "[5/6] Installing systemd service..."
 cp "$(dirname "$0")/sakura-backend.service" /etc/systemd/system/sakura-backend.service
 systemctl daemon-reload
 systemctl enable sakura-backend
 
-# 5. 重启后端服务
-echo "[5/5] Starting backend..."
+# 6. 重启后端服务
+echo "[6/6] Starting backend..."
 systemctl restart sakura-backend
 sleep 2
 systemctl status sakura-backend --no-pager
