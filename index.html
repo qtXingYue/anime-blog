@@ -475,7 +475,7 @@ a:hover { color: var(--gold); }
     <article class="project-card" data-reveal>
       <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#2d1b69)">🕷️</div>
       <div>
-        <p class="project-number">01 / Data</p>
+        <p class="project-number">01 / 数据工程</p>
         <h3 class="project-title">多平台广告数据爬取系统</h3>
         <p class="project-desc">集成棕熊、GIMC、兴连、广灵、zxkj6 五个广告平台的自动化数据采集系统。基于 Playwright 浏览器自动化 + Bearer Token 认证，通过 Streamlit 仪表盘输出 CSV/Excel 报表，覆盖 328+ 活跃广告账号的日常消耗监控。</p>
         <div class="project-tech">
@@ -488,24 +488,89 @@ a:hover { color: var(--gold); }
     <article class="project-card" data-reveal>
       <div class="project-visual" style="background:linear-gradient(135deg,#0f0c29,#302260)">✋</div>
       <div>
-        <p class="project-number">02 / AI</p>
-        <h3 class="project-title">手势控制 PPT 系统（毕设）</h3>
-        <p class="project-desc">基于计算机视觉的学术项目，通过摄像头实时识别手势来控制 PPT 翻页与标注。采用双线程架构设计，实现防抖缓冲与冷却机制，确保高精度低延迟的演示体验。正在考虑商业化方向。</p>
+        <p class="project-number">02 / AI · 毕设</p>
+        <h3 class="project-title">手势控制 PPT 系统</h3>
+        <p class="project-desc">基于 MediaPipe 21点手部关键点检测的实时手势识别系统。支持单指/双指/握拳/OK等6种手势，比例分析法不受距离影响，滑动窗口防抖+握拳锁死安全机制，CustomTkinter 暗黑风格桌面UI，720P下 20+FPS 实时处理。</p>
         <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">Computer Vision</span><span class="skill-tag">MediaPipe</span><span class="skill-tag">PyQt</span>
+          <span class="skill-tag">Python</span><span class="skill-tag">MediaPipe</span><span class="skill-tag">OpenCV</span><span class="skill-tag">CustomTkinter</span><span class="skill-tag">PyAutoGUI</span>
         </div>
       </div>
     </article>
 
     <!-- Project 3 -->
     <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#1a0a2e,#4a1942)">🎨</div>
+      <div>
+        <p class="project-number">03 / 深度学习</p>
+        <h3 class="project-title">卡通风格迁移系统 (CartoonGAN)</h3>
+        <p class="project-desc">集成 AnimeGAN2 与 ArcaneGAN 多模型风格迁移应用。支持新海誠/宮崎駿/Arcane等5种动漫风格，覆盖图片+视频双模式转换，Gradio Web界面一键分享，含人脸检测裁剪与高斯平滑后处理。</p>
+        <div class="project-tech">
+          <span class="skill-tag">PyTorch</span><span class="skill-tag">AnimeGAN2</span><span class="skill-tag">Gradio</span><span class="skill-tag">OpenCV</span><span class="skill-tag">GAN</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 4 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#1c1c4a,#2a5298)">📰</div>
+      <div>
+        <p class="project-number">04 / NLP</p>
+        <h3 class="project-title">多模型新闻文本分类系统</h3>
+        <p class="project-desc">集成 TextCNN / TextRNN / 朴素贝叶斯三种架构的头条新闻6分类系统。使用腾讯 AI Lab 中文词向量增强语义理解，模块化 Config 配置设计，包含完整的数据预处理、模型训练、评估对比流程。</p>
+        <div class="project-tech">
+          <span class="skill-tag">TensorFlow</span><span class="skill-tag">TextCNN</span><span class="skill-tag">NLP</span><span class="skill-tag">Jieba</span><span class="skill-tag">词向量</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 5 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#1a3a1a,#2d5a1e)">🗺️</div>
+      <div>
+        <p class="project-number">05 / 数据可视化</p>
+        <h3 class="project-title">梅州美食地理可视化系统</h3>
+        <p class="project-desc">基于 Pyecharts 的客家美食与水果地理分布交互式可视化。含地图散点、密度分布、月度柱状图、特色饼图、美食推荐轮播等多维图表，数据涵盖9道菜品+5种水果，含店铺推荐与采摘农场信息。</p>
+        <div class="project-tech">
+          <span class="skill-tag">Python</span><span class="skill-tag">Pyecharts</span><span class="skill-tag">Geo</span><span class="skill-tag">数据可视化</span><span class="skill-tag">HTML</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 6 -->
+    <article class="project-card" data-reveal>
       <div class="project-visual" style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b)">🇧🇷</div>
       <div>
-        <p class="project-number">03 / Data</p>
+        <p class="project-number">06 / 数据采集</p>
         <h3 class="project-title">巴西 CNPJ 商业数据爬虫</h3>
         <p class="project-desc">基于 BrasilAPI + Playwright 的企业资质数据采集系统，覆盖巴西全境企业的工商登记信息、税务状态、股东结构等核心数据，支持批量查询与结构化导出。</p>
         <div class="project-tech">
           <span class="skill-tag">Python</span><span class="skill-tag">Playwright</span><span class="skill-tag">BrasilAPI</span><span class="skill-tag">Data Pipeline</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 7 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#2e1a3e,#5a1a6e)">✍️</div>
+      <div>
+        <p class="project-number">07 / 深度学习</p>
+        <h3 class="project-title">日语假名手写识别系统</h3>
+        <p class="project-desc">基于 CNN 的 Kuzushiji-49 日本草书字符识别应用。3层卷积块+BatchNorm+Dropout 架构，Tkinter 手写板 GUI 实时识别，K49 数据集49类假名分类，含 TensorBoard 训练日志与模型评估。</p>
+        <div class="project-tech">
+          <span class="skill-tag">TensorFlow</span><span class="skill-tag">CNN</span><span class="skill-tag">Tkinter</span><span class="skill-tag">Keras</span><span class="skill-tag">OpenCV</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Project 8 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#1a3a2e,#0d4a3e)">🛒</div>
+      <div>
+        <p class="project-number">08 / 全栈开发</p>
+        <h3 class="project-title">动漫商城管理系统</h3>
+        <p class="project-desc">Java Servlet MVC 架构后端 + 微信小程序客户端的完整电商应用。含商品CRUD、图片上传、用户管理、分类筛选等功能，MySQL 数据存储，小程序端支持首页浏览、列表搜索、编辑管理。</p>
+        <div class="project-tech">
+          <span class="skill-tag">Java</span><span class="skill-tag">Servlet</span><span class="skill-tag">MySQL</span><span class="skill-tag">微信小程序</span><span class="skill-tag">JSP</span>
         </div>
       </div>
     </article>
