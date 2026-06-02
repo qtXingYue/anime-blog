@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QT新月 — 个人作品集</title>
+<title>QT新月 — 个人作品集 | 钟文清</title>
+<meta name="description" content="钟文清的个人作品集 — 人工智能技术应用专业，深圳职业技术大学。涵盖深度学习、计算机视觉、数据工程、全栈开发等 8 个项目。擅长 Python、TensorFlow、MediaPipe、Java。">
+<meta property="og:title" content="QT新月 — 钟文清的个人作品集">
+<meta property="og:description" content="AI/数据工程/全栈开发 · 8 个实战项目 · 蓝桥杯省二等奖 · JLPT N2">
+<meta property="og:type" content="website">
+<meta name="keywords" content="钟文清,QT新月,个人作品集,Python,深度学习,计算机视觉,数据工程,深圳职业技术大学">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
@@ -54,8 +59,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 body {
-  font-family: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
-  font-size: var(--text-base); line-height: 1.8; font-weight: 350;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', system-ui, -apple-system, sans-serif;
+  font-size: var(--text-base); line-height: 1.8; font-weight: 400;
   color: var(--text-primary); background: var(--bg-deep); overflow-x: hidden;
 }
 body::before {
@@ -147,8 +152,11 @@ a:hover { color: var(--gold); }
   padding: 4px 14px; white-space: nowrap;
 }
 .hero-floating-tag.t1 { top: 5%; right: 0; animation: floatTag 6s ease-in-out infinite; }
-.hero-floating-tag.t2 { bottom: 20%; left: -5%; animation: floatTag 5s ease-in-out infinite 1s; }
-.hero-floating-tag.t3 { top: 40%; right: -10%; animation: floatTag 7s ease-in-out infinite 2s; }
+.hero-floating-tag.t2 { top: 15%; left: -8%; animation: floatTag 5s ease-in-out infinite 1s; }
+.hero-floating-tag.t3 { top: 28%; right: -8%; animation: floatTag 7s ease-in-out infinite 2s; }
+.hero-floating-tag.t4 { top: 42%; left: -5%; animation: floatTag 6.5s ease-in-out infinite 0.5s; }
+.hero-floating-tag.t5 { bottom: 8%; right: 3%; animation: floatTag 5.5s ease-in-out infinite 1.5s; }
+.hero-floating-tag.t6 { top: 68%; left: -3%; animation: floatTag 7.5s ease-in-out infinite 3s; }
 @keyframes floatTag {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
@@ -163,6 +171,7 @@ a:hover { color: var(--gold); }
   .hero-visual { order: -1; }
   .hero-avatar-ring { width: 160px; height: 160px; font-size: 3rem; }
   .hero-floating-tag { display: none; }
+  .hero-scroll { display: none; }
 }
 
 /* ============================================================
@@ -291,6 +300,62 @@ a:hover { color: var(--gold); }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; } .reveal { opacity: 1; transform: none; }
 }
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  .container { padding-inline: var(--space-lg); }
+  body { font-size: 0.95rem; }
+
+  /* Header */
+  .nav-links { gap: var(--space-md); }
+  .nav-links a { font-size: var(--text-xs); }
+
+  /* Hero */
+  .hero-name { font-size: clamp(2rem, 12vw, 3.5rem); }
+  .hero-role { font-size: var(--text-sm); max-width: 100%; }
+  .hero-cta { flex-direction: column; }
+  .hero-cta .btn { width: 100%; justify-content: center; }
+
+  /* About stats — 3x2 grid */
+  .about-stats { grid-template-columns: repeat(3, 1fr); }
+  .stat-card { padding: var(--space-md); }
+  .stat-number { font-size: var(--text-xl); }
+
+  /* Skills */
+  .skill-tags { gap: 4px; }
+  .skill-tag { padding: 4px 10px; font-size: var(--text-xs); }
+
+  /* Projects */
+  .project-card { padding: var(--space-lg); }
+  .project-title { font-size: var(--text-lg); }
+  .project-desc { font-size: var(--text-xs); }
+  .project-link { font-size: var(--text-xs); padding: 3px 10px; }
+
+  /* Experience timeline */
+  .timeline { padding-left: 24px; }
+  .timeline-dot { left: -21px; width: 12px; height: 12px; }
+  .timeline-title { font-size: var(--text-sm); }
+  .timeline-desc { font-size: var(--text-xs); }
+
+  /* Contact */
+  .contact-item { padding: var(--space-md); }
+
+  /* Gallery */
+  .gallery-viewer { max-width: 95vw; max-height: 60vh; }
+  .gallery-thumb { width: 60px; height: 36px; }
+  .gallery-btn { width: 36px; height: 36px; }
+
+  /* Stats grid in gesture report page */
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .gesture-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .section { padding-block: var(--space-3xl); }
+  .about-stats { grid-template-columns: repeat(2, 1fr); }
+  .blog-card { padding: var(--space-md); }
+}
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: oklch(25% 0.01 270); border-radius: 3px; }
@@ -339,6 +404,7 @@ a:hover { color: var(--gold); }
         <li><a href="#about">关于</a></li>
         <li><a href="#skills">技能</a></li>
         <li><a href="#projects">项目</a></li>
+        <li><a href="projects/ai-gallery.html">AI画廊</a></li>
         <li><a href="#contact">联系</a></li>
         <li><button class="theme-toggle" id="themeToggle" aria-label="切换主题">🌙</button></li>
       </ul>
@@ -366,9 +432,12 @@ a:hover { color: var(--gold); }
     </div>
     <div class="hero-visual">
       <div class="hero-avatar-ring">月</div>
-      <span class="hero-floating-tag t1">Python · Playwright</span>
-      <span class="hero-floating-tag t2">React · Streamlit</span>
-      <span class="hero-floating-tag t3">Node.js · SQL</span>
+      <span class="hero-floating-tag t1">数码</span>
+      <span class="hero-floating-tag t2">二次元</span>
+      <span class="hero-floating-tag t3">HIFI发烧友</span>
+      <span class="hero-floating-tag t4">AI</span>
+      <span class="hero-floating-tag t5">Python</span>
+      <span class="hero-floating-tag t6">Java</span>
     </div>
   </div>
   <div class="hero-scroll" aria-hidden="true">
@@ -386,13 +455,15 @@ a:hover { color: var(--gold); }
     <div class="about-grid">
       <div class="about-text">
         <p>坐标<strong>深圳</strong>，深圳职业技术大学专科在读，同时就职于<strong>海客熵连科技</strong>，负责多平台广告数据爬取系统的架构与开发。</p>
-        <p>我的技术栈横跨数据工程与前端创作——从大型自动化数据采集系统到 React 动画视频，从浏览器逆向到 UI 设计。相信<strong>好工具应该既强大又好看</strong>。</p>
+        <p>技术方向覆盖<strong>人工智能、数据工程与全栈开发</strong>——从深度学习模型训练到多平台自动化数据采集，从计算机视觉应用到微信小程序全栈。相信<strong>代码能解决实际问题</strong>，习惯用自动化思维提升效率。</p>
         <p>工作之外是重度动漫爱好者（新海诚、EVA、FF7），正在学习日语（N2→N1），喜欢用代码做创意内容。</p>
       </div>
       <div class="about-stats">
         <div class="stat-card"><div class="stat-number">5+</div><div class="stat-label">数据平台集成</div></div>
         <div class="stat-card"><div class="stat-number">300+</div><div class="stat-label">活跃广告账号</div></div>
-        <div class="stat-card"><div class="stat-number">2+年</div><div class="stat-label">自动化开发</div></div>
+        <div class="stat-card"><div class="stat-number">1+年</div><div class="stat-label">开发经验</div></div>
+        <div class="stat-card"><div class="stat-number">GPA3.4</div><div class="stat-label">学业成绩</div></div>
+        <div class="stat-card"><div class="stat-number">省二等</div><div class="stat-label">蓝桥杯 Python</div></div>
         <div class="stat-card"><div class="stat-number">N2</div><div class="stat-label">日语能力</div></div>
       </div>
     </div>
@@ -406,47 +477,93 @@ a:hover { color: var(--gold); }
     <h2 class="section-title">技能栈</h2>
     <div class="section-divider"></div>
     <div class="skill-category">
-      <h3 class="skill-category-title">核心</h3>
+      <h3 class="skill-category-title">编程语言</h3>
       <div class="skill-tags">
         <span class="skill-tag primary">Python</span>
-        <span class="skill-tag primary">Playwright</span>
-        <span class="skill-tag primary">React</span>
-        <span class="skill-tag primary">Node.js</span>
-        <span class="skill-tag primary">Streamlit</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <h3 class="skill-category-title">数据 & 自动化</h3>
-      <div class="skill-tags">
-        <span class="skill-tag">Web Scraping</span>
-        <span class="skill-tag">Browser Automation</span>
-        <span class="skill-tag">Pandas</span>
-        <span class="skill-tag">SQLite</span>
-        <span class="skill-tag">Excel/CSV</span>
-        <span class="skill-tag">REST APIs</span>
-        <span class="skill-tag">Bearer Auth</span>
-      </div>
-    </div>
-    <div class="skill-category">
-      <h3 class="skill-category-title">前端 & 创作</h3>
-      <div class="skill-tags">
+        <span class="skill-tag primary">Java</span>
+        <span class="skill-tag">SQL</span>
         <span class="skill-tag">HTML/CSS</span>
         <span class="skill-tag">JavaScript</span>
-        <span class="skill-tag">Vite</span>
-        <span class="skill-tag">Remotion</span>
-        <span class="skill-tag">SVG Animation</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3 class="skill-category-title">AI / 深度学习</h3>
+      <div class="skill-tags">
+        <span class="skill-tag primary">TensorFlow</span>
+        <span class="skill-tag primary">PyTorch</span>
+        <span class="skill-tag primary">MediaPipe</span>
+        <span class="skill-tag primary">OpenCV</span>
+        <span class="skill-tag">Keras</span>
+        <span class="skill-tag">GAN</span>
+        <span class="skill-tag">CNN</span>
+        <span class="skill-tag">NLP</span>
+        <span class="skill-tag">Jieba</span>
+        <span class="skill-tag">Computer Vision</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3 class="skill-category-title">数据 & 爬虫</h3>
+      <div class="skill-tags">
+        <span class="skill-tag primary">Playwright</span>
+        <span class="skill-tag">Streamlit</span>
+        <span class="skill-tag">Pyecharts</span>
+        <span class="skill-tag">Pandas</span>
+        <span class="skill-tag">BrasilAPI</span>
+        <span class="skill-tag">REST API</span>
+        <span class="skill-tag">Excel/CSV</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <h3 class="skill-category-title">前端 & GUI</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">CustomTkinter</span>
+        <span class="skill-tag">Gradio</span>
+        <span class="skill-tag">Tkinter</span>
+        <span class="skill-tag">微信小程序</span>
+        <span class="skill-tag">JSP</span>
         <span class="skill-tag">Responsive Design</span>
       </div>
     </div>
     <div class="skill-category">
-      <h3 class="skill-category-title">工具 & 运维</h3>
+      <h3 class="skill-category-title">后端 & 工具</h3>
       <div class="skill-tags">
+        <span class="skill-tag">Servlet</span>
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">MySQL</span>
         <span class="skill-tag">Git/GitHub</span>
-        <span class="skill-tag">Linux/WSL</span>
+        <span class="skill-tag">Linux</span>
         <span class="skill-tag">Nginx</span>
-        <span class="skill-tag">Docker</span>
-        <span class="skill-tag">CI/CD</span>
-        <span class="skill-tag">API Testing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HONORS -->
+<section class="section">
+  <div class="container">
+    <p class="section-label">Honors</p>
+    <h2 class="section-title">荣誉与证书</h2>
+    <div class="section-divider"></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">2025</p>
+        <h3 class="timeline-title">蓝桥杯 Python 赛道 广东省二等奖</h3>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">2025</p>
+        <h3 class="timeline-title">华为云 HCCDA-AI 认证</h3>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">2025</p>
+        <h3 class="timeline-title">日语能力测试 JLPT N2</h3>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">2023-2025</p>
+        <h3 class="timeline-title">校级三等奖学金 · 优秀学生干部</h3>
       </div>
     </div>
   </div>
@@ -483,6 +600,7 @@ a:hover { color: var(--gold); }
         <div class="project-tech">
           <span class="skill-tag">Python</span><span class="skill-tag">MediaPipe</span><span class="skill-tag">OpenCV</span><span class="skill-tag">CustomTkinter</span><span class="skill-tag">PyAutoGUI</span>
         </div>
+        <a class="project-link" href="projects/gesture-ppt-report.html" target="_blank">📄 查看答辩报告 (9页PPT还原)</a>
       </div>
     </article>
 
@@ -496,7 +614,7 @@ a:hover { color: var(--gold); }
         <div class="project-tech">
           <span class="skill-tag">PyTorch</span><span class="skill-tag">AnimeGAN2</span><span class="skill-tag">Gradio</span><span class="skill-tag">OpenCV</span><span class="skill-tag">GAN</span>
         </div>
-        <a class="project-link" href="projects/cartoon-gan-report.pdf" target="_blank">📄 查看完整报告 (8页效果对比)</a>
+        <a class="project-link" href="projects/cartoon-gan-report.html" target="_blank">📄 查看设计报告 (8页效果对比)</a>
       </div>
     </article>
 
@@ -560,10 +678,25 @@ a:hover { color: var(--gold); }
       <div>
         <p class="project-number">08 / 全栈开发</p>
         <h3 class="project-title">动漫商城管理系统</h3>
-        <p class="project-desc">Java Servlet MVC 架构后端 + 微信小程序客户端的完整电商应用。含商品CRUD、图片上传、用户管理、分类筛选等功能，MySQL 数据存储，小程序端支持首页浏览、列表搜索、编辑管理。</p>
+        <p class="project-desc">Java Servlet MVC 架构后端 + 微信小程序客户端的完整电商应用。含 7 个 Servlet API（商品CRUD/图片上传/批量删除）、Jackson JSON 序列化、MySQL 数据存储，小程序 6 个页面支持首页浏览、列表搜索、详情查看、编辑管理。</p>
         <div class="project-tech">
           <span class="skill-tag">Java</span><span class="skill-tag">Servlet</span><span class="skill-tag">MySQL</span><span class="skill-tag">微信小程序</span><span class="skill-tag">JSP</span>
         </div>
+        <a class="project-link" href="projects/wx-store-report.html" target="_blank">📄 查看设计报告</a>
+      </div>
+    </article>
+
+    <!-- Project 9 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#3e1a5e,#6a2d8e)">🎨</div>
+      <div>
+        <p class="project-number">09 / AI 创作</p>
+        <h3 class="project-title">AI 图片作品集</h3>
+        <p class="project-desc">使用 AI 模型生成的数字艺术作品合集，涵盖文生图、风格迁移等多种创作方式。支持按类别筛选浏览，瀑布流布局 + 灯箱预览，探索 AI 与创意表达的交叉地带。</p>
+        <div class="project-tech">
+          <span class="skill-tag">AI Art</span><span class="skill-tag">文生图</span><span class="skill-tag">Stable Diffusion</span><span class="skill-tag">Midjourney</span>
+        </div>
+        <a class="project-link" href="projects/ai-gallery.html">🖼️ 浏览画廊</a>
       </div>
     </article>
   </div>
@@ -578,22 +711,31 @@ a:hover { color: var(--gold); }
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">现在</p>
-        <h3 class="timeline-title">多平台广告数据系统负责人</h3>
+        <p class="timeline-date">2026.04 — 现在</p>
+        <h3 class="timeline-title">广告运营 · 多平台数据系统负责人</h3>
         <p class="timeline-sub">海客熵连科技</p>
-        <p class="timeline-desc">设计并维护五平台广告数据采集架构，日均处理 300+ 账号数据，输出标准化报告。</p>
+        <p class="timeline-desc">负责跨境广告投放账户日常运营，独立设计并开发多平台广告消耗数据聚合监控系统（5800行代码 / 39模块），实现一键自动抓取与看板展示，日均处理 300+ 账号数据。</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">现在</p>
-        <h3 class="timeline-title">专科在读</h3>
+        <p class="timeline-date">2023.09 — 2026.07</p>
+        <h3 class="timeline-title">人工智能技术应用 · 专科在读</h3>
+        <p class="timeline-sub">深圳职业技术大学 · GPA 3.4/4.0</p>
+        <p class="timeline-desc">主修：Python/Java编程、深度学习、自然语言处理、网页与小程序开发。毕设方向：计算机视觉人机交互（手势控制PPT系统）。</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">2023.11 — 2025.09</p>
+        <h3 class="timeline-title">学院公众号运营负责人</h3>
         <p class="timeline-sub">深圳职业技术大学</p>
-        <p class="timeline-desc">研究方向：计算机视觉人机交互。毕设项目：手势控制 PPT 系统。</p>
+        <p class="timeline-desc">统筹选题、撰写、发布与多渠道传播，公众号粉丝过万；单篇推文最高阅读量 7,000+。</p>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <p class="timeline-date">持续</p>
-        <h3 class="timeline-title">日语学习 N2 → N1</h3>
+        <h3 class="timeline-title">产品体验 · 数码测评</h3>
+        <p class="timeline-sub">ColorOS 共创成员</p>
+        <p class="timeline-desc">参与 OPPO 产品体验反馈、英雄联盟手游功能评估，持续输出改进建议。</p>
         <p class="timeline-sub">自学</p>
         <p class="timeline-desc">通过动漫、日剧和原版教材系统学习日语，目标 N1 合格。</p>
       </div>
@@ -622,10 +764,10 @@ a:hover { color: var(--gold); }
         <div class="contact-icon">📍</div>
         <div><p class="contact-label">Location</p><p class="contact-value">中国 · 深圳</p></div>
       </div>
-      <div class="contact-item">
-        <div class="contact-icon">🎓</div>
-        <div><p class="contact-label">School</p><p class="contact-value">深圳职业技术大学</p></div>
-      </div>
+      <a href="mailto:3128789194@qq.com" class="contact-item" style="color:inherit;text-decoration:none;">
+        <div class="contact-icon">📧</div>
+        <div><p class="contact-label">Email</p><p class="contact-value">3128789194@qq.com</p></div>
+      </a>
     </div>
   </div>
 </section>
