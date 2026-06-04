@@ -47,6 +47,11 @@ def init_db():
             filename TEXT, original_name TEXT, size INTEGER,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
+        CREATE TABLE IF NOT EXISTS contacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT, email TEXT, message TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
         CREATE INDEX IF NOT EXISTS idx_visits_created ON visits(created_at);
         CREATE INDEX IF NOT EXISTS idx_visits_path ON visits(path);
     """)
@@ -225,6 +230,32 @@ def list_files(request: Request):
     verify_admin(request)
     db = get_db()
     rows = [dict(r) for r in db.execute("SELECT * FROM files ORDER BY id DESC").fetchall()]
+    db.close()
+    return rows
+
+# ==== Contact API ====
+
+@app.post("/api/contact")
+async def submit_contact(request: Request):
+    """提交联系表单留言"""
+    try:
+        data = await request.json()
+        db = get_db()
+        db.execute("INSERT INTO contacts (name, email, message) VALUES (?,?,?)",
+                   (data.get("name", "")[:100],
+                    data.get("email", "")[:200],
+                    data.get("message", "")[:2000]))
+        db.commit()
+        db.close()
+        return {"ok": True}
+    except Exception as e:
+        raise HTTPException(400, "提交失败，请稍后再试")
+
+@app.get("/api/admin/contacts")
+def list_contacts(request: Request):
+    verify_admin(request)
+    db = get_db()
+    rows = [dict(r) for r in db.execute("SELECT * FROM contacts ORDER BY id DESC").fetchall()]
     db.close()
     return rows
 
