@@ -226,7 +226,10 @@ a:hover { color: var(--gold); }
 /* ============================================================
    PROJECTS — editorial cards with staggered layout
    ============================================================ */
-.projects-stack { position: relative; }
+.projects-stack {
+  position: relative;
+  padding-bottom: clamp(420px, 70vh, 680px);
+}
 .project-card {
   position: sticky; top: 100px;
   display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--space-3xl);
@@ -243,9 +246,12 @@ a:hover { color: var(--gold); }
 .project-card:nth-child(even) { grid-template-columns: 1.2fr 1fr; }
 .project-card:nth-child(even) .project-visual { order: 2; }
 .projects-stack .project-card {
+  background: var(--bg-raised);
   opacity: 1;
+  filter: none;
   transform: none;
   animation: none;
+  box-shadow: 0 18px 54px oklch(0% 0 0 / 0.24);
 }
 .projects-stack .project-card:nth-child(even) { grid-template-columns: 1fr 1.2fr; }
 .projects-stack .project-card:nth-child(even) .project-visual { order: 0; }
@@ -271,6 +277,7 @@ a:hover { color: var(--gold); }
   .projects-stack .project-card {
     position: relative;
     top: auto !important;
+    padding-bottom: var(--space-lg);
   }
   .project-visual { min-height: 160px; }
 }
@@ -413,6 +420,7 @@ a:hover { color: var(--gold); }
   .skill-tag { padding: 4px 10px; font-size: var(--text-xs); }
 
   /* Projects */
+  .projects-stack { padding-bottom: 0; }
   .project-card { padding: var(--space-lg); }
   .project-title { font-size: var(--text-lg); }
   .project-desc { font-size: var(--text-xs); }
@@ -966,7 +974,13 @@ const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
 }, { threshold: 0.15 });
 
-document.querySelectorAll('[data-reveal], .project-card').forEach(el => observer.observe(el));
+document.querySelectorAll('[data-reveal], .project-card').forEach(el => {
+  if (el.closest('.projects-stack')) {
+    el.classList.add('visible');
+    return;
+  }
+  observer.observe(el);
+});
 
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -1090,7 +1104,9 @@ gsap.utils.toArray(".section-label").forEach(el => {
   gsap.from(el, { y: 30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: el } });
 });
 // Project cards staggered entrance
-gsap.utils.toArray("[data-reveal]").forEach((el, i) => {
+gsap.utils.toArray("[data-reveal]")
+  .filter(el => !el.closest('.projects-stack'))
+  .forEach((el, i) => {
   gsap.from(el, {
     y: 50, opacity: 0, duration: 0.6, delay: i * 0.1,
     scrollTrigger: { trigger: el, start: "top 85%" }
@@ -1098,23 +1114,22 @@ gsap.utils.toArray("[data-reveal]").forEach((el, i) => {
 });
 
 // Sticky project card stacking
-const STACK_OFFSET = 30;
+const STACK_OFFSET = 84;
 document.querySelectorAll('.projects-stack').forEach(stack => {
   const cards = stack.querySelectorAll('.project-card');
   cards.forEach((card, i) => {
-    card.style.top = `${100 + i * STACK_OFFSET}px`;
+    card.style.top = `${84 + i * STACK_OFFSET}px`;
     card.style.zIndex = `${i + 1}`;
     if (i < cards.length - 1) {
       gsap.to(card, {
-        scale: 0.92 - i * 0.015,
-        opacity: 0.55,
-        filter: 'blur(2px)',
+        scale: 0.98 - i * 0.008,
+        opacity: 0.96,
         ease: 'none',
         scrollTrigger: {
           trigger: cards[i + 1],
-          start: 'top 80%',
-          end: 'top 30%',
-          scrub: 1,
+          start: 'top 82%',
+          end: 'top 52%',
+          scrub: 0.8,
         }
       });
     }
