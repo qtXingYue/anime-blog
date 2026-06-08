@@ -123,9 +123,14 @@ a:hover { color: var(--gold); }
 .hero-grid { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: var(--space-3xl); align-items: center; }
 .hero-line { width: 64px; height: 1px; background: oklch(100% 0 0 / 0.15); margin-bottom: var(--space-xl); }
 .hero-pre { font-family: 'Zen Old Mincho', serif; font-size: var(--text-sm); color: var(--gold); letter-spacing: 0.2em; margin-bottom: var(--space-md); }
-.hero-name { font-family: 'Zen Old Mincho', serif; font-weight: 900; font-size: clamp(var(--text-3xl), 8vw, var(--text-4xl)); line-height: 1.05; margin-bottom: var(--space-lg); }
+.hero-name {
+  font-family: 'Zen Old Mincho', serif; font-weight: 900;
+  font-size: clamp(var(--text-3xl), 8vw, var(--text-4xl));
+  line-height: 1.16;
+  margin-bottom: clamp(var(--space-xl), 4vh, var(--space-2xl));
+}
 .hero-name .highlight { color: var(--accent); }
-.hero-role { font-size: var(--text-lg); color: var(--text-secondary); line-height: 1.7; max-width: 480px; margin-bottom: var(--space-xl); }
+.hero-role { font-size: var(--text-lg); color: var(--text-secondary); line-height: 1.75; max-width: 520px; margin-bottom: var(--space-xl); position: relative; z-index: 1; }
 .hero-role strong { color: var(--text-primary); font-weight: 500; }
 .hero-cta { display: flex; gap: var(--space-md); flex-wrap: wrap; }
 .btn { display: inline-flex; align-items: center; gap: var(--space-sm); padding: 10px 24px; border-radius: 100px; font-size: var(--text-sm); font-weight: 600; transition: all 300ms var(--ease-out-expo); cursor: pointer; }
@@ -401,6 +406,10 @@ a:hover { color: var(--gold); }
   opacity: 1;
   transform: translateY(0);
   filter: blur(0);
+}
+.hero-name.load-reveal,
+.hero-name.load-reveal.entered {
+  transform: none;
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
