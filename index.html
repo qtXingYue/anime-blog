@@ -1378,59 +1378,36 @@ gsap.utils.toArray("[data-reveal]")
 });
 
 // Sticky project card stacking
-const STACK_OFFSET = 84;
+const STACK_OFFSET = 64;
 document.querySelectorAll('.projects-stack').forEach(stack => {
   const cards = stack.querySelectorAll('.project-card');
   cards.forEach((card, i) => {
-    card.style.top = `${84 + i * STACK_OFFSET}px`;
+    card.style.top = `${96 + i * STACK_OFFSET}px`;
     card.style.zIndex = `${i + 1}`;
+
     if (i < cards.length - 1) {
       gsap.to(card, {
-        scale: 0.98 - i * 0.008,
-        opacity: 0.96,
+        scale: 0.97 - i * 0.014,
         force3D: true,
         overwrite: 'auto',
         ease: 'none',
         scrollTrigger: {
           trigger: cards[i + 1],
-          start: 'top 82%',
-          end: 'top 52%',
-          scrub: 0.3,
+          start: 'top 84%',
+          end: 'top 48%',
+          scrub: 0.6,
         }
       });
     }
+
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 46%',
+      end: 'bottom 46%',
+      toggleClass: { targets: card, className: 'is-current' }
+    });
   });
 });
-
-// Lightweight current-card emphasis for sticky stacks
-const projectStackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
-let projectCardTicking = false;
-const updateCurrentProjectCard = () => {
-  projectCardTicking = false;
-  if (!projectStackCards.length) return;
-  const focusY = window.innerHeight * 0.42;
-  let current = projectStackCards[0];
-  let bestDistance = Number.POSITIVE_INFINITY;
-  projectStackCards.forEach(card => {
-    const rect = card.getBoundingClientRect();
-    const center = rect.top + rect.height * 0.5;
-    const distance = Math.abs(center - focusY);
-    const visible = rect.bottom > 80 && rect.top < window.innerHeight - 80;
-    if (visible && distance < bestDistance) {
-      bestDistance = distance;
-      current = card;
-    }
-  });
-  projectStackCards.forEach(card => card.classList.toggle('is-current', card === current));
-};
-const requestProjectCardUpdate = () => {
-  if (projectCardTicking) return;
-  projectCardTicking = true;
-  requestAnimationFrame(updateCurrentProjectCard);
-};
-updateCurrentProjectCard();
-window.addEventListener('scroll', requestProjectCardUpdate, { passive: true });
-window.addEventListener('resize', requestProjectCardUpdate);
 
 // Timeline drawing + text reveal
 document.querySelectorAll('.timeline').forEach(tl => {
