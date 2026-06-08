@@ -265,10 +265,40 @@ a:hover { color: var(--gold); }
    EXPERIENCE TIMELINE
    ============================================================ */
 .timeline { position: relative; padding-left: 32px; }
-.timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 1px; background: oklch(100% 0 0 / 0.1); }
+.timeline-track {
+  position: absolute; left: 7px; top: 0; bottom: 0; width: 1px;
+  background: oklch(100% 0 0 / 0.06);
+}
+.timeline-track-fill {
+  position: absolute; left: 7px; top: 0; width: 1px; height: 0%;
+  background: linear-gradient(to bottom, var(--accent), var(--accent-soft));
+  box-shadow: 0 0 8px var(--accent-glow);
+}
 .timeline-item { position: relative; padding-bottom: var(--space-2xl); }
 .timeline-item:last-child { padding-bottom: 0; }
-.timeline-dot { position: absolute; left: -28px; top: 6px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 3px solid var(--bg-deep); box-shadow: 0 0 12px var(--accent-glow); }
+.timeline-dot {
+  position: absolute; left: -32px; top: 6px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--bg-deep);
+  border: 2px solid oklch(100% 0 0 / 0.15);
+  box-shadow: none;
+  transition: transform 0.6s var(--spring), background 0.4s ease,
+              border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.timeline-dot.active {
+  transform: scale(1);
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.timeline-content {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.7s var(--spring);
+}
+.timeline-content.active {
+  opacity: 1;
+  transform: translateX(0);
+}
 .timeline-date { font-size: var(--text-xs); color: var(--gold); letter-spacing: 0.1em; margin-bottom: var(--space-xs); }
 .timeline-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-base); color: var(--text-primary); }
 .timeline-sub { font-size: var(--text-sm); color: var(--text-muted); }
@@ -592,25 +622,35 @@ a:hover { color: var(--gold); }
     <h2 class="section-title">荣誉与证书</h2>
     <div class="section-divider"></div>
     <div class="timeline">
+      <div class="timeline-track"></div>
+      <div class="timeline-track-fill"></div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2025</p>
-        <h3 class="timeline-title">蓝桥杯 Python 赛道 广东省二等奖</h3>
+        <div class="timeline-content">
+          <p class="timeline-date">2025</p>
+          <h3 class="timeline-title">蓝桥杯 Python 赛道 广东省二等奖</h3>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2025</p>
-        <h3 class="timeline-title">华为云 HCCDA-AI 认证</h3>
+        <div class="timeline-content">
+          <p class="timeline-date">2025</p>
+          <h3 class="timeline-title">华为云 HCCDA-AI 认证</h3>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2025</p>
-        <h3 class="timeline-title">日语能力测试 JLPT N2</h3>
+        <div class="timeline-content">
+          <p class="timeline-date">2025</p>
+          <h3 class="timeline-title">日语能力测试 JLPT N2</h3>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2023-2025</p>
-        <h3 class="timeline-title">校级三等奖学金 · 优秀学生干部</h3>
+        <div class="timeline-content">
+          <p class="timeline-date">2023-2025</p>
+          <h3 class="timeline-title">校级三等奖学金 · 优秀学生干部</h3>
+        </div>
       </div>
     </div>
   </div>
@@ -780,35 +820,45 @@ a:hover { color: var(--gold); }
     <h2 class="section-title">经历</h2>
     <div class="section-divider"></div>
     <div class="timeline">
+      <div class="timeline-track"></div>
+      <div class="timeline-track-fill"></div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2026.04 — 现在</p>
-        <h3 class="timeline-title">广告运营 · 多平台数据系统负责人</h3>
-        <p class="timeline-sub">海客熵连科技</p>
-        <p class="timeline-desc">负责跨境广告投放账户日常运营，独立设计并开发多平台广告消耗数据聚合监控系统（5800行代码 / 39模块），实现一键自动抓取与看板展示，日均处理 300+ 账号数据。</p>
+        <div class="timeline-content">
+          <p class="timeline-date">2026.04 — 现在</p>
+          <h3 class="timeline-title">广告运营 · 多平台数据系统负责人</h3>
+          <p class="timeline-sub">海客熵连科技</p>
+          <p class="timeline-desc">负责跨境广告投放账户日常运营，独立设计并开发多平台广告消耗数据聚合监控系统（5800行代码 / 39模块），实现一键自动抓取与看板展示，日均处理 300+ 账号数据。</p>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2023.09 — 2026.07</p>
-        <h3 class="timeline-title">人工智能技术应用 · 专科在读</h3>
-        <p class="timeline-sub">深圳职业技术大学 · GPA 3.4/4.0</p>
-        <p class="timeline-desc">主修：Python/Java编程、深度学习、自然语言处理、网页与小程序开发。毕设方向：计算机视觉人机交互（手势控制PPT系统）。</p>
+        <div class="timeline-content">
+          <p class="timeline-date">2023.09 — 2026.07</p>
+          <h3 class="timeline-title">人工智能技术应用 · 专科在读</h3>
+          <p class="timeline-sub">深圳职业技术大学 · GPA 3.4/4.0</p>
+          <p class="timeline-desc">主修：Python/Java编程、深度学习、自然语言处理、网页与小程序开发。毕设方向：计算机视觉人机交互（手势控制PPT系统）。</p>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">2023.11 — 2025.09</p>
-        <h3 class="timeline-title">学院公众号运营负责人</h3>
-        <p class="timeline-sub">深圳职业技术大学</p>
-        <p class="timeline-desc">统筹选题、撰写、发布与多渠道传播，公众号粉丝过万；单篇推文最高阅读量 7,000+。</p>
+        <div class="timeline-content">
+          <p class="timeline-date">2023.11 — 2025.09</p>
+          <h3 class="timeline-title">学院公众号运营负责人</h3>
+          <p class="timeline-sub">深圳职业技术大学</p>
+          <p class="timeline-desc">统筹选题、撰写、发布与多渠道传播，公众号粉丝过万；单篇推文最高阅读量 7,000+。</p>
+        </div>
       </div>
       <div class="timeline-item">
         <div class="timeline-dot"></div>
-        <p class="timeline-date">持续</p>
-        <h3 class="timeline-title">产品体验 · 数码测评</h3>
-        <p class="timeline-sub">ColorOS 共创成员</p>
-        <p class="timeline-desc">参与 OPPO 产品体验反馈、英雄联盟手游功能评估，持续输出改进建议。</p>
-        <p class="timeline-sub">自学</p>
-        <p class="timeline-desc">通过动漫、日剧和原版教材系统学习日语，目标 N1 合格。</p>
+        <div class="timeline-content">
+          <p class="timeline-date">持续</p>
+          <h3 class="timeline-title">产品体验 · 数码测评</h3>
+          <p class="timeline-sub">ColorOS 共创成员</p>
+          <p class="timeline-desc">参与 OPPO 产品体验反馈、英雄联盟手游功能评估，持续输出改进建议。</p>
+          <p class="timeline-sub">自学</p>
+          <p class="timeline-desc">通过动漫、日剧和原版教材系统学习日语，目标 N1 合格。</p>
+        </div>
       </div>
     </div>
   </div>
@@ -985,6 +1035,52 @@ gsap.utils.toArray("[data-reveal]").forEach((el, i) => {
   gsap.from(el, {
     y: 50, opacity: 0, duration: 0.6, delay: i * 0.1,
     scrollTrigger: { trigger: el, start: "top 85%" }
+  });
+});
+
+// Timeline drawing + text reveal
+document.querySelectorAll('.timeline').forEach(tl => {
+  const fill = tl.querySelector('.timeline-track-fill');
+  const dots = tl.querySelectorAll('.timeline-dot');
+  const contents = tl.querySelectorAll('.timeline-content');
+
+  dots.forEach(d => { d.style.transform = 'scale(0)'; });
+  contents.forEach(c => { c.classList.remove('active'); });
+
+  if (fill) {
+    gsap.to(fill, {
+      height: '100%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: tl,
+        start: 'top 70%',
+        end: 'bottom 60%',
+        scrub: 0.8,
+      }
+    });
+  }
+
+  tl.querySelectorAll('.timeline-item').forEach((item, i) => {
+    ScrollTrigger.create({
+      trigger: item,
+      start: 'top 75%',
+      onEnter: () => {
+        if (dots[i]) {
+          dots[i].style.transform = '';
+          dots[i].classList.add('active');
+        }
+        window.setTimeout(() => {
+          if (contents[i]) contents[i].classList.add('active');
+        }, 150);
+      },
+      onLeaveBack: () => {
+        if (dots[i]) {
+          dots[i].style.transform = 'scale(0)';
+          dots[i].classList.remove('active');
+        }
+        if (contents[i]) contents[i].classList.remove('active');
+      }
+    });
   });
 });
 
