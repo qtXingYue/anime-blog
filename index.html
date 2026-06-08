@@ -226,7 +226,9 @@ a:hover { color: var(--gold); }
 /* ============================================================
    PROJECTS — editorial cards with staggered layout
    ============================================================ */
+.projects-stack { position: relative; }
 .project-card {
+  position: sticky; top: 100px;
   display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--space-3xl);
   padding: var(--space-2xl); margin-bottom: var(--space-2xl);
   background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -235,10 +237,18 @@ a:hover { color: var(--gold); }
   opacity: 0; transform: translateY(30px);
   animation: fadeInUp 600ms var(--ease-out-expo) forwards;
   animation-play-state: paused;
+  will-change: transform;
 }
 .project-card.visible { animation-play-state: running; }
 .project-card:nth-child(even) { grid-template-columns: 1.2fr 1fr; }
 .project-card:nth-child(even) .project-visual { order: 2; }
+.projects-stack .project-card {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+.projects-stack .project-card:nth-child(even) { grid-template-columns: 1fr 1.2fr; }
+.projects-stack .project-card:nth-child(even) .project-visual { order: 0; }
 .project-card:hover {
   border-color: oklch(60% 0.18 280 / 0.2);
   transform: translateY(-4px);
@@ -258,6 +268,10 @@ a:hover { color: var(--gold); }
 @media (max-width: 768px) {
   .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; gap: var(--space-xl); }
   .project-card:nth-child(even) .project-visual { order: -1; }
+  .projects-stack .project-card {
+    position: relative;
+    top: auto !important;
+  }
   .project-visual { min-height: 160px; }
 }
 
@@ -464,15 +478,30 @@ a:hover { color: var(--gold); }
 
 /* Particle container */
 #tsparticles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* Scroll progress */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; z-index: 200;
+  height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--accent), oklch(70% 0.2 320), var(--gold));
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.site-header { transition: height 0.4s var(--spring), background 0.3s ease; }
+.site-header.scrolled {
+  height: 48px;
+  background: oklch(10% 0.015 270 / 0.8);
+}
 </style>
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <div class="noise-overlay" aria-hidden="true"></div>
 <div id="tsparticles"></div>
 
 <!-- HEADER -->
-<header class="site-header">
+<header class="site-header" id="siteHeader">
   <div class="header-inner">
     <a href="#" class="brand"><span class="brand-mark">月</span><span>QT新月</span></a>
     <nav aria-label="主导航">
@@ -663,6 +692,8 @@ a:hover { color: var(--gold); }
     <h2 class="section-title">项目作品</h2>
     <div class="section-divider"></div>
 
+    <div class="projects-stack">
+
     <!-- Project 1 -->
     <article class="project-card" data-reveal>
       <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#2d1b69)">🕷️</div>
@@ -800,6 +831,7 @@ a:hover { color: var(--gold); }
         <a class="project-link" href="projects/ai-video.html">🎬 观看视频</a>
       </div>
     </article>
+    </div>
   </div>
 </section>
 
@@ -1015,8 +1047,24 @@ tsParticles.load("tsparticles", {
 // GSAP + ScrollTrigger — 视差滚动
 // ============================================================
 gsap.registerPlugin(ScrollTrigger);
+
+// Scroll progress + compact header
+const progressBar = document.getElementById('scrollProgress');
+const siteHeader = document.getElementById('siteHeader');
+if (progressBar && siteHeader) {
+  const updateScrollProgress = () => {
+    const scrollTop = window.scrollY;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.width = `${scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0}%`;
+    siteHeader.classList.toggle('scrolled', scrollTop > 80);
+  };
+  updateScrollProgress();
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  window.addEventListener('pageshow', updateScrollProgress);
+}
+
 // Hero section parallax
-gsap.to(".hero-text", {
+gsap.to(".hero-name", {
   y: -80,
   ease: "none",
   scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
@@ -1035,6 +1083,30 @@ gsap.utils.toArray("[data-reveal]").forEach((el, i) => {
   gsap.from(el, {
     y: 50, opacity: 0, duration: 0.6, delay: i * 0.1,
     scrollTrigger: { trigger: el, start: "top 85%" }
+  });
+});
+
+// Sticky project card stacking
+const STACK_OFFSET = 30;
+document.querySelectorAll('.projects-stack').forEach(stack => {
+  const cards = stack.querySelectorAll('.project-card');
+  cards.forEach((card, i) => {
+    card.style.top = `${100 + i * STACK_OFFSET}px`;
+    card.style.zIndex = `${i + 1}`;
+    if (i < cards.length - 1) {
+      gsap.to(card, {
+        scale: 0.92 - i * 0.015,
+        opacity: 0.55,
+        filter: 'blur(2px)',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: cards[i + 1],
+          start: 'top 80%',
+          end: 'top 30%',
+          scrub: 1,
+        }
+      });
+    }
   });
 });
 
