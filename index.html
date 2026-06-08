@@ -44,6 +44,7 @@
   --text-3xl: 3.5rem; --text-4xl: 5rem;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --spring: linear(0, 0.004, 0.016, 0.035, 0.063, 0.098, 0.141, 0.191, 0.25, 0.316, 0.391, 0.472, 0.562, 0.66, 0.765, 0.878, 1, 1.068, 1.105, 1.12, 1.115, 1.096, 1.07, 1.04, 1.012, 0.991, 0.978, 0.972, 0.975, 0.982, 0.991, 0.998, 1);
   --header-h: 64px; --content-max: 1100px;
 }
 [data-theme="light"] {
@@ -95,7 +96,7 @@ a:hover { color: var(--gold); }
    HEADER — glass, fixed
    ============================================================ */
 .site-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: var(--header-h);
+  position: fixed; top: 3px; left: 0; right: 0; z-index: 100; height: var(--header-h);
   background: oklch(14% 0.015 270 / 0.55);
   backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
@@ -104,7 +105,7 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .site-header { background: oklch(100% 0 0 / 0.55); }
 .header-inner { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--space-xl); height: 100%; display: flex; align-items: center; justify-content: space-between; }
 .brand { display: flex; align-items: center; gap: var(--space-sm); font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 800; font-size: var(--text-base); color: var(--text-primary); letter-spacing: 0.04em; }
-.brand-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-soft)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #fff; }
+.brand-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-soft)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #fff; transition: transform 0.45s var(--spring); }
 .nav-links { display: flex; align-items: center; gap: var(--space-xl); list-style: none; }
 .nav-links a { font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary); position: relative; padding-block: var(--space-xs); }
 .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--accent); border-radius: 1px; transition: width 300ms var(--ease-out-expo); }
@@ -314,11 +315,13 @@ a:hover { color: var(--gold); }
 .timeline-content {
   opacity: 0;
   transform: translateX(-20px);
-  transition: opacity 0.6s var(--ease-out-expo), transform 0.7s var(--spring);
+  filter: blur(5px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.7s var(--spring), filter 0.6s ease;
 }
 .timeline-content.active {
   opacity: 1;
   transform: translateX(0);
+  filter: blur(0);
 }
 .timeline-date { font-size: var(--text-xs); color: var(--gold); letter-spacing: 0.1em; margin-bottom: var(--space-xs); }
 .timeline-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-base); color: var(--text-primary); }
@@ -388,9 +391,20 @@ a:hover { color: var(--gold); }
 @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 .reveal { opacity: 0; transform: translateY(30px); transition: all 600ms var(--ease-out-expo); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
+.load-reveal {
+  opacity: 0;
+  transform: translateY(46px);
+  filter: blur(7px);
+  transition: opacity 0.9s var(--ease-out-expo), transform 1s var(--spring), filter 0.8s ease;
+}
+.load-reveal.entered {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-  html { scroll-behavior: auto; } .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; } .reveal, .load-reveal, .timeline-content { opacity: 1; transform: none; filter: none; }
 }
 /* ============================================================
    MOBILE RESPONSIVE
@@ -495,11 +509,18 @@ a:hover { color: var(--gold); }
   border-radius: 0 2px 2px 0;
   box-shadow: 0 0 12px var(--accent-glow);
 }
-.site-header { transition: height 0.4s var(--spring), background 0.3s ease; }
+.site-header {
+  transition: height 0.5s var(--spring), background 0.4s ease, backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease, box-shadow 0.4s ease;
+}
 .site-header.scrolled {
   height: 48px;
-  background: oklch(10% 0.015 270 / 0.8);
+  background: oklch(10% 0.015 270 / 0.84);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  box-shadow: 0 10px 36px oklch(0% 0 0 / 0.22), 0 1px 0 oklch(100% 0 0 / 0.04) inset;
 }
+[data-theme="light"] .site-header.scrolled { background: oklch(100% 0 0 / 0.82); }
+.site-header.scrolled .brand-mark { transform: scale(0.86); }
 </style>
 </head>
 <body>
@@ -530,21 +551,21 @@ a:hover { color: var(--gold); }
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <div class="hero-line"></div>
-      <p class="hero-pre">Code · Data · Digital</p>
-      <h1 class="hero-name">
+      <div class="hero-line load-reveal" data-load-delay="0"></div>
+      <p class="hero-pre load-reveal" data-load-delay="100">Code · Data · Digital</p>
+      <h1 class="hero-name load-reveal" data-load-delay="220">
         <span class="highlight">QT新月</span>
       </h1>
-      <p class="hero-role">
+      <p class="hero-role load-reveal" data-load-delay="380">
         喜欢研究数码产品和自动化工具。<br>
         深圳职业技术大学
       </p>
-      <div class="hero-cta">
+      <div class="hero-cta load-reveal" data-load-delay="540">
         <a href="#projects" class="btn btn-primary">查看作品 →</a>
         <a href="#contact" class="btn btn-ghost">联系方式</a>
       </div>
     </div>
-    <div class="hero-visual">
+    <div class="hero-visual load-reveal" data-load-delay="300">
       <div class="hero-avatar-ring">月</div>
       <span class="hero-floating-tag t1">数码</span>
       <span class="hero-floating-tag t2">二次元</span>
@@ -554,7 +575,7 @@ a:hover { color: var(--gold); }
       <span class="hero-floating-tag t6">Java</span>
     </div>
   </div>
-  <div class="hero-scroll" aria-hidden="true">
+  <div class="hero-scroll load-reveal" data-load-delay="700" aria-hidden="true">
     <span>Scroll</span>
     <div class="scroll-line"></div>
   </div>
@@ -969,6 +990,14 @@ toggle.addEventListener('click', () => {
   toggle.textContent = next === 'light' ? '☀️' : '🌙';
 });
 
+// Orchestrated page entrance
+requestAnimationFrame(() => {
+  document.querySelectorAll('.load-reveal').forEach((el, i) => {
+    const delay = Number(el.dataset.loadDelay || i * 100);
+    window.setTimeout(() => el.classList.add('entered'), 180 + delay);
+  });
+});
+
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
@@ -1099,9 +1128,23 @@ gsap.to(".hero-visual", {
   ease: "none",
   scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true }
 });
-// Section labels fade up
-gsap.utils.toArray(".section-label").forEach(el => {
-  gsap.from(el, { y: 30, opacity: 0, duration: 0.8, scrollTrigger: { trigger: el } });
+// Section heading reveal
+gsap.utils.toArray(".section").forEach(section => {
+  const headingParts = section.querySelectorAll(".section-label, .section-title, .section-divider");
+  if (!headingParts.length) return;
+  gsap.from(headingParts, {
+    y: 30,
+    opacity: 0,
+    filter: 'blur(5px)',
+    duration: 0.8,
+    stagger: 0.09,
+    ease: 'back.out(1.2)',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 82%',
+      once: true,
+    }
+  });
 });
 // Project cards staggered entrance
 gsap.utils.toArray("[data-reveal]")
@@ -1159,18 +1202,21 @@ document.querySelectorAll('.timeline').forEach(tl => {
   }
 
   tl.querySelectorAll('.timeline-item').forEach((item, i) => {
+    const activateItem = () => {
+      if (dots[i]) {
+        dots[i].style.transform = '';
+        dots[i].classList.add('active');
+      }
+      window.setTimeout(() => {
+        if (contents[i]) contents[i].classList.add('active');
+      }, 150);
+    };
+
     ScrollTrigger.create({
       trigger: item,
-      start: 'top 75%',
-      onEnter: () => {
-        if (dots[i]) {
-          dots[i].style.transform = '';
-          dots[i].classList.add('active');
-        }
-        window.setTimeout(() => {
-          if (contents[i]) contents[i].classList.add('active');
-        }, 150);
-      },
+      start: 'top 82%',
+      onEnter: activateItem,
+      onEnterBack: activateItem,
       onLeaveBack: () => {
         if (dots[i]) {
           dots[i].style.transform = 'scale(0)';
