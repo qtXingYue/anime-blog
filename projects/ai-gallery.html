@@ -316,7 +316,7 @@ a:hover { color: var(--gold); }
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" loading="lazy" decoding="async">
   <div class="lightbox-info" id="lightboxInfo">
     <h3 id="lightboxTitle"></h3>
     <p class="prompt" id="lightboxPrompt"></p>
@@ -381,7 +381,7 @@ function renderGallery() {
   grid.innerHTML = filteredImages.map((img, i) => `
     <div class="gallery-card" onclick="openLightbox(${i})">
       <div class="gallery-card-img-wrap">
-        <img class="gallery-card-img" src="${img.file}" alt="${img.title}" loading="lazy"
+        <img class="gallery-card-img" src="${img.file}" alt="${img.title}" loading="lazy" decoding="async"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
         <div class="gallery-card-fallback" style="display:none">
           <svg viewBox="0 0 60 60" width="48" height="48"><rect width="60" height="60" rx="12" fill="oklch(25% 0.05 280)"/><text x="30" y="40" text-anchor="middle" font-size="28">🖼</text></svg>
