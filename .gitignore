@@ -9,3 +9,15 @@ Thumbs.db
 # Temp
 *.tmp
 *.log
+# Runtime data / uploads
+server/data.db
+server/*.db
+server/*.sqlite
+server/*.sqlite3
+server/uploads/
+# Local backups generated during server maintenance
+server/*.bak-*
+*.bak-*
+# Python cache
+__pycache__/
+*.py[cod]

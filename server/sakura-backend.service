@@ -7,6 +7,8 @@ Type=simple
 User=www-data
 WorkingDirectory=/var/www/portfolio/server
 Environment=ADMIN_PASS=sakura2026
+Environment=HERMES_WEBHOOK_URL=http://127.0.0.1:8644/webhooks/portfolio-admin
+EnvironmentFile=-/etc/sakura-backend.env
 ExecStart=/usr/bin/python3 /var/www/portfolio/server/main.py
 Restart=always
 RestartSec=5
