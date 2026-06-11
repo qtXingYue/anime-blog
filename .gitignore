@@ -6,6 +6,11 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Large media (keep on server, not in git)
+*.mp4
+*.webm
+*.mov
+
 # Temp
 *.tmp
 *.log
