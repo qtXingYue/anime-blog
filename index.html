@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QT新月 — 个人作品集 | 钟文清</title>
-<meta name="description" content="钟文清的个人作品集 — 人工智能技术应用专业，深圳职业技术大学。涵盖深度学习、计算机视觉、数据工程、全栈开发等 8 个项目。擅长 Python、TensorFlow、MediaPipe、Java。">
+<meta name="description" content="钟文清的个人作品集 — 人工智能技术应用专业，深圳职业技术大学。涵盖深度学习、计算机视觉、数据工程、全栈开发等 11 个项目。擅长 Python、TensorFlow、MediaPipe、Java。">
 <meta property="og:title" content="QT新月 — 钟文清的个人作品集">
-<meta property="og:description" content="AI/数据工程/全栈开发 · 8 个实战项目 · 蓝桥杯省二等奖 · JLPT N2">
+<meta property="og:description" content="AI/数据工程/全栈开发 · 11 个实战项目 · 蓝桥杯省二等奖 · JLPT N2">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://qtxingyue.me/">
 <meta property="og:site_name" content="QT新月">
@@ -30,7 +30,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap"></noscript>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -134,6 +135,7 @@ a:hover { color: var(--gold); }
   backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 1px 0 oklch(100% 0 0 / 0.03) inset;
+  transition: height 0.5s var(--spring), background 0.4s ease, backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease, box-shadow 0.4s ease;
 }
 [data-theme="light"] .site-header { background: oklch(100% 0 0 / 0.55); }
 .header-inner { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--space-xl); height: 100%; display: flex; align-items: center; justify-content: space-between; }
@@ -291,7 +293,6 @@ a:hover { color: var(--gold); }
   opacity: 0; transform: translateY(30px);
   animation: fadeInUp 600ms var(--ease-out-expo) forwards;
   animation-play-state: paused;
-  will-change: transform;
 }
 .project-card:nth-child(1) { --project-accent: oklch(66% 0.19 285); }
 .project-card:nth-child(2) { --project-accent: oklch(68% 0.15 245); }
@@ -318,7 +319,6 @@ a:hover { color: var(--gold); }
   backface-visibility: hidden;
   contain: paint;
   transform-style: preserve-3d;
-  will-change: transform, opacity;
 }
 .projects-stack .project-card::before {
   content: '';
@@ -346,11 +346,6 @@ a:hover { color: var(--gold); }
 }
 .projects-stack .project-card:nth-child(even) { grid-template-columns: 1fr 1.2fr; }
 .projects-stack .project-card:nth-child(even) .project-visual { order: 0; }
-.project-card:hover {
-  border-color: oklch(60% 0.18 280 / 0.2);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 48px oklch(0% 0 0 / 0.3);
-}
 .projects-stack .project-card:hover {
   border-color: oklch(60% 0.18 280 / 0.24);
   box-shadow: 0 20px 58px oklch(0% 0 0 / 0.28);
@@ -419,6 +414,31 @@ a:hover { color: var(--gold); }
   background: oklch(100% 0 0 / 0.055);
   border-color: oklch(100% 0 0 / 0.08);
 }
+/* Featured project card */
+.featured-card {
+  display:block;text-decoration:none;color:inherit;
+  background:linear-gradient(135deg,oklch(18% 0.08 280),oklch(14% 0.05 270));
+  border:1px solid oklch(60% 0.18 280 / 0.2);border-radius:20px;
+  padding:2rem;margin-bottom:2.5rem;cursor:pointer;
+  transition:all 300ms var(--ease-out-expo);
+}
+.featured-card:hover {
+  border-color:oklch(60% 0.18 280 / 0.45);
+  transform:translateY(-2px);
+  box-shadow:0 16px 48px oklch(0% 0 0 / 0.4);
+}
+.featured-card-inner{display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap}
+.featured-card-icon{width:80px;height:80px;min-width:80px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 8px 24px oklch(60% 0.18 280 / 0.3)}
+.featured-card-body{flex:1;min-width:200px}
+.featured-card-label{font-family:'Zen Old Mincho',serif;font-size:0.7rem;color:oklch(80% 0.14 95);letter-spacing:0.15em;margin-bottom:0.25rem}
+.featured-card-title{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.3rem;color:var(--text-primary);margin-bottom:0.5rem}
+.featured-card-title span{font-size:0.65rem;color:var(--accent);font-weight:400}
+.featured-card-desc{font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:0.75rem}
+.featured-card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.featured-card-cta{display:flex;align-items:center;padding-left:0.5rem}
+.featured-card-cta span{display:inline-flex;align-items:center;gap:4px;font-size:0.85rem;color:var(--accent);border:1px solid var(--accent-dim);border-radius:100px;padding:6px 16px;white-space:nowrap}
+[data-theme="light"] .featured-card{background:linear-gradient(135deg,oklch(90% 0.04 280),oklch(97% 0 0));border-color:oklch(0% 0 0 / 0.1)}
+[data-theme="light"] .featured-card:hover{border-color:oklch(60% 0.18 280 / 0.35);box-shadow:0 16px 48px oklch(45% 0.04 270 / 0.18)}
 .project-link { display: inline-flex; align-items: center; gap: 4px; font-size: var(--text-sm); color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 100px; padding: 4px 14px; transition: all 200ms; margin-bottom: var(--space-lg); }
 .project-link:hover { background: var(--accent-dim); color: #fff; }
 [data-theme="light"] .projects-stack .project-card {
@@ -427,6 +447,14 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .projects-stack .project-card::after {
   box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 0.035);
 }
+[data-theme="light"] .timeline-track { background: oklch(0% 0 0 / 0.08); }
+[data-theme="light"] .timeline-dot { background: oklch(100% 0 0); border-color: oklch(0% 0 0 / 0.15); }
+[data-theme="light"] .timeline-dot.active { background: var(--accent); border-color: var(--accent); }
+[data-theme="light"] .project-visual { color: oklch(100% 0 0); }
+[data-theme="light"] .blog-card-preview { background: oklch(100% 0 0 / 0.85); backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-theme="light"] .contact-item { background: oklch(100% 0 0 / 0.85); }
+[data-theme="light"] .contact-form-wrap { background: oklch(100% 0 0 / 0.85); }
+[data-theme="light"] .site-footer { border-color: oklch(0% 0 0 / 0.08); }
 [data-theme="light"] .project-card .skill-tag {
   background: oklch(0% 0 0 / 0.035);
   border-color: oklch(0% 0 0 / 0.055);
@@ -506,6 +534,23 @@ a:hover { color: var(--gold); }
 .blog-card-preview .title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-base); color: var(--text-primary); margin-bottom: var(--space-sm); }
 .blog-card-preview .excerpt { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 @media (max-width: 640px) { .blog-cards { grid-template-columns: 1fr; } }
+.blog-empty { text-align:center; padding:var(--space-3xl) var(--space-2xl); }
+.blog-empty .empty-icon { font-size:2.5rem; margin-bottom:var(--space-md); opacity:0.5; }
+.blog-empty p { font-size:var(--text-sm); color:var(--text-muted); margin-bottom:var(--space-xs); }
+.blog-empty .empty-hint { font-size:var(--text-xs); color:var(--text-muted); opacity:0.6; }
+
+/* Back to top */
+.back-to-top {
+  position:fixed;bottom:2rem;right:2rem;z-index:200;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--accent);color:#fff;border:none;cursor:pointer;
+  font-size:1.2rem;display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;
+  transition:all 300ms var(--ease-out-expo);
+  box-shadow:0 4px 20px var(--accent-glow);
+}
+.back-to-top.visible { opacity:1; visibility:visible; }
+.back-to-top:hover { transform:translateY(-2px); box-shadow:0 8px 28px oklch(60% 0.18 280 / 0.45); }
 
 /* ============================================================
    CONTACT
@@ -555,6 +600,9 @@ a:hover { color: var(--gold); }
    ============================================================ */
 .site-footer { border-top: 1px solid var(--border); padding-block: var(--space-2xl); text-align: center; color: var(--text-muted); font-size: var(--text-xs); }
 .footer-decor { font-family: 'Zen Old Mincho', serif; color: oklch(35% 0.03 270); letter-spacing: 0.2em; margin-bottom: var(--space-xs); }
+.footer-links { display: flex; justify-content: center; gap: 1.5rem; margin-top: .5rem; }
+.footer-links a { font-size: var(--text-xs); color: var(--text-muted); text-decoration: none; transition: color 200ms; }
+.footer-links a:hover { color: var(--accent); }
 
 /* ============================================================
    ANIMATIONS
@@ -686,9 +734,6 @@ a:hover { color: var(--gold); }
   background: linear-gradient(90deg, var(--accent), oklch(70% 0.2 320), var(--gold));
   border-radius: 0 2px 2px 0;
   box-shadow: 0 0 12px var(--accent-glow);
-}
-.site-header {
-  transition: height 0.5s var(--spring), background 0.4s ease, backdrop-filter 0.4s ease, -webkit-backdrop-filter 0.4s ease, box-shadow 0.4s ease;
 }
 .site-header.scrolled {
   height: 48px;
@@ -902,6 +947,23 @@ a:hover { color: var(--gold); }
     <p class="section-label">Projects</p>
     <h2 class="section-title">项目作品</h2>
     <div class="section-divider"></div>
+
+    <!-- Featured Project: This Site -->
+    <a href="projects/portfolio-report.html" target="_blank" class="featured-card">
+      <div class="featured-card-inner">
+        <div class="featured-card-icon">🌙</div>
+        <div class="featured-card-body">
+          <p class="featured-card-label">FEATURED PROJECT</p>
+          <h3 class="featured-card-title">QT新月 个人作品集网站 <span>— 本页就是</span></h3>
+          <p class="featured-card-desc">你现在正在浏览的网站。JAMstack 架构 · FastAPI 后端 · GSAP 动画 · OKLCH 主题 · Nginx 部署 · Hermes AI 飞书接入。</p>
+          <div class="featured-card-tags">
+            <span class="skill-tag primary">FastAPI</span><span class="skill-tag primary">Nginx</span><span class="skill-tag primary">GSAP</span><span class="skill-tag primary">SQLite</span>
+            <span class="skill-tag">OKLCH</span><span class="skill-tag">HTTPS</span><span class="skill-tag">Hermes AI</span>
+          </div>
+        </div>
+        <div class="featured-card-cta"><span>📄 项目详解 →</span></div>
+      </div>
+    </a>
 
     <div class="projects-stack">
 
@@ -1170,8 +1232,16 @@ a:hover { color: var(--gold); }
 <!-- FOOTER -->
 <footer class="site-footer">
   <p class="footer-decor">新 · 月 · 作 · 品</p>
-  <p>&copy; 2026 QT新月 — 用心构建</p>
+  <p style="margin-bottom:.5rem">&copy; 2026 QT新月</p>
+  <div class="footer-links">
+    <a href="https://github.com/qtXingYue/anime-blog" target="_blank" rel="noopener">GitHub</a>
+    <a href="blog.html">博客</a>
+    <a href="projects/ai-gallery.html">AI画廊</a>
+    <a href="projects/ai-video.html">AI视频</a>
+  </div>
 </footer>
+
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到顶部">↑</button>
 
 <script>
 // Theme toggle
@@ -1188,11 +1258,16 @@ toggle.addEventListener('click', () => {
 });
 
 // Orchestrated page entrance
-requestAnimationFrame(() => {
+function runEntrance() {
   document.querySelectorAll('.load-reveal').forEach((el, i) => {
     const delay = Number(el.dataset.loadDelay || i * 100);
     window.setTimeout(() => el.classList.add('entered'), 180 + delay);
   });
+}
+window.addEventListener('DOMContentLoaded', () => requestAnimationFrame(runEntrance));
+// BFCache: show immediately when returning from another page
+window.addEventListener('pageshow', () => {
+  document.querySelectorAll('.load-reveal').forEach(el => el.classList.add('entered'));
 });
 
 // Scroll reveal
@@ -1242,24 +1317,37 @@ const GALLERY_IMAGES = [
   "projects/data-crawler/alert.png"
 ];
 let galleryIdx = 0;
+let galleryTrigger = null; // 记录打开画廊的按钮，关闭时恢复焦点
 
-function openGallery(e) { e.preventDefault(); galleryIdx = 0; showGallery(); }
+function openGallery(e) {
+  e.preventDefault();
+  galleryTrigger = e.target;
+  galleryIdx = 0;
+  showGallery();
+}
 function showGallery() {
   document.getElementById("galleryViewer").src = GALLERY_IMAGES[galleryIdx];
   document.getElementById("galleryCounter").textContent = `${galleryIdx + 1} / ${GALLERY_IMAGES.length}`;
-  document.getElementById("galleryOverlay").classList.add("open");
+  const overlay = document.getElementById("galleryOverlay");
+  overlay.classList.add("open");
   document.body.style.overflow = "hidden";
   // Update thumbs
   const thumbs = document.getElementById("galleryThumbs");
   thumbs.innerHTML = GALLERY_IMAGES.map((img, i) =>
     `<img class="gallery-thumb${i === galleryIdx ? ' active' : ''}" src="${img}" loading="lazy" decoding="async" onclick="galleryIdx=${i};showGallery()">`
   ).join("");
+  // 首次打开时聚焦到关闭按钮
+  const closeBtn = overlay.querySelector('.gallery-close');
+  if (closeBtn) closeBtn.focus();
 }
 function galleryPrev() { galleryIdx = (galleryIdx - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length; showGallery(); }
 function galleryNext() { galleryIdx = (galleryIdx + 1) % GALLERY_IMAGES.length; showGallery(); }
 function closeGallery() {
   document.getElementById("galleryOverlay").classList.remove("open");
   document.body.style.overflow = "";
+  // 恢复焦点到触发按钮
+  if (galleryTrigger && galleryTrigger.focus) galleryTrigger.focus();
+  galleryTrigger = null;
 }
 document.getElementById("galleryOverlay").addEventListener("click", function(e) {
   if (e.target === this) closeGallery();
@@ -1270,33 +1358,54 @@ document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") closeGallery();
   if (e.key === "ArrowLeft") galleryPrev();
   if (e.key === "ArrowRight") galleryNext();
+  // 焦点陷阱：Tab 键循环锁定在画廊内部
+  if (e.key === "Tab") {
+    const focusable = ov.querySelectorAll('button, img.gallery-thumb, [tabindex]:not([tabindex="-1"])');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
 });
 </script>
 
 <script>
 window.addEventListener('load', () => {
 // ============================================================
-// tsParticles — 粒子背景
+// tsParticles — 粒子背景（延迟加载，不阻塞首屏）
 // ============================================================
-const shouldRunParticles = window.tsParticles
-  && !window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches;
-if (shouldRunParticles) {
-  tsParticles.load("tsparticles", {
-    fpsLimit: 24,
-    particles: {
-      number: { value: 18, density: { enable: true } },
-      color: { value: ["#8b5cf6", "#6d4ddb", "#a78bfa"] },
-      opacity: { value: { min: 0.08, max: 0.28 }, animation: { enable: true, speed: 0.35 } },
-      size: { value: { min: 1, max: 3 }, animation: { enable: true, speed: 0.7 } },
-      move: { enable: true, speed: 0.28, direction: "none", random: true, outModes: "bounce" },
-      links: { enable: true, color: "#8b5cf6", opacity: 0.055, distance: 180 },
-      shape: { type: "circle" }
-    },
-    interactivity: {
-      events: { onHover: { enable: true, mode: "grab" } },
-      modes: { grab: { distance: 160, links: { opacity: 0.16 } } }
-    }
-  });
+function loadParticles() {
+  const shouldRunParticles = window.tsParticles
+    && !window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches;
+  if (shouldRunParticles) {
+    tsParticles.load("tsparticles", {
+      fpsLimit: 24,
+      particles: {
+        number: { value: 18, density: { enable: true } },
+        color: { value: ["#8b5cf6", "#6d4ddb", "#a78bfa"] },
+        opacity: { value: { min: 0.08, max: 0.28 }, animation: { enable: true, speed: 0.35 } },
+        size: { value: { min: 1, max: 3 }, animation: { enable: true, speed: 0.7 } },
+        move: { enable: true, speed: 0.28, direction: "none", random: true, outModes: "bounce" },
+        links: { enable: true, color: "#8b5cf6", opacity: 0.055, distance: 180 },
+        shape: { type: "circle" }
+      },
+      interactivity: {
+        events: { onHover: { enable: true, mode: "grab" } },
+        modes: { grab: { distance: 160, links: { opacity: 0.16 } } }
+      }
+    });
+  }
+}
+if ('requestIdleCallback' in window) {
+  requestIdleCallback(loadParticles, { timeout: 3000 });
+} else {
+  setTimeout(loadParticles, 1500);
 }
 
 // ============================================================
@@ -1465,10 +1574,16 @@ document.querySelectorAll('.timeline').forEach(tl => {
 // ============================================================
 async function loadBlogPreview() {
   const el = document.getElementById("blogCards");
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
   try {
-    const res = await fetch("/api/articles");
+    const res = await fetch("/api/articles", { signal: controller.signal });
+    clearTimeout(timeout);
     const articles = await res.json();
-    if (!articles.length) { el.innerHTML = '<p style="color:var(--text-muted);text-align:center">还没有文章</p>'; return; }
+    if (!articles.length) {
+      el.innerHTML = '<div class="blog-empty"><p class="empty-icon">📝</p><p>还没有文章</p><p class="empty-hint">内容正在准备中</p></div>';
+      return;
+    }
     el.innerHTML = articles.slice(0, 4).map(a => `
       <div class="blog-card-preview">
         <a href="/blog.html?slug=${a.slug}">
@@ -1478,7 +1593,9 @@ async function loadBlogPreview() {
         </a>
       </div>
     `).join("");
-  } catch(e) { el.innerHTML = '<p style="color:var(--text-muted);text-align:center">—</p>'; }
+  } catch(e) {
+    el.innerHTML = '<div class="blog-empty"><p class="empty-icon">📡</p><p>暂时无法加载文章</p><p class="empty-hint">请稍后刷新页面</p></div>';
+  }
 }
 loadBlogPreview();
 
@@ -1515,5 +1632,12 @@ async function handleContactSubmit(e) {
 }
 </script>
 
+<script>
+// Back to top
+const btt = document.getElementById('backToTop');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('visible', window.scrollY > 600);
+}, { passive: true });
+</script>
+
 </body>
-</html>
