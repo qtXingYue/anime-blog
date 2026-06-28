@@ -179,6 +179,10 @@ a:hover { color: var(--gold); }
 .hero-visual {
   position: relative; display: flex; align-items: center; justify-content: center;
 }
+/* 入口动画完成后，取消 hero-visual 的 transform 过渡，避免干扰 GSAP 视差 */
+.hero-visual.load-reveal.entered {
+  transition: none;
+}
 .hero-avatar-ring {
   width: clamp(200px, 30vw, 320px); height: clamp(200px, 30vw, 320px);
   border-radius: 50%;
@@ -623,7 +627,12 @@ a:hover { color: var(--gold); }
 }
 .hero-name.load-reveal,
 .hero-name.load-reveal.entered {
+  transition: opacity 0.9s var(--ease-out-expo), filter 0.8s ease;
   transform: none;
+}
+/* 入口动画完成后移除 transform 过渡，避免与 GSAP 视差动画冲突 */
+.hero-name.load-reveal.entered {
+  transition: none;
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -1265,9 +1274,12 @@ function runEntrance() {
   });
 }
 window.addEventListener('DOMContentLoaded', () => requestAnimationFrame(runEntrance));
-// BFCache: show immediately when returning from another page
+// BFCache: show immediately when returning from another page + refresh GSAP
 window.addEventListener('pageshow', () => {
   document.querySelectorAll('.load-reveal').forEach(el => el.classList.add('entered'));
+  if (window.ScrollTrigger) {
+    window.ScrollTrigger.refresh();
+  }
 });
 
 // Scroll reveal
