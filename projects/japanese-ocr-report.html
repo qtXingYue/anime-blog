@@ -1,44 +1,87 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>日语假名手写识别 — 课程设计报告</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,-apple-system,sans-serif;background:#0a0a1a;color:#ddd;padding:2rem;line-height:1.8}
-.container{max-width:800px;margin:0 auto}
-h1{color:#8b5cf6;font-size:2rem;text-align:center;margin-bottom:.5rem}
-.meta{text-align:center;color:#666;font-size:.875rem;margin-bottom:2rem;border-bottom:1px solid #222;padding-bottom:1rem}
-h2{color:#8b5cf6;font-size:1.25rem;margin:2rem 0 .75rem;border-left:3px solid #8b5cf6;padding-left:.75rem}
-h3{color:#aaa;font-size:1rem;margin:1.5rem 0 .5rem}
-p{margin-bottom:.75rem;color:#ccc}
-table{width:100%;border-collapse:collapse;margin:1rem 0;background:#111;border-radius:8px;overflow:hidden}
-th,td{padding:.75rem;text-align:left;border-bottom:1px solid #222}
-th{color:#666;font-weight:500;background:#0d0d0d}
-code{background:#1a1a3e;padding:2px 8px;border-radius:4px;font-size:.875rem;color:#8b5cf6}
-ul{padding-left:1.5rem;margin:.75rem 0}
-li{margin-bottom:.25rem;color:#ccc}
-.back{display:inline-block;margin:2rem 0;color:#8b5cf6;text-decoration:none}
-.back:hover{text-decoration:underline}
+:root {
+  --bg-deep: oklch(8% 0.015 270); --bg-raised: oklch(16% 0.010 270);
+  --accent: oklch(60% 0.18 280); --accent-dim: oklch(30% 0.08 280);
+  --accent-glow: oklch(60% 0.18 280 / 0.3); --gold: oklch(80% 0.14 95);
+  --border: oklch(100% 0 0 / 0.06);
+  --text-primary: oklch(92% 0.01 270); --text-secondary: oklch(72% 0.01 270);
+  --text-muted: oklch(50% 0.01 265);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;font-size:1rem;line-height:1.9;color:var(--text-primary);background:var(--bg-deep);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;background:radial-gradient(ellipse 80% 60% at 30% 0%,oklch(45% 0.12 300 / .25) 0%,transparent 60%),radial-gradient(ellipse 40% 50% at 85% 40%,oklch(50% 0.15 280 / .18) 0%,transparent 50%),var(--bg-deep)}
+.container{max-width:920px;margin:0 auto;padding:0 1.5rem}
+.hero{padding:4rem 0 3rem;text-align:center;background:linear-gradient(180deg,oklch(14% 0.05 280 / .4),transparent);border-bottom:1px solid var(--border)}
+.hero-icon{width:88px;height:88px;margin:0 auto 1.5rem;background:linear-gradient(135deg,#1a3a5c,#6d28d9);border-radius:22px;display:flex;align-items:center;justify-content:center;font-size:2.8rem;box-shadow:0 12px 40px oklch(60% 0.18 280 / .35)}
+.hero h1{font-size:2.2rem;font-weight:800;margin-bottom:.5rem}
+.hero .domain{font-size:.9rem;color:var(--accent);margin-bottom:.5rem;letter-spacing:.04em}
+.hero .tagline{font-size:.85rem;color:var(--text-muted);max-width:500px;margin:0 auto}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin:2.5rem 0}
+@media(max-width:640px){.stats-strip{grid-template-columns:repeat(2,1fr)}}
+.stat-item{background:var(--bg-raised);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:center;transition:all .3s}
+.stat-item:hover{border-color:oklch(60% 0.18 280 / .2);transform:translateY(-2px)}
+.stat-item .num{font-size:2.4rem;font-weight:900;color:var(--accent);line-height:1.2}
+.stat-item .label{font-size:.75rem;color:var(--text-muted);margin-top:.25rem}
+h2{font-size:1.35rem;color:var(--text-primary);margin:3rem 0 1.25rem;padding-left:1rem;border-left:3px solid var(--accent);display:flex;align-items:center;gap:.75rem}
+h2 .num{font-size:.7rem;color:var(--accent);opacity:.5;font-weight:400;min-width:1.5rem}
+h3{font-size:1rem;color:var(--text-primary);margin:1.5rem 0 .75rem}
+code{background:oklch(60% 0.18 280 / .1);color:var(--accent);padding:2px 7px;border-radius:5px;font-size:.85rem}
+table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:.88rem}
+thead{background:var(--bg-raised)}
+th,td{padding:.75rem 1rem;text-align:left;border-bottom:1px solid var(--border)}
+th{color:var(--text-muted);font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+td{color:var(--text-secondary)}
+tr:hover td{background:oklch(100% 0 0 / .02)}
+td:first-child{font-family:Consolas,monospace;color:var(--accent);font-size:.82rem}
+.feature-list{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin:1rem 0}
+@media(max-width:500px){.feature-list{grid-template-columns:1fr}}
+.feature-item{display:flex;gap:.75rem;align-items:flex-start;background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;padding:1rem}
+.feature-item .dot{width:8px;height:8px;min-width:8px;border-radius:50%;background:var(--accent);margin-top:.5rem;box-shadow:0 0 8px var(--accent-glow)}
+.feature-item .text{font-size:.85rem;color:var(--text-secondary);line-height:1.6}
+.feature-item .text strong{color:var(--text-primary)}
+.img-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0}
+@media(max-width:600px){.img-row{grid-template-columns:1fr}}
+.img-row img{width:100%;border-radius:12px;border:1px solid var(--border);transition:all .3s}
+.img-row img:hover{transform:scale(1.05);border-color:oklch(60% 0.18 280 / .3);box-shadow:0 8px 32px oklch(0% 0 0 / .4)}
+.footer{text-align:center;padding:3rem 0 2rem;border-top:1px solid var(--border);margin-top:3rem}
+.footer a{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border:1px solid var(--accent-dim);border-radius:100px;font-size:.9rem;color:var(--accent);text-decoration:none;transition:all .2s}
+.footer a:hover{background:var(--accent-dim);color:#fff}
+a{color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
+<div class="hero"><div class="container">
+<div class="hero-icon">🇯🇵</div>
+<h1>日语假名手写识别系统</h1>
+<p class="domain">深度学习课程设计 · 深圳职业技术大学 · 23智能2</p>
+<p class="tagline">TensorFlow CNN · 49 类假名 · 88.2% 准确率 · Tkinter 桌面应用</p>
+</div></div>
+
 <div class="container">
 
-<h1>日语假名手写识别系统</h1>
-<p class="meta">深度学习课程设计报告 · 钟文清 · 230200813 · 23智能2</p>
+<div class="stats-strip">
+<div class="stat-item"><div class="num">49</div><div class="label">假名字符类别</div></div>
+<div class="stat-item"><div class="num">270K</div><div class="label">训练图像</div></div>
+<div class="stat-item"><div class="num">88.2%</div><div class="label">识别准确率</div></div>
+<div class="stat-item"><div class="num">3</div><div class="label">卷积层</div></div>
+</div>
 
-<h2>一、项目简介</h2>
-<p>本项目基于 CNN 卷积神经网络构建日语假名手写识别系统，包含<strong>模型训练、测试集验证、Tkinter 手写板 UI</strong>三大模块。用户可在画布上手写日语假名，系统实时识别并显示结果。</p>
-<p><strong>系统环境：</strong>Python 3.10 · TensorFlow GPU</p>
+<h2><span class="num">01</span>项目简介</h2>
+<p>基于深度学习的手写日语假名识别系统，使用 <code>TensorFlow</code> + <code>Keras CNN</code> 搭建三级卷积神经网络。支持用户在 <code>Tkinter</code> 画布上直接手写假名，实时识别并显示结果。完整实现数据预处理、模型训练、评估优化到桌面应用部署的全流程。</p>
 
-<h2>二、数据集</h2>
-<p><strong>Kuzushiji-49</strong> 数据集，包含 49 个日语假名字符类别（48 平假名 + 1 迭代标记），总计 <strong>270,912 张</strong> 28×28 灰度图像。</p>
+<h2><span class="num">02</span>数据集</h2>
+<p>使用 <strong>Kuzushiji-49</strong> 数据集：包含 49 个日语假名字符类别（48 平假名 + 1 迭代标记），总计 <strong>270,912 张</strong> 28×28 灰度图像，是经典 MNIST 格式的日语版本。</p>
 
-<h2>三、模型架构</h2>
+<h2><span class="num">03</span>模型架构</h2>
 <table>
-<tr><th>层</th><th>配置</th></tr>
+<thead><tr><th>层</th><th>配置</th></tr></thead>
 <tr><td>卷积层 1</td><td>32 通道 → BatchNorm → Dropout</td></tr>
 <tr><td>卷积层 2</td><td>64 通道 → BatchNorm → Dropout</td></tr>
 <tr><td>卷积层 3</td><td>128 通道 → BatchNorm → Dropout</td></tr>
@@ -47,48 +90,42 @@ li{margin-bottom:.25rem;color:#ccc}
 <tr><td>输出层</td><td>49 类 Softmax</td></tr>
 </table>
 
-<h2>四、训练策略</h2>
-<ul>
-<li><strong>优化器：</strong>Adam</li>
-<li><strong>损失函数：</strong>交叉熵 (CrossEntropy)</li>
-<li><strong>Epochs：</strong>7 · <strong>Batch Size：</strong>64</li>
-<li><strong>早停法：</strong>patience=7，防止过拟合</li>
-<li><strong>学习率调度：</strong>ReduceLROnPlateau 动态调整</li>
-         <li><strong>最终准确率：</strong>约 <strong>88.2%</strong></li>
-         </ul>
-         <p><strong>训练曲线：</strong></p>
-         <img src="japanese-ocr-imgs/image1.png" alt="训练曲线" loading="lazy" decoding="async" style="max-width:100%;border-radius:8px;margin:1rem 0">
-         
-         <h2>五、UI 界面</h2>
-<p>使用 <strong>Tkinter</strong> 构建手写识别桌面应用：</p>
-<ul>
-<li>白色画布 + 黑色笔迹（与训练数据格式一致）</li>
-<li>"清除"按钮清空画布，"识别"按钮触发预测</li>
-<li>精准的屏幕坐标截图区域定位</li>
-<li>实时显示识别结果</li>
-</ul>
+<h2><span class="num">04</span>训练策略</h2>
+<div class="feature-list">
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>优化器</strong><br>Adam · 交叉熵损失 · Epochs: 7 · Batch Size: 64</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>早停法</strong><br>patience=7，防止过拟合</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>学习率调度</strong><br><code>ReduceLROnPlateau</code> 动态调整</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>最终准确率</strong><br>约 88.2%，49 类分类任务</div></div>
+</div>
 
-<h2>六、关键问题解决</h2>
-<h3>问题 1：黑底白字导致识别错误</h3>
-<p>初始版本画布背景为黑色，与训练数据（白底黑字）不一致。改为白色背景 + 黑色笔迹后问题解决。</p>
-<p><strong>修复前（黑底白字）：</strong></p>
-<img src="japanese-ocr-imgs/image2.png" alt="黑底白字版本" loading="lazy" decoding="async" style="max-width:100%;border-radius:8px;margin:1rem 0">
-<p><strong>修复后（白底黑字）：</strong></p>
-<img src="japanese-ocr-imgs/image3.png" alt="白底黑字正确识别" loading="lazy" decoding="async" style="max-width:100%;border-radius:8px;margin:1rem 0">
-<h3>问题 2：截图区域偏移</h3>
-<p>非全屏窗口下 <code>ImageGrab.grab()</code> 捕获区域错误。通过 <code>winfo_rootx()</code> / <code>winfo_x()</code> 获取画布绝对坐标精准定位。</p>
+<h2><span class="num">05</span>UI 界面与关键问题解决</h2>
+<h3>Tkinter 桌面应用</h3>
+<div class="feature-list">
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>白色画布 + 黑色笔迹</strong><br>与训练数据格式一致，避免黑白反转</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>精准截图定位</strong><br><code>ImageGrab.grab()</code> 配合 <code>winfo_rootx()</code> 坐标计算</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>操作按钮</strong><br>"清除"清空画布 · "识别"触发预测 · 实时显示结果</div></div>
+</div>
 
-<h2>七、技术选型</h2>
+<h3>关键问题</h3>
+<div class="feature-list">
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>黑底白字导致识别错误</strong><br>画布背景色与训练数据反色，识别率大幅下降。解决：统一白色画布</div></div>
+<div class="feature-item"><div class="dot"></div><div class="text"><strong>截图区域偏移</strong><br>窗口坐标与实际截图位置偏差。解决：使用 <code>winfo_rootx/y</code> 精准定位</div></div>
+</div>
+
+<h2><span class="num">06</span>技术选型</h2>
 <table>
-<tr><th>模块</th><th>技术</th><th>对应知识点</th></tr>
-<tr><td>数据处理</td><td>NumPy + Matplotlib</td><td>通用数据预处理流程</td></tr>
-<tr><td>模型构建</td><td>TensorFlow + Keras CNN</td><td>图像分类模型</td></tr>
-<tr><td>UI 界面</td><td>Tkinter</td><td>手写数字 UI 案例</td></tr>
-<tr><td>模型部署</td><td>load_model 函数</td><td>模型加载方法</td></tr>
+<thead><tr><th>模块</th><th>技术</th></tr></thead>
+<tr><td>数据处理</td><td>NumPy · Matplotlib</td></tr>
+<tr><td>模型构建</td><td>TensorFlow · Keras CNN（3 层卷积）</td></tr>
+<tr><td>UI 界面</td><td>Tkinter 桌面应用</td></tr>
+<tr><td>模型部署</td><td>load_model 函数热加载</td></tr>
 </table>
 
-<a href="../index.html" class="back">← 返回作品集</a>
-
+<div class="img-row">
+<img src="japanese-ocr-imgs/image1.png" alt="训练曲线" loading="lazy">
+<img src="japanese-ocr-imgs/image2.png" alt="黑底白字版本" loading="lazy">
+<img src="japanese-ocr-imgs/image3.png" alt="白底黑字正确识别" loading="lazy">
 </div>
-</body>
-</html>
+
+<div class="footer"><a href="../index.html">← 回到作品集</a></div>
+</div></body></html>

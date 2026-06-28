@@ -135,16 +135,19 @@ a:hover { color: var(--gold); }
 .filter-count { font-size: var(--text-xs); opacity: 0.6; margin-left: 2px; }
 
 /* ============================================================
-   MASONRY GRID
+   GALLERY GRID — uniform card layout
    ============================================================ */
 .gallery-grid {
-  columns: 3; column-gap: var(--space-lg); padding-bottom: var(--space-3xl);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  padding-bottom: var(--space-3xl);
 }
-@media (max-width: 1024px) { .gallery-grid { columns: 2; } }
-@media (max-width: 640px) { .gallery-grid { columns: 1; } }
+@media (max-width: 640px) {
+  .gallery-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
 
 .gallery-card {
-  break-inside: avoid; margin-bottom: var(--space-lg);
   background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border); border-radius: 16px;
   overflow: hidden; cursor: pointer;
@@ -155,12 +158,16 @@ a:hover { color: var(--gold); }
   transform: translateY(-4px);
   box-shadow: 0 12px 40px oklch(0% 0 0 / 0.3);
 }
+.gallery-card-img-wrap {
+  position: relative; width: 100%; aspect-ratio:4/3;
+  background: oklch(18% 0.05 280); overflow: hidden;
+}
 .gallery-card-img {
-  width: 100%; display: block;
+  width: 100%; height: 100%; object-fit: cover; display: block;
   transition: transform 400ms var(--ease-out-expo);
 }
-.gallery-card:hover .gallery-card-img { transform: scale(1.03); }
-.gallery-card-body { padding: var(--space-md) var(--space-lg); }
+.gallery-card:hover .gallery-card-img { transform: scale(1.05); }
+.gallery-card-body { padding: var(--space-lg); }
 .gallery-card-title { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-base); color: var(--text-primary); margin-bottom: var(--space-xs); }
 .gallery-card-meta { font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-sm); line-height: 1.5; }
 .gallery-card-prompt {
@@ -173,7 +180,6 @@ a:hover { color: var(--gold); }
   background: oklch(60% 0.18 280 / 0.08); color: var(--accent-soft);
   border: 1px solid oklch(60% 0.18 280 / 0.1);
 }
-.gallery-card-img-wrap { position: relative; width: 100%; min-height: 180px; background: oklch(18% 0.05 280); overflow: hidden; }
 .gallery-card-fallback {
   position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   background: oklch(18% 0.05 280);
@@ -273,7 +279,7 @@ a:hover { color: var(--gold); }
       <ul class="nav-links">
         <li><a href="../index.html">← 返回主页</a></li>
         <li><a href="#all" class="filter-nav active" data-filter="all">全部</a></li>
-        <li><a href="#text2img" class="filter-nav" data-filter="text2img">文生图</a></li>
+        <li><a href="#txt2img" class="filter-nav" data-filter="txt2img">文生图</a></li>
         <li><a href="#img2img" class="filter-nav" data-filter="img2img">图生图</a></li>
       </ul>
     </nav>
@@ -293,7 +299,7 @@ a:hover { color: var(--gold); }
 <div class="filters" id="filterBar">
   <div class="container" style="display:flex;justify-content:center;gap:var(--space-sm);flex-wrap:wrap;">
     <button class="filter-btn active" data-filter="all">全部 <span class="filter-count">0</span></button>
-    <button class="filter-btn" data-filter="text2img">文生图 <span class="filter-count">0</span></button>
+    <button class="filter-btn" data-filter="txt2img">文生图 <span class="filter-count">0</span></button>
     <button class="filter-btn" data-filter="img2img">图生图 <span class="filter-count">0</span></button>
     <button class="filter-btn" data-filter="other">其他 <span class="filter-count">0</span></button>
   </div>
@@ -352,6 +358,38 @@ const IMAGES = [
     prompt: "粉色毛绒玩偶 mascot 手持美容仪产品，漫画风格爆炸对话框，绿色清新配色，电商广告海报设计，可爱卡通风格，高饱和度，商业摄影质感",
     tags: ["产品广告", "萌系", "商业设计"],
     date: "2026-06"
+  },
+  {
+    file: "ai-images/comfyui-00009.png",
+    title: "ComfyUI 文生图 #1",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "ai-images/comfyui-00011.png",
+    title: "ComfyUI 文生图 #2",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "ai-images/comfyui-00012.png",
+    title: "ComfyUI 文生图 #3",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "ai-images/comfyui-00028.png",
+    title: "ComfyUI 文生图 #4",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
   }
 ];
 
@@ -400,13 +438,13 @@ function renderGallery() {
 }
 
 function categoryLabel(cat) {
-  const labels = { text2img: "文生图", img2img: "图生图", other: "其他" };
+  const labels = { txt2img: "文生图", img2img: "图生图", other: "其他" };
   return labels[cat] || cat;
 }
 
 function updateCounts() {
   const allCount = IMAGES.length;
-  const counts = { text2img: 0, img2img: 0, other: 0 };
+  const counts = { txt2img: 0, img2img: 0, other: 0 };
   IMAGES.forEach(img => {
     if (counts[img.category] !== undefined) counts[img.category]++;
   });
