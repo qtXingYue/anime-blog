@@ -638,6 +638,7 @@ a:hover { color: var(--gold); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; } .reveal, .load-reveal, .timeline-content { opacity: 1; transform: none; filter: none; }
+  .skill-tag { opacity: 1 !important; transform: none !important; }
 }
 /* ============================================================
    MOBILE RESPONSIVE
@@ -1295,6 +1296,30 @@ document.querySelectorAll('[data-reveal], .project-card').forEach(el => {
   }
   observer.observe(el);
 });
+
+// Skills stagger: tags fade in one by one
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.skill-tag').forEach(tag => {
+    tag.style.opacity = '0';
+    tag.style.transform = 'translateY(8px)';
+  });
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const tags = entry.target.querySelectorAll('.skill-tag');
+        tags.forEach((tag, i) => {
+          setTimeout(() => {
+            tag.style.transition = 'all 0.4s var(--ease-out-expo)';
+            tag.style.opacity = '1';
+            tag.style.transform = 'translateY(0)';
+          }, i * 40);
+        });
+        skillObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.skill-category').forEach(g => skillObserver.observe(g));
+}
 
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(link => {
