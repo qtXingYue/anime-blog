@@ -243,6 +243,7 @@ a:hover { color: var(--gold); }
 .section-label { font-family: 'Zen Old Mincho', serif; font-size: var(--text-xs); color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: var(--space-md); }
 .section-title { font-family: 'Zen Old Mincho', serif; font-weight: 900; font-size: var(--text-2xl); margin-bottom: var(--space-2xl); line-height: 1.2; }
 .section-divider { width: 48px; height: 1px; background: oklch(100% 0 0 / 0.12); margin-bottom: var(--space-2xl); }
+.section .section-divider.reveal { transition-delay: 160ms; }
 
 /* ============================================================
    ABOUT — 70/30 split
@@ -488,7 +489,7 @@ a:hover { color: var(--gold); }
 }
 .timeline-track-fill {
   position: absolute; left: 7px; top: 0; width: 1px; height: 0%;
-  background: linear-gradient(to bottom, var(--accent), var(--accent-soft));
+  background: linear-gradient(to bottom, var(--accent), var(--gold));
   box-shadow: 0 0 8px var(--accent-glow);
 }
 .timeline-item { position: relative; padding-bottom: var(--space-2xl); }
@@ -818,7 +819,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">About</p>
     <h2 class="section-title">关于我</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="about-grid">
       <div class="about-text">
         <p>坐标<strong>深圳</strong>，深圳职业技术大学专科在读，同时就职于<strong>海客熵连科技</strong>，负责多平台广告数据爬取系统的架构与开发。</p>
@@ -842,7 +843,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Skills</p>
     <h2 class="section-title">技能栈</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="skill-category">
       <h3 class="skill-category-title">主力技术</h3>
       <div class="skill-tags">
@@ -910,7 +911,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Honors</p>
     <h2 class="section-title">荣誉与证书</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="timeline">
       <div class="timeline-track"></div>
       <div class="timeline-track-fill"></div>
@@ -955,7 +956,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Projects</p>
     <h2 class="section-title">项目作品</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
 
     <!-- Featured Project: This Site -->
     <a href="projects/portfolio-report.html" target="_blank" class="featured-card">
@@ -1058,7 +1059,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">More</p>
     <h2 class="section-title">更多项目</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="projects-stack">
 
     <!-- Project 6 -->
@@ -1143,7 +1144,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Blog</p>
     <h2 class="section-title">最新文章</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="blog-cards" id="blogCards"><p style="color:var(--text-muted);text-align:center">加载中...</p></div>
   </div>
 </section>
@@ -1153,7 +1154,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Experience</p>
     <h2 class="section-title">经历</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="timeline">
       <div class="timeline-track"></div>
       <div class="timeline-track-fill"></div>
@@ -1204,7 +1205,7 @@ a:hover { color: var(--gold); }
   <div class="container">
     <p class="section-label">Contact</p>
     <h2 class="section-title">联系我</h2>
-    <div class="section-divider"></div>
+    <div class="section-divider reveal"></div>
     <div class="contact-cta">
       <a href="https://github.com/qtXingYue" class="btn btn-primary" target="_blank" rel="noopener">查看 GitHub →</a>
       <a href="#projects" class="btn btn-ghost">浏览项目</a>
