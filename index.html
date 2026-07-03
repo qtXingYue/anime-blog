@@ -507,110 +507,152 @@ a:hover { color: var(--gold); }
 .project-progress {
   --project-progress-fill: 0;
   position: fixed;
-  right: clamp(18px, 2.5vw, 42px);
+  right: clamp(18px, 2.4vw, 36px);
   top: 50%;
   z-index: 80;
-  width: 82px;
-  transform: translateY(-50%);
+  width: 142px;
+  transform: translateY(-50%) translateX(10px) scale(0.98);
   display: grid;
-  justify-items: center;
-  gap: 10px;
-  padding: 14px 10px 16px;
-  border: 1px solid oklch(100% 0 0 / 0.11);
-  border-radius: 28px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  grid-template-areas:
+    "rail count"
+    "rail type"
+    "rail name";
+  align-items: start;
+  column-gap: 12px;
+  row-gap: 9px;
+  padding: 18px 14px 16px;
+  border: 1px solid oklch(100% 0 0 / 0.12);
+  border-radius: 24px;
   background:
-    radial-gradient(circle at 50% 0%, oklch(60% 0.18 280 / 0.2), transparent 38%),
-    linear-gradient(180deg, oklch(13% 0.024 270 / 0.82), oklch(7% 0.015 270 / 0.82));
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
+    linear-gradient(145deg, oklch(100% 0 0 / 0.085), transparent 34%),
+    linear-gradient(180deg, oklch(14% 0.026 270 / 0.9), oklch(7% 0.015 270 / 0.9));
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
   box-shadow:
-    0 22px 56px oklch(0% 0 0 / 0.32),
-    0 0 0 1px oklch(60% 0.18 280 / 0.1),
-    inset 0 1px 0 oklch(100% 0 0 / 0.07);
+    0 24px 70px oklch(0% 0 0 / 0.34),
+    0 0 0 1px oklch(60% 0.18 280 / 0.08),
+    inset 0 1px 0 oklch(100% 0 0 / 0.08);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 220ms ease, transform 220ms ease;
+  transition: opacity 240ms ease, transform 300ms var(--ease-out-expo);
   overflow: hidden;
+  isolation: isolate;
 }
 .project-progress::before {
-  content: 'PROJECT';
+  content: '';
   position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: oklch(100% 0 0 / 0.28);
-  font-size: 0.5rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--accent), transparent);
+  opacity: 0.72;
 }
 .project-progress::after {
   content: '';
   position: absolute;
   inset: 1px;
-  border-radius: 27px;
+  border-radius: 23px;
   pointer-events: none;
   background:
-    linear-gradient(135deg, oklch(100% 0 0 / 0.1), transparent 28% 72%, oklch(60% 0.18 280 / 0.12)),
-    linear-gradient(90deg, transparent 0 48%, oklch(100% 0 0 / 0.045) 48% 52%, transparent 52% 100%);
+    linear-gradient(135deg, oklch(100% 0 0 / 0.1), transparent 26% 74%, oklch(60% 0.18 280 / 0.13)),
+    linear-gradient(180deg, oklch(100% 0 0 / 0.06), transparent 32%);
 }
 .project-progress.active {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
 .project-progress-count {
+  grid-area: count;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  gap: 4px;
+  width: 100%;
+  min-height: 58px;
+  padding: 10px 10px 9px;
+  border-radius: 18px;
+  border: 1px solid oklch(80% 0.14 95 / 0.22);
+  background:
+    linear-gradient(180deg, oklch(80% 0.14 95 / 0.15), oklch(100% 0 0 / 0.04)),
+    oklch(100% 0 0 / 0.035);
+  color: var(--text-primary);
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.1),
+    0 14px 30px oklch(0% 0 0 / 0.16);
+}
+.project-progress-count b {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 2.05rem;
+  font-weight: 900;
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-shadow: 0 0 22px oklch(80% 0.14 95 / 0.18);
+}
+.project-progress-count small {
+  margin-bottom: 3px;
+  color: var(--gold);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0;
+  opacity: 0.82;
+}
+.project-progress-type {
+  grid-area: type;
   position: relative;
   z-index: 1;
   display: inline-flex;
-  align-items: baseline;
-  justify-content: center;
-  gap: 2px;
-  width: 52px;
-  min-height: 42px;
-  margin-top: 14px;
-  border-radius: 16px;
-  border: 1px solid oklch(80% 0.14 95 / 0.2);
-  background: linear-gradient(180deg, oklch(80% 0.14 95 / 0.13), oklch(100% 0 0 / 0.035));
-  font-family: 'Zen Old Mincho', serif;
-  color: var(--gold);
-  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.08);
-}
-.project-progress-count b {
-  font-size: 1rem;
-  line-height: 1;
-}
-.project-progress-count small {
-  color: var(--text-muted);
-  font-size: 0.58rem;
-}
-.project-progress-type {
-  position: relative;
-  z-index: 1;
-  max-width: 58px;
-  color: oklch(88% 0.14 95);
-  font-size: 0.58rem;
+  justify-self: start;
+  max-width: 100%;
+  min-height: 24px;
+  align-items: center;
+  padding: 3px 9px 4px;
+  border-radius: 999px;
+  border: 1px solid oklch(60% 0.18 280 / 0.2);
+  background: oklch(60% 0.18 280 / 0.1);
+  color: oklch(86% 0.1 280);
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: 0.64rem;
   font-weight: 800;
   line-height: 1.2;
-  text-align: center;
+  letter-spacing: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .project-progress-name {
+  grid-area: name;
   position: relative;
   z-index: 1;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  color: var(--text-secondary);
-  font-size: 0.68rem;
+  display: -webkit-box;
+  max-width: 100%;
+  min-height: 42px;
+  color: oklch(86% 0.012 270);
+  font-family: 'Zen Kaku Gothic New', 'PingFang SC', sans-serif;
+  font-size: 0.76rem;
+  font-weight: 500;
   line-height: 1.45;
-  max-height: 146px;
+  letter-spacing: 0;
   overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-wrap: balance;
 }
 .project-progress-dots {
+  grid-area: rail;
   position: relative;
   z-index: 1;
   display: grid;
-  gap: 8px;
+  justify-items: center;
+  align-self: stretch;
+  min-height: 158px;
+  gap: 6px;
   padding: 8px 0;
 }
 .project-progress-dots::before,
@@ -618,19 +660,19 @@ a:hover { color: var(--gold); }
   content: '';
   position: absolute;
   left: 50%;
-  top: 10px;
-  bottom: 10px;
-  width: 1px;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
   transform: translateX(-50%);
   border-radius: 999px;
 }
 .project-progress-dots::before {
-  background: oklch(100% 0 0 / 0.12);
+  background: linear-gradient(180deg, oklch(100% 0 0 / 0.04), oklch(100% 0 0 / 0.18), oklch(100% 0 0 / 0.04));
 }
 .project-progress-dots::after {
-  bottom: 10px;
+  bottom: 12px;
   background: linear-gradient(180deg, var(--gold), var(--accent));
-  box-shadow: 0 0 16px var(--accent-glow);
+  box-shadow: 0 0 18px var(--accent-glow);
   transform: translateX(-50%) scaleY(var(--project-progress-fill));
   transform-origin: top;
   transition: transform 240ms var(--ease-out-expo);
@@ -641,19 +683,47 @@ a:hover { color: var(--gold); }
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  border: 1px solid oklch(100% 0 0 / 0.34);
+  border: 1px solid oklch(100% 0 0 / 0.28);
   background: oklch(8% 0.015 270);
-  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
 }
 .project-progress-dot.completed {
   border-color: oklch(80% 0.14 95 / 0.46);
   background: oklch(80% 0.14 95 / 0.6);
 }
 .project-progress-dot.active {
-  transform: scale(1.9);
+  transform: scale(1.65);
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 0 5px oklch(60% 0.18 280 / 0.12), 0 0 16px var(--accent-glow);
+  box-shadow:
+    0 0 0 4px oklch(60% 0.18 280 / 0.13),
+    0 0 18px var(--accent-glow);
+}
+[data-theme="light"] .project-progress {
+  border-color: oklch(0% 0 0 / 0.08);
+  background:
+    linear-gradient(145deg, oklch(100% 0 0 / 0.74), transparent 34%),
+    linear-gradient(180deg, oklch(99% 0.004 270 / 0.92), oklch(94% 0.01 270 / 0.92));
+  box-shadow:
+    0 24px 70px oklch(45% 0.04 270 / 0.16),
+    0 0 0 1px oklch(60% 0.18 280 / 0.08),
+    inset 0 1px 0 oklch(100% 0 0 / 0.82);
+}
+[data-theme="light"] .project-progress-count {
+  background:
+    linear-gradient(180deg, oklch(80% 0.14 95 / 0.17), oklch(100% 0 0 / 0.68)),
+    oklch(100% 0 0 / 0.65);
+  color: var(--text-primary);
+}
+[data-theme="light"] .project-progress-name {
+  color: var(--text-secondary);
+}
+[data-theme="light"] .project-progress-dot {
+  background: oklch(100% 0 0 / 0.86);
+  border-color: oklch(0% 0 0 / 0.18);
+}
+[data-theme="light"] .project-progress-dots::before {
+  background: linear-gradient(180deg, oklch(0% 0 0 / 0.035), oklch(0% 0 0 / 0.14), oklch(0% 0 0 / 0.035));
 }
 [data-theme="light"] .projects-stack .project-card {
   box-shadow: 0 18px 48px oklch(45% 0.04 270 / 0.14), inset 0 1px 0 oklch(100% 0 0 / 0.75);
@@ -676,6 +746,79 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .project-metrics li {
   background: oklch(0% 0 0 / 0.035);
   border-color: oklch(0% 0 0 / 0.055);
+}
+@media (max-width: 1320px) {
+  .project-progress {
+    right: 18px;
+    width: 96px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "count"
+      "type"
+      "name"
+      "rail";
+    justify-items: center;
+    row-gap: 8px;
+    padding: 14px 10px 15px;
+    border-radius: 26px;
+  }
+  .project-progress::before {
+    left: 18px;
+    right: 18px;
+  }
+  .project-progress::after {
+    border-radius: 25px;
+  }
+  .project-progress-count {
+    justify-content: center;
+    width: 62px;
+    min-height: 50px;
+    padding: 8px 6px 7px;
+    border-radius: 16px;
+  }
+  .project-progress-count b {
+    font-size: 1.55rem;
+  }
+  .project-progress-count small {
+    font-size: 0.56rem;
+  }
+  .project-progress-type {
+    justify-self: center;
+    max-width: 74px;
+    min-height: 22px;
+    padding: 3px 8px;
+    font-size: 0.56rem;
+  }
+  .project-progress-name {
+    display: block;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    min-height: auto;
+    max-width: 70px;
+    max-height: 132px;
+    font-size: 0.68rem;
+    line-height: 1.48;
+    text-wrap: normal;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: initial;
+  }
+  .project-progress-dots {
+    align-self: center;
+    min-height: auto;
+    gap: 7px;
+    padding: 8px 0 2px;
+  }
+  .project-progress-dots::before,
+  .project-progress-dots::after {
+    top: 12px;
+    bottom: 6px;
+  }
+  .project-progress-dots::after {
+    bottom: 6px;
+  }
+}
+@media (max-width: 1120px) {
+  .project-progress { display: none; }
 }
 @media (max-width: 768px) {
   .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; gap: var(--space-xl); }
@@ -1799,6 +1942,28 @@ function setCurrentProject(card) {
   }
 }
 
+function getMostVisibleProjectCard() {
+  if (!projectCards.length) return null;
+  let bestCard = projectCards[0];
+  let bestScore = -Infinity;
+  projectCards.forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
+    const centerOffset = Math.abs((rect.top + rect.bottom) / 2 - window.innerHeight * 0.5);
+    const score = visible - centerOffset * 0.18;
+    if (score > bestScore) {
+      bestScore = score;
+      bestCard = card;
+    }
+  });
+  return bestCard;
+}
+
+function syncCurrentProject() {
+  if (!shouldStackProjects || !projectCards.length) return;
+  setCurrentProject(getMostVisibleProjectCard());
+}
+
 if (projectCards.length) setCurrentProject(projectCards[0]);
 
 if (!shouldStackProjects) {
@@ -1813,10 +1978,12 @@ if (!shouldStackProjects) {
     trigger: '#projects',
     start: 'top 45%',
     end: 'bottom 55%',
-    onEnter: () => projectProgress.classList.add('active'),
-    onEnterBack: () => projectProgress.classList.add('active'),
+    onEnter: () => { projectProgress.classList.add('active'); syncCurrentProject(); },
+    onEnterBack: () => { projectProgress.classList.add('active'); syncCurrentProject(); },
     onLeave: () => projectProgress.classList.remove('active'),
-    onLeaveBack: () => projectProgress.classList.remove('active')
+    onLeaveBack: () => projectProgress.classList.remove('active'),
+    onRefresh: syncCurrentProject,
+    onUpdate: syncCurrentProject
   });
 }
 
@@ -1852,6 +2019,12 @@ if (shouldStackProjects) document.querySelectorAll('.projects-stack').forEach(st
     });
   });
 });
+
+if (shouldStackProjects) {
+  ScrollTrigger.addEventListener('refresh', syncCurrentProject);
+  requestAnimationFrame(syncCurrentProject);
+  window.addEventListener('pageshow', () => requestAnimationFrame(syncCurrentProject));
+}
 
 // Timeline drawing + text reveal
 document.querySelectorAll('.timeline').forEach(tl => {
