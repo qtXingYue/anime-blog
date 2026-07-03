@@ -1946,22 +1946,55 @@ function getMostVisibleProjectCard() {
   if (!projectCards.length) return null;
   let bestCard = projectCards[0];
   let bestScore = -Infinity;
-  projectCards.forEach(card => {
+  let fallbackCard = projectCards[0];
+  let fallbackScore = -Infinity;
+  projectCards.forEach((card, index) => {
     const rect = card.getBoundingClientRect();
     const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
     const centerOffset = Math.abs((rect.top + rect.bottom) / 2 - window.innerHeight * 0.5);
-    const score = visible - centerOffset * 0.18;
+    const fallback = visible - centerOffset * 0.18;
+    if (fallback > fallbackScore) {
+      fallbackScore = fallback;
+      fallbackCard = card;
+    }
+    const inStackFocus = visible > 0
+      && rect.top <= window.innerHeight * 0.42
+      && rect.bottom >= window.innerHeight * 0.18;
+    if (!inStackFocus) return;
+    const zIndex = Number.parseInt(window.getComputedStyle(card).zIndex, 10) || 0;
+    const score = zIndex * 100 + index * 0.01 - Math.abs(rect.top - 96) * 0.02;
     if (score > bestScore) {
       bestScore = score;
       bestCard = card;
     }
   });
-  return bestCard;
+  return bestScore > -Infinity ? bestCard : fallbackCard;
 }
 
 function syncCurrentProject() {
   if (!shouldStackProjects || !projectCards.length) return;
   setCurrentProject(getMostVisibleProjectCard());
+}
+
+function isProjectsSectionVisible() {
+  const section = document.getElementById('projects');
+  if (!section) return false;
+  const rect = section.getBoundingClientRect();
+  return rect.top <= window.innerHeight * 0.68 && rect.bottom >= window.innerHeight * 0.34;
+}
+
+let projectProgressRaf = 0;
+function updateProjectProgressState() {
+  projectProgressRaf = 0;
+  if (!shouldStackProjects || !projectProgress) return;
+  const isActive = isProjectsSectionVisible();
+  projectProgress.classList.toggle('active', isActive);
+  if (isActive) syncCurrentProject();
+}
+
+function requestProjectProgressState() {
+  if (projectProgressRaf) return;
+  projectProgressRaf = requestAnimationFrame(updateProjectProgressState);
 }
 
 if (projectCards.length) setCurrentProject(projectCards[0]);
@@ -1978,12 +2011,12 @@ if (!shouldStackProjects) {
     trigger: '#projects',
     start: 'top 45%',
     end: 'bottom 55%',
-    onEnter: () => { projectProgress.classList.add('active'); syncCurrentProject(); },
-    onEnterBack: () => { projectProgress.classList.add('active'); syncCurrentProject(); },
-    onLeave: () => projectProgress.classList.remove('active'),
-    onLeaveBack: () => projectProgress.classList.remove('active'),
-    onRefresh: syncCurrentProject,
-    onUpdate: syncCurrentProject
+    onEnter: updateProjectProgressState,
+    onEnterBack: updateProjectProgressState,
+    onLeave: updateProjectProgressState,
+    onLeaveBack: updateProjectProgressState,
+    onRefresh: updateProjectProgressState,
+    onUpdate: requestProjectProgressState
   });
 }
 
@@ -2021,9 +2054,11 @@ if (shouldStackProjects) document.querySelectorAll('.projects-stack').forEach(st
 });
 
 if (shouldStackProjects) {
-  ScrollTrigger.addEventListener('refresh', syncCurrentProject);
-  requestAnimationFrame(syncCurrentProject);
-  window.addEventListener('pageshow', () => requestAnimationFrame(syncCurrentProject));
+  ScrollTrigger.addEventListener('refresh', requestProjectProgressState);
+  requestAnimationFrame(updateProjectProgressState);
+  window.addEventListener('scroll', requestProjectProgressState, { passive: true });
+  window.addEventListener('resize', requestProjectProgressState);
+  window.addEventListener('pageshow', () => requestAnimationFrame(updateProjectProgressState));
 }
 
 // Timeline drawing + text reveal
