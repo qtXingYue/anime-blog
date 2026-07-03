@@ -505,61 +505,155 @@ a:hover { color: var(--gold); }
   background: oklch(100% 0 0 / 0.035);
 }
 .project-progress {
+  --project-progress-fill: 0;
   position: fixed;
   right: clamp(18px, 2.5vw, 42px);
   top: 50%;
   z-index: 80;
-  width: 56px;
+  width: 82px;
   transform: translateY(-50%);
   display: grid;
   justify-items: center;
-  gap: 12px;
-  padding: 12px 8px;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: oklch(10% 0.015 270 / 0.66);
+  gap: 10px;
+  padding: 14px 10px 16px;
+  border: 1px solid oklch(100% 0 0 / 0.11);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 0%, oklch(60% 0.18 280 / 0.2), transparent 38%),
+    linear-gradient(180deg, oklch(13% 0.024 270 / 0.82), oklch(7% 0.015 270 / 0.82));
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  box-shadow: 0 18px 44px oklch(0% 0 0 / 0.25), inset 0 1px 0 oklch(100% 0 0 / 0.05);
+  box-shadow:
+    0 22px 56px oklch(0% 0 0 / 0.32),
+    0 0 0 1px oklch(60% 0.18 280 / 0.1),
+    inset 0 1px 0 oklch(100% 0 0 / 0.07);
   opacity: 0;
   pointer-events: none;
   transition: opacity 220ms ease, transform 220ms ease;
+  overflow: hidden;
+}
+.project-progress::before {
+  content: 'PROJECT';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: oklch(100% 0 0 / 0.28);
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.project-progress::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 27px;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, oklch(100% 0 0 / 0.1), transparent 28% 72%, oklch(60% 0.18 280 / 0.12)),
+    linear-gradient(90deg, transparent 0 48%, oklch(100% 0 0 / 0.045) 48% 52%, transparent 52% 100%);
 }
 .project-progress.active {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
 .project-progress-count {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  width: 52px;
+  min-height: 42px;
+  margin-top: 14px;
+  border-radius: 16px;
+  border: 1px solid oklch(80% 0.14 95 / 0.2);
+  background: linear-gradient(180deg, oklch(80% 0.14 95 / 0.13), oklch(100% 0 0 / 0.035));
   font-family: 'Zen Old Mincho', serif;
   color: var(--gold);
-  font-size: 0.7rem;
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.08);
+}
+.project-progress-count b {
+  font-size: 1rem;
+  line-height: 1;
+}
+.project-progress-count small {
+  color: var(--text-muted);
+  font-size: 0.58rem;
+}
+.project-progress-type {
+  position: relative;
+  z-index: 1;
+  max-width: 58px;
+  color: oklch(88% 0.14 95);
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .project-progress-name {
+  position: relative;
+  z-index: 1;
   writing-mode: vertical-rl;
   text-orientation: mixed;
   color: var(--text-secondary);
   font-size: 0.68rem;
   line-height: 1.45;
-  max-height: 176px;
+  max-height: 146px;
   overflow: hidden;
 }
 .project-progress-dots {
+  position: relative;
+  z-index: 1;
   display: grid;
-  gap: 7px;
+  gap: 8px;
+  padding: 8px 0;
+}
+.project-progress-dots::before,
+.project-progress-dots::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+}
+.project-progress-dots::before {
+  background: oklch(100% 0 0 / 0.12);
+}
+.project-progress-dots::after {
+  bottom: 10px;
+  background: linear-gradient(180deg, var(--gold), var(--accent));
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translateX(-50%) scaleY(var(--project-progress-fill));
+  transform-origin: top;
+  transition: transform 240ms var(--ease-out-expo);
 }
 .project-progress-dot {
-  width: 5px;
-  height: 5px;
+  position: relative;
+  z-index: 1;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  border: 1px solid oklch(100% 0 0 / 0.28);
-  background: transparent;
+  border: 1px solid oklch(100% 0 0 / 0.34);
+  background: oklch(8% 0.015 270);
   transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
 }
+.project-progress-dot.completed {
+  border-color: oklch(80% 0.14 95 / 0.46);
+  background: oklch(80% 0.14 95 / 0.6);
+}
 .project-progress-dot.active {
-  transform: scale(1.7);
+  transform: scale(1.9);
   border-color: var(--accent);
   background: var(--accent);
-  box-shadow: 0 0 12px var(--accent-glow);
+  box-shadow: 0 0 0 5px oklch(60% 0.18 280 / 0.12), 0 0 16px var(--accent-glow);
 }
 [data-theme="light"] .projects-stack .project-card {
   box-shadow: 0 18px 48px oklch(45% 0.04 270 / 0.14), inset 0 1px 0 oklch(100% 0 0 / 0.75);
@@ -1078,7 +1172,8 @@ a:hover { color: var(--gold); }
     <h2 class="section-title">项目作品</h2>
     <div class="section-divider reveal"></div>
     <aside class="project-progress" id="projectProgress" aria-hidden="true">
-      <span class="project-progress-count" id="projectProgressCount">01 / 11</span>
+      <span class="project-progress-count" id="projectProgressCount"><b>01</b><small>/ 11</small></span>
+      <span class="project-progress-type" id="projectProgressType">核心工程</span>
       <span class="project-progress-name" id="projectProgressName">多平台广告数据爬取系统</span>
       <span class="project-progress-dots" id="projectProgressDots"></span>
     </aside>
@@ -1668,6 +1763,7 @@ const projectCards = Array.from(document.querySelectorAll('.projects-stack .proj
 const projectProgress = document.getElementById('projectProgress');
 const projectProgressCount = document.getElementById('projectProgressCount');
 const projectProgressName = document.getElementById('projectProgressName');
+const projectProgressType = document.getElementById('projectProgressType');
 const projectProgressDots = document.getElementById('projectProgressDots');
 const shouldStackProjects = !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
 
@@ -1679,13 +1775,27 @@ function setCurrentProject(card) {
   if (!card || !projectCards.length) return;
   const index = Math.max(0, projectCards.indexOf(card));
   projectCards.forEach((item, i) => item.classList.toggle('is-current', i === index));
-  if (projectProgressCount) projectProgressCount.textContent = `${String(index + 1).padStart(2, '0')} / ${String(projectCards.length).padStart(2, '0')}`;
+  const current = String(index + 1).padStart(2, '0');
+  const total = String(projectCards.length).padStart(2, '0');
+  if (projectProgress) {
+    const progress = projectCards.length > 1 ? index / (projectCards.length - 1) : 1;
+    projectProgress.style.setProperty('--project-progress-fill', progress.toFixed(3));
+  }
+  if (projectProgressCount) projectProgressCount.innerHTML = `<b>${current}</b><small>/ ${total}</small>`;
+  if (projectProgressType) {
+    const number = card.querySelector('.project-number');
+    const type = number ? number.textContent.split('/').pop().trim() : '项目';
+    projectProgressType.textContent = type;
+  }
   if (projectProgressName) {
     const title = card.querySelector('.project-title');
     projectProgressName.textContent = title ? title.textContent.trim() : '项目作品';
   }
   if (projectProgressDots) {
-    projectProgressDots.querySelectorAll('.project-progress-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
+    projectProgressDots.querySelectorAll('.project-progress-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === index);
+      dot.classList.toggle('completed', i < index);
+    });
   }
 }
 
