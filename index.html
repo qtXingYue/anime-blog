@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QT新月 — 个人作品集 | 钟文清</title>
-<meta name="description" content="钟文清的个人作品集 — 人工智能技术应用专业，深圳职业技术大学。涵盖深度学习、计算机视觉、数据工程、全栈开发等 11 个项目。擅长 Python、TensorFlow、MediaPipe、Java。">
+<meta name="description" content="钟文清的个人作品集 — 人工智能技术应用专业，深圳职业技术大学。涵盖深度学习、计算机视觉、数据工程、RPA 自动化、全栈开发等 12 个项目。擅长 Python、TensorFlow、MediaPipe、Java。">
 <meta property="og:title" content="QT新月 — 钟文清的个人作品集">
-<meta property="og:description" content="AI/数据工程/全栈开发 · 11 个实战项目 · 蓝桥杯省二等奖 · JLPT N2">
+<meta property="og:description" content="AI/数据工程/RPA 自动化/全栈开发 · 12 个实战项目 · 蓝桥杯省二等奖 · JLPT N2">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://qtxingyue.me/">
 <meta property="og:site_name" content="QT新月">
@@ -304,6 +304,7 @@ a:hover { color: var(--gold); }
 .project-card:nth-child(3) { --project-accent: oklch(70% 0.17 330); }
 .project-card:nth-child(4) { --project-accent: oklch(68% 0.14 220); }
 .project-card:nth-child(5) { --project-accent: oklch(70% 0.15 150); }
+.project-card:nth-child(6) { --project-accent: oklch(66% 0.19 285); }
 .project-card.visible { animation-play-state: running; }
 .project-card:nth-child(even) { grid-template-columns: 1.2fr 1fr; }
 .project-card:nth-child(even) .project-visual { order: 2; }
@@ -1134,6 +1135,21 @@ a:hover { color: var(--gold); }
           <span class="skill-tag">AI视频</span><span class="skill-tag">视频生成</span><span class="skill-tag">AI创作</span>
         </div>
         <a class="project-link" href="projects/ai-video.html">🎬 观看视频</a>
+      </div>
+    </article>
+
+    <!-- Project 11 -->
+    <article class="project-card" data-reveal>
+      <div class="project-visual" style="background:linear-gradient(135deg,#14143a,#4b2aa8);font-size:4rem;">🤖</div>
+      <div>
+        <p class="project-number">11 / RPA 自动化</p>
+        <h3 class="project-title">批量账号注册与浏览器 RPA 自动化系统</h3>
+        <p class="project-desc">基于 Python + Selenium + ixBrowser Local API 的批量网页注册自动化系统。支持 CSV 账号数据读取、独立浏览器 Profile 调度、多步骤表单流程执行、验证流程适配、跳转链路采集、并发任务调度和结果回写，重点解决批量网页流程中的环境隔离、状态漂移、文件占用和异常恢复问题。</p>
+        <ul class="project-metrics"><li>浏览器 Profile 隔离</li><li>并发批量调度</li><li>结构化日志追踪</li></ul>
+        <div class="project-tech">
+          <span class="skill-tag">Python</span><span class="skill-tag">Selenium</span><span class="skill-tag">ixBrowser API</span><span class="skill-tag">Chrome DevTools</span><span class="skill-tag">CSV 文件锁</span>
+        </div>
+        <a class="project-link" href="projects/rpa-registration-system.html" target="_blank">📄 查看系统详解</a>
       </div>
     </article>
     </div>
