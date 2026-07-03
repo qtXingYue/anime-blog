@@ -286,7 +286,45 @@ a:hover { color: var(--gold); }
    ============================================================ */
 .projects-stack {
   position: relative;
-  padding-bottom: clamp(420px, 70vh, 680px);
+  padding-bottom: clamp(260px, 42vh, 420px);
+  isolation: isolate;
+}
+.project-group {
+  margin-top: var(--space-3xl);
+}
+.project-group:first-of-type {
+  margin-top: var(--space-2xl);
+}
+.project-group-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--gold);
+  font-family: 'Zen Old Mincho', serif;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-sm);
+}
+.project-group-kicker::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+.project-group-title {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  line-height: 1.25;
+  color: var(--text-primary);
+  margin-bottom: var(--space-xs);
+}
+.project-group-desc {
+  max-width: 640px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  margin-bottom: var(--space-xl);
 }
 .project-card {
   position: sticky; top: 100px;
@@ -320,11 +358,14 @@ a:hover { color: var(--gold); }
   transform: none;
   animation: none;
   overflow: hidden;
-  transition: border-color 220ms var(--ease-out-expo), box-shadow 220ms var(--ease-out-expo);
+  transition: border-color 220ms var(--ease-out-expo), box-shadow 220ms var(--ease-out-expo), filter 220ms ease;
   box-shadow: 0 18px 54px oklch(0% 0 0 / 0.22), inset 0 1px 0 oklch(100% 0 0 / 0.04);
   backface-visibility: hidden;
   contain: paint;
   transform-style: preserve-3d;
+}
+.projects-stack .project-card:not(.is-current) {
+  filter: saturate(0.72) brightness(0.72);
 }
 .projects-stack .project-card::before {
   content: '';
@@ -344,7 +385,9 @@ a:hover { color: var(--gold); }
   z-index: 0;
   pointer-events: none;
   border-radius: 19px;
-  box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 0.035);
+  box-shadow:
+    inset 0 0 0 1px oklch(100% 0 0 / 0.035),
+    inset 0 12px 0 oklch(100% 0 0 / 0.025);
 }
 .projects-stack .project-card > * {
   position: relative;
@@ -357,7 +400,11 @@ a:hover { color: var(--gold); }
   box-shadow: 0 20px 58px oklch(0% 0 0 / 0.28);
 }
 .projects-stack .project-card.is-current {
-  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.3), 0 0 0 1px var(--project-accent, var(--accent));
+  filter: saturate(1.12) brightness(1.04);
+  box-shadow:
+    0 30px 78px oklch(0% 0 0 / 0.42),
+    0 0 0 1px var(--project-accent, var(--accent)),
+    0 -10px 34px oklch(100% 0 0 / 0.045);
 }
 .projects-stack .project-card.is-current .project-number {
   border-color: var(--project-accent, var(--accent));
@@ -425,7 +472,7 @@ a:hover { color: var(--gold); }
   display:block;text-decoration:none;color:inherit;
   background:linear-gradient(135deg,oklch(18% 0.08 280),oklch(14% 0.05 270));
   border:1px solid oklch(60% 0.18 280 / 0.2);border-radius:20px;
-  padding:2rem;margin-bottom:2.5rem;cursor:pointer;
+  padding:1.25rem 1.35rem;margin-bottom:2.5rem;cursor:pointer;
   transition:all 300ms var(--ease-out-expo);
 }
 .featured-card:hover {
@@ -433,13 +480,13 @@ a:hover { color: var(--gold); }
   transform:translateY(-2px);
   box-shadow:0 16px 48px oklch(0% 0 0 / 0.4);
 }
-.featured-card-inner{display:flex;align-items:flex-start;gap:1.5rem;flex-wrap:wrap}
-.featured-card-icon{width:80px;height:80px;min-width:80px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 8px 24px oklch(60% 0.18 280 / 0.3)}
+.featured-card-inner{display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap}
+.featured-card-icon{width:58px;height:58px;min-width:58px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:1.9rem;box-shadow:0 8px 24px oklch(60% 0.18 280 / 0.3)}
 .featured-card-body{flex:1;min-width:200px}
 .featured-card-label{font-family:'Zen Old Mincho',serif;font-size:0.7rem;color:oklch(80% 0.14 95);letter-spacing:0.15em;margin-bottom:0.25rem}
 .featured-card-title{font-family:'M PLUS Rounded 1c',sans-serif;font-weight:800;font-size:1.3rem;color:var(--text-primary);margin-bottom:0.5rem}
 .featured-card-title span{font-size:0.65rem;color:var(--accent);font-weight:400}
-.featured-card-desc{font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:0.75rem}
+.featured-card-desc{font-size:0.86rem;color:var(--text-secondary);line-height:1.65;margin-bottom:0.55rem}
 .featured-card-tags{display:flex;gap:6px;flex-wrap:wrap}
 .featured-card-cta{display:flex;align-items:center;padding-left:0.5rem}
 .featured-card-cta span{display:inline-flex;align-items:center;gap:4px;font-size:0.85rem;color:var(--accent);border:1px solid var(--accent-dim);border-radius:100px;padding:6px 16px;white-space:nowrap}
@@ -447,6 +494,73 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .featured-card:hover{border-color:oklch(60% 0.18 280 / 0.35);box-shadow:0 16px 48px oklch(45% 0.04 270 / 0.18)}
 .project-link { display: inline-flex; align-items: center; gap: 4px; font-size: var(--text-sm); color: var(--accent); text-decoration: none; border: 1px solid var(--accent-dim); border-radius: 100px; padding: 4px 14px; transition: all 200ms; margin-bottom: var(--space-lg); }
 .project-link:hover { background: var(--accent-dim); color: #fff; }
+.project-link.is-disabled {
+  color: var(--text-muted);
+  border-color: var(--border);
+  background: oklch(100% 0 0 / 0.035);
+  cursor: default;
+}
+.project-link.is-disabled:hover {
+  color: var(--text-muted);
+  background: oklch(100% 0 0 / 0.035);
+}
+.project-progress {
+  position: fixed;
+  right: clamp(18px, 2.5vw, 42px);
+  top: 50%;
+  z-index: 80;
+  width: 56px;
+  transform: translateY(-50%);
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: oklch(10% 0.015 270 / 0.66);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: 0 18px 44px oklch(0% 0 0 / 0.25), inset 0 1px 0 oklch(100% 0 0 / 0.05);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.project-progress.active {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+.project-progress-count {
+  font-family: 'Zen Old Mincho', serif;
+  color: var(--gold);
+  font-size: 0.7rem;
+}
+.project-progress-name {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  line-height: 1.45;
+  max-height: 176px;
+  overflow: hidden;
+}
+.project-progress-dots {
+  display: grid;
+  gap: 7px;
+}
+.project-progress-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  border: 1px solid oklch(100% 0 0 / 0.28);
+  background: transparent;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.project-progress-dot.active {
+  transform: scale(1.7);
+  border-color: var(--accent);
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
 [data-theme="light"] .projects-stack .project-card {
   box-shadow: 0 18px 48px oklch(45% 0.04 270 / 0.14), inset 0 1px 0 oklch(100% 0 0 / 0.75);
 }
@@ -472,12 +586,16 @@ a:hover { color: var(--gold); }
 @media (max-width: 768px) {
   .project-card, .project-card:nth-child(even) { grid-template-columns: 1fr; gap: var(--space-xl); }
   .project-card:nth-child(even) .project-visual { order: -1; }
+  .projects-stack { padding-bottom: 0; }
   .projects-stack .project-card {
     position: relative;
     top: auto !important;
     padding-bottom: var(--space-lg);
+    filter: none !important;
+    transform: none !important;
   }
   .project-visual { min-height: 160px; }
+  .project-progress { display: none; }
 }
 
 /* ============================================================
@@ -959,6 +1077,11 @@ a:hover { color: var(--gold); }
     <p class="section-label">Projects</p>
     <h2 class="section-title">项目作品</h2>
     <div class="section-divider reveal"></div>
+    <aside class="project-progress" id="projectProgress" aria-hidden="true">
+      <span class="project-progress-count" id="projectProgressCount">01 / 11</span>
+      <span class="project-progress-name" id="projectProgressName">多平台广告数据爬取系统</span>
+      <span class="project-progress-dots" id="projectProgressDots"></span>
+    </aside>
 
     <!-- Featured Project: This Site -->
     <a href="projects/portfolio-report.html" target="_blank" class="featured-card">
@@ -967,191 +1090,191 @@ a:hover { color: var(--gold); }
         <div class="featured-card-body">
           <p class="featured-card-label">FEATURED PROJECT</p>
           <h3 class="featured-card-title">QT新月 个人作品集网站 <span>— 本页就是</span></h3>
-          <p class="featured-card-desc">你现在正在浏览的网站。JAMstack 架构 · FastAPI 后端 · GSAP 动画 · OKLCH 主题 · Nginx 部署 · Hermes AI 飞书接入。</p>
+          <p class="featured-card-desc">个人作品集本身也作为项目展示：FastAPI 后端、GSAP 动效、OKLCH 主题、Nginx HTTPS 与 Hermes AI 接入。</p>
           <div class="featured-card-tags">
             <span class="skill-tag primary">FastAPI</span><span class="skill-tag primary">Nginx</span><span class="skill-tag primary">GSAP</span><span class="skill-tag primary">SQLite</span>
-            <span class="skill-tag">OKLCH</span><span class="skill-tag">HTTPS</span><span class="skill-tag">Hermes AI</span>
           </div>
         </div>
-        <div class="featured-card-cta"><span>📄 项目详解 →</span></div>
+        <div class="featured-card-cta"><span>查看项目详解 →</span></div>
       </div>
     </a>
 
-    <div class="projects-stack">
+    <div class="project-group">
+      <p class="project-group-kicker">Core Engineering</p>
+      <h3 class="project-group-title">核心工程项目</h3>
+      <p class="project-group-desc">突出自动化、数据采集、任务调度和系统可靠性，适合作为作品集的主力工程案例。</p>
+      <div class="projects-stack" data-project-group="core">
 
-    <!-- Project 1 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#2d1b69)">🕷️</div>
-      <div>
-        <p class="project-number">01 / 数据工程</p>
-        <h3 class="project-title">多平台广告数据爬取系统</h3>
-        <p class="project-desc">集成棕熊、GIMC、兴连、广灵、zxkj6 五个广告平台的自动化数据采集系统。基于 Playwright 浏览器自动化 + Bearer Token 认证，通过 Streamlit 仪表盘输出 CSV/Excel 报表，覆盖 328+ 活跃广告账号的日常消耗监控。</p>
-        <ul class="project-metrics"><li>5 个广告平台</li><li>328+ 活跃账号</li><li>CSV/Excel 自动报表</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">Playwright</span><span class="skill-tag">Streamlit</span><span class="skill-tag">Excel</span><span class="skill-tag">REST API</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#2d1b69)">🕷️</div>
+        <div>
+          <p class="project-number">01 / 核心工程</p>
+          <h3 class="project-title">多平台广告数据爬取系统</h3>
+          <p class="project-desc">Playwright 自动化采集 5 个广告平台数据，配合 Streamlit 仪表盘输出 CSV/Excel 日常报表。</p>
+          <ul class="project-metrics"><li>5 个广告平台</li><li>328+ 活跃账号</li><li>CSV/Excel 自动报表</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Python</span><span class="skill-tag">Playwright</span><span class="skill-tag">Streamlit</span><span class="skill-tag">Excel</span>
+          </div>
+          <a class="project-link" href="#" onclick="openGallery(event)">查看运行截图 →</a>
         </div>
-        <a class="project-link" href="#" onclick="openGallery(event)">📸 查看演示截图</a>
-      </div>
-    </article>
+      </article>
 
-    <!-- Project 2 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#0f0c29,#302260)">✋</div>
-      <div>
-        <p class="project-number">02 / AI · 毕设</p>
-        <h3 class="project-title">手势控制 PPT 系统</h3>
-        <p class="project-desc">基于 MediaPipe 21点手部关键点检测的实时手势识别系统。支持单指/双指/握拳/OK等6种手势，比例分析法不受距离影响，滑动窗口防抖+握拳锁死安全机制，CustomTkinter 暗黑风格桌面UI，720P下 20+FPS 实时处理。</p>
-        <ul class="project-metrics"><li>21 点关键点</li><li>6 种手势</li><li>720P 20+ FPS</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">MediaPipe</span><span class="skill-tag">OpenCV</span><span class="skill-tag">CustomTkinter</span><span class="skill-tag">PyAutoGUI</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b)">🇧🇷</div>
+        <div>
+          <p class="project-number">02 / 核心工程</p>
+          <h3 class="project-title">巴西 CNPJ 商业数据爬虫</h3>
+          <p class="project-desc">BrasilAPI + Playwright 批量采集企业资质信息，支持工商状态、税务信息和结构化导出。</p>
+          <ul class="project-metrics"><li>BrasilAPI 接入</li><li>批量查询</li><li>结构化导出</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Python</span><span class="skill-tag">Playwright</span><span class="skill-tag">BrasilAPI</span><span class="skill-tag">Data Pipeline</span>
+          </div>
+          <span class="project-link is-disabled">查看技术拆解</span>
         </div>
-        <a class="project-link" href="projects/gesture-ppt-report.html" target="_blank">📄 查看答辩报告 (9页PPT还原)</a>
-      </div>
-    </article>
+      </article>
 
-    <!-- Project 3 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1a0a2e,#4a1942)">🎨</div>
-      <div>
-        <p class="project-number">03 / 深度学习</p>
-        <h3 class="project-title">卡通风格迁移系统 (CartoonGAN)</h3>
-        <p class="project-desc">集成 AnimeGAN2 与 ArcaneGAN 多模型风格迁移应用。支持新海誠/宮崎駿/Arcane等5种动漫风格，覆盖图片+视频双模式转换，Gradio Web界面一键分享，含人脸检测裁剪与高斯平滑后处理。</p>
-        <ul class="project-metrics"><li>2 套 GAN 模型</li><li>5 种动漫风格</li><li>图片/视频双模式</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">PyTorch</span><span class="skill-tag">AnimeGAN2</span><span class="skill-tag">Gradio</span><span class="skill-tag">OpenCV</span><span class="skill-tag">GAN</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#14143a,#4b2aa8);font-size:4rem;">🤖</div>
+        <div>
+          <p class="project-number">03 / 核心工程</p>
+          <h3 class="project-title">批量账号注册与浏览器 RPA 自动化系统</h3>
+          <p class="project-desc">Python + Selenium + ixBrowser Profile 调度，处理批量网页流程中的隔离、并发、日志和结果回写。</p>
+          <ul class="project-metrics"><li>Profile 隔离</li><li>并发批量调度</li><li>结构化日志追踪</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Python</span><span class="skill-tag">Selenium</span><span class="skill-tag">ixBrowser API</span><span class="skill-tag">CSV 文件锁</span>
+          </div>
+          <a class="project-link" href="projects/rpa-registration-system.html" target="_blank">查看项目详解 →</a>
         </div>
-        <a class="project-link" href="projects/cartoon-gan-report.html" target="_blank">📄 查看设计报告 (8页效果对比)</a>
+      </article>
       </div>
-    </article>
-
-    <!-- Project 4 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1c1c4a,#2a5298)">📰</div>
-      <div>
-        <p class="project-number">04 / NLP</p>
-        <h3 class="project-title">多模型新闻文本分类系统</h3>
-        <p class="project-desc">集成 TextCNN / TextRNN / 朴素贝叶斯三种架构的头条新闻6分类系统。使用腾讯 AI Lab 中文词向量增强语义理解，模块化 Config 配置设计，包含完整的数据预处理、模型训练、评估对比流程。</p>
-        <ul class="project-metrics"><li>3 种分类架构</li><li>6 类新闻标签</li><li>模块化 Config</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">TensorFlow</span><span class="skill-tag">TextCNN</span><span class="skill-tag">NLP</span><span class="skill-tag">Jieba</span><span class="skill-tag">词向量</span>
-        </div>
-      </div>
-    </article>
-
-    <!-- Project 5 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1a3a1a,#2d5a1e)">🗺️</div>
-      <div>
-        <p class="project-number">05 / 数据可视化</p>
-        <h3 class="project-title">梅州美食地理可视化系统</h3>
-        <p class="project-desc">基于 Pyecharts 的客家美食与水果地理分布交互式可视化。含地图散点、密度分布、月度柱状图、特色饼图、美食推荐轮播等多维图表，数据涵盖9道菜品+5种水果，含店铺推荐与采摘农场信息。</p>
-        <ul class="project-metrics"><li>9 道菜品</li><li>5 种水果</li><li>多维交互图表</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">Pyecharts</span><span class="skill-tag">Geo</span><span class="skill-tag">数据可视化</span><span class="skill-tag">HTML</span>
-        </div>
-        <a class="project-link" href="projects/meizhou-demo.html" target="_blank">🌐 在线演示</a>
-      </div>
-    </article>
     </div>
-  </div>
-</section>
 
-<!-- PROJECTS 2 -->
-<section class="section" id="projects-2">
-  <div class="container">
-    <p class="section-label">More</p>
-    <h2 class="section-title">更多项目</h2>
-    <div class="section-divider reveal"></div>
-    <div class="projects-stack">
+    <div class="project-group">
+      <p class="project-group-kicker">AI Vision</p>
+      <h3 class="project-group-title">AI / 视觉项目</h3>
+      <p class="project-group-desc">展示计算机视觉、深度学习和文本模型相关项目，重点呈现模型能力与交互体验。</p>
+      <div class="projects-stack" data-project-group="ai">
 
-    <!-- Project 6 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b)">🇧🇷</div>
-      <div>
-        <p class="project-number">06 / 数据采集</p>
-        <h3 class="project-title">巴西 CNPJ 商业数据爬虫</h3>
-        <p class="project-desc">基于 BrasilAPI + Playwright 的企业资质数据采集系统，覆盖巴西全境企业的工商登记信息、税务状态、股东结构等核心数据，支持批量查询与结构化导出。</p>
-        <ul class="project-metrics"><li>BrasilAPI 接入</li><li>批量查询</li><li>结构化导出</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">Playwright</span><span class="skill-tag">BrasilAPI</span><span class="skill-tag">Data Pipeline</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#0f0c29,#302260)">✋</div>
+        <div>
+          <p class="project-number">04 / AI · 毕设</p>
+          <h3 class="project-title">手势控制 PPT 系统</h3>
+          <p class="project-desc">MediaPipe 21 点手部关键点识别，支持 6 种演示手势与滑动窗口防抖。</p>
+          <ul class="project-metrics"><li>21 点关键点</li><li>6 种手势</li><li>720P 20+ FPS</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Python</span><span class="skill-tag">MediaPipe</span><span class="skill-tag">OpenCV</span><span class="skill-tag">CustomTkinter</span>
+          </div>
+          <a class="project-link" href="projects/gesture-ppt-report.html" target="_blank">查看项目详解 →</a>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- Project 7 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#2e1a3e,#5a1a6e)">✍️</div>
-      <div>
-        <p class="project-number">07 / 深度学习</p>
-        <h3 class="project-title">日语假名手写识别系统</h3>
-        <p class="project-desc">基于 CNN 的 Kuzushiji-49 日本草书字符识别应用。3层卷积块+BatchNorm+Dropout 架构，早停法+学习率调度训练策略，测试集准确率 88.2%。Tkinter 手写板 GUI 实时识别 49 类假名，含 TensorBoard 训练日志与模型评估。</p>
-        <ul class="project-metrics"><li>49 类假名</li><li>88.2% 准确率</li><li>3 层卷积块</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">TensorFlow</span><span class="skill-tag">CNN</span><span class="skill-tag">Tkinter</span><span class="skill-tag">Keras</span><span class="skill-tag">OpenCV</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a0a2e,#4a1942)">🎨</div>
+        <div>
+          <p class="project-number">05 / 深度学习</p>
+          <h3 class="project-title">卡通风格迁移系统 (CartoonGAN)</h3>
+          <p class="project-desc">AnimeGAN2 + ArcaneGAN 多模型风格迁移，覆盖图片和视频双模式转换。</p>
+          <ul class="project-metrics"><li>2 套 GAN 模型</li><li>5 种动漫风格</li><li>图片/视频双模式</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">PyTorch</span><span class="skill-tag">AnimeGAN2</span><span class="skill-tag">Gradio</span><span class="skill-tag">OpenCV</span>
+          </div>
+          <a class="project-link" href="projects/cartoon-gan-report.html" target="_blank">查看项目详解 →</a>
         </div>
-        <a class="project-link" href="projects/japanese-ocr-report.html" target="_blank">📄 查看设计报告</a>
-      </div>
-    </article>
+      </article>
 
-    <!-- Project 8 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#1a3a2e,#0d4a3e)">🛒</div>
-      <div>
-        <p class="project-number">08 / 全栈开发</p>
-        <h3 class="project-title">动漫商城管理系统</h3>
-        <p class="project-desc">Java Servlet MVC 架构后端 + 微信小程序客户端的完整电商应用。含 7 个 Servlet API（商品CRUD/图片上传/批量删除）、Jackson JSON 序列化、MySQL 数据存储，小程序 6 个页面支持首页浏览、列表搜索、详情查看、编辑管理。</p>
-        <ul class="project-metrics"><li>7 个 Servlet API</li><li>6 个小程序页面</li><li>MySQL 数据存储</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Java</span><span class="skill-tag">Servlet</span><span class="skill-tag">MySQL</span><span class="skill-tag">微信小程序</span><span class="skill-tag">JSP</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1c1c4a,#2a5298)">📰</div>
+        <div>
+          <p class="project-number">06 / NLP</p>
+          <h3 class="project-title">多模型新闻文本分类系统</h3>
+          <p class="project-desc">TextCNN / TextRNN / 朴素贝叶斯三种架构对比，完成头条新闻 6 分类流程。</p>
+          <ul class="project-metrics"><li>3 种分类架构</li><li>6 类新闻标签</li><li>模块化 Config</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">TensorFlow</span><span class="skill-tag">TextCNN</span><span class="skill-tag">NLP</span><span class="skill-tag">Jieba</span>
+          </div>
+          <span class="project-link is-disabled">查看技术拆解</span>
         </div>
-        <a class="project-link" href="projects/wx-store-report.html" target="_blank">📄 查看设计报告</a>
-      </div>
-    </article>
+      </article>
 
-    <!-- Project 9 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background: url('projects/ai-images/clipboard-2026-06-02T12-50-08-313Z-ab85d630.jpg') center/cover no-repeat; min-height: 260px;"></div>
-      <div>
-        <p class="project-number">09 / AI 生图</p>
-        <h3 class="project-title">AI 生图作品集</h3>
-        <p class="project-desc">使用 ChatGPT、Gemini、Stable Diffusion WebUI、ComfyUI 等多种 AI 工具生成的图片作品合集。涵盖产品广告、创意海报、风格迁移等类型，探索 AI 在视觉创作与商业设计中的实际应用。</p>
-        <ul class="project-metrics"><li>4 类 AI 工具</li><li>产品/海报/风格迁移</li><li>完整画廊展示</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">ChatGPT</span><span class="skill-tag">Gemini</span><span class="skill-tag">SD WebUI</span><span class="skill-tag">ComfyUI</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#2e1a3e,#5a1a6e)">✍️</div>
+        <div>
+          <p class="project-number">07 / 深度学习</p>
+          <h3 class="project-title">日语假名手写识别系统</h3>
+          <p class="project-desc">CNN 识别 Kuzushiji-49 日本草书字符，配套 Tkinter 手写板实时预测。</p>
+          <ul class="project-metrics"><li>49 类假名</li><li>88.2% 准确率</li><li>3 层卷积块</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">TensorFlow</span><span class="skill-tag">CNN</span><span class="skill-tag">Tkinter</span><span class="skill-tag">Keras</span>
+          </div>
+          <a class="project-link" href="projects/japanese-ocr-report.html" target="_blank">查看项目详解 →</a>
         </div>
-        <a class="project-link" href="projects/ai-gallery.html">🖼️ 查看完整画廊</a>
+      </article>
       </div>
-    </article>
+    </div>
 
-    <!-- Project 10 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#0d1b2a,#1b2838);font-size:4rem;">🎬</div>
-      <div>
-        <p class="project-number">10 / AI 视频</p>
-        <h3 class="project-title">AI 视频作品</h3>
-        <p class="project-desc">使用 AI 工具生成的视频内容，探索人工智能在动态视觉和视频创作领域的可能性。从画面生成到场景合成，AI 正在重新定义视频创作的边界。</p>
-        <ul class="project-metrics"><li>动态视觉生成</li><li>场景合成探索</li><li>视频作品页</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">AI视频</span><span class="skill-tag">视频生成</span><span class="skill-tag">AI创作</span>
-        </div>
-        <a class="project-link" href="projects/ai-video.html">🎬 观看视频</a>
-      </div>
-    </article>
+    <div class="project-group">
+      <p class="project-group-kicker">Web Mini App</p>
+      <h3 class="project-group-title">Web / 小程序项目</h3>
+      <p class="project-group-desc">展示前端页面、微信小程序、互动可视化和 AI 内容展示类项目，补足作品集的应用侧表达。</p>
+      <div class="projects-stack" data-project-group="web">
 
-    <!-- Project 11 -->
-    <article class="project-card" data-reveal>
-      <div class="project-visual" style="background:linear-gradient(135deg,#14143a,#4b2aa8);font-size:4rem;">🤖</div>
-      <div>
-        <p class="project-number">11 / RPA 自动化</p>
-        <h3 class="project-title">批量账号注册与浏览器 RPA 自动化系统</h3>
-        <p class="project-desc">基于 Python + Selenium + ixBrowser Local API 的批量网页注册自动化系统。支持 CSV 账号数据读取、独立浏览器 Profile 调度、多步骤表单流程执行、验证流程适配、跳转链路采集、并发任务调度和结果回写，重点解决批量网页流程中的环境隔离、状态漂移、文件占用和异常恢复问题。</p>
-        <ul class="project-metrics"><li>浏览器 Profile 隔离</li><li>并发批量调度</li><li>结构化日志追踪</li></ul>
-        <div class="project-tech">
-          <span class="skill-tag">Python</span><span class="skill-tag">Selenium</span><span class="skill-tag">ixBrowser API</span><span class="skill-tag">Chrome DevTools</span><span class="skill-tag">CSV 文件锁</span>
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a3a1a,#2d5a1e)">🗺️</div>
+        <div>
+          <p class="project-number">08 / 数据可视化</p>
+          <h3 class="project-title">梅州美食地理可视化系统</h3>
+          <p class="project-desc">Pyecharts 构建客家美食与水果地理分布交互可视化，包含地图、柱状图和推荐信息。</p>
+          <ul class="project-metrics"><li>9 道菜品</li><li>5 种水果</li><li>多维交互图表</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Python</span><span class="skill-tag">Pyecharts</span><span class="skill-tag">Geo</span><span class="skill-tag">HTML</span>
+          </div>
+          <a class="project-link" href="projects/meizhou-demo.html" target="_blank">查看运行截图 →</a>
         </div>
-        <a class="project-link" href="projects/rpa-registration-system.html" target="_blank">📄 查看系统详解</a>
+      </article>
+
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a3a2e,#0d4a3e)">🛒</div>
+        <div>
+          <p class="project-number">09 / 全栈开发</p>
+          <h3 class="project-title">动漫商城管理系统</h3>
+          <p class="project-desc">Java Servlet MVC 后端 + 微信小程序客户端，覆盖商品 CRUD、图片上传和小程序页面管理。</p>
+          <ul class="project-metrics"><li>7 个 Servlet API</li><li>6 个小程序页面</li><li>MySQL 数据存储</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">Java</span><span class="skill-tag">Servlet</span><span class="skill-tag">MySQL</span><span class="skill-tag">微信小程序</span>
+          </div>
+          <a class="project-link" href="projects/wx-store-report.html" target="_blank">查看项目详解 →</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background: url('projects/ai-images/clipboard-2026-06-02T12-50-08-313Z-ab85d630.jpg') center/cover no-repeat; min-height: 260px;"></div>
+        <div>
+          <p class="project-number">10 / AI 生图</p>
+          <h3 class="project-title">AI 生图作品集</h3>
+          <p class="project-desc">整合 ChatGPT、Gemini、SD WebUI、ComfyUI 生成的产品广告、海报和风格迁移作品。</p>
+          <ul class="project-metrics"><li>4 类 AI 工具</li><li>产品/海报/风格迁移</li><li>完整画廊展示</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">ChatGPT</span><span class="skill-tag">Gemini</span><span class="skill-tag">SD WebUI</span><span class="skill-tag">ComfyUI</span>
+          </div>
+          <a class="project-link" href="projects/ai-gallery.html">查看运行截图 →</a>
+        </div>
+      </article>
+
+      <article class="project-card" data-reveal>
+        <div class="project-visual" style="background:linear-gradient(135deg,#0d1b2a,#1b2838);font-size:4rem;">🎬</div>
+        <div>
+          <p class="project-number">11 / AI 视频</p>
+          <h3 class="project-title">AI 视频作品</h3>
+          <p class="project-desc">AI 生成视频内容展示，探索动态视觉、场景合成和视频创作流程。</p>
+          <ul class="project-metrics"><li>动态视觉生成</li><li>场景合成探索</li><li>视频作品页</li></ul>
+          <div class="project-tech">
+            <span class="skill-tag">AI 视频</span><span class="skill-tag">视频生成</span><span class="skill-tag">AI 创作</span>
+          </div>
+          <a class="project-link" href="projects/ai-video.html">查看运行截图 →</a>
+        </div>
+      </article>
       </div>
-    </article>
     </div>
   </div>
 </section>
@@ -1541,8 +1664,54 @@ gsap.utils.toArray("[data-reveal]")
 });
 
 // Sticky project card stacking
+const projectCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
+const projectProgress = document.getElementById('projectProgress');
+const projectProgressCount = document.getElementById('projectProgressCount');
+const projectProgressName = document.getElementById('projectProgressName');
+const projectProgressDots = document.getElementById('projectProgressDots');
+const shouldStackProjects = !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
+
+if (projectProgressDots && projectCards.length) {
+  projectProgressDots.innerHTML = projectCards.map((_, i) => `<span class="project-progress-dot${i === 0 ? ' active' : ''}" data-project-dot="${i}"></span>`).join('');
+}
+
+function setCurrentProject(card) {
+  if (!card || !projectCards.length) return;
+  const index = Math.max(0, projectCards.indexOf(card));
+  projectCards.forEach((item, i) => item.classList.toggle('is-current', i === index));
+  if (projectProgressCount) projectProgressCount.textContent = `${String(index + 1).padStart(2, '0')} / ${String(projectCards.length).padStart(2, '0')}`;
+  if (projectProgressName) {
+    const title = card.querySelector('.project-title');
+    projectProgressName.textContent = title ? title.textContent.trim() : '项目作品';
+  }
+  if (projectProgressDots) {
+    projectProgressDots.querySelectorAll('.project-progress-dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
+  }
+}
+
+if (projectCards.length) setCurrentProject(projectCards[0]);
+
+if (!shouldStackProjects) {
+  projectCards.forEach((card, i) => {
+    card.style.top = '';
+    card.style.zIndex = `${i + 1}`;
+    card.style.transform = '';
+    card.classList.remove('is-current');
+  });
+} else if (projectProgress) {
+  ScrollTrigger.create({
+    trigger: '#projects',
+    start: 'top 45%',
+    end: 'bottom 55%',
+    onEnter: () => projectProgress.classList.add('active'),
+    onEnterBack: () => projectProgress.classList.add('active'),
+    onLeave: () => projectProgress.classList.remove('active'),
+    onLeaveBack: () => projectProgress.classList.remove('active')
+  });
+}
+
 const STACK_OFFSET = 64;
-document.querySelectorAll('.projects-stack').forEach(stack => {
+if (shouldStackProjects) document.querySelectorAll('.projects-stack').forEach(stack => {
   const cards = stack.querySelectorAll('.project-card');
   cards.forEach((card, i) => {
     card.style.top = `${96 + i * STACK_OFFSET}px`;
@@ -1551,6 +1720,7 @@ document.querySelectorAll('.projects-stack').forEach(stack => {
     if (i < cards.length - 1) {
       gsap.to(card, {
         scale: 0.97 - i * 0.014,
+        y: -12 - i * 8,
         force3D: true,
         overwrite: 'auto',
         ease: 'none',
@@ -1565,9 +1735,10 @@ document.querySelectorAll('.projects-stack').forEach(stack => {
 
     ScrollTrigger.create({
       trigger: card,
-      start: 'top 46%',
-      end: 'bottom 46%',
-      toggleClass: { targets: card, className: 'is-current' }
+      start: 'top 58%',
+      end: 'bottom 42%',
+      onEnter: () => setCurrentProject(card),
+      onEnterBack: () => setCurrentProject(card)
     });
   });
 });
