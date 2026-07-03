@@ -336,6 +336,374 @@ a:hover { color: var(--gold); }
 }
 .project-link:hover { gap: var(--space-sm); color: var(--gold); }
 
+/* ═══ PROJECT VISUAL SYSTEM TEST ═══ */
+.visual-lab {
+  padding-block: var(--space-4xl);
+}
+.visual-lab-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2xl);
+  align-items: start;
+}
+.visual-kicker {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: var(--text-xs);
+  color: var(--gold);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-md);
+}
+.visual-title {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.18;
+  margin-bottom: var(--space-lg);
+}
+.visual-copy {
+  color: var(--text-secondary);
+  max-width: 760px;
+  line-height: 1.9;
+}
+.visual-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: var(--space-lg);
+}
+.visual-pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: oklch(100% 0 0 / 0.035);
+  padding: 5px 12px;
+  font-size: var(--text-xs);
+}
+.project-shot {
+  --shot-accent: oklch(66% 0.19 285);
+  position: relative;
+  min-height: 620px;
+  border-radius: 24px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(145deg, oklch(15% 0.018 270), oklch(10% 0.016 270)) padding-box,
+    linear-gradient(135deg, var(--shot-accent), oklch(100% 0 0 / 0.04) 46%, var(--border)) border-box;
+  box-shadow: 0 30px 90px oklch(0% 0 0 / 0.36), inset 0 1px 0 oklch(100% 0 0 / 0.06);
+  overflow: hidden;
+}
+.project-shot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 14% 0%, oklch(66% 0.19 285 / 0.34), transparent 32%),
+    radial-gradient(circle at 90% 18%, oklch(68% 0.15 245 / 0.18), transparent 30%),
+    linear-gradient(90deg, var(--shot-accent), transparent 45%) top left / 100% 1px no-repeat;
+}
+.shot-window {
+  position: absolute;
+  inset: clamp(14px, 2.4vw, 24px);
+  display: grid;
+  grid-template-rows: 44px minmax(0, 1fr);
+  border-radius: 18px;
+  background: oklch(7% 0.012 270 / 0.82);
+  border: 1px solid oklch(100% 0 0 / 0.09);
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+.shot-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: 0 16px;
+  border-bottom: 1px solid oklch(100% 0 0 / 0.07);
+  background: oklch(100% 0 0 / 0.025);
+}
+.shot-dots {
+  display: flex;
+  gap: 7px;
+}
+.shot-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: oklch(100% 0 0 / 0.16);
+}
+.shot-dots span:nth-child(1) { background: oklch(66% 0.22 28); }
+.shot-dots span:nth-child(2) { background: oklch(82% 0.16 88); }
+.shot-dots span:nth-child(3) { background: oklch(70% 0.16 150); }
+.shot-titlebar {
+  flex: 1;
+  min-width: 0;
+  color: var(--text-secondary);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.shot-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: oklch(76% 0.17 150);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+.shot-status::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 14px currentColor;
+}
+.shot-dashboard {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 200px;
+  gap: 14px;
+  padding: 14px;
+}
+.shot-panel {
+  min-width: 0;
+  border-radius: 14px;
+  border: 1px solid oklch(100% 0 0 / 0.075);
+  background: oklch(100% 0 0 / 0.035);
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.045);
+}
+.shot-sidebar {
+  padding: 12px;
+}
+.shot-label {
+  color: var(--text-muted);
+  font-size: 10px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.profile-row {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  font-size: 11px;
+  padding: 0 8px;
+}
+.profile-row + .profile-row { margin-top: 6px; }
+.profile-row.active {
+  background: oklch(60% 0.18 280 / 0.14);
+  color: var(--text-primary);
+}
+.profile-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: oklch(60% 0.02 270);
+}
+.profile-row.active .profile-dot { background: var(--shot-accent); box-shadow: 0 0 12px var(--shot-accent); }
+.profile-row.done .profile-dot { background: oklch(72% 0.16 150); }
+.profile-row.wait .profile-dot { background: oklch(82% 0.14 95); }
+.profile-row b {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-row em {
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+.shot-main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) 150px;
+  gap: 12px;
+  min-width: 0;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+.metric-card {
+  border-radius: 13px;
+  border: 1px solid oklch(100% 0 0 / 0.07);
+  background: linear-gradient(180deg, oklch(100% 0 0 / 0.06), oklch(100% 0 0 / 0.025));
+  padding: 11px 12px;
+}
+.metric-card strong {
+  display: block;
+  color: var(--text-primary);
+  font-size: 21px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.metric-card span {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+.flow-canvas {
+  position: relative;
+  min-height: 190px;
+  padding: 16px;
+  overflow: hidden;
+}
+.flow-line {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, oklch(60% 0.18 280 / 0.6), transparent);
+}
+.flow-nodes {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  height: 100%;
+  align-items: center;
+}
+.flow-node {
+  min-height: 84px;
+  border-radius: 14px;
+  border: 1px solid oklch(100% 0 0 / 0.08);
+  background: oklch(9% 0.018 270 / 0.92);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  box-shadow: 0 12px 30px oklch(0% 0 0 / 0.18);
+}
+.flow-node.active {
+  border-color: oklch(60% 0.18 280 / 0.42);
+  box-shadow: 0 0 0 1px oklch(60% 0.18 280 / 0.18), 0 18px 42px oklch(60% 0.18 280 / 0.14);
+}
+.flow-node i {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--shot-accent), oklch(50% 0.13 280));
+  display: block;
+  position: relative;
+}
+.flow-node i::before,
+.flow-node i::after {
+  content: '';
+  position: absolute;
+  background: oklch(100% 0 0 / 0.82);
+  border-radius: 999px;
+}
+.flow-node i::before { width: 14px; height: 2px; left: 7px; top: 10px; }
+.flow-node i::after { width: 10px; height: 2px; left: 7px; top: 16px; }
+.flow-node b {
+  color: var(--text-primary);
+  font-size: 11px;
+}
+.flow-node span {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+.result-table {
+  padding: 12px;
+  overflow: hidden;
+}
+.result-head,
+.result-row {
+  display: grid;
+  grid-template-columns: 0.9fr 0.7fr 0.8fr 1fr;
+  gap: 10px;
+  align-items: center;
+  min-height: 28px;
+  font-size: 10px;
+}
+.result-head {
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid oklch(100% 0 0 / 0.055);
+  margin-bottom: 6px;
+}
+.result-row {
+  color: var(--text-secondary);
+  border-radius: 8px;
+}
+.result-row strong { color: var(--text-primary); font-size: 10px; }
+.tag-ok,
+.tag-run,
+.tag-wait {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 10px;
+}
+.tag-ok { color: oklch(76% 0.17 150); background: oklch(76% 0.17 150 / 0.1); }
+.tag-run { color: var(--accent); background: oklch(60% 0.18 280 / 0.12); }
+.tag-wait { color: var(--gold); background: oklch(80% 0.14 95 / 0.1); }
+.shot-right {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 12px;
+}
+.log-panel,
+.config-panel {
+  padding: 12px;
+  overflow: hidden;
+}
+.log-line {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 8px;
+  color: var(--text-secondary);
+  font-family: 'Consolas', monospace;
+  font-size: 10px;
+  min-height: 24px;
+  align-items: center;
+}
+.log-line time { color: var(--text-muted); }
+.log-line span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.config-ring {
+  width: 88px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  margin: 8px auto 12px;
+  background:
+    radial-gradient(circle at center, oklch(7% 0.012 270) 0 54%, transparent 55%),
+    conic-gradient(var(--shot-accent) 0 78%, oklch(100% 0 0 / 0.08) 78% 100%);
+  display: grid;
+  place-items: center;
+  color: var(--text-primary);
+  font-weight: 800;
+  font-size: 19px;
+}
+.config-list {
+  display: grid;
+  gap: 7px;
+}
+.config-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+.config-item b {
+  color: var(--text-secondary);
+}
+
 /* Featured card */
 .featured-card {
   display: block; margin-bottom: var(--space-2xl);
@@ -441,6 +809,15 @@ a:hover { color: var(--gold); }
   .hero-role { font-size: var(--text-sm); max-width: 100%; }
   .hero-cta { flex-direction: column; }
   .hero-cta .btn { width: 100%; justify-content: center; }
+  .visual-lab { padding-block: var(--space-3xl); }
+  .visual-lab-grid { grid-template-columns: 1fr; gap: var(--space-2xl); }
+  .visual-copy { max-width: 100%; }
+  .project-shot { min-height: 760px; }
+  .shot-dashboard { grid-template-columns: 1fr; grid-template-rows: auto auto auto; overflow-y: auto; }
+  .shot-sidebar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .shot-sidebar .shot-label { grid-column: 1 / -1; margin-bottom: 2px; }
+  .profile-row + .profile-row { margin-top: 0; }
+  .shot-right { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
   .about-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: 1fr 1fr; }
   .project-card { grid-template-columns: 1fr !important; gap: var(--space-xl); padding: var(--space-xl); }
@@ -455,6 +832,18 @@ a:hover { color: var(--gold); }
   .section { padding-block: var(--space-3xl); }
 }
 @media (max-width: 480px) {
+  .project-shot { min-height: 920px; border-radius: 18px; }
+  .shot-window { inset: 10px; }
+  .shot-topbar { padding: 0 10px; }
+  .shot-status { display: none; }
+  .shot-dashboard { padding: 10px; gap: 10px; }
+  .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flow-nodes { grid-template-columns: 1fr; align-items: stretch; }
+  .flow-node { min-height: 58px; flex-direction: row; justify-content: flex-start; padding: 0 12px; text-align: left; }
+  .flow-line { display: none; }
+  .result-head, .result-row { grid-template-columns: 0.8fr 0.75fr 0.7fr; }
+  .result-head span:nth-child(4), .result-row span:nth-child(4) { display: none; }
+  .shot-right { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: 1fr 1fr; gap: var(--space-sm); }
   .stat-card { padding: var(--space-md); }
@@ -514,6 +903,95 @@ a:hover { color: var(--gold); }
   <div class="hero-scroll load-reveal" data-load-delay="700" aria-hidden="true">
     <span>Scroll</span>
     <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- PROJECT VISUAL LAB -->
+<section class="visual-lab" id="visual-lab">
+  <div class="container">
+    <div class="visual-lab-grid">
+      <div class="reveal">
+        <p class="visual-kicker">Project Visual System</p>
+        <h2 class="visual-title">统一风格的项目视觉图</h2>
+        <p class="visual-copy">用脱敏重构界面替代原始运行截图。每个项目都可以套用同一套窗口、数据卡、流程节点和日志面板，既保留真实工程感，也避免暴露账号、平台和敏感数据。</p>
+        <div class="visual-points">
+          <span class="visual-pill">16:10 展示比例</span>
+          <span class="visual-pill">蓝紫主题统一</span>
+          <span class="visual-pill">脱敏结果表</span>
+          <span class="visual-pill">可复用模板</span>
+        </div>
+      </div>
+
+      <div class="project-shot reveal" aria-label="RPA 自动化系统脱敏视觉图">
+        <div class="shot-window">
+          <div class="shot-topbar">
+            <div class="shot-dots"><span></span><span></span><span></span></div>
+            <div class="shot-titlebar">RPA Flow Console · profile batch runner</div>
+            <div class="shot-status">Live Run</div>
+          </div>
+          <div class="shot-dashboard">
+            <aside class="shot-panel shot-sidebar">
+              <p class="shot-label">Profiles</p>
+              <div class="profile-row done"><span class="profile-dot"></span><b>cgo01</b><em>done</em></div>
+              <div class="profile-row done"><span class="profile-dot"></span><b>cgo02</b><em>done</em></div>
+              <div class="profile-row active"><span class="profile-dot"></span><b>cgo03</b><em>run</em></div>
+              <div class="profile-row wait"><span class="profile-dot"></span><b>cgo04</b><em>queue</em></div>
+              <div class="profile-row wait"><span class="profile-dot"></span><b>cgo05</b><em>queue</em></div>
+              <div class="profile-row"><span class="profile-dot"></span><b>cgo06</b><em>idle</em></div>
+            </aside>
+
+            <main class="shot-main">
+              <div class="metric-grid">
+                <div class="metric-card"><strong>08</strong><span>workers</span></div>
+                <div class="metric-card"><strong>92%</strong><span>success</span></div>
+                <div class="metric-card"><strong>41s</strong><span>avg time</span></div>
+                <div class="metric-card"><strong>3.1k</strong><span>events</span></div>
+              </div>
+
+              <div class="shot-panel flow-canvas">
+                <div class="flow-line"></div>
+                <div class="flow-nodes">
+                  <div class="flow-node active"><i></i><b>CSV</b><span>账号源</span></div>
+                  <div class="flow-node active"><i></i><b>Profile</b><span>环境隔离</span></div>
+                  <div class="flow-node active"><i></i><b>Form</b><span>状态识别</span></div>
+                  <div class="flow-node"><i></i><b>Redirect</b><span>链路采集</span></div>
+                  <div class="flow-node"><i></i><b>Report</b><span>结果回写</span></div>
+                </div>
+              </div>
+
+              <div class="shot-panel result-table">
+                <div class="result-head"><span>profile</span><span>status</span><span>duration</span><span>remark</span></div>
+                <div class="result-row"><strong>cgo01</strong><span class="tag-ok">success</span><span>38s</span><span>completed</span></div>
+                <div class="result-row"><strong>cgo02</strong><span class="tag-ok">success</span><span>42s</span><span>profile saved</span></div>
+                <div class="result-row"><strong>cgo03</strong><span class="tag-run">running</span><span>29s</span><span>verification</span></div>
+                <div class="result-row"><strong>cgo04</strong><span class="tag-wait">queued</span><span>--</span><span>waiting slot</span></div>
+              </div>
+            </main>
+
+            <aside class="shot-right">
+              <div class="shot-panel log-panel">
+                <p class="shot-label">Logs</p>
+                <div class="log-line"><time>16:04</time><span>lock acquired</span></div>
+                <div class="log-line"><time>16:04</time><span>profile opened</span></div>
+                <div class="log-line"><time>16:05</time><span>form state detected</span></div>
+                <div class="log-line"><time>16:05</time><span>redirect hook armed</span></div>
+                <div class="log-line"><time>16:06</time><span>result flushed</span></div>
+              </div>
+              <div class="shot-panel config-panel">
+                <p class="shot-label">Health</p>
+                <div class="config-ring">78%</div>
+                <div class="config-list">
+                  <div class="config-item"><span>CSV lock</span><b>ready</b></div>
+                  <div class="config-item"><span>profile API</span><b>online</b></div>
+                  <div class="config-item"><span>plugin config</span><b>synced</b></div>
+                  <div class="config-item"><span>report sink</span><b>open</b></div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
