@@ -542,234 +542,6 @@ a:hover { color: var(--gold); }
   pointer-events: none;
   background: linear-gradient(135deg, oklch(100% 0 0 / 0.12), transparent 36%, oklch(0% 0 0 / 0.12));
 }
-.project-visual.visual-system {
-  --visual-accent: var(--project-accent, var(--accent));
-  --visual-accent-2: oklch(80% 0.14 95);
-  display: block;
-  min-height: 230px;
-  padding: 16px;
-  font-size: initial;
-  color: var(--text-primary);
-  text-shadow: none;
-  background:
-    radial-gradient(circle at 16% 0%, var(--visual-accent) 0%, transparent 34%),
-    linear-gradient(145deg, oklch(14% 0.03 270), oklch(7% 0.018 270));
-}
-.project-visual.visual-image {
-  display: block;
-  min-height: 260px;
-  padding: 0;
-  font-size: initial;
-  color: var(--text-primary);
-  text-shadow: none;
-  background-position: center;
-  background-size: cover;
-}
-.project-visual.visual-image .visual-image-caption {
-  position: absolute;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid oklch(100% 0 0 / 0.12);
-  border-radius: 10px;
-  background: oklch(8% 0.018 270 / 0.72);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-.visual-window {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 198px;
-  padding: 13px;
-  border: 1px solid oklch(100% 0 0 / 0.11);
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, oklch(100% 0 0 / 0.075), transparent 28%),
-    oklch(7% 0.015 270 / 0.82);
-  overflow: hidden;
-  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.08);
-}
-.visual-topbar { display: flex; gap: 5px; margin-bottom: 14px; }
-.visual-topbar span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: oklch(100% 0 0 / 0.2);
-}
-.visual-topbar span:first-child { background: var(--visual-accent-2); }
-.visual-topbar span:nth-child(2) { background: var(--visual-accent); }
-.visual-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.visual-cardlet {
-  min-height: 43px;
-  border: 1px solid oklch(100% 0 0 / 0.08);
-  border-radius: 9px;
-  background: oklch(100% 0 0 / 0.055);
-  position: relative;
-  overflow: hidden;
-}
-.visual-cardlet::after {
-  content: '';
-  position: absolute;
-  left: 10px;
-  right: 22%;
-  bottom: 10px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--visual-accent);
-  opacity: 0.72;
-}
-.visual-cardlet.wide { grid-column: span 2; }
-.visual-cardlet.tall { min-height: 94px; }
-.visual-chart {
-  display: flex;
-  align-items: end;
-  gap: 7px;
-  height: 68px;
-  margin-top: 12px;
-  padding: 10px;
-  border: 1px solid oklch(100% 0 0 / 0.075);
-  border-radius: 10px;
-  background: oklch(100% 0 0 / 0.035);
-}
-.visual-chart span {
-  flex: 1;
-  min-width: 0;
-  height: 38%;
-  border-radius: 999px 999px 3px 3px;
-  background: linear-gradient(180deg, var(--visual-accent-2), var(--visual-accent));
-  opacity: 0.86;
-}
-.visual-chart span:nth-child(2) { height: 68%; }
-.visual-chart span:nth-child(3) { height: 46%; }
-.visual-chart span:nth-child(4) { height: 78%; }
-.visual-chart span:nth-child(5) { height: 56%; }
-.visual-flow {
-  display: grid;
-  grid-template-columns: 1fr 18px 1fr;
-  align-items: center;
-  gap: 8px;
-  margin-top: 12px;
-}
-.visual-node {
-  min-height: 46px;
-  border: 1px solid oklch(100% 0 0 / 0.09);
-  border-radius: 10px;
-  background: oklch(100% 0 0 / 0.055);
-  position: relative;
-}
-.visual-node::before,
-.visual-line::before {
-  content: '';
-  position: absolute;
-  left: 10px;
-  right: 28%;
-  top: 13px;
-  height: 5px;
-  border-radius: 999px;
-  background: oklch(100% 0 0 / 0.18);
-}
-.visual-node::after {
-  content: '';
-  position: absolute;
-  left: 10px;
-  right: 48%;
-  bottom: 12px;
-  height: 4px;
-  border-radius: 999px;
-  background: var(--visual-accent);
-}
-.visual-arrow {
-  height: 2px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--visual-accent), var(--visual-accent-2));
-  box-shadow: 0 0 14px var(--visual-accent);
-}
-.visual-code {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-.visual-line {
-  position: relative;
-  height: 18px;
-  border-radius: 999px;
-  background: oklch(100% 0 0 / 0.052);
-  overflow: hidden;
-}
-.visual-line::before {
-  top: 7px;
-  right: 42%;
-  height: 4px;
-  background: var(--visual-accent);
-}
-.visual-line.short::before { right: 62%; }
-.visual-line.long::before { right: 18%; }
-.visual-phone {
-  width: 74px;
-  height: 132px;
-  border: 2px solid oklch(100% 0 0 / 0.18);
-  border-radius: 22px;
-  background: oklch(100% 0 0 / 0.055);
-  position: absolute;
-  right: 15px;
-  bottom: 14px;
-  box-shadow: inset 0 0 0 4px oklch(0% 0 0 / 0.2);
-}
-.visual-phone::before {
-  content: '';
-  position: absolute;
-  inset: 16px 10px 22px;
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, var(--visual-accent), transparent 40%),
-    oklch(100% 0 0 / 0.06);
-}
-.visual-packets {
-  display: grid;
-  gap: 8px;
-  width: calc(100% - 88px);
-  margin-top: 12px;
-}
-.visual-packet {
-  height: 23px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--visual-accent), oklch(100% 0 0 / 0.08));
-  opacity: 0.72;
-}
-.visual-packet:nth-child(2) { width: 82%; opacity: 0.52; }
-.visual-packet:nth-child(3) { width: 62%; opacity: 0.44; }
-.visual-symbol {
-  position: absolute;
-  inset: auto 18px 18px auto;
-  width: 74px;
-  height: 74px;
-  display: grid;
-  place-items: center;
-  border: 1px solid oklch(100% 0 0 / 0.1);
-  border-radius: 18px;
-  background: oklch(100% 0 0 / 0.065);
-  color: var(--visual-accent-2);
-  font-family: 'Zen Old Mincho', serif;
-  font-size: 2.2rem;
-  font-weight: 900;
-}
-.visual-crawler { --visual-accent: oklch(66% 0.19 285); --visual-accent-2: oklch(80% 0.14 95); }
-.visual-business { --visual-accent: oklch(68% 0.15 245); --visual-accent-2: oklch(74% 0.12 190); }
-.visual-rpa { --visual-accent: oklch(70% 0.17 330); --visual-accent-2: oklch(80% 0.14 95); }
-.visual-network { --visual-accent: oklch(70% 0.13 205); --visual-accent-2: oklch(76% 0.14 155); }
-.visual-gesture { --visual-accent: oklch(72% 0.14 245); --visual-accent-2: oklch(80% 0.14 95); }
-.visual-gan { --visual-accent: oklch(72% 0.16 325); --visual-accent-2: oklch(78% 0.14 25); }
-.visual-nlp { --visual-accent: oklch(68% 0.13 225); --visual-accent-2: oklch(80% 0.14 95); }
-.visual-ocr { --visual-accent: oklch(70% 0.16 305); --visual-accent-2: oklch(84% 0.11 70); }
-.visual-map { --visual-accent: oklch(68% 0.13 150); --visual-accent-2: oklch(80% 0.14 95); }
-.visual-store { --visual-accent: oklch(70% 0.13 175); --visual-accent-2: oklch(78% 0.12 35); }
-.visual-video { --visual-accent: oklch(70% 0.12 230); --visual-accent-2: oklch(76% 0.13 330); }
 .project-number {
   display: inline-flex;
   align-items: center;
@@ -1485,7 +1257,6 @@ a:hover { color: var(--gold); }
   .project-card { padding: var(--space-lg); }
   .project-title { font-size: var(--text-lg); }
   .project-desc { font-size: var(--text-xs); }
-  .project-visual.visual-system { min-height: 190px; }
   .project-link { font-size: var(--text-xs); padding: 3px 10px; }
 
   /* Experience timeline */
@@ -1828,16 +1599,7 @@ a:hover { color: var(--gold); }
       <div class="projects-stack" data-project-group="core">
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-crawler">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet wide"></span><span class="visual-cardlet"></span>
-              <span class="visual-cardlet"></span><span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-            </div>
-            <div class="visual-chart"><span></span><span></span><span></span><span></span><span></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a0533,#2d1b69)">🕷️</div>
         <div>
           <p class="project-number">01 / 核心工程</p>
           <h3 class="project-title">多平台广告数据爬取系统</h3>
@@ -1851,19 +1613,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-business">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-code">
-              <span class="visual-line long"></span>
-              <span class="visual-line"></span>
-              <span class="visual-line short"></span>
-            </div>
-            <div class="visual-flow">
-              <span class="visual-node"></span><span class="visual-arrow"></span><span class="visual-node"></span>
-            </div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a1a3e,#0d0d2b)">🇧🇷</div>
         <div>
           <p class="project-number">02 / 核心工程</p>
           <h3 class="project-title">巴西 CNPJ 商业数据爬虫</h3>
@@ -1877,18 +1627,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-rpa">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-flow">
-              <span class="visual-node"></span><span class="visual-arrow"></span><span class="visual-node"></span>
-            </div>
-            <div class="visual-flow">
-              <span class="visual-node"></span><span class="visual-arrow"></span><span class="visual-node"></span>
-            </div>
-            <div class="visual-code"><span class="visual-line long"></span><span class="visual-line"></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#14143a,#4b2aa8);font-size:4rem;">🤖</div>
         <div>
           <p class="project-number">03 / 核心工程</p>
           <h3 class="project-title">批量账号注册与浏览器 RPA 自动化系统</h3>
@@ -1902,18 +1641,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-network">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-packets">
-              <span class="visual-packet"></span>
-              <span class="visual-packet"></span>
-              <span class="visual-packet"></span>
-            </div>
-            <div class="visual-phone"></div>
-            <div class="visual-code"><span class="visual-line long"></span><span class="visual-line short"></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#073042,#0f766e);font-size:4rem;">📡</div>
         <div>
           <p class="project-number">04 / 核心工程</p>
           <h3 class="project-title">Android 网络调试与协议分析平台</h3>
@@ -1935,16 +1663,7 @@ a:hover { color: var(--gold); }
       <div class="projects-stack" data-project-group="ai">
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-gesture">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet tall"></span><span class="visual-cardlet wide"></span>
-              <span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-            </div>
-            <div class="visual-symbol">手</div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#0f0c29,#302260)">✋</div>
         <div>
           <p class="project-number">05 / AI · 毕设</p>
           <h3 class="project-title">手势控制 PPT 系统</h3>
@@ -1958,16 +1677,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-gan">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet tall"></span><span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-              <span class="visual-cardlet wide"></span>
-            </div>
-            <div class="visual-chart"><span></span><span></span><span></span><span></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a0a2e,#4a1942)">🎨</div>
         <div>
           <p class="project-number">06 / 深度学习</p>
           <h3 class="project-title">卡通风格迁移系统 (CartoonGAN)</h3>
@@ -1981,18 +1691,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-nlp">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-code">
-              <span class="visual-line long"></span>
-              <span class="visual-line"></span>
-              <span class="visual-line short"></span>
-              <span class="visual-line"></span>
-            </div>
-            <div class="visual-chart"><span></span><span></span><span></span><span></span><span></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1c1c4a,#2a5298)">📰</div>
         <div>
           <p class="project-number">07 / NLP</p>
           <h3 class="project-title">多模型新闻文本分类系统</h3>
@@ -2006,17 +1705,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-ocr">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-code">
-              <span class="visual-line"></span>
-              <span class="visual-line long"></span>
-              <span class="visual-line short"></span>
-            </div>
-            <div class="visual-symbol">あ</div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#2e1a3e,#5a1a6e)">✍️</div>
         <div>
           <p class="project-number">08 / 深度学习</p>
           <h3 class="project-title">日语假名手写识别系统</h3>
@@ -2038,16 +1727,7 @@ a:hover { color: var(--gold); }
       <div class="projects-stack" data-project-group="web">
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-map">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet wide tall"></span><span class="visual-cardlet"></span>
-              <span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-            </div>
-            <div class="visual-chart"><span></span><span></span><span></span><span></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a3a1a,#2d5a1e)">🗺️</div>
         <div>
           <p class="project-number">09 / 数据可视化</p>
           <h3 class="project-title">梅州美食地理可视化系统</h3>
@@ -2061,16 +1741,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-store">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet"></span><span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-              <span class="visual-cardlet"></span><span class="visual-cardlet"></span><span class="visual-cardlet"></span>
-            </div>
-            <div class="visual-flow"><span class="visual-node"></span><span class="visual-arrow"></span><span class="visual-node"></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#1a3a2e,#0d4a3e)">🛒</div>
         <div>
           <p class="project-number">10 / 全栈开发</p>
           <h3 class="project-title">动漫商城管理系统</h3>
@@ -2084,9 +1755,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-image" style="background-image: url('projects/ai-images/clipboard-2026-06-02T12-50-08-313Z-ab85d630.jpg');">
-          <div class="visual-image-caption"><span>AI Gallery</span><span>ComfyUI / SD</span></div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#2b1645,#7c3aed);font-size:4rem;">✨</div>
         <div>
           <p class="project-number">11 / AI 生图</p>
           <h3 class="project-title">AI 生图作品集</h3>
@@ -2100,16 +1769,7 @@ a:hover { color: var(--gold); }
       </article>
 
       <article class="project-card" data-reveal>
-        <div class="project-visual visual-system visual-video">
-          <div class="visual-window">
-            <div class="visual-topbar"><span></span><span></span><span></span></div>
-            <div class="visual-grid">
-              <span class="visual-cardlet wide"></span><span class="visual-cardlet"></span>
-              <span class="visual-cardlet"></span><span class="visual-cardlet wide"></span>
-            </div>
-            <div class="visual-code"><span class="visual-line long"></span><span class="visual-line"></span></div>
-          </div>
-        </div>
+        <div class="project-visual" style="background:linear-gradient(135deg,#0d1b2a,#1b2838);font-size:4rem;">🎬</div>
         <div>
           <p class="project-number">12 / AI 视频</p>
           <h3 class="project-title">AI 视频作品</h3>
