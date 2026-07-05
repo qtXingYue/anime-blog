@@ -104,12 +104,26 @@ body {
   color: var(--text-primary); background: var(--bg-deep); overflow-x: hidden;
 }
 body::before {
-  content: ''; position: fixed; inset: 0; z-index: -2;
+  content: ''; position: fixed; inset: 0; z-index: -4;
   background:
-    radial-gradient(ellipse 80% 60% at 20% 10%, oklch(45% 0.12 300 / 0.3) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 70% at 85% 50%, oklch(50% 0.15 280 / 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 50% at 40% 80%, oklch(55% 0.08 270 / 0.15) 0%, transparent 60%);
+    radial-gradient(ellipse 76% 58% at 18% -10%, oklch(58% 0.12 210 / 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 48% 54% at 92% 22%, oklch(74% 0.14 92 / 0.12) 0%, transparent 54%),
+    radial-gradient(ellipse 42% 46% at 48% 72%, oklch(60% 0.12 170 / 0.1) 0%, transparent 62%),
+    linear-gradient(180deg, oklch(7% 0.018 255), oklch(10% 0.014 245) 46%, oklch(7.5% 0.016 260));
   background-color: var(--bg-deep);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(oklch(100% 0 0 / 0.035) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, oklch(100% 0 0 / 0.03) 1px, transparent 1px) 0 0 / 44px 44px,
+    radial-gradient(circle at 50% 0%, oklch(100% 0 0 / 0.08), transparent 46%);
+  mask-image: linear-gradient(180deg, black 0%, black 72%, transparent 100%);
+  opacity: 0.42;
 }
 img { max-width: 100%; display: block; }
 a { color: var(--accent); text-decoration: none; transition: color 200ms var(--ease-out-expo); }
@@ -117,6 +131,105 @@ a:hover { color: var(--gold); }
 ::selection { background: oklch(60% 0.18 280 / 0.3); color: var(--text-primary); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 .container { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--space-xl); }
+
+/* ============================================================
+   PROJECT-DERIVED BACKDROP
+   ============================================================ */
+.portfolio-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 48% 40% at 52% 12%, oklch(88% 0.04 230 / 0.06), transparent 62%),
+    radial-gradient(ellipse 54% 46% at 18% 70%, oklch(72% 0.12 180 / 0.06), transparent 60%);
+}
+.portfolio-bg::before,
+.portfolio-bg::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+.portfolio-bg::before {
+  inset: -18%;
+  background:
+    conic-gradient(from 120deg at 52% 34%, transparent 0 20%, oklch(65% 0.14 190 / 0.12) 24%, transparent 31% 58%, oklch(82% 0.13 95 / 0.1) 64%, transparent 72% 100%);
+  filter: blur(46px);
+  opacity: 0.7;
+  animation: ambientDrift 24s ease-in-out infinite alternate;
+}
+.portfolio-bg::after {
+  inset: 0;
+  background:
+    linear-gradient(90deg, oklch(100% 0 0 / 0.04), transparent 16% 84%, oklch(0% 0 0 / 0.18)),
+    linear-gradient(180deg, oklch(0% 0 0 / 0.22), transparent 24% 76%, oklch(0% 0 0 / 0.34));
+}
+.portfolio-bg__shot {
+  position: absolute;
+  display: block;
+  width: var(--w);
+  aspect-ratio: var(--ratio, 16 / 9);
+  border: 1px solid oklch(100% 0 0 / 0.09);
+  border-radius: 18px;
+  background-image:
+    linear-gradient(180deg, oklch(0% 0 0 / 0.1), oklch(0% 0 0 / 0.28)),
+    var(--shot);
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 24px 90px oklch(0% 0 0 / 0.34),
+    inset 0 1px 0 oklch(100% 0 0 / 0.1);
+  filter: saturate(0.46) contrast(0.88) brightness(0.62) blur(0.6px);
+  opacity: var(--opacity, 0.15);
+  transform: translate3d(0, 0, 0) rotate(var(--rotate, 0deg));
+}
+.portfolio-bg__shot.s1 { --w: min(700px, 43vw); --ratio: 2782 / 1550; --opacity: 0.1; --rotate: -7deg; top: 76px; right: -8vw; }
+.portfolio-bg__shot.s2 { --w: min(560px, 36vw); --ratio: 2608 / 1182; --opacity: 0.08; --rotate: 6deg; top: 38vh; left: -10vw; }
+.portfolio-bg__shot.s3 { --w: min(500px, 28vw); --ratio: 2606 / 1052; --opacity: 0.09; --rotate: 4deg; right: 7vw; bottom: 8vh; }
+.portfolio-bg__shot.s4 { --w: min(430px, 24vw); --ratio: 2614 / 984; --opacity: 0.07; --rotate: -3deg; left: 48vw; top: 18vh; }
+[data-theme="light"] body::before {
+  background:
+    radial-gradient(ellipse 76% 58% at 18% -10%, oklch(72% 0.11 210 / 0.14) 0%, transparent 60%),
+    radial-gradient(ellipse 48% 54% at 92% 22%, oklch(82% 0.12 92 / 0.16) 0%, transparent 54%),
+    radial-gradient(ellipse 42% 46% at 48% 72%, oklch(72% 0.09 170 / 0.1) 0%, transparent 62%),
+    linear-gradient(180deg, oklch(98% 0.006 250), oklch(94% 0.01 245) 52%, oklch(97% 0.006 260));
+}
+[data-theme="light"] body::after {
+  background:
+    linear-gradient(oklch(0% 0 0 / 0.045) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, oklch(0% 0 0 / 0.04) 1px, transparent 1px) 0 0 / 44px 44px,
+    radial-gradient(circle at 50% 0%, oklch(100% 0 0 / 0.58), transparent 46%);
+  opacity: 0.28;
+}
+[data-theme="light"] .portfolio-bg {
+  background:
+    radial-gradient(ellipse 48% 40% at 52% 12%, oklch(62% 0.05 230 / 0.09), transparent 62%),
+    radial-gradient(ellipse 54% 46% at 18% 70%, oklch(70% 0.09 180 / 0.08), transparent 60%);
+}
+[data-theme="light"] .portfolio-bg::after {
+  background:
+    linear-gradient(90deg, oklch(100% 0 0 / 0.36), transparent 18% 84%, oklch(100% 0 0 / 0.48)),
+    linear-gradient(180deg, oklch(100% 0 0 / 0.54), transparent 24% 72%, oklch(100% 0 0 / 0.72));
+}
+[data-theme="light"] .portfolio-bg__shot {
+  border-color: oklch(0% 0 0 / 0.08);
+  filter: saturate(0.42) contrast(0.9) brightness(1.08) blur(0.8px);
+  opacity: calc(var(--opacity, 0.15) * 0.76);
+  box-shadow: 0 24px 90px oklch(45% 0.04 260 / 0.16), inset 0 1px 0 oklch(100% 0 0 / 0.9);
+}
+@media (max-width: 768px) {
+  .portfolio-bg__shot { display: none; }
+  .portfolio-bg::before { opacity: 0.42; }
+  body::after { background-size: 34px 34px; opacity: 0.26; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-bg::before { animation: none; }
+}
+@keyframes ambientDrift {
+  from { transform: translate3d(-2%, -1%, 0) rotate(-2deg) scale(1); }
+  to { transform: translate3d(2%, 2%, 0) rotate(2deg) scale(1.06); }
+}
 
 /* ============================================================
    NOISE TEXTURE OVERLAY
@@ -387,10 +500,63 @@ a:hover { color: var(--gold); }
 /* ============================================================
    PROJECTS — editorial cards with staggered layout
    ============================================================ */
+#projects {
+  isolation: isolate;
+}
+#projects::before {
+  content: '';
+  position: absolute;
+  top: clamp(80px, 8vw, 140px);
+  bottom: clamp(60px, 7vw, 120px);
+  left: 50%;
+  z-index: -1;
+  width: min(1220px, calc(100% - 28px));
+  transform: translateX(-50%);
+  border: 1px solid oklch(100% 0 0 / 0.055);
+  border-radius: 32px;
+  background:
+    radial-gradient(ellipse 72% 42% at 50% 0%, oklch(64% 0.1 205 / 0.13), transparent 64%),
+    radial-gradient(ellipse 38% 48% at 88% 32%, oklch(80% 0.13 95 / 0.1), transparent 62%),
+    linear-gradient(180deg, oklch(100% 0 0 / 0.035), transparent 22% 78%, oklch(100% 0 0 / 0.028)),
+    linear-gradient(90deg, transparent, oklch(100% 0 0 / 0.028) 48% 52%, transparent),
+    linear-gradient(180deg, oklch(8% 0.014 252 / 0.78), oklch(9% 0.016 242 / 0.68));
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.08),
+    0 34px 120px oklch(0% 0 0 / 0.18);
+}
+#projects::after {
+  content: '';
+  position: absolute;
+  top: clamp(170px, 15vw, 260px);
+  bottom: clamp(90px, 9vw, 160px);
+  left: 50%;
+  z-index: -1;
+  width: min(860px, calc(100% - 64px));
+  transform: translateX(-50%);
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, oklch(100% 0 0 / 0.08), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, oklch(100% 0 0 / 0.06), transparent) bottom / 100% 1px no-repeat,
+    linear-gradient(180deg, transparent, oklch(64% 0.1 205 / 0.1), transparent) center / 1px 100% no-repeat;
+  opacity: 0.7;
+}
 .projects-stack {
   position: relative;
   padding-bottom: clamp(260px, 42vh, 420px);
   isolation: isolate;
+}
+.projects-stack::before {
+  content: '';
+  position: absolute;
+  inset: -34px -36px 78px;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 30px;
+  background:
+    linear-gradient(180deg, oklch(100% 0 0 / 0.05), transparent 36% 74%, oklch(100% 0 0 / 0.03)),
+    repeating-linear-gradient(90deg, transparent 0 42px, oklch(100% 0 0 / 0.026) 42px 43px),
+    linear-gradient(90deg, transparent, oklch(64% 0.1 205 / 0.08), transparent);
+  mask-image: linear-gradient(180deg, transparent 0%, black 10%, black 86%, transparent 100%);
 }
 .project-group {
   margin-top: var(--space-3xl);
@@ -841,6 +1007,30 @@ a:hover { color: var(--gold); }
 }
 [data-theme="light"] .project-progress-dots::before {
   background: linear-gradient(180deg, oklch(0% 0 0 / 0.035), oklch(0% 0 0 / 0.14), oklch(0% 0 0 / 0.035));
+}
+[data-theme="light"] #projects::before {
+  border-color: oklch(0% 0 0 / 0.055);
+  background:
+    radial-gradient(ellipse 72% 42% at 50% 0%, oklch(64% 0.08 205 / 0.09), transparent 64%),
+    radial-gradient(ellipse 38% 48% at 88% 32%, oklch(82% 0.12 95 / 0.11), transparent 62%),
+    linear-gradient(180deg, oklch(100% 0 0 / 0.54), transparent 22% 78%, oklch(100% 0 0 / 0.42)),
+    linear-gradient(90deg, transparent, oklch(0% 0 0 / 0.024) 48% 52%, transparent),
+    linear-gradient(180deg, oklch(98% 0.005 250 / 0.72), oklch(96% 0.008 242 / 0.62));
+  box-shadow:
+    inset 0 1px 0 oklch(100% 0 0 / 0.82),
+    0 34px 120px oklch(45% 0.04 260 / 0.1);
+}
+[data-theme="light"] #projects::after {
+  background:
+    linear-gradient(90deg, transparent, oklch(0% 0 0 / 0.08), transparent) top / 100% 1px no-repeat,
+    linear-gradient(90deg, transparent, oklch(0% 0 0 / 0.05), transparent) bottom / 100% 1px no-repeat,
+    linear-gradient(180deg, transparent, oklch(64% 0.08 205 / 0.1), transparent) center / 1px 100% no-repeat;
+}
+[data-theme="light"] .projects-stack::before {
+  background:
+    linear-gradient(180deg, oklch(100% 0 0 / 0.5), transparent 36% 74%, oklch(100% 0 0 / 0.38)),
+    repeating-linear-gradient(90deg, transparent 0 42px, oklch(0% 0 0 / 0.024) 42px 43px),
+    linear-gradient(90deg, transparent, oklch(64% 0.08 205 / 0.08), transparent);
 }
 [data-theme="light"] .projects-stack .project-card {
   box-shadow: 0 18px 48px oklch(45% 0.04 270 / 0.14), inset 0 1px 0 oklch(100% 0 0 / 0.75);
@@ -1347,6 +1537,12 @@ a:hover { color: var(--gold); }
 </head>
 <body>
 
+<div class="portfolio-bg" aria-hidden="true">
+  <span class="portfolio-bg__shot s1" style="--shot:url('projects/data-crawler/dashboard-1.png')"></span>
+  <span class="portfolio-bg__shot s2" style="--shot:url('projects/data-crawler/search.png')"></span>
+  <span class="portfolio-bg__shot s3" style="--shot:url('projects/data-crawler/top20-balance.png')"></span>
+  <span class="portfolio-bg__shot s4" style="--shot:url('projects/data-crawler/chart-trend.png')"></span>
+</div>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <div class="noise-overlay" aria-hidden="true"></div>
 <div id="tsparticles"></div>
@@ -2137,12 +2333,12 @@ function loadParticles() {
     tsParticles.load("tsparticles", {
       fpsLimit: 24,
       particles: {
-        number: { value: 18, density: { enable: true } },
-        color: { value: ["#8b5cf6", "#6d4ddb", "#a78bfa"] },
-        opacity: { value: { min: 0.08, max: 0.28 }, animation: { enable: true, speed: 0.35 } },
-        size: { value: { min: 1, max: 3 }, animation: { enable: true, speed: 0.7 } },
-        move: { enable: true, speed: 0.28, direction: "none", random: true, outModes: "bounce" },
-        links: { enable: true, color: "#8b5cf6", opacity: 0.055, distance: 180 },
+        number: { value: 16, density: { enable: true } },
+        color: { value: ["#67e8f9", "#f6c453", "#8b5cf6"] },
+        opacity: { value: { min: 0.05, max: 0.18 }, animation: { enable: true, speed: 0.3 } },
+        size: { value: { min: 1, max: 2.4 }, animation: { enable: true, speed: 0.55 } },
+        move: { enable: true, speed: 0.22, direction: "none", random: true, outModes: "bounce" },
+        links: { enable: true, color: "#67e8f9", opacity: 0.045, distance: 170 },
         shape: { type: "circle" }
       },
       interactivity: {
