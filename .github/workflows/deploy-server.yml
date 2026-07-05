@@ -1,0 +1,43 @@
+name: Deploy server
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - index.html
+      - projects/brazil-cnpj-report.html
+      - .github/workflows/deploy-server.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Install SSH password helper
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y sshpass
+
+      - name: Pull latest portfolio files on server
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+        run: |
+          sshpass -p "$SERVER_PASSWORD" ssh \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            -o ConnectTimeout=30 \
+            root@"$SERVER_HOST" \
+            'set -e
+             cd /var/www/portfolio
+             git fetch origin main
+             if git diff --quiet --ignore-submodules HEAD --; then
+               git pull --ff-only origin main
+             else
+               git checkout origin/main -- index.html projects/brazil-cnpj-report.html
+             fi
+             chown www-data:www-data index.html projects/brazil-cnpj-report.html
+             nginx -t
+             systemctl reload nginx'
