@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Android 网络调试与协议分析平台 — 项目详解</title>
-<meta name="description" content="基于 mitmproxy、Frida 17、ADB 与 Android 模拟器构建的移动端网络观测实验平台，覆盖流量采集、Native 层可观测性、API 资产梳理与调试报告沉淀。">
+<title>MuMu 安卓环境网络调试与协议分析 — 项目详解</title>
+<meta name="description" content="基于 MuMu 模拟器、mitmproxy、Frida 17 与 ADB 构建的 Android 授权测试环境，记录测试 APK 的网络请求、SDK 连接、TLS 读写观测与调试报告沉淀。">
 <style>
 :root{
   --bg-deep:oklch(8% 0.015 270);
@@ -61,6 +61,10 @@ p{color:var(--text-secondary);margin:.8rem 0}
 .card h3{font-size:1rem;margin-bottom:.45rem}.card p{font-size:.9rem;line-height:1.75;margin:0}
 .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;margin-top:1.1rem}
 .flow span{min-height:76px;display:flex;align-items:center;justify-content:center;text-align:center;padding:.8rem;border:1px solid var(--border);border-radius:14px;background:linear-gradient(145deg,oklch(100% 0 0 / .06),transparent)}
+.steps{counter-reset:step;display:grid;gap:.8rem;margin-top:1.1rem}
+.step{counter-increment:step;display:grid;grid-template-columns:auto 1fr;gap:.85rem;align-items:start;padding:1rem;border:1px solid var(--border);border-radius:14px;background:oklch(100% 0 0 / .04)}
+.step::before{content:counter(step,decimal-leading-zero);display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:oklch(70% .13 205 / .14);color:var(--accent);font-weight:800}
+.step h3{font-size:.98rem;margin-bottom:.25rem}.step p{font-size:.9rem;line-height:1.75;margin:0}
 .note{border:1px solid oklch(80% .14 95 / .18);border-radius:14px;background:oklch(80% .14 95 / .07);padding:1rem;color:var(--text-secondary);font-size:.9rem}
 .tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}.tags span{padding:.35rem .8rem;border:1px solid var(--border);border-radius:999px;color:var(--text-secondary);font-size:.82rem;background:oklch(100% 0 0 / .04)}
 .footer{padding:2.4rem 0;color:var(--text-muted);font-size:.86rem}
@@ -73,10 +77,10 @@ p{color:var(--text-secondary);margin:.8rem 0}
   <header class="hero">
     <div class="hero-grid">
       <div>
-        <p class="kicker">Android Network Observability</p>
-        <h1>Android 网络调试与协议分析平台</h1>
-        <p class="lead">围绕 Android 模拟器、mitmproxy、Frida 17 与 ADB 构建移动端网络观测流程，用于学习和验证移动应用在 TLS、SNI、HTTP 请求、Native 层读写等环节的可观测性。</p>
-        <div class="tags"><span>Python</span><span>Frida 17</span><span>mitmproxy</span><span>ADB</span><span>Android 15</span></div>
+        <p class="kicker">MuMu Android Network Lab</p>
+        <h1>MuMu 安卓环境网络调试与协议分析</h1>
+        <p class="lead">以 MuMu 模拟器作为 Android 运行环境，配合 ADB、mitmproxy、Frida 17 和 Python 脚本，对自建测试 APK / 授权实验包的网络请求、SDK 连接和 Native 层读写行为进行记录与复盘。</p>
+        <div class="tags"><span>MuMu 模拟器</span><span>ADB</span><span>mitmproxy</span><span>Frida 17</span><span>Python</span></div>
       </div>
       <div class="hero-visual" aria-hidden="true">
         <div class="visual-window">
@@ -91,22 +95,32 @@ p{color:var(--text-secondary);margin:.8rem 0}
   </header>
 
   <div class="stats">
-    <div class="stat"><strong>30+</strong><span>接口与域名类型梳理</span></div>
+    <div class="stat"><strong>30+</strong><span>请求与域名类型梳理</span></div>
     <div class="stat"><strong>Frida</strong><span>Native 层观测脚本</span></div>
     <div class="stat"><strong>TLS</strong><span>读写链路可视化</span></div>
-    <div class="stat"><strong>Android 15</strong><span>模拟器调试环境</span></div>
+    <div class="stat"><strong>MuMu</strong><span>模拟器调试环境</span></div>
   </div>
 
   <section>
     <h2>项目定位</h2>
-    <p>这个项目定位在授权测试与学习环境下的网络可观测性建设：搭建稳定的抓包环境，记录域名、接口类型、SDK 连接、请求链路和 Native 层通信现象，最后沉淀成可复盘的分析报告。</p>
-    <p class="note">公开作品集只展示方法论、架构和观测结果摘要，不公开敏感接口参数、认证材料、凭据信息或可复现操作步骤。</p>
+    <p>这个项目不是简单写“会抓包”，而是把一次 Android 网络调试过程整理成可复用的实验环境：用 MuMu 模拟器运行测试 APK，通过 ADB 管理设备状态，用 mitmproxy 观察应用请求，再用 Frida 辅助记录 Native 层调用现象，最后沉淀为接口资产表和调试报告。</p>
+    <p>测试对象采用自建 Android Demo APK 与授权课程实验包，覆盖登录态请求、列表接口、图片资源加载、埋点上报和第三方 SDK 连接等常见场景。这样既能展示真实移动端调试流程，也避免在公开作品集里暴露第三方应用的敏感信息。</p>
+    <p class="note">公开页面只展示环境搭建思路、观察维度和报告产出，不公开认证材料、具体业务接口参数、可复现绕过脚本或第三方 App 的敏感数据。</p>
+  </section>
+
+  <section>
+    <h2>测试环境</h2>
+    <div class="grid">
+      <div class="card"><h3>运行软件</h3><p>使用 MuMu 模拟器作为 Android 设备，创建干净测试实例，安装自建测试 APK，并通过 ADB 连接到本机调试环境。</p></div>
+      <div class="card"><h3>观测工具</h3><p>桌面端使用 mitmproxy 记录 HTTP/TLS 请求，配合 Python 脚本整理域名、路径、状态码和资源类型。</p></div>
+      <div class="card"><h3>辅助分析</h3><p>在授权测试包内使用 Frida 17 观察 connect、SSL_read、SSL_write 等调用现象，帮助判断请求链路和 Native 层通信位置。</p></div>
+    </div>
   </section>
 
   <section>
     <h2>技术流程</h2>
     <div class="flow">
-      <span>模拟器与 ADB 环境准备</span>
+      <span>MuMu 实例与 ADB 准备</span>
       <span>mitmproxy 流量采集</span>
       <span>Frida Native 层观测</span>
       <span>接口资产与报告沉淀</span>
@@ -114,20 +128,30 @@ p{color:var(--text-secondary);margin:.8rem 0}
   </section>
 
   <section>
+    <h2>MuMu 使用过程</h2>
+    <div class="steps">
+      <div class="step"><div><h3>准备独立模拟器实例</h3><p>在 MuMu 中创建专门的测试环境，保持系统、代理、证书和测试 APK 配置独立，避免影响日常使用环境。</p></div></div>
+      <div class="step"><div><h3>连接 ADB 与安装测试包</h3><p>通过 ADB 确认模拟器在线，安装自建 Demo APK，记录包名、版本号、运行入口和测试账号类型。</p></div></div>
+      <div class="step"><div><h3>配置代理与采集请求</h3><p>将模拟器网络指向本机代理，在授权测试场景下打开登录、列表、图片加载、埋点等页面，采集请求链路和响应特征。</p></div></div>
+      <div class="step"><div><h3>整理报告与复盘结论</h3><p>把域名、接口类型、SDK 连接、异常请求和 Native 层观察结果归档，输出调试报告、接口资产表和环境复现说明。</p></div></div>
+    </div>
+  </section>
+
+  <section>
     <h2>核心实现</h2>
     <div class="grid">
-      <div class="card"><h3>流量采集</h3><p>通过代理与日志链路观察 HTTP/TLS 请求、SNI、CDN 资源和第三方 SDK 连接，整理为接口资产清单。</p></div>
-      <div class="card"><h3>动态观测</h3><p>使用 Frida 17 适配新版 API，对 connect、SSL_read、SSL_write 等 Native 调用进行可视化记录。</p></div>
-      <div class="card"><h3>报告输出</h3><p>将环境、流程、端点分类、链路判断和风险边界整理成 Markdown 报告，便于后续复盘和展示。</p></div>
+      <div class="card"><h3>流量采集</h3><p>通过代理与日志链路观察测试 APK 的 HTTP/TLS 请求、SNI、静态资源、接口路径和第三方 SDK 连接，整理为接口资产清单。</p></div>
+      <div class="card"><h3>动态观测</h3><p>使用 Frida 17 适配新版 API，对授权测试包中的 connect、SSL_read、SSL_write 等 Native 调用进行可视化记录。</p></div>
+      <div class="card"><h3>报告输出</h3><p>将 MuMu 环境配置、测试路径、端点分类、链路判断和风险边界整理成 Markdown 报告，便于后续复盘和展示。</p></div>
     </div>
   </section>
 
   <section>
     <h2>作品集表达</h2>
-    <p>这个项目适合放在“核心工程项目”里，重点体现移动端调试、网络协议理解、动态插桩、问题拆解和文档化能力。相比只写“抓包”，更好的表达是“构建可复用的 Android 网络观测实验平台”。</p>
+    <p>这个项目适合放在“核心工程项目”里，重点体现移动端调试、网络协议理解、模拟器环境管理、动态插桩、问题拆解和文档化能力。相比只写“抓包”，更真实的表达是“用 MuMu 模拟器搭建 Android 授权测试环境，并把一次网络调试过程沉淀成可复盘的方法和报告”。</p>
   </section>
 
-  <footer class="footer">© 2026 QT新月 · Android Network Observability Lab</footer>
+  <footer class="footer">© 2026 QT新月 · MuMu Android Network Lab</footer>
 </div>
 </body>
 </html>
