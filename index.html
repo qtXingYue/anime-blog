@@ -133,7 +133,7 @@ a:hover { color: var(--gold); }
 .container { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--space-xl); }
 
 /* ============================================================
-   ATMOSPHERIC BACKDROP
+   PROJECT-DERIVED BACKDROP
    ============================================================ */
 .portfolio-bg {
   position: fixed;
@@ -141,13 +141,9 @@ a:hover { color: var(--gold); }
   z-index: -3;
   overflow: hidden;
   pointer-events: none;
-  background-image:
-    linear-gradient(90deg, oklch(7% 0.018 255 / 0.28), transparent 18% 82%, oklch(0% 0 0 / 0.28)),
-    linear-gradient(180deg, oklch(0% 0 0 / 0.38), transparent 28% 72%, oklch(0% 0 0 / 0.42)),
-    url('assets/portfolio-atmosphere.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background:
+    radial-gradient(ellipse 48% 40% at 52% 12%, oklch(88% 0.04 230 / 0.06), transparent 62%),
+    radial-gradient(ellipse 54% 46% at 18% 70%, oklch(72% 0.12 180 / 0.06), transparent 60%);
 }
 .portfolio-bg::before,
 .portfolio-bg::after {
@@ -158,18 +154,40 @@ a:hover { color: var(--gold); }
 .portfolio-bg::before {
   inset: -18%;
   background:
-    conic-gradient(from 120deg at 52% 34%, transparent 0 20%, oklch(65% 0.14 190 / 0.08) 24%, transparent 31% 58%, oklch(82% 0.13 95 / 0.07) 64%, transparent 72% 100%);
-  filter: blur(52px);
-  opacity: 0.62;
+    conic-gradient(from 120deg at 52% 34%, transparent 0 20%, oklch(65% 0.14 190 / 0.12) 24%, transparent 31% 58%, oklch(82% 0.13 95 / 0.1) 64%, transparent 72% 100%);
+  filter: blur(46px);
+  opacity: 0.7;
   animation: ambientDrift 24s ease-in-out infinite alternate;
 }
 .portfolio-bg::after {
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 44% at 48% 8%, oklch(100% 0 0 / 0.045), transparent 62%),
-    linear-gradient(90deg, oklch(100% 0 0 / 0.035), transparent 16% 84%, oklch(0% 0 0 / 0.18)),
-    linear-gradient(180deg, oklch(0% 0 0 / 0.2), transparent 24% 76%, oklch(0% 0 0 / 0.34));
+    linear-gradient(90deg, oklch(100% 0 0 / 0.04), transparent 16% 84%, oklch(0% 0 0 / 0.18)),
+    linear-gradient(180deg, oklch(0% 0 0 / 0.22), transparent 24% 76%, oklch(0% 0 0 / 0.34));
 }
+.portfolio-bg__shot {
+  position: absolute;
+  display: block;
+  width: var(--w);
+  aspect-ratio: var(--ratio, 16 / 9);
+  border: 1px solid oklch(100% 0 0 / 0.09);
+  border-radius: 18px;
+  background-image:
+    linear-gradient(180deg, oklch(0% 0 0 / 0.1), oklch(0% 0 0 / 0.28)),
+    var(--shot);
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 24px 90px oklch(0% 0 0 / 0.34),
+    inset 0 1px 0 oklch(100% 0 0 / 0.1);
+  filter: saturate(0.46) contrast(0.88) brightness(0.62) blur(0.6px);
+  opacity: var(--opacity, 0.15);
+  transform: translate3d(0, 0, 0) rotate(var(--rotate, 0deg));
+}
+.portfolio-bg__shot.s1 { --w: min(700px, 43vw); --ratio: 2782 / 1550; --opacity: 0.1; --rotate: -7deg; top: 76px; right: -8vw; }
+.portfolio-bg__shot.s2 { --w: min(560px, 36vw); --ratio: 2608 / 1182; --opacity: 0.08; --rotate: 6deg; top: 38vh; left: -10vw; }
+.portfolio-bg__shot.s3 { --w: min(500px, 28vw); --ratio: 2606 / 1052; --opacity: 0.09; --rotate: 4deg; right: 7vw; bottom: 8vh; }
+.portfolio-bg__shot.s4 { --w: min(430px, 24vw); --ratio: 2614 / 984; --opacity: 0.07; --rotate: -3deg; left: 48vw; top: 18vh; }
 [data-theme="light"] body::before {
   background:
     radial-gradient(ellipse 76% 58% at 18% -10%, oklch(72% 0.11 210 / 0.14) 0%, transparent 60%),
@@ -185,21 +203,24 @@ a:hover { color: var(--gold); }
   opacity: 0.28;
 }
 [data-theme="light"] .portfolio-bg {
-  opacity: 0.42;
-  filter: saturate(0.56) brightness(1.22);
-  background-image:
-    linear-gradient(90deg, oklch(100% 0 0 / 0.56), transparent 22% 78%, oklch(100% 0 0 / 0.58)),
-    linear-gradient(180deg, oklch(100% 0 0 / 0.66), transparent 30% 70%, oklch(100% 0 0 / 0.74)),
-    url('assets/portfolio-atmosphere.jpg');
+  background:
+    radial-gradient(ellipse 48% 40% at 52% 12%, oklch(62% 0.05 230 / 0.09), transparent 62%),
+    radial-gradient(ellipse 54% 46% at 18% 70%, oklch(70% 0.09 180 / 0.08), transparent 60%);
 }
 [data-theme="light"] .portfolio-bg::after {
   background:
-    linear-gradient(90deg, oklch(100% 0 0 / 0.4), transparent 18% 84%, oklch(100% 0 0 / 0.5)),
-    linear-gradient(180deg, oklch(100% 0 0 / 0.56), transparent 24% 72%, oklch(100% 0 0 / 0.72));
+    linear-gradient(90deg, oklch(100% 0 0 / 0.36), transparent 18% 84%, oklch(100% 0 0 / 0.48)),
+    linear-gradient(180deg, oklch(100% 0 0 / 0.54), transparent 24% 72%, oklch(100% 0 0 / 0.72));
+}
+[data-theme="light"] .portfolio-bg__shot {
+  border-color: oklch(0% 0 0 / 0.08);
+  filter: saturate(0.42) contrast(0.9) brightness(1.08) blur(0.8px);
+  opacity: calc(var(--opacity, 0.15) * 0.76);
+  box-shadow: 0 24px 90px oklch(45% 0.04 260 / 0.16), inset 0 1px 0 oklch(100% 0 0 / 0.9);
 }
 @media (max-width: 768px) {
-  .portfolio-bg { background-position: 48% center; }
-  .portfolio-bg::before { opacity: 0.38; }
+  .portfolio-bg__shot { display: none; }
+  .portfolio-bg::before { opacity: 0.42; }
   body::after { background-size: 34px 34px; opacity: 0.26; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1516,7 +1537,12 @@ a:hover { color: var(--gold); }
 </head>
 <body>
 
-<div class="portfolio-bg" aria-hidden="true"></div>
+<div class="portfolio-bg" aria-hidden="true">
+  <span class="portfolio-bg__shot s1" style="--shot:url('projects/data-crawler/dashboard-1.png')"></span>
+  <span class="portfolio-bg__shot s2" style="--shot:url('projects/data-crawler/search.png')"></span>
+  <span class="portfolio-bg__shot s3" style="--shot:url('projects/data-crawler/top20-balance.png')"></span>
+  <span class="portfolio-bg__shot s4" style="--shot:url('projects/data-crawler/chart-trend.png')"></span>
+</div>
 <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <div class="noise-overlay" aria-hidden="true"></div>
 <div id="tsparticles"></div>
