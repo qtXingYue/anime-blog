@@ -54,12 +54,19 @@ def init_db():
         CREATE TABLE IF NOT EXISTS contacts (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT, email TEXT, message TEXT,
+            hermes_reply TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
         CREATE INDEX IF NOT EXISTS idx_visits_created ON visits(created_at);
         CREATE INDEX IF NOT EXISTS idx_visits_path ON visits(path);
     """)
     db.commit()
+    # 迁移：给 contacts 加 hermes_reply 列
+    try:
+        db.execute("ALTER TABLE contacts ADD COLUMN hermes_reply TEXT")
+        db.commit()
+    except Exception:
+        pass
     db.close()
 
 init_db()
@@ -335,6 +342,60 @@ async def ask_hermes(request: Request):
     result = _call_hermes_webhook(payload)
     return {"ok": True, "message": "已提交给 Hermes，结果会发送到飞书。", "hermes": result}
 
+
+@app.post("/api/admin/hermes/reply-contact/{contact_id}")
+async def hermes_reply_contact(contact_id: int, request: Request):
+    verify_admin(request)
+    db = get_db()
+    contact = db.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,)).fetchone()
+    if not contact:
+        db.close()
+        raise HTTPException(404, "留言不存在")
+
+    action_labels = {
+        "contact_reply": "回复访客留言",
+    }
+    context = {
+        "site": "QT新月 / 钟文清个人作品集",
+        "domain": "https://qtxingyue.me/",
+        "contact": {
+            "name": contact["name"],
+            "email": contact["email"],
+            "message": contact["message"],
+            "created_at": contact["created_at"],
+        },
+    }
+    payload = {
+        "event_type": "portfolio_admin",
+        "action": "回复访客留言",
+        "prompt": f"访客 {contact['name']} 发来留言：\n{contact['message']}\n\n请以 QT新月（钟文清）的口吻，写一封友好、真诚的回复邮件，150字以内，包含感谢、回应留言要点、以及欢迎进一步交流。",
+        "context": json.dumps(context, ensure_ascii=False),
+    }
+    result = _call_hermes_webhook(payload)
+
+    # 尝试提取回复文本
+    reply_text = None
+    try:
+        resp = result.get("response", {})
+        if isinstance(resp, dict):
+            reply_text = resp.get("reply") or resp.get("content") or resp.get("text") or resp.get("message")
+            if not reply_text and "data" in resp and isinstance(resp["data"], dict):
+                reply_text = resp["data"].get("reply") or resp["data"].get("content")
+        if not reply_text and isinstance(resp, str):
+            reply_text = resp
+        if not reply_text and result.get("raw"):
+            reply_text = result["raw"]
+    except Exception:
+        pass
+
+    if reply_text:
+        db.execute("UPDATE contacts SET hermes_reply = ? WHERE id = ?", (str(reply_text)[:2000], contact_id))
+        db.commit()
+
+    db.close()
+    return {"ok": True, "reply": reply_text or "（Hermes 已处理，结果已发送到飞书）", "hermes": result}
+
+
 # ==== Contact API ====
 
 @app.post("/api/contact")
@@ -390,7 +451,7 @@ def admin_page():
 }
 *{box-sizing:border-box}html{min-height:100%;background:#08090a}body{margin:0;min-height:100vh;position:relative;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);padding:clamp(16px,3vw,32px);font-feature-settings:"cv01","ss03"}body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 15% 0%,rgba(109,93,252,.22),transparent 34rem),radial-gradient(circle at 92% 12%,rgba(139,92,246,.16),transparent 28rem),linear-gradient(180deg,#08090a,#0b0b11 45%,#08090a)}
 a{color:#9ca3ff}.shell{max-width:1180px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:22px}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;box-shadow:0 12px 30px rgba(109,93,252,.35);font-weight:700}.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}.topbar h1{font-size:clamp(24px,4vw,36px);letter-spacing:-.04em;line-height:1;margin:0;font-weight:620}.status-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:999px;padding:8px 12px;color:var(--sub);font-size:13px;white-space:nowrap}.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 5px rgba(16,185,129,.12)}
-.login{width:min(420px,100%);margin:10vh auto 0;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.login:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 20% 0%,rgba(139,92,246,.2),transparent 16rem);pointer-events:none}.login>*{position:relative}.login h1{margin:0 0 8px;font-size:30px;letter-spacing:-.04em}.login p{margin:0 0 22px;color:var(--muted);font-size:14px}.login input{width:100%;padding:14px 15px;margin:0 0 14px;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;color:var(--text);outline:none;font-size:16px}.login input:focus,textarea:focus,input:focus{border-color:rgba(139,92,246,.65);box-shadow:0 0 0 4px rgba(139,92,246,.14)}button,.btn,.tab{appearance:none;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:var(--sub);cursor:pointer;transition:.18s ease;min-height:40px}button:hover,.btn:hover,.tab:hover{background:rgba(255,255,255,.07);border-color:var(--line2);color:var(--text);transform:translateY(-1px)}.login button,form button,.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#fff;font-weight:620;padding:12px 18px;box-shadow:0 10px 30px rgba(109,93,252,.24)}.login button{width:100%;font-size:15px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}.sidebar{position:sticky;top:18px;align-self:start;background:rgba(255,255,255,.026);border:1px solid var(--line);border-radius:24px;padding:12px;box-shadow:0 12px 50px rgba(0,0,0,.22)}.tabs{display:flex;flex-direction:column;gap:8px}.tab{text-align:left;padding:11px 13px;font-size:14px}.tab.active{background:rgba(109,93,252,.18);border-color:rgba(139,92,246,.5);color:#fff}.content{min-width:0}.panel{display:none;background:rgba(255,255,255,.026);border:1px solid var(--line);border-radius:28px;padding:clamp(16px,2.4vw,26px);box-shadow:var(--shadow)}.panel.active{display:block}.panel h3{margin:0 0 14px;font-size:22px;letter-spacing:-.03em}.hint{color:var(--muted);font-size:14px;margin:0 0 16px}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:18px;min-height:116px}.stat .num{font-size:clamp(26px,5vw,38px);letter-spacing:-.05em;color:var(--text);font-weight:650}.stat .label{font-size:13px;color:var(--muted);margin-top:6px}.table-wrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.18)}table{width:100%;border-collapse:collapse;min-width:520px}th,td{padding:13px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.055);font-size:14px;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.025)}tr:last-child td{border-bottom:none}.btn{padding:8px 11px;margin:2px 4px 2px 0}.btn.danger:hover{border-color:rgba(239,68,68,.6);color:#fecaca}form label{display:block;margin:13px 0 6px;color:var(--muted);font-size:13px}form input,form textarea,#hermesPrompt{width:100%;padding:12px 14px;background:rgba(0,0,0,.24);border:1px solid var(--line);border-radius:14px;color:var(--text);font-size:14px;outline:none}form textarea{min-height:240px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.hermes-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.hermes-grid button{padding:14px 12px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));font-weight:560}#hermesPrompt{min-height:180px;resize:vertical}#hermesResult{white-space:pre-wrap;background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:14px;color:var(--sub);font-size:13px;line-height:1.65;overflow:auto}.filebox{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}input[type=file]{max-width:100%;color:var(--muted)}
+.login{width:min(420px,100%);margin:10vh auto 0;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:28px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.login:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 20% 0%,rgba(139,92,246,.2),transparent 16rem);pointer-events:none}.login>*{position:relative}.login h1{margin:0 0 8px;font-size:30px;letter-spacing:-.04em}.login p{margin:0 0 22px;color:var(--muted);font-size:14px}.login input{width:100%;padding:14px 15px;margin:0 0 14px;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;color:var(--text);outline:none;font-size:16px}.login input:focus,textarea:focus,input:focus{border-color:rgba(139,92,246,.65);box-shadow:0 0 0 4px rgba(139,92,246,.14)}button,.btn,.tab{appearance:none;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:var(--sub);cursor:pointer;transition:.18s ease;min-height:40px}button:hover,.btn:hover,.tab:hover{background:rgba(255,255,255,.07);border-color:var(--line2);color:var(--text);transform:translateY(-1px)}.login button,form button,.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent;color:#fff;font-weight:620;padding:12px 18px;box-shadow:0 10px 30px rgba(109,93,252,.24)}.login button{width:100%;font-size:15px}.layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px}.sidebar{position:sticky;top:18px;align-self:start;background:rgba(255,255,255,.026);border:1px solid var(--line);border-radius:24px;padding:12px;box-shadow:0 12px 50px rgba(0,0,0,.22)}.tabs{display:flex;flex-direction:column;gap:8px}.tab{text-align:left;padding:11px 13px;font-size:14px}.tab.active{background:rgba(109,93,252,.18);border-color:rgba(139,92,246,.5);color:#fff}.content{min-width:0}.panel{display:none;background:rgba(255,255,255,.026);border:1px solid var(--line);border-radius:28px;padding:clamp(16px,2.4vw,26px);box-shadow:var(--shadow)}.panel.active{display:block}.panel h3{margin:0 0 14px;font-size:22px;letter-spacing:-.03em}.hint{color:var(--muted);font-size:14px;margin:0 0 16px}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}.stat{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.025));border:1px solid var(--line);border-radius:20px;padding:18px;min-height:116px}.stat .num{font-size:clamp(26px,5vw,38px);letter-spacing:-.05em;color:var(--text);font-weight:650}.stat .label{font-size:13px;color:var(--muted);margin-top:6px}.table-wrap{width:100%;overflow:auto;border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.18)}table{width:100%;border-collapse:collapse;min-width:520px}th,td{padding:13px 14px;text-align:left;border-bottom:1px solid rgba(255,255,255,.055);font-size:14px;vertical-align:top}th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.025)}tr:last-child td{border-bottom:none}.btn{padding:8px 11px;margin:2px 4px 2px 0}.btn.danger:hover{border-color:rgba(239,68,68,.6);color:#fecaca}.btn.small{padding:4px 10px;font-size:12px;min-height:28px}.reply-row td{background:linear-gradient(180deg,rgba(109,93,252,.07),rgba(6,182,212,.04));border-bottom:1px solid rgba(109,93,252,.12)}.reply-label{font-size:12px;color:#a78bfa;font-weight:600;margin-bottom:8px;letter-spacing:.04em}.reply-content{font-size:13.5px;line-height:1.7;color:var(--sub);white-space:pre-wrap;max-height:240px;overflow:auto}.reply-actions{margin-top:10px}form label{display:block;margin:13px 0 6px;color:var(--muted);font-size:13px}form input,form textarea,#hermesPrompt{width:100%;padding:12px 14px;background:rgba(0,0,0,.24);border:1px solid var(--line);border-radius:14px;color:var(--text);font-size:14px;outline:none}form textarea{min-height:240px;resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}.hermes-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:16px 0}.hermes-grid button{padding:14px 12px;background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025));font-weight:560}#hermesPrompt{min-height:180px;resize:vertical}#hermesResult{white-space:pre-wrap;background:rgba(0,0,0,.26);border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:14px;color:var(--sub);font-size:13px;line-height:1.65;overflow:auto}.filebox{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}input[type=file]{max-width:100%;color:var(--muted)}
 @media(max-width:860px){body{padding:14px}.topbar{align-items:flex-start;flex-direction:column}.layout{grid-template-columns:1fr}.sidebar{position:static;border-radius:20px;overflow:auto;padding:10px}.tabs{flex-direction:row;overflow-x:auto;padding-bottom:2px;scroll-snap-type:x mandatory}.tab{white-space:nowrap;scroll-snap-align:start}.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hermes-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.panel{border-radius:22px}.status-pill{font-size:12px}}
 @media(max-width:520px){.login{margin-top:6vh;padding:22px;border-radius:24px}.stats-grid,.hermes-grid{grid-template-columns:1fr}.brand{width:100%}.topbar h1{font-size:26px}th,td{padding:11px 12px}.panel{padding:15px}.filebox{display:block}.filebox button{margin-top:10px;width:100%}form button,.primary{width:100%}}
 </style></head><body>
@@ -410,7 +471,9 @@ function api(path,opt={}){return fetch(path,{...opt,credentials:'same-origin'}).
 async function login(){let r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pass').value}),credentials:'same-origin'});if(r.ok){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadAll()}else alert('密码错误')}
 function loadAll(){loadAnalytics();loadContacts();loadArticles();loadFiles()}
 async function loadAnalytics(){let d=await api('/api/analytics/summary');document.getElementById('stats').innerHTML=`<div class="stat"><div class="num">${d.total_pv}</div><div class="label">总浏览量</div></div><div class="stat"><div class="num">${d.total_uv}</div><div class="label">总访客</div></div><div class="stat"><div class="num">${d.today_pv}</div><div class="label">今日浏览</div></div><div class="stat"><div class="num">${d.today_uv}</div><div class="label">今日访客</div></div>`;document.getElementById('toppages').innerHTML=d.top_pages.map(p=>`<tr><td>${p.path}</td><td>${p.views}</td></tr>`).join('')||'<tr><td colspan="2">暂无数据</td></tr>'}
-async function loadContacts(){let rows=await api('/api/admin/contacts');document.querySelector('#contactTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.name}</td><td>${r.email}</td><td style="max-width:320px">${r.message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td><td>${r.created_at?.slice(0,16)||''}</td><td><button class="btn danger" onclick="delContact(${r.id})">删除</button></td></tr>`).join('')||'<tr><td colspan="6">暂无留言</td></tr>'}
+async function loadContacts(){let rows=await api('/api/admin/contacts');document.querySelector('#contactTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.name}</td><td>${r.email}</td><td style="max-width:320px">${r.message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td><td>${r.created_at?.slice(0,16)||''}</td><td style="white-space:nowrap"><button class="btn" onclick="replyContact(${r.id})" ${r.hermes_reply?'':'style="background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;border:none"'}>${r.hermes_reply?'重新生成':'AI 回复'}</button> <button class="btn danger" onclick="delContact(${r.id})">删除</button></td></tr>${r.hermes_reply?`<tr class="reply-row"><td colspan="6"><div class="reply-label">💬 Hermes 回复建议</div><div class="reply-content">${r.hermes_reply.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div><div class="reply-actions"><button class="btn small" onclick="copyReply(${r.id})">复制</button></div></td></tr>`:''}`).join('')||'<tr><td colspan="6">暂无留言</td></tr>'}
+async function replyContact(id){let btn=event.target;btn.disabled=true;btn.textContent='生成中...';try{let r=await api('/api/admin/hermes/reply-contact/'+id,{method:'POST'});loadContacts()}catch(e){alert('生成失败：'+e.message)}finally{btn.disabled=false}}
+function copyReply(id){let row=event.target.closest('tr').previousElementSibling;let content=document.querySelectorAll('.reply-content')[id-1]?.innerText||'';navigator.clipboard.writeText(content);event.target.textContent='已复制!';setTimeout(()=>event.target.textContent='复制',1500)}
 async function delContact(id){if(!confirm('确认删除这条留言？'))return;await api('/api/admin/contacts/'+id,{method:'DELETE'});loadContacts()}
 async function loadArticles(){let rows=await api('/api/admin/articles');document.querySelector('#articleTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.title}</td><td>${r.created_at?.slice(0,10)||''}</td><td><button class="btn" onclick="editArticle(${r.id})">编辑</button><button class="btn danger" onclick="delArticle(${r.id})">删除</button></td></tr>`).join('')||'<tr><td colspan="4">暂无文章</td></tr>'}
 async function editArticle(id){let rows=await api('/api/admin/articles');let r=rows.find(x=>x.id===id);if(!r)return;switchTab('new');document.getElementById('editTitle').textContent='编辑文章';document.getElementById('editId').value=r.id;document.getElementById('title').value=r.title;document.getElementById('slug').value=r.slug;document.getElementById('excerpt').value=r.excerpt||'';document.getElementById('content').value=r.content}
