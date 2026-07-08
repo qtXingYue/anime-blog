@@ -361,6 +361,15 @@ def list_contacts(request: Request):
     db.close()
     return rows
 
+@app.delete("/api/admin/contacts/{id}")
+def delete_contact(id: int, request: Request):
+    verify_admin(request)
+    db = get_db()
+    db.execute("DELETE FROM contacts WHERE id = ?", (id,))
+    db.commit()
+    db.close()
+    return {"ok": True}
+
 # ==== Admin HTML ====
 
 @app.get("/admin", response_class=HTMLResponse)
@@ -388,8 +397,9 @@ a{color:#9ca3ff}.shell{max-width:1180px;margin:0 auto}.topbar{display:flex;align
 <div class="login" id="login"><div class="logo">月</div><h1>Sakura Admin</h1><p>登录作品集后台，管理文章、数据和 Hermes 助手。</p><input type="password" id="pass" placeholder="输入后台密码" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()"><button onclick="login()">登录后台</button></div>
 <div class="shell" id="app" style="display:none">
 <div class="topbar"><div class="brand"><div class="logo">月</div><div><div class="eyebrow">QT新月 Portfolio</div><h1>Sakura Admin</h1></div></div><div class="status-pill"><span class="dot"></span>Backend Online · Hermes Ready</div></div>
-<div class="layout"><aside class="sidebar"><div class="tabs"><button class="tab active" onclick="switchTab('analytics',event)">数据分析</button><button class="tab" onclick="switchTab('articles',event)">文章管理</button><button class="tab" onclick="switchTab('new',event)">新建文章</button><button class="tab" onclick="switchTab('files',event)">文件管理</button><button class="tab" onclick="switchTab('hermes',event)">Hermes 助手</button></div></aside>
+<div class="layout"><aside class="sidebar"><div class="tabs"><button class="tab active" onclick="switchTab('analytics',event)">数据分析</button><button class="tab" onclick="switchTab('contacts',event)">留言管理</button><button class="tab" onclick="switchTab('articles',event)">文章管理</button><button class="tab" onclick="switchTab('new',event)">新建文章</button><button class="tab" onclick="switchTab('files',event)">文件管理</button><button class="tab" onclick="switchTab('hermes',event)">Hermes 助手</button></div></aside>
 <main class="content"><div class="panel active" id="analytics"><h3>数据分析</h3><p class="hint">站点访问概览与热门页面。</p><div class="stats-grid" id="stats"></div><h3>热门页面</h3><div class="table-wrap"><table id="toppages"><tbody></tbody></table></div></div>
+<div class="panel" id="contacts"><h3>留言管理</h3><p class="hint">查看访客通过联系表单提交的留言。</p><div class="table-wrap"><table id="contactTable"><thead><tr><th>编号</th><th>姓名</th><th>邮箱</th><th>留言</th><th>时间</th><th>操作</th></tr></thead><tbody></tbody></table></div></div>
 <div class="panel" id="articles"><h3>文章管理</h3><p class="hint">编辑、删除或查看后台文章。</p><div class="table-wrap"><table id="articleTable"><thead><tr><th>编号</th><th>标题</th><th>日期</th><th>操作</th></tr></thead><tbody></tbody></table></div></div>
 <div class="panel" id="new"><h3 id="editTitle">新建文章</h3><p class="hint">支持 HTML 正文，可配合 Hermes 生成初稿。</p><form id="articleForm"><input type="hidden" id="editId"><label>标题</label><input id="title" required><label>别名 / Slug</label><input id="slug" required><label>摘要</label><input id="excerpt"><label>内容 (HTML)</label><textarea id="content" required></textarea><button type="submit">保存文章</button></form></div>
 <div class="panel" id="files"><h3>文件管理</h3><p class="hint">上传并管理后台文件。</p><div class="filebox"><input type="file" id="fileInput"><button class="primary" onclick="uploadFile()">上传文件</button></div><div class="table-wrap"><table id="fileTable"><thead><tr><th>文件名</th><th>大小</th><th>链接</th></tr></thead><tbody></tbody></table></div></div>
@@ -398,8 +408,10 @@ a{color:#9ca3ff}.shell{max-width:1180px;margin:0 auto}.topbar{display:flex;align
 let TOKEN="";
 function api(path,opt={}){return fetch(path,{...opt,credentials:'same-origin'}).then(r=>r.ok?r.json():r.json().then(e=>{throw e})).catch(e=>{if(e&&e.error)alert(e.error);if(e&&('Unauthorized'===e.detail||401===e.statusCode)){document.getElementById('login').style.display='block';document.getElementById('app').style.display='none'}throw e})}
 async function login(){let r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pass').value}),credentials:'same-origin'});if(r.ok){document.getElementById('login').style.display='none';document.getElementById('app').style.display='block';loadAll()}else alert('密码错误')}
-function loadAll(){loadAnalytics();loadArticles();loadFiles()}
+function loadAll(){loadAnalytics();loadContacts();loadArticles();loadFiles()}
 async function loadAnalytics(){let d=await api('/api/analytics/summary');document.getElementById('stats').innerHTML=`<div class="stat"><div class="num">${d.total_pv}</div><div class="label">总浏览量</div></div><div class="stat"><div class="num">${d.total_uv}</div><div class="label">总访客</div></div><div class="stat"><div class="num">${d.today_pv}</div><div class="label">今日浏览</div></div><div class="stat"><div class="num">${d.today_uv}</div><div class="label">今日访客</div></div>`;document.getElementById('toppages').innerHTML=d.top_pages.map(p=>`<tr><td>${p.path}</td><td>${p.views}</td></tr>`).join('')||'<tr><td colspan="2">暂无数据</td></tr>'}
+async function loadContacts(){let rows=await api('/api/admin/contacts');document.querySelector('#contactTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.name}</td><td>${r.email}</td><td style="max-width:320px">${r.message.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</td><td>${r.created_at?.slice(0,16)||''}</td><td><button class="btn danger" onclick="delContact(${r.id})">删除</button></td></tr>`).join('')||'<tr><td colspan="6">暂无留言</td></tr>'}
+async function delContact(id){if(!confirm('确认删除这条留言？'))return;await api('/api/admin/contacts/'+id,{method:'DELETE'});loadContacts()}
 async function loadArticles(){let rows=await api('/api/admin/articles');document.querySelector('#articleTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.id}</td><td>${r.title}</td><td>${r.created_at?.slice(0,10)||''}</td><td><button class="btn" onclick="editArticle(${r.id})">编辑</button><button class="btn danger" onclick="delArticle(${r.id})">删除</button></td></tr>`).join('')||'<tr><td colspan="4">暂无文章</td></tr>'}
 async function editArticle(id){let rows=await api('/api/admin/articles');let r=rows.find(x=>x.id===id);if(!r)return;switchTab('new');document.getElementById('editTitle').textContent='编辑文章';document.getElementById('editId').value=r.id;document.getElementById('title').value=r.title;document.getElementById('slug').value=r.slug;document.getElementById('excerpt').value=r.excerpt||'';document.getElementById('content').value=r.content}
 async function delArticle(id){if(!confirm('确认删除？'))return;await api('/api/admin/articles/'+id,{method:'DELETE'});loadArticles()}
@@ -407,7 +419,7 @@ document.getElementById('articleForm').onsubmit=async function(e){e.preventDefau
 async function uploadFile(){let f=document.getElementById('fileInput').files[0];if(!f)return;let fd=new FormData();fd.append('file',f);let r=await api('/api/admin/upload',{method:'POST',body:fd});loadFiles();alert('链接: '+r.url)}
 async function loadFiles(){let rows=await api('/api/admin/files');document.querySelector('#fileTable tbody').innerHTML=rows.map(r=>`<tr><td>${r.original_name}</td><td>${(r.size/1024).toFixed(1)}KB</td><td><a href="${'/uploads/'+r.filename}" target="_blank">${'/uploads/'+r.filename}</a></td></tr>`).join('')||'<tr><td colspan="3">暂无文件</td></tr>'}
 async function runHermes(action){let el=document.getElementById('hermesResult');let prompt=document.getElementById('hermesPrompt').value;el.textContent='提交中...';try{let r=await api('/api/admin/hermes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,prompt})});el.textContent=(r&&r.message?r.message:'已提交')+'\\n\\n'+JSON.stringify(r,null,2)}catch(e){el.textContent='提交失败：'+JSON.stringify(e)}}
-function switchTab(name,ev){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));if(ev&&ev.target)ev.target.classList.add('active');else{let btn=[...document.querySelectorAll('.tab')].find(b=>b.getAttribute('onclick')?.includes("'"+name+"'"));if(btn)btn.classList.add('active')}document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(name).classList.add('active');if(name==='articles')loadArticles();if(name==='files')loadFiles();if(name==='analytics')loadAnalytics()}
+function switchTab(name,ev){document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));if(ev&&ev.target)ev.target.classList.add('active');else{let btn=[...document.querySelectorAll('.tab')].find(b=>b.getAttribute('onclick')?.includes("'"+name+"'"));if(btn)btn.classList.add('active')}document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(name).classList.add('active');if(name==='articles')loadArticles();if(name==='files')loadFiles();if(name==='analytics')loadAnalytics();if(name==='contacts')loadContacts()}
 </script></body></html>
 """)
 
