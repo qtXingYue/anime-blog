@@ -1,0 +1,12 @@
+---
+import Timeline from './Timeline.astro';
+import { honors } from '../data/timeline';
+---
+<section class="section">
+  <div class="container">
+    <p class="section-label reveal">Honors</p>
+    <h2 class="section-title reveal">荣誉与证书</h2>
+    <div class="section-divider reveal"></div>
+    <Timeline entries={honors} />
+  </div>
+</section>

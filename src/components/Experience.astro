@@ -1,0 +1,12 @@
+---
+import Timeline from './Timeline.astro';
+import { experience } from '../data/timeline';
+---
+<section class="section">
+  <div class="container">
+    <p class="section-label reveal">Experience</p>
+    <h2 class="section-title reveal">经历</h2>
+    <div class="section-divider reveal"></div>
+    <Timeline entries={experience} />
+  </div>
+</section>

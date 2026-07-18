@@ -1,0 +1,33 @@
+---
+// 全页视频背景：canplay 淡入 / 切页暂停 / 减少动态时默认关闭
+---
+<video class="bg-video" id="bgVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+  <source src="/bg-video.mp4" type="video/mp4">
+</video>
+<div class="bg-video-overlay" id="bgOverlay" aria-hidden="true"></div>
+
+<script>
+(function initVideoBg() {
+  const video = document.getElementById('bgVideo');
+  const overlay = document.getElementById('bgOverlay');
+  const btn = document.getElementById('bgToggle');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let enabled = !reduced;
+
+  function apply() {
+    video.classList.toggle('on', enabled);
+    overlay.classList.toggle('on', enabled);
+    btn.style.opacity = enabled ? '1' : '0.45';
+    if (enabled) video.play().catch(() => {}); else video.pause();
+  }
+  // 数据就绪后再淡入，避免黑帧闪烁
+  video.addEventListener('canplay', apply);
+  btn.addEventListener('click', () => { enabled = !enabled; apply(); });
+  // 切走标签页时暂停省电
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) video.pause();
+    else if (enabled) video.play().catch(() => {});
+  });
+  apply();
+})();
+</script>

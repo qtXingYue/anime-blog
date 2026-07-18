@@ -1,0 +1,23 @@
+---
+import type { TimelineEntry } from '../data/timeline';
+
+interface Props {
+  entries: TimelineEntry[];
+}
+const { entries } = Astro.props;
+---
+<div class="timeline">
+  <div class="timeline-track"></div>
+  <div class="timeline-track-fill"></div>
+  {entries.map(e => (
+    <div class="timeline-item reveal">
+      <div class="timeline-dot"></div>
+      <div class="timeline-content">
+        <p class="timeline-date">{e.date}</p>
+        <h3 class="timeline-title">{e.title}</h3>
+        {e.org && <p class="timeline-desc" style="font-size:var(--text-xs);color:var(--gold);margin-bottom:4px">{e.org}</p>}
+        <p class="timeline-desc">{e.desc}</p>
+      </div>
+    </div>
+  ))}
+</div>

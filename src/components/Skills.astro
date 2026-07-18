@@ -1,0 +1,20 @@
+---
+import { skillCategories } from '../data/skills';
+---
+<section class="section" id="skills">
+  <div class="container">
+    <p class="section-label reveal">Skills</p>
+    <h2 class="section-title reveal">技能栈</h2>
+    <div class="section-divider reveal"></div>
+    {skillCategories.map(cat => (
+      <div class="skill-category reveal">
+        <h3 class="skill-category-title">{cat.title}</h3>
+        <div class="skill-tags">
+          {cat.tags.map(tag => (
+            <span class={tag.primary ? 'skill-tag primary' : 'skill-tag'}>{tag.label}</span>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
