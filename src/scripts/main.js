@@ -50,7 +50,7 @@ if (!hasGsap) {
   // Fallback: no GSAP, just reveal everything
   document.querySelectorAll('[data-reveal], .project-card, .reveal').forEach(el => el.classList.add('visible'));
   document.querySelectorAll('.timeline-track-fill').forEach(fill => { fill.style.height = '100%'; });
-  document.querySelectorAll('.timeline-dot').forEach(dot => { document.getElementById(dot.id || ''); dot.classList.add('active'); });
+  document.querySelectorAll('.timeline-dot').forEach(dot => { dot.classList.add('active'); });
   document.querySelectorAll('.timeline-content').forEach(content => content.classList.add('active'));
   document.querySelectorAll('.projects-stack').forEach(stack => {
     const cards = stack.querySelectorAll('.project-card');
