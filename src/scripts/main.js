@@ -1,3 +1,7 @@
+// ============================================================
+//  QT新月 作品集 — main.js (bug-fixed)
+// ============================================================
+
 // ═══ ENTRANCE ANIMATION ═══
 function runEntrance() {
   document.querySelectorAll('.load-reveal').forEach((el, i) => {
@@ -5,7 +9,12 @@ function runEntrance() {
     window.setTimeout(() => el.classList.add('entered'), 180 + delay);
   });
 }
-window.addEventListener('DOMContentLoaded', () => requestAnimationFrame(runEntrance));
+// BUG FIX #5: check readyState to avoid missing DOMContentLoaded
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(runEntrance));
+} else {
+  requestAnimationFrame(runEntrance);
+}
 window.addEventListener('pageshow', () => {
   document.querySelectorAll('.load-reveal').forEach(el => el.classList.add('entered'));
   if (window.ScrollTrigger) window.ScrollTrigger.refresh();
@@ -29,14 +38,19 @@ function updateScroll() {
 updateScroll();
 window.addEventListener('scroll', updateScroll, { passive: true });
 
+// BUG FIX #4: dynamic shouldStackProjects — re-evaluates on each access
+function getShouldStack() {
+  return !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
+}
+
 // ═══ GSAP + ScrollTrigger ═══
-const hasGsap = window.gsap && window.ScrollTrigger;
+const hasGsap = !!(window.gsap && window.ScrollTrigger);
 
 if (!hasGsap) {
   // Fallback: no GSAP, just reveal everything
   document.querySelectorAll('[data-reveal], .project-card, .reveal').forEach(el => el.classList.add('visible'));
   document.querySelectorAll('.timeline-track-fill').forEach(fill => { fill.style.height = '100%'; });
-  document.querySelectorAll('.timeline-dot').forEach(dot => { dot.style.transform = ''; dot.classList.add('active'); });
+  document.querySelectorAll('.timeline-dot').forEach(dot => { document.getElementById(dot.id || ''); dot.classList.add('active'); });
   document.querySelectorAll('.timeline-content').forEach(content => content.classList.add('active'));
   document.querySelectorAll('.projects-stack').forEach(stack => {
     const cards = stack.querySelectorAll('.project-card');
@@ -81,9 +95,12 @@ document.querySelectorAll('.reveal, [data-reveal]').forEach(el => {
 });
 
 // ═══ PROJECT CARDS SCROLL ENTRANCE (staggered) ═══
+// BUG FIX #3: exclude stacking cards from reveal-card to avoid CSS/GSAP conflict
 const projectCards = document.querySelectorAll('.project-card');
 if (!prefersReducedMotion) {
-  projectCards.forEach(card => card.classList.add('reveal-card'));
+  projectCards.forEach(card => {
+    if (!card.closest('.projects-stack')) card.classList.add('reveal-card');
+  });
 }
 const projectObserver = new IntersectionObserver((entries) => {
   const visible = entries.filter(e => e.isIntersecting);
@@ -97,29 +114,37 @@ const projectObserver = new IntersectionObserver((entries) => {
 projectCards.forEach(card => projectObserver.observe(card));
 
 // ═══ STICKY PROJECT CARD STACKING + PROGRESS WIDGET ═══
-const shouldStackProjects = !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
+// BUG FIX #1: track only the first .projects-stack (core projects) for the widget,
+// since the widget is placed only in the #projects section.
 const allStackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
+const firstStackCards = Array.from(
+  document.querySelector('.projects-stack')?.querySelectorAll('.project-card') || []
+);
+
 const projectProgress = document.getElementById('projectProgress');
 const projectProgressCount = document.getElementById('projectProgressCount');
 const projectProgressName = document.getElementById('projectProgressName');
 const projectProgressType = document.getElementById('projectProgressType');
 const projectProgressDots = document.getElementById('projectProgressDots');
 
-// Build progress dots
-if (projectProgressDots && allStackCards.length) {
-  projectProgressDots.innerHTML = allStackCards.map((_, i) =>
+// Build progress dots — use first stack count to match widget location
+if (projectProgressDots && firstStackCards.length) {
+  projectProgressDots.innerHTML = firstStackCards.map((_, i) =>
     `<span class="project-progress-dot${i === 0 ? ' active' : ''}" data-project-dot="${i}"></span>`
   ).join('');
 }
 
 function setCurrentProject(card) {
-  if (!card || !allStackCards.length) return;
-  const index = Math.max(0, allStackCards.indexOf(card));
-  allStackCards.forEach((item, i) => item.classList.toggle('is-current', i === index));
+  if (!card || !firstStackCards.length) return;
+  // BUG FIX #11: handle case where card is not found
+  const idx = firstStackCards.indexOf(card);
+  if (idx === -1) return;
+  const index = idx;
+  firstStackCards.forEach((item, i) => item.classList.toggle('is-current', i === index));
   const current = String(index + 1).padStart(2, '0');
-  const total = String(allStackCards.length).padStart(2, '0');
+  const total = String(firstStackCards.length).padStart(2, '0');
   if (projectProgress) {
-    const progress = allStackCards.length > 1 ? index / (allStackCards.length - 1) : 1;
+    const progress = firstStackCards.length > 1 ? index / (firstStackCards.length - 1) : 1;
     projectProgress.style.setProperty('--project-progress-fill', progress.toFixed(3));
   }
   if (projectProgressCount) projectProgressCount.innerHTML = `<b>${current}</b><small>/ ${total}</small>`;
@@ -141,12 +166,12 @@ function setCurrentProject(card) {
 }
 
 function getMostVisibleProjectCard() {
-  if (!allStackCards.length) return null;
-  let bestCard = allStackCards[0];
+  if (!firstStackCards.length) return null;
+  let bestCard = firstStackCards[0];
   let bestScore = -Infinity;
-  let fallbackCard = allStackCards[0];
+  let fallbackCard = firstStackCards[0];
   let fallbackScore = -Infinity;
-  allStackCards.forEach((card, index) => {
+  firstStackCards.forEach((card, index) => {
     const rect = card.getBoundingClientRect();
     const visible = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0));
     const centerOffset = Math.abs((rect.top + rect.bottom) / 2 - window.innerHeight * 0.5);
@@ -162,7 +187,7 @@ function getMostVisibleProjectCard() {
 }
 
 function syncCurrentProject() {
-  if (!shouldStackProjects || !allStackCards.length) return;
+  if (!getShouldStack() || !firstStackCards.length) return;
   setCurrentProject(getMostVisibleProjectCard());
 }
 
@@ -176,7 +201,7 @@ function isProjectsSectionVisible() {
 let projectProgressRaf = 0;
 function updateProjectProgressState() {
   projectProgressRaf = 0;
-  if (!shouldStackProjects || !projectProgress) return;
+  if (!getShouldStack() || !projectProgress) return;
   const isActive = isProjectsSectionVisible();
   projectProgress.classList.toggle('active', isActive);
   if (isActive) syncCurrentProject();
@@ -187,16 +212,22 @@ function requestProjectProgressState() {
   projectProgressRaf = requestAnimationFrame(updateProjectProgressState);
 }
 
-if (allStackCards.length) setCurrentProject(allStackCards[0]);
+if (firstStackCards.length) setCurrentProject(firstStackCards[0]);
 
-if (!shouldStackProjects) {
-  allStackCards.forEach((card, i) => {
-    card.style.top = '';
-    card.style.zIndex = `${i + 1}`;
-    card.style.transform = '';
-    card.classList.remove('is-current');
-  });
-} else {
+// Initialize stacking or disable it
+function initStacking() {
+  const shouldStack = getShouldStack();
+
+  if (!shouldStack) {
+    allStackCards.forEach((card, i) => {
+      card.style.top = '';
+      card.style.zIndex = `${i + 1}`;
+      card.style.transform = '';
+      card.classList.remove('is-current');
+    });
+    return;
+  }
+
   // ScrollTrigger for progress widget
   if (hasGsap && projectProgress) {
     ScrollTrigger.create({
@@ -212,7 +243,7 @@ if (!shouldStackProjects) {
     });
   }
 
-  // Card stacking
+  // Card stacking — apply per-stack
   const STACK_OFFSET = 64;
   document.querySelectorAll('.projects-stack').forEach(stack => {
     const cards = stack.querySelectorAll('.project-card');
@@ -251,9 +282,20 @@ if (!shouldStackProjects) {
     requestAnimationFrame(updateProjectProgressState);
   }
   window.addEventListener('scroll', requestProjectProgressState, { passive: true });
-  window.addEventListener('resize', requestProjectProgressState);
   window.addEventListener('pageshow', () => requestAnimationFrame(updateProjectProgressState));
 }
+
+initStacking();
+
+// BUG FIX #4: re-init stacking on resize (debounced)
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    // Re-run stacking logic if window crossed the 768px threshold
+    initStacking();
+  }, 300);
+});
 
 // ═══ TIMELINE DRAWING ═══
 document.querySelectorAll('.timeline').forEach(tl => {
@@ -272,7 +314,7 @@ document.querySelectorAll('.timeline').forEach(tl => {
 
   tl.querySelectorAll('.timeline-item').forEach((item, i) => {
     const activateItem = () => {
-      if (dots[i]) { dots[i].style.transform = ''; dots[i].classList.add('active'); }
+      if (dots[i]) { dots[i].classList.add('active'); }
       setTimeout(() => { if (contents[i]) contents[i].classList.add('active'); }, 150);
     };
 
@@ -295,7 +337,7 @@ document.querySelectorAll('.timeline').forEach(tl => {
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
     const href = link.getAttribute('href');
-    if (href.length < 2) return;
+    if (!href || href.length < 2) return;
     const target = document.querySelector(href);
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
   });
@@ -308,11 +350,15 @@ if (btt) {
 }
 
 // ═══ 3D TILT on project cards + GLOW on stat/contact cards ═══
+// BUG FIX #2: exclude stacking cards from tilt to avoid GSAP transform conflict
 (function initTiltAndGlow() {
   if (window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
   const TILT_MAX = 7;
 
   document.querySelectorAll('.project-card').forEach(card => {
+    // Skip cards inside .projects-stack — GSAP manages their transforms
+    if (card.closest('.projects-stack')) return;
+
     card.addEventListener('pointermove', e => {
       const r = card.getBoundingClientRect();
       const px = (e.clientX - r.left) / r.width;
@@ -362,6 +408,7 @@ const skillObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.skill-category').forEach(g => skillObserver.observe(g));
 
 // ═══ CONTACT FORM ═══
+// BUG FIX #7: use default contact address for mailto fallback
 async function handleContactSubmit(e) {
   e.preventDefault();
   const form = document.getElementById('contactForm');
@@ -371,7 +418,7 @@ async function handleContactSubmit(e) {
 
   const payload = { name: form.name.value, email: form.email.value, message: form.message.value };
   const bodyText = `来自 ${payload.name} (${payload.email})\n\n${payload.message}`;
-  const mailto = `mailto:${encodeURIComponent('')}?subject=${encodeURIComponent(`QT新月 作品集留言 - ${payload.name}`)}&body=${encodeURIComponent(bodyText)}`;
+  const mailto = `contact@qtxingyue.me?subject=${encodeURIComponent(`QT新月 作品集留言 - ${payload.name}`)}&body=${encodeURIComponent(bodyText)}`;
 
   try {
     const res = await fetch('/api/contact', {
@@ -383,7 +430,7 @@ async function handleContactSubmit(e) {
     else { const err = await res.json(); msg.className = 'form-msg error'; msg.textContent = err.detail || '发送失败'; }
   } catch(e) {
     // 静态部署环境没有后端 endpoint，fallback 到本地邮件客户端
-    window.location.href = mailto;
+    window.location.href = 'mailto:' + mailto;
     msg.textContent = '已唤起邮件客户端，请手动发送；或尝试通过 GitHub 联系。';
   }
 }

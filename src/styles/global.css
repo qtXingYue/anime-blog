@@ -92,8 +92,8 @@ a:hover { color: var(--gold); }
 .nav-links a { font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary); position: relative; padding-block: var(--space-xs); }
 .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--accent); border-radius: 1px; transition: width 300ms var(--ease-out-expo); }
 .nav-links a:hover::after { width: 100%; }
-.theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 200ms; }
-.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.theme-toggle, .bg-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 200ms; }
+.theme-toggle:hover, .bg-toggle:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ═══ HERO ═══ */
 .hero {
@@ -389,7 +389,8 @@ a:hover { color: var(--gold); }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   html { scroll-behavior: auto; }
   .reveal, .load-reveal, .timeline-content, .project-card.reveal-card { opacity: 1; transform: none; filter: none; }
-  .timeline-dot { transform: scale(1); }
+  .timeline-dot { transform: scale(0.8); }
+  .timeline-dot.active { transform: scale(1); box-shadow: none; }
   .skill-tag { opacity: 1 !important; transform: none !important; }
 }
 

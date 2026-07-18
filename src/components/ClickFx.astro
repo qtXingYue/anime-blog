@@ -29,6 +29,10 @@
     return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
   }
 
+  function ensureLoop() {
+    if (!running) { running = true; requestAnimationFrame(frame); }
+  }
+
   // 墨水爆散：一圈有机墨滴从点击处炸开、减速、淡出
   function inkBurst(x, y) {
     const blobs = [];
@@ -40,6 +44,7 @@
         r: 10 + Math.random() * 26, c: PURPLES[(Math.random() * PURPLES.length) | 0] });
     }
     effects.push({ type: 'ink', t: 0, dur: 1.1, blobs });
+    ensureLoop();
   }
 
   // 能量波纹：三环冲击波 + 少量火花
@@ -53,9 +58,11 @@
         r: 2 + Math.random() * 3, c: '#c4b5fd' });
     }
     effects.push({ type: 'ink', t: 0, dur: 0.5, blobs });
+    ensureLoop();
   }
 
   let last = performance.now();
+  let running = false;
   function frame(now) {
     const dt = Math.min((now - last) / 1000, 0.05);
     last = now;
@@ -96,12 +103,17 @@
       }
       ctx.restore();
     }
-    requestAnimationFrame(frame);
+    // BUG FIX #8: stop RAF when no effects to avoid idle CPU usage
+    if (effects.length) {
+      requestAnimationFrame(frame);
+    } else {
+      running = false;
+    }
   }
-  requestAnimationFrame(frame);
+  ensureLoop();
 
   // 接线：按钮 → 波纹；导航/卡片/链接 → 墨水
-  document.querySelectorAll('.btn, .theme-toggle, .contact-form button, .back-to-top').forEach(el => {
+  document.querySelectorAll('.btn, .theme-toggle, .bg-toggle, .contact-form button, .back-to-top').forEach(el => {
     el.addEventListener('click', e => ripple(e.clientX, e.clientY));
   });
   document.querySelectorAll('.nav-links a, .project-card, .contact-item, .featured-card, .footer-links a').forEach(el => {
