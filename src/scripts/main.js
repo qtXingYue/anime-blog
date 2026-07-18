@@ -463,3 +463,15 @@ window.handleContactSubmit = async function(e) {
     msg.textContent = '已唤起邮件客户端，请手动发送；或尝试通过 GitHub 联系。';
   }
 };
+
+// ═══ ANALYTICS HIT (Sakura Backend) ═══
+(function reportAnalytics() {
+  try {
+    fetch('/api/analytics/hit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: location.pathname, ref: document.referrer || '' }),
+      keepalive: true
+    }).catch(() => {});
+  } catch (e) {}
+})();
