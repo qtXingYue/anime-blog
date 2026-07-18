@@ -3,7 +3,7 @@ import { stats } from '../data/skills';
 ---
 <section class="section" id="about">
   <div class="container">
-    <p class="section-label reveal">About</p>
+    <p class="section-label reveal">关于</p>
     <h2 class="section-title reveal">关于我</h2>
     <div class="section-divider reveal"></div>
     <div class="about-grid">
@@ -15,7 +15,7 @@ import { stats } from '../data/skills';
       <div class="about-stats">
         {stats.map(s => (
           <div class="stat-card reveal">
-            <div class="stat-number">{s.number}</div>
+            <div class="stat-number" data-count-target={s.number}>{s.number}</div>
             <div class="stat-label">{s.label}</div>
           </div>
         ))}

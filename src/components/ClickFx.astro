@@ -24,9 +24,38 @@
   const PURPLES = ['#6d28d9', '#8b5cf6', '#a78bfa', '#c4b5fd'];
   let effects = [];
 
-  function hexA(hex, a) {
-    const n = parseInt(hex.slice(1), 16);
-    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+  // 临时 canvas 用于将任意 CSS 颜色（含 oklch）转为 rgba 数组
+  const _c2 = document.createElement('canvas');
+  _c2.width = _c2.height = 1;
+  const _ctx2 = _c2.getContext('2d');
+
+  function colorToRgba(color) {
+    if (!color) return [167, 139, 250]; // 默认紫
+    _ctx2.fillStyle = '#000';
+    _ctx2.fillRect(0, 0, 1, 1);
+    _ctx2.fillStyle = color;
+    _ctx2.fillRect(0, 0, 1, 1);
+    const d = _ctx2.getImageData(0, 0, 1, 1).data;
+    return [d[0], d[1], d[2]];
+  }
+
+  function rgbaA(rgb, a) {
+    return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
+  }
+
+  // 从被点击元素读取 --project-accent，生成调色板（返回 rgba 数组）
+  function getPalette(el) {
+    if (!el) return PURPLES.map(c => colorToRgba(c));
+    const styles = getComputedStyle(el);
+    const accent = styles.getPropertyValue('--project-accent').trim();
+    if (accent) {
+      const rgb = colorToRgba(accent);
+      // 生成由 accent 主色的调色板（主色 + 亮变体 + 柔和色）
+      const lighter = [Math.min(255, rgb[0] + 40), Math.min(255, rgb[1] + 40), Math.min(255, rgb[2] + 40)];
+      const softer = [Math.round(rgb[0] * 0.7 + 80), Math.round(rgb[1] * 0.7 + 80), Math.round(rgb[2] * 0.7 + 80)];
+      return [rgb, lighter, rgb, softer];
+    }
+    return PURPLES.map(c => colorToRgba(c));
   }
 
   function ensureLoop() {
@@ -34,28 +63,30 @@
   }
 
   // 墨水爆散：一圈有机墨滴从点击处炸开、减速、淡出
-  function inkBurst(x, y) {
+  function inkBurst(x, y, palette) {
+    const colors = palette || PURPLES.map(c => colorToRgba(c));
     const blobs = [];
     const n = 14;
     for (let i = 0; i < n; i++) {
       const a = (Math.PI * 2 * i) / n + Math.random() * 0.5;
       const sp = 150 + Math.random() * 270;
       blobs.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
-        r: 10 + Math.random() * 26, c: PURPLES[(Math.random() * PURPLES.length) | 0] });
+        r: 10 + Math.random() * 26, c: colors[(Math.random() * colors.length) | 0] });
     }
     effects.push({ type: 'ink', t: 0, dur: 1.1, blobs });
     ensureLoop();
   }
 
   // 能量波纹：三环冲击波 + 少量火花
-  function ripple(x, y) {
-    effects.push({ type: 'ripple', t: 0, dur: 0.7, x, y });
+  function ripple(x, y, palette) {
+    const colors = palette || PURPLES.map(c => colorToRgba(c));
+    effects.push({ type: 'ripple', t: 0, dur: 0.7, x, y, colors });
     const blobs = [];
     for (let i = 0; i < 8; i++) {
       const a = Math.random() * Math.PI * 2;
       const sp = 200 + Math.random() * 240;
       blobs.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
-        r: 2 + Math.random() * 3, c: '#c4b5fd' });
+        r: 2 + Math.random() * 3, c: colors[(Math.random() * colors.length) | 0] });
     }
     effects.push({ type: 'ink', t: 0, dur: 0.5, blobs });
     ensureLoop();
@@ -81,19 +112,20 @@
             b.vx *= 0.94; b.vy *= 0.94;
             const r = b.r * (0.5 + ease * 1.4);
             const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, r);
-            g.addColorStop(0, hexA(b.c, 0.55 * alpha));
-            g.addColorStop(0.7, hexA(b.c, 0.25 * alpha));
-            g.addColorStop(1, hexA(b.c, 0));
+            g.addColorStop(0, rgbaA(b.c, 0.55 * alpha));
+            g.addColorStop(0.7, rgbaA(b.c, 0.25 * alpha));
+            g.addColorStop(1, rgbaA(b.c, 0));
             ctx.fillStyle = g;
             ctx.beginPath();
             ctx.arc(b.x, b.y, r, 0, Math.PI * 2);
             ctx.fill();
           }
         } else {
+          const ringColors = fx.colors || [colorToRgba('#a78bfa'), colorToRgba('#6d28d9')];
           for (let k = 0; k < 3; k++) {
             const kp = Math.min(Math.max(p * 1.6 - k * 0.22, 0), 1);
             if (kp <= 0) continue;
-            ctx.strokeStyle = hexA(k === 0 ? '#a78bfa' : '#6d28d9', (1 - kp) * 0.8 * alpha);
+            ctx.strokeStyle = rgbaA(k === 0 ? ringColors[0] : ringColors[1], (1 - kp) * 0.8 * alpha);
             ctx.lineWidth = (1 - kp) * 6 + 1;
             ctx.beginPath();
             ctx.arc(fx.x, fx.y, 12 + kp * 130, 0, Math.PI * 2);
@@ -110,14 +142,13 @@
       running = false;
     }
   }
-  ensureLoop();
 
   // 接线：按钮 → 波纹；导航/卡片/链接 → 墨水
   document.querySelectorAll('.btn, .theme-toggle, .bg-toggle, .contact-form button, .back-to-top').forEach(el => {
-    el.addEventListener('click', e => ripple(e.clientX, e.clientY));
+    el.addEventListener('click', e => ripple(e.clientX, e.clientY, getPalette(el)));
   });
   document.querySelectorAll('.nav-links a, .project-card, .contact-item, .featured-card, .footer-links a').forEach(el => {
-    el.addEventListener('click', e => inkBurst(e.clientX, e.clientY));
+    el.addEventListener('click', e => inkBurst(e.clientX, e.clientY, getPalette(el)));
   });
 })();
 </script>
