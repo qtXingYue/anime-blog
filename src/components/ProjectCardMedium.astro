@@ -1,0 +1,38 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  index?: number;
+}
+const { project: p, index = 0 } = Astro.props;
+
+// 03/04/07 的封面是示意性 SVG,裁成 2:1 会变成一条色带,不如直接用 emoji + 渐变
+const useEmoji = !p.cover || p.cover.endsWith('.svg');
+---
+<a
+  class="project-card-m reveal"
+  href={p.link?.href}
+  data-accent={p.accent}
+  data-reveal-delay={index * 70}
+>
+  <div class="project-m-visual" style={`background:${p.gradient}`}>
+    {useEmoji
+      ? <span class="project-m-emoji" aria-hidden="true">{p.emoji}</span>
+      : <img src={p.cover} alt="" loading="lazy" decoding="async" width="880" height="440" />}
+    <span class="project-visual-tint" aria-hidden="true"></span>
+  </div>
+  <div class="project-m-body">
+    <p class="project-m-num">{p.num} · {p.category}</p>
+    <h3 class="project-m-title">{p.title}</h3>
+    <p class="project-m-desc">{p.desc}</p>
+    <ul class="project-m-metrics">
+      {p.metrics.slice(0, 2).map(m => <li>{m}</li>)}
+    </ul>
+    <div class="project-m-tech">
+      {p.tech.slice(0, 3).map(t => <span class="skill-tag">{t}</span>)}
+      {p.tech.length > 3 && <span class="skill-tag skill-tag--more">+{p.tech.length - 3}</span>}
+    </div>
+    <span class="project-m-arrow" aria-hidden="true">→</span>
+  </div>
+</a>

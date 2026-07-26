@@ -6,7 +6,14 @@ interface Props {
 }
 const { project: p } = Astro.props;
 ---
-<article class="project-card" data-reveal>
+<article
+  class="project-card"
+  data-reveal
+  data-accent={p.accent}
+  data-pp
+  data-pp-type={p.category}
+  data-pp-name={p.title}
+>
   <div class="project-visual" style={`background:${p.gradient}`}>
     {p.cover
       ? <img class="project-cover" src={p.cover} alt={`${p.title} 预览`} loading="lazy" decoding="async" width="880" height="550" />
@@ -16,6 +23,12 @@ const { project: p } = Astro.props;
   <div>
     <p class="project-number">{p.num} / {p.category}</p>
     <h3 class="project-title">{p.title}</h3>
+    {p.highlight && (
+      <p class="project-highlight">
+        <b class="project-highlight-value">{p.highlight.value}</b>
+        <span class="project-highlight-label">{p.highlight.label}</span>
+      </p>
+    )}
     <p class="project-desc">{p.desc}</p>
     <ul class="project-metrics">
       {p.metrics.map(m => <li>{m}</li>)}

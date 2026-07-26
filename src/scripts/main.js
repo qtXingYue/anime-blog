@@ -2,6 +2,8 @@
 //  QT新月 作品集 — main.js
 // ============================================================
 
+import { bindCardFx, bindGlowFocus } from './card-fx.js';
+
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ═══ MOBILE DRAWER ═══
@@ -176,15 +178,20 @@ function countUp(el) {
 
 // ═══ SKILL TAGS STAGGER ═══
 function initSkillTags() {
+  // 只处理技能区自己的标签。早先这里选的是全站 .skill-tag，
+  // 而下面的 observer 只观察 .skill-category——项目卡里的技术标签
+  // 被设成透明后永远没人恢复，线上一直处于隐形状态。
+  const staggerTags = document.querySelectorAll('.skill-category .skill-tag');
+
   if (prefersReducedMotion) {
-    document.querySelectorAll('.skill-tag').forEach(tag => {
+    staggerTags.forEach(tag => {
       tag.style.opacity = '1';
       tag.style.transform = 'translateY(0)';
     });
     return;
   }
 
-  document.querySelectorAll('.skill-tag').forEach(tag => {
+  staggerTags.forEach(tag => {
     tag.style.opacity = '0';
     tag.style.transform = 'translateY(8px)';
   });
@@ -239,7 +246,10 @@ function getShouldStack() {
 }
 
 // ═══ STICKY PROJECT CARD STACKING + PROGRESS WIDGET ═══
-const allStackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
+// 参与粘性堆叠的只有特写级大卡；进度器的锚点还额外包含两条 band-rule，
+// 这样滚过专题区与索引区时挂件不会空转。DOM 顺序即锚点顺序，天然单调。
+const stackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
+const progressAnchors = Array.from(document.querySelectorAll('[data-pp]'));
 
 const projectProgress = document.getElementById('projectProgress');
 const projectProgressCount = document.getElementById('projectProgressCount');
@@ -249,35 +259,31 @@ const projectProgressDots = document.getElementById('projectProgressDots');
 
 let currentProjectIdx = -1;
 
-if (projectProgressDots && allStackCards.length) {
-  projectProgressDots.innerHTML = allStackCards.map((_, i) =>
+if (projectProgressDots && progressAnchors.length) {
+  // 特写与后面两个 band 之间插一条短横线，暗示它们不是同一量级
+  projectProgressDots.innerHTML = progressAnchors.map((_, i) =>
+    (i === 3 ? '<span class="project-progress-sep" aria-hidden="true"></span>' : '') +
     `<span class="project-progress-dot${i === 0 ? ' active' : ''}" data-project-dot="${i}"></span>`
   ).join('');
 }
 
 function setCurrentProjectByIndex(index) {
-  if (!allStackCards.length || index === currentProjectIdx) return;
-  if (index < 0 || index >= allStackCards.length) return;
+  if (!progressAnchors.length || index === currentProjectIdx) return;
+  if (index < 0 || index >= progressAnchors.length) return;
   currentProjectIdx = index;
-  const card = allStackCards[index];
+  const el = progressAnchors[index];
 
-  allStackCards.forEach((item, i) => item.classList.toggle('is-current', i === index));
+  stackCards.forEach(card => card.classList.toggle('is-current', card === el));
   const current = String(index + 1).padStart(2, '0');
-  const total = String(allStackCards.length).padStart(2, '0');
+  const total = String(progressAnchors.length).padStart(2, '0');
   if (projectProgress) {
-    const progress = allStackCards.length > 1 ? index / (allStackCards.length - 1) : 1;
+    const progress = progressAnchors.length > 1 ? index / (progressAnchors.length - 1) : 1;
     projectProgress.style.setProperty('--project-progress-fill', progress.toFixed(3));
   }
   if (projectProgressCount) projectProgressCount.innerHTML = `<b>${current}</b><small>/ ${total}</small>`;
-  if (projectProgressType) {
-    const number = card.querySelector('.project-number');
-    const type = number ? number.textContent.split('/').pop().trim() : '项目';
-    projectProgressType.textContent = type;
-  }
-  if (projectProgressName) {
-    const title = card.querySelector('.project-title');
-    projectProgressName.textContent = title ? title.textContent.trim() : '项目作品';
-  }
+  // 类型与名称直接读 data 属性，不再靠解析 .project-number 的文本
+  if (projectProgressType) projectProgressType.textContent = el.dataset.ppType || '项目';
+  if (projectProgressName) projectProgressName.textContent = el.dataset.ppName || '项目作品';
   if (projectProgressDots) {
     projectProgressDots.querySelectorAll('.project-progress-dot').forEach((dot, i) => {
       dot.classList.toggle('active', i === index);
@@ -292,6 +298,8 @@ function setProjectsProgressVisible(visible) {
 
 let velocityTrigger = null;
 let pageshowBound = false;
+// initStacking 会在每次 resize 时重建 trigger，不回收的话数量会随 resize 次数线性增长
+const managedTriggers = [];
 
 function initStacking() {
   const shouldStack = getShouldStack();
@@ -300,9 +308,11 @@ function initStacking() {
     velocityTrigger.kill();
     velocityTrigger = null;
   }
+  managedTriggers.forEach(t => t.kill());
+  managedTriggers.length = 0;
 
   if (!shouldStack) {
-    allStackCards.forEach((card, i) => {
+    stackCards.forEach((card, i) => {
       card.style.top = '';
       card.style.zIndex = `${i + 1}`;
       card.style.transform = '';
@@ -314,10 +324,8 @@ function initStacking() {
   }
 
   currentProjectIdx = -1;
-  if (allStackCards.length) setCurrentProjectByIndex(0);
+  if (progressAnchors.length) setCurrentProjectByIndex(0);
 
-  const STACK_OFFSET = 64;
-  
   document.querySelectorAll('.projects-stack').forEach(stack => {
     const cards = stack.querySelectorAll('.project-card');
     cards.forEach((card, i) => {
@@ -325,9 +333,10 @@ function initStacking() {
       card.style.zIndex = `${i + 1}`;
 
       if (i < cards.length - 1 && hasGsap) {
+        // 只剩 3 张卡，原来按 6 张调的缩放幅度太小看不出层叠
         gsap.to(card, {
-          scale: 0.965 - i * 0.015,
-          y: 14 + i * 8,
+          scale: 0.955 - i * 0.02,
+          y: 16 + i * 10,
           force3D: true, overwrite: 'auto', ease: 'none',
           scrollTrigger: {
             trigger: cards[i + 1],
@@ -341,22 +350,27 @@ function initStacking() {
     });
   });
 
-  allStackCards.forEach((card, globalIdx) => {
+  progressAnchors.forEach((el, globalIdx) => {
     if (hasGsap) {
-      ScrollTrigger.create({
-        trigger: card,
+      managedTriggers.push(ScrollTrigger.create({
+        trigger: el,
         start: 'top 42%',
         end: 'bottom 58%',
         onEnter: () => setCurrentProjectByIndex(globalIdx),
         onEnterBack: () => setCurrentProjectByIndex(globalIdx),
-      });
+      }));
     }
   });
 
   if (hasGsap) {
-    const lastProjectSection = document.getElementById('projects-web') || document.getElementById('projects-ai') || document.getElementById('projects');
-    
-    ScrollTrigger.create({
+    // 回退链是追加而非替换：万一哪天 id 改了，挂件不会静默提前消失
+    const lastProjectSection =
+      document.getElementById('projects-more') ||
+      document.getElementById('projects-web') ||
+      document.getElementById('projects-ai') ||
+      document.getElementById('projects');
+
+    managedTriggers.push(ScrollTrigger.create({
       trigger: '#projects',
       start: 'top 35%',
       endTrigger: lastProjectSection,
@@ -365,17 +379,17 @@ function initStacking() {
       onEnterBack: () => setProjectsProgressVisible(true),
       onLeave: () => setProjectsProgressVisible(false),
       onLeaveBack: () => setProjectsProgressVisible(false),
-    });
+    }));
   }
 
   // Spring physics stacking skew on scroll velocity
-  if (hasGsap && allStackCards.length) {
+  if (hasGsap && stackCards.length) {
     velocityTrigger = ScrollTrigger.create({
       onUpdate: (self) => {
         const vel = self.getVelocity();
         let skew = vel / 2500;
         if (Math.abs(skew) > 0.06) skew = Math.sign(skew) * 0.06;
-        allStackCards.forEach((card) => {
+        stackCards.forEach((card) => {
           if (!card.classList.contains('visible')) return;
           gsap.to(card, {
             skewY: skew * 6,
@@ -414,10 +428,15 @@ window.addEventListener('keydown', (e) => {
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
   if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
     const direction = e.key === 'ArrowDown' ? 1 : -1;
-    const targetIdx = Math.min(Math.max(0, currentProjectIdx + direction), allStackCards.length - 1);
-    if (targetIdx !== currentProjectIdx && allStackCards[targetIdx]) {
+    const targetIdx = Math.min(Math.max(0, currentProjectIdx + direction), progressAnchors.length - 1);
+    if (targetIdx !== currentProjectIdx && progressAnchors[targetIdx]) {
       e.preventDefault();
-      allStackCards[targetIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const el = progressAnchors[targetIdx];
+      // band-rule 是一条细线，居中滚会把它下面的内容推出视口
+      el.scrollIntoView({
+        behavior: 'smooth',
+        block: el.classList.contains('project-card') ? 'center' : 'start',
+      });
     }
   }
 });
@@ -508,67 +527,10 @@ if (btt) {
 }
 
 // ═══ 3D TILT on project cards + GLOW on stat/contact/project cards + A11y Focus ═══
-(function initTiltAndGlow() {
-  if (window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
-  const TILT_MAX = 7;
-
-  document.querySelectorAll('.project-card').forEach(card => {
-    if (card.closest('.projects-stack')) return;
-    card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      const px = (e.clientX - r.left) / r.width;
-      const py = (e.clientY - r.top) / r.height;
-      const rotY = (px - 0.5) * TILT_MAX * 2;
-      const rotX = -(py - 0.5) * TILT_MAX * 2;
-      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.01)`;
-      card.style.boxShadow = `0 24px 64px oklch(0% 0 0 / 0.3), 0 0 0 1px var(--project-accent, var(--accent))`;
-    });
-    card.addEventListener('pointerleave', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-    });
-  });
-
-  // Track mouse move coordinates for glow effect on project cards, stat cards, and contact items
-  document.querySelectorAll('.project-card, .stat-card, .contact-item').forEach(card => {
-    card.addEventListener('pointermove', e => {
-      const r = card.getBoundingClientRect();
-      card.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100) + '%');
-      card.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100) + '%');
-    });
-  });
-
-  // Keyboard navigation focus / accessibility support
-  document.querySelectorAll('.project-card').forEach(card => {
-    const focusable = card.querySelector('a, button');
-    if (!focusable) return;
-    focusable.addEventListener('focus', () => {
-      card.style.transform = 'perspective(1000px) rotateX(1.5deg) rotateY(1.5deg) scale(1.008)';
-      card.style.boxShadow = `0 24px 64px oklch(0% 0 0 / 0.3), 0 0 0 1px var(--project-accent, var(--accent))`;
-      card.style.setProperty('--gx', '50%');
-      card.style.setProperty('--gy', '50%');
-    });
-    focusable.addEventListener('blur', () => {
-      card.style.transform = '';
-      card.style.boxShadow = '';
-      card.style.setProperty('--gx', '14%');
-      card.style.setProperty('--gy', '0%');
-    });
-  });
-
-  document.querySelectorAll('.stat-card, .contact-item').forEach(card => {
-    const focusable = card.querySelector('a, button, input, textarea');
-    if (!focusable) return;
-    focusable.addEventListener('focus', () => {
-      card.style.setProperty('--gx', '50%');
-      card.style.setProperty('--gy', '50%');
-    });
-    focusable.addEventListener('blur', () => {
-      card.style.setProperty('--gx', '');
-      card.style.setProperty('--gy', '');
-    });
-  });
-})();
+// 实现在 card-fx.js，博客页复用同一套（那边的文章卡是动态渲染，需要重复绑定）
+// 中卡与索引行刻意不参与倾斜：它们靠平移+描边表达可点，倾斜是大卡量级的语言
+bindCardFx(document, { skipWithin: '.projects-stack' });
+bindGlowFocus(document);
 
 // ═══ CONTACT FORM ═══
 window.handleContactSubmit = async function(e) {
@@ -607,3 +569,8 @@ window.handleContactSubmit = async function(e) {
     }).catch(() => {});
   } catch (e) {}
 })();
+
+// ═══ 字体回流兜底：思源宋体加载完成后标题高度会变，重算 ScrollTrigger 位置 ═══
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); });
+}

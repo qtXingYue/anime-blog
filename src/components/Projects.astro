@@ -1,15 +1,18 @@
 ---
 import ProjectCard from './ProjectCard.astro';
-import { featured, projectsMain, projectsAI, projectsWeb } from '../data/projects';
+import ProjectCardMedium from './ProjectCardMedium.astro';
+import ProjectRow from './ProjectRow.astro';
+import { featured, projectsFeature, projectsDepth, projectsIndex } from '../data/projects';
 ---
 <section class="section" id="projects">
   <div class="container">
     <p class="section-label reveal">项目</p>
     <h2 class="section-title reveal">项目作品</h2>
     <div class="section-divider reveal"></div>
+    <p class="projects-legend reveal">14 个项目 · 3 篇特写 · 6 个专题 · 5 则索引</p>
 
     <aside class="project-progress" id="projectProgress" aria-hidden="true">
-      <span class="project-progress-count" id="projectProgressCount"><b>01</b><small>/ 12</small></span>
+      <span class="project-progress-count" id="projectProgressCount"><b>01</b><small>/ 05</small></span>
       <span class="project-progress-type" id="projectProgressType">核心工程</span>
       <span class="project-progress-name" id="projectProgressName">多平台广告数据爬取系统</span>
       <span class="project-progress-dots" id="projectProgressDots"></span>
@@ -34,30 +37,28 @@ import { featured, projectsMain, projectsAI, projectsWeb } from '../data/project
       </div>
     </a>
 
-    <div class="projects-stack">
-      {projectsMain.map(p => <ProjectCard project={p} />)}
+    <div class="projects-stack projects-stack--feature">
+      {projectsFeature.map(p => <ProjectCard project={p} />)}
     </div>
   </div>
 </section>
 
-<section class="section" id="projects-ai">
+<section class="section section--tight" id="projects-more">
   <div class="container">
-    <p class="section-label reveal">AI / 视觉</p>
-    <h2 class="section-title reveal">AI / 视觉项目</h2>
-    <div class="section-divider reveal"></div>
-    <div class="projects-stack">
-      {projectsAI.map(p => <ProjectCard project={p} />)}
+    <div class="band-rule reveal" id="bandDepth" data-pp data-pp-type="专题" data-pp-name="6 个深度项目">
+      <span class="band-rule-label">专题 · IN DEPTH</span>
+      <span class="band-count">06</span>
     </div>
-  </div>
-</section>
+    <div class="projects-grid">
+      {projectsDepth.map((p, i) => <ProjectCardMedium project={p} index={i} />)}
+    </div>
 
-<section class="section" id="projects-web">
-  <div class="container">
-    <p class="section-label reveal">Web / 小程序</p>
-    <h2 class="section-title reveal">Web / 小程序</h2>
-    <div class="section-divider reveal"></div>
-    <div class="projects-stack">
-      {projectsWeb.map(p => <ProjectCard project={p} />)}
+    <div class="band-rule reveal" id="bandIndex" data-pp data-pp-type="索引" data-pp-name="5 则实验小品">
+      <span class="band-rule-label">索引 · THE INDEX</span>
+      <span class="band-count">05</span>
     </div>
+    <ul class="projects-index">
+      {projectsIndex.map((p, i) => <ProjectRow project={p} index={i} />)}
+    </ul>
   </div>
 </section>

@@ -1,0 +1,28 @@
+---
+import type { Project } from '../data/projects';
+
+interface Props {
+  project: Project;
+  index?: number;
+}
+const { project: p, index = 0 } = Astro.props;
+
+// 13/14 是作品合集而非技术拆解,给个不一样的落点提示
+const isMedia = p.num === '13' || p.num === '14';
+const cta = p.num === '13' ? '画廊 →' : p.num === '14' ? '视频 →' : '→';
+---
+<li>
+  <a
+    class={isMedia ? 'project-row project-row--media reveal' : 'project-row reveal'}
+    href={p.link?.href}
+    data-accent={p.accent}
+    data-reveal-delay={index * 60}
+  >
+    <span class="project-row-icon" aria-hidden="true">{p.emoji}</span>
+    <span class="project-row-main">
+      <span class="project-row-title">{p.title}</span>
+      <span class="project-row-meta">{p.num} · {p.category} · {p.tech.slice(0, 3).join(' / ')}</span>
+    </span>
+    <span class="project-row-arrow" aria-hidden="true">{cta}</span>
+  </a>
+</li>

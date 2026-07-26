@@ -19,14 +19,32 @@
           <a href="#contact" class="btn btn-ghost">联系我</a>
         </div>
       </div>
-      <div class="hero-visual load-reveal" data-load-delay="300">
-        <div class="hero-avatar-ring">月</div>
-        <span class="hero-floating-tag t1">Python</span>
-        <span class="hero-floating-tag t2">TensorFlow</span>
-        <span class="hero-floating-tag t3">MediaPipe</span>
-        <span class="hero-floating-tag t4">OpenCV</span>
-        <span class="hero-floating-tag t5">Playwright</span>
-        <span class="hero-floating-tag t6">日本語 N2</span>
+      <!-- load-reveal 不能挂在 .hero-visual 上：main.js 的视差会往它身上写
+           inline transform，与入场动画的 translateY 相互覆盖，所以挂到内层各块 -->
+      <div class="hero-visual">
+        <aside class="hero-card" aria-label="个人档案">
+          <div class="hero-card-top load-reveal" data-load-delay="300">
+            <span class="hero-card-mark" aria-hidden="true">月</span>
+            <div>
+              <p class="hero-card-name">钟文清 · QT新月</p>
+              <p class="hero-card-handle">Shenzhen · AI / Data Engineering</p>
+            </div>
+          </div>
+          <p class="hero-card-status load-reveal" data-load-delay="370">
+            <span class="hero-status-dot" aria-hidden="true"></span>
+            在职 · 海客熵连科技 · 广告数据系统开发
+          </p>
+          <dl class="hero-card-rows load-reveal" data-load-delay="440">
+            <div class="hero-card-row"><dt>在读</dt><dd><b>深圳职业技术大学</b> · 人工智能技术应用</dd></div>
+            <div class="hero-card-row"><dt>主攻</dt><dd>Python · TensorFlow · 浏览器自动化</dd></div>
+            <div class="hero-card-row"><dt>认证</dt><dd>华为云 HCCDA-AI · 蓝桥杯 Python 省二</dd></div>
+            <div class="hero-card-row"><dt>语言</dt><dd>中文 · 日语 N2（冲刺 N1）· English</dd></div>
+          </dl>
+          <a class="hero-card-now load-reveal" data-load-delay="510" href="#projects">
+            <span><small>正在做</small><b>多平台广告数据聚合监控系统</b></span>
+            <span class="hero-card-now-arrow" aria-hidden="true">→</span>
+          </a>
+        </aside>
       </div>
     </div>
   </div>
