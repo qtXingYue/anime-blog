@@ -71,6 +71,7 @@ export const projectsMain: Project[] = [
     accent: 'azure',
     cover: '/projects/covers/03-rpa.svg',
     title: '批量账号注册与浏览器 RPA 自动化系统',
+    highlight: { value: '8 并发', label: '浏览器实例并行执行 · 3 层异常恢复' },
     desc: 'Python + Selenium + ixBrowser Profile 调度，处理批量网页流程中的隔离、并发、日志和结果回写。',
     metrics: ['浏览器隔离', '并发调度', '日志回写'],
     tech: ['Python', 'Selenium', 'ixBrowser', 'RPA'],
@@ -82,6 +83,7 @@ export const projectsMain: Project[] = [
     accent: 'teal',
     cover: '/projects/covers/04-android-network.svg',
     title: 'MuMu 安卓网络调试与协议分析',
+    highlight: { value: '30+', label: '请求与域名类型梳理 · mitmproxy + Frida' },
     desc: '基于 MuMu 模拟器、mitmproxy、Frida 17 与 ADB 构建授权测试流程，沉淀测试 APK 请求链路、Native 观测和调试报告。',
     metrics: ['mitmproxy 抓包', 'Frida Hook', 'ADB 调试'],
     tech: ['Python', 'mitmproxy', 'Frida', 'ADB'],
@@ -218,13 +220,17 @@ const byNum = (n: string): Project => {
   if (!p) throw new Error(`projects.ts: 找不到编号 ${n} 的项目`);
   return p;
 };
+// 层级由人工挑选，层级内的先后一律按编号升序——手排顺序会让卡片上的
+// 序号看起来是乱跳的（曾出现过 01 → 06 → 05），排序放在这里就不会再漂
+const tier = (nums: string[]): Project[] =>
+  nums.map(byNum).sort((a, b) => a.num.localeCompare(b.num));
 
-/** 特写级：真正跑在生产里、有硬指标的三个。01 稳 → 06 亮 → 05 实 */
-export const projectsFeature: Project[] = ['01', '06', '05'].map(byNum);
+/** 特写级：工程体量最大、有硬指标的三个 */
+export const projectsFeature: Project[] = tier(['01', '03', '04']);
 /** 专题级：有完整技术拆解、但没有生产体量的六个 */
-export const projectsDepth: Project[] = ['03', '04', '08', '07', '10', '12'].map(byNum);
+export const projectsDepth: Project[] = tier(['05', '06', '07', '08', '10', '12']);
 /** 索引级：小品与作品合集，一行一条即可 */
-export const projectsIndex: Project[] = ['02', '09', '11', '13', '14'].map(byNum);
+export const projectsIndex: Project[] = tier(['02', '09', '11', '13', '14']);
 
 // 项目详情页导航顺序（用于详情页上一个/下一个按钮）
 export interface ProjectNavEntry {

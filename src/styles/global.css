@@ -189,7 +189,7 @@ a:hover { color: var(--gold); }
   padding-block: var(--header-h) 0; overflow: hidden;
 }
 .hero-grid {
-  display: grid; grid-template-columns: 1.3fr 0.7fr; gap: var(--space-3xl); align-items: center;
+  display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-3xl); align-items: center;
 }
 .hero-line { width: 64px; height: 1px; background: oklch(100% 0 0 / 0.15); margin-bottom: var(--space-xl); transform-origin: left; }
 .hero-pre { font-family: var(--font-serif); font-size: var(--text-sm); color: var(--gold); letter-spacing: 0.2em; margin-bottom: var(--space-md); }
@@ -230,9 +230,9 @@ a:hover { color: var(--gold); }
 /* ── Hero 右侧档案卡：定性身份(是谁/在哪/能不能信)，统计数字全部留给 About ── */
 .hero-visual { display: flex; justify-content: flex-end; }
 .hero-card {
-  width: 100%; max-width: 360px; position: relative; overflow: hidden;
-  display: flex; flex-direction: column; gap: var(--space-md);
-  padding: var(--space-lg); border-radius: 20px;
+  width: 100%; max-width: 400px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg); border-radius: 20px;
   background: linear-gradient(160deg, oklch(100% 0 0 / 0.07), oklch(100% 0 0 / 0.02));
   border: 1px solid var(--border);
   backdrop-filter: blur(20px) saturate(1.15); -webkit-backdrop-filter: blur(20px) saturate(1.15);
@@ -272,12 +272,16 @@ a:hover { color: var(--gold); }
 }
 .hero-card-rows { margin: 0; display: flex; flex-direction: column; }
 .hero-card-row {
-  display: grid; grid-template-columns: 3.25rem 1fr; gap: var(--space-md);
-  align-items: baseline; padding-block: 9px;
+  display: grid; grid-template-columns: 2.5rem 1fr; gap: var(--space-sm);
+  align-items: baseline; padding-block: 12px;
   border-top: 1px solid var(--border);
 }
 .hero-card-row dt { font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.12em; }
-.hero-card-row dd { margin: 0; font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.55; }
+/* keep-all：万一还是放不下，也只在「·」两侧的空格断行，不会把「人工智能」「蓝桥杯」拆开 */
+.hero-card-row dd {
+  margin: 0; font-size: var(--text-sm); color: var(--text-secondary);
+  line-height: 1.6; word-break: keep-all;
+}
 .hero-card-row dd b { color: var(--text-primary); font-weight: 600; }
 .hero-card-now {
   display: flex; align-items: center; justify-content: space-between; gap: var(--space-md);
@@ -892,8 +896,22 @@ a:hover { color: var(--gold); }
   /* 4/3 封面比原来高，笔记本 768px 视口下固定偏移会把第三张卡底部推出屏幕 */
   top: calc(clamp(76px, 9vh, 96px) + var(--card-i, 0) * clamp(34px, 4vh, 48px));
 }
-/* padding-bottom 在上面还有两处同名声明，这里用修饰类保证胜出 */
-.projects-stack--feature { padding-bottom: clamp(80px, 10vh, 140px); }
+/* 收尾停留：sticky 的约束框是容器的「内容盒」，而容器内容盒的底边正好等于最后一张卡的
+   外边距底边——所以无论 padding-bottom 给多大，最后一张卡的停留都是 0（实测 400px 的
+   padding 换来 0px 停留），它一碰到吸顶位就被推走，整叠卡看起来是"断"在那里的。
+   只有真实占位的盒子才能撑开停留区间，所以把这段收尾留白从 padding 改成 ::after。
+   padding-bottom 在上面还有两处同名声明，这里用修饰类保证归零。 */
+.projects-stack--feature { padding-bottom: 0; }
+.projects-stack--feature::after {
+  content: ''; display: block; height: clamp(180px, 26vh, 300px);
+}
+/* 这两处覆盖必须写在上面的基础规则「之后」：媒体查询不加特异性，
+   写在前面的同名规则会被后面的基础规则反盖回去（早先就是这么失效的） */
+@media (max-width: 768px), (prefers-reduced-motion: reduce) {
+  /* 卡片不吸顶时没有停留可言，撑高只会变成一段莫名的空白 */
+  .projects-stack--feature { padding-bottom: var(--space-2xl); }
+  .projects-stack--feature::after { display: none; }
+}
 .projects-stack .project-card:not(.is-current) {
   filter: brightness(0.85) contrast(0.98);
   box-shadow: 0 10px 30px oklch(0% 0 0 / 0.28), inset 0 1px 0 oklch(100% 0 0 / 0.12);

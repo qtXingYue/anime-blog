@@ -7,7 +7,7 @@ interface Props {
 }
 const { project: p, index = 0 } = Astro.props;
 
-// 03/04/07 的封面是示意性 SVG,裁成 2:1 会变成一条色带,不如直接用 emoji + 渐变
+// 示意性 SVG 封面裁成 2:1 会变成一条色带,不如直接用 emoji + 渐变(真实截图才铺满)
 const useEmoji = !p.cover || p.cover.endsWith('.svg');
 ---
 <a

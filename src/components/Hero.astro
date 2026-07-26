@@ -10,9 +10,12 @@
         <h1 class="hero-name load-reveal" data-load-delay="200">
           钟文清<br><span class="highlight">QT新月</span>
         </h1>
+        <!-- 换行只能落在本来就有空格的位置（如「专业 2026」「专注 Python」），
+             否则 HTML 会把缩进折成一个空格，中文句中凭空多出一道缝 -->
         <p class="hero-role load-reveal" data-load-delay="400">
-          <strong>AI / 数据工程 / 全栈开发</strong>。人工智能技术应用专业 2026 届毕业生，
-          有多平台广告数据系统的完整设计与落地经验。专注 <strong>Python、TensorFlow、MediaPipe</strong>，用代码解决真实问题。
+          <strong>AI / 数据工程 / 全栈开发</strong>。人工智能技术应用专业
+          2026 届毕业生，有多平台广告数据系统的完整设计与落地经验。专注
+          <strong>Python、TensorFlow、MediaPipe</strong>，用代码解决真实问题。
         </p>
         <div class="hero-cta load-reveal" data-load-delay="550">
           <a href="#projects" class="btn btn-primary">浏览项目 →</a>
@@ -35,10 +38,12 @@
             开放工作机会 · AI / 数据工程方向
           </p>
           <dl class="hero-card-rows load-reveal" data-load-delay="440">
-            <div class="hero-card-row"><dt>教育</dt><dd><b>深圳职业技术大学</b> · 人工智能技术应用 · 2026 届</dd></div>
+            <!-- 专业名已在左侧 hero-role 里写过，这里只留学校与届别，避免同屏重复 -->
+            <div class="hero-card-row"><dt>教育</dt><dd><b>深圳职业技术大学</b> · 2026 届</dd></div>
             <div class="hero-card-row"><dt>主攻</dt><dd>Python · TensorFlow · 浏览器自动化</dd></div>
-            <div class="hero-card-row"><dt>认证</dt><dd>华为云 HCCDA-AI · 蓝桥杯 Python 省二</dd></div>
-            <div class="hero-card-row"><dt>语言</dt><dd>中文 · 日语 N2（冲刺 N1）· English</dd></div>
+            <!-- 赛道与冲刺 N1 的细节在「荣誉」时间线和「关于我」里，卡片只做一行摘要 -->
+            <div class="hero-card-row"><dt>认证</dt><dd>华为云 HCCDA-AI · 蓝桥杯省二</dd></div>
+            <div class="hero-card-row"><dt>语言</dt><dd>中文 · 日语 N2 · English</dd></div>
           </dl>
           <a class="hero-card-now load-reveal" data-load-delay="510" href="#projects">
             <span><small>代表作</small><b>多平台广告数据聚合监控系统</b></span>
