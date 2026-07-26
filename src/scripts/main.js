@@ -291,6 +291,7 @@ function setProjectsProgressVisible(visible) {
 }
 
 let velocityTrigger = null;
+let pageshowBound = false;
 
 function initStacking() {
   const shouldStack = getShouldStack();
@@ -390,7 +391,14 @@ function initStacking() {
     });
   }
 
-  window.addEventListener('pageshow', () => requestAnimationFrame(() => setProjectsProgressVisible(true)));
+  // bfcache 恢复后 ScrollTrigger 的状态可能失效，重算一次由它自己决定显隐；
+  // 早先这里无条件设为可见，导致刚进首页（还没滚到项目区）挂件就浮在右侧
+  if (!pageshowBound) {
+    pageshowBound = true;
+    window.addEventListener('pageshow', () => requestAnimationFrame(() => {
+      if (window.ScrollTrigger) ScrollTrigger.refresh();
+    }));
+  }
 }
 
 // ═══ INIT STACKING after layout ═══

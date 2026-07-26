@@ -1,15 +1,18 @@
 /* ═══ FONTS(自托管思源宋体子集,替代国内不可达的 Google Fonts)═══ */
+/* 子集由 scripts/make-font-subset.py 从站点源码扫描生成,改文案后重跑一次 */
 @font-face {
   font-family: 'Noto Serif SC';
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/noto-serif-sc-700.woff') format('woff');
+  src: url('/fonts/noto-serif-sc-700.woff2') format('woff2'),
+       url('/fonts/noto-serif-sc-700.woff') format('woff');
 }
 @font-face {
   font-family: 'Noto Serif SC';
   font-weight: 900;
   font-display: swap;
-  src: url('/fonts/noto-serif-sc-900.woff') format('woff');
+  src: url('/fonts/noto-serif-sc-900.woff2') format('woff2'),
+       url('/fonts/noto-serif-sc-900.woff') format('woff');
 }
 
 /* ═══ DESIGN TOKENS ═══ */
