@@ -182,8 +182,9 @@
     const isLab = mode === 'lab';
     stack.classList.toggle('on', isVideo);
     lab.classList.toggle('on', isLab);
-    // 压暗遮罩两种动态背景都要,否则正文压不住
-    overlay.classList.toggle('on', isVideo || isLab);
+    // 重遮罩只配视频:视频画面又亮又杂,不重压正文读不了;
+    // 极光是暗底柔光,自带的轻渐变(.bg-lab::after)就够了,套重遮罩会浑浊发灰
+    overlay.classList.toggle('on', isVideo);
     if (isVideo) start(); else stop();
     if (isLab) netStart(); else netStop();
     if (btn) {

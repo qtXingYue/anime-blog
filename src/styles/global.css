@@ -845,6 +845,18 @@ a:hover { color: var(--gold); }
   66% { transform: translate(-4vw, -3vh) scale(0.9); }
 }
 .bg-lab-net { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* 极光自带的压暗，只有视频遮罩的一半左右：视频画面又亮又杂必须重压，
+   极光本身就是暗底柔光，套上那层就浑了——实验一原页面根本没有遮罩。
+   中段留得最透（45% 处只有 0.1），正文集中的上下两端才收一点 */
+.bg-lab::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg,
+    oklch(8% 0.015 270 / 0.28), oklch(10% 0.012 270 / 0.1) 45%, oklch(8% 0.015 270 / 0.3));
+}
+[data-theme="light"] .bg-lab::after {
+  background: linear-gradient(180deg,
+    oklch(97% 0.005 270 / 0.45), oklch(100% 0 0 / 0.28) 45%, oklch(97% 0.005 270 / 0.5));
+}
 /* 亮色下 screen 会把光斑冲成一片白，换成 multiply 当淡彩晕染 */
 [data-theme="light"] .bg-lab-aurora { opacity: 0.26; }
 [data-theme="light"] .bg-lab-aurora i { mix-blend-mode: multiply; }
