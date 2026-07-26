@@ -123,10 +123,16 @@ def main():
         put(sftp, os.path.join(proj_dir, 'covers', f), f'{REMOTE}/projects/covers/{f}')
     for f in os.listdir(os.path.join(DIST, 'fonts')):
         put(sftp, os.path.join(DIST, 'fonts', f), f'{REMOTE}/fonts/{f}')
-    for f in ('og-image.png', 'bg-poster.jpg', 'desktop-bg.webm', 'desktop-bg.mp4'):
+    for f in ('og-image.png', 'bg-poster.jpg', 'desktop-bg.webm', 'desktop-bg.mp4', 'lab.html'):
         p = os.path.join(DIST, f)
         if os.path.exists(p):
             put(sftp, p, f'{REMOTE}/{f}')
+    lab_dir = os.path.join(DIST, 'lab')
+    if os.path.isdir(lab_dir):
+        for f in os.listdir(lab_dir):
+            p = os.path.join(lab_dir, f)
+            if os.path.isfile(p):
+                put(sftp, p, f'{REMOTE}/lab/{f}')
     sftp.close()
     print('上传完成!')
 
@@ -135,7 +141,7 @@ def main():
     run(ssh, f'cd {REMOTE} && git config user.email "qtXingYue@users.noreply.github.com" && git config user.name "qtXingYue"')
     run(ssh, f'cd {REMOTE} && git checkout main 2>&1 | tail -1')
     run(ssh, f'cd {REMOTE} && git branch -D astro-refactor 2>/dev/null; git checkout -b astro-refactor')
-    run(ssh, f'cd {REMOTE} && git add -A index.html _astro projects/*.html projects/covers fonts og-image.png bg-poster.jpg desktop-bg.webm 2>&1')
+    run(ssh, f'cd {REMOTE} && git add -A index.html lab.html lab _astro projects/*.html projects/covers fonts og-image.png bg-poster.jpg desktop-bg.webm 2>&1')
     run(ssh, f'cd {REMOTE} && git status --short | head -12')
     run(ssh, f'cd {REMOTE} && git commit -m "feat(P0): real covers + self-hosted serif + tighter rhythm + light video + svg icons" 2>&1 | tail -2 || echo "no changes"')
     run(ssh, f'cd {REMOTE} && git checkout main 2>&1 | tail -1')
@@ -156,7 +162,7 @@ def main():
 
     # ── 8. 验证 ──
     print('\n=== 8. HTTP 验证 ===')
-    checks = ['/', '/projects/data-crawler-report.html',
+    checks = ['/', '/projects/data-crawler-report.html', '/lab.html', '/lab/exp-02-bento.html',
               '/fonts/noto-serif-sc-900.woff', '/projects/covers/01-data-crawler.webp',
               '/og-image.png', '/desktop-bg.webm']
     for c in checks:

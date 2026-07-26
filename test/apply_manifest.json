@@ -51,7 +51,12 @@
     "public/projects/covers/10-wx-store.webp",
     "public/projects/covers/11-ai-gallery.webp",
     "public/projects/covers/12-ai-video.webp",
-    "public/desktop-bg.mp4"
+    "public/desktop-bg.mp4",
+    "public/lab/exp-01-motion.html",
+    "public/lab/exp-01-thumb.webp",
+    "public/lab/exp-02-bento.html",
+    "public/lab/exp-02-thumb.webp",
+    "src/pages/lab.astro"
   ],
   "moved_redundant": [
     "public/bg-video.orig.mp4",

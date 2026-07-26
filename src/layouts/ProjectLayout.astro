@@ -38,10 +38,11 @@ const current = projectNav[currentIdx];
   --bg-base: oklch(12% 0.012 270);
   --bg-raised: oklch(16% 0.010 270);
   --bg-high: oklch(20% 0.008 265);
-  --accent: oklch(66% 0.19 285);
-  --accent-soft: oklch(56% 0.13 285);
-  --accent-dim: oklch(36% 0.08 285);
-  --accent-glow: oklch(66% 0.19 285 / 0.3);
+  /* 与主站 global.css 完全一致的主色体系 */
+  --accent: oklch(60% 0.18 280);
+  --accent-soft: oklch(50% 0.13 280);
+  --accent-dim: oklch(30% 0.08 280);
+  --accent-glow: oklch(60% 0.18 280 / 0.3);
   --gold: oklch(80% 0.14 95);
   --text-primary: oklch(92% 0.01 270);
   --text-secondary: oklch(72% 0.01 270);
@@ -77,11 +78,20 @@ const current = projectNav[currentIdx];
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; -webkit-font-smoothing:antialiased; }
 body {
-  font-family: 'PingFang SC','Microsoft YaHei','Hiragino Sans GB', system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-size: 1rem; line-height: 1.9;
   color: var(--text-primary);
   background: var(--bg-deep);
   overflow-x: hidden;
+}
+::selection { background: oklch(60% 0.18 280 / 0.3); color: var(--text-primary); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+/* ═══ 顶部滚动进度条(与主站一致)═══ */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  width: 0%; will-change: width;
 }
 body::before {
   content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
@@ -101,14 +111,15 @@ body::before {
 /* ═══ Site Header（详情页顶部导航）═══ */
 .site-header {
   position: sticky; top: 0; z-index: 100;
-  background: oklch(10% 0.015 270 / 0.72);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: oklch(14% 0.015 270 / 0.55);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 0 oklch(100% 0 0 / 0.03) inset;
 }
 .header-inner {
-  max-width: 1080px; margin: 0 auto;
-  padding: 0.7rem 1.5rem;
+  max-width: 1080px; margin: 0 auto; height: 64px;
+  padding: 0 1.5rem;
   display: flex; align-items: center; justify-content: space-between; gap: 1rem;
 }
 .header-brand {
@@ -118,12 +129,12 @@ body::before {
 }
 .header-brand .brand-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 32px; height: 32px;
+  width: 28px; height: 28px;
   background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-  border-radius: 10px; color: #fff; font-size: 0.95rem;
-  box-shadow: 0 4px 12px var(--accent-glow);
+  border-radius: 7px; color: #fff; font-size: 0.9rem;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.header-brand:hover .brand-mark { transform: rotate(-6deg) scale(1.05); transition: transform 220ms var(--ease-out-expo); }
+.header-brand:hover .brand-mark { transform: rotate(-12deg) scale(1.08); }
 
 .header-crumbs {
   display: flex; align-items: center; gap: 0.5rem;
@@ -322,6 +333,10 @@ a:hover { color: var(--gold); }
   text-align: center; padding: 3rem 0 2rem;
   border-top: 1px solid var(--border); margin-top: 3rem;
 }
+.footer .footer-decor {
+  font-family: var(--font-serif); color: oklch(35% 0.03 270);
+  letter-spacing: 0.2em; font-size: 0.9rem; margin-bottom: 1.2rem;
+}
 .footer a {
   display: inline-flex; align-items: center; gap: 6px;
   padding: 10px 20px; border: 1px solid var(--accent-dim);
@@ -390,6 +405,7 @@ a:hover { color: var(--gold); }
 <body data-accent={accent ? 'true' : undefined} style={accent ? `--accent-override:${accent};--accent-soft-override:${accent.replace(/oklch\((\d+)%/, 'oklch($1%').replace(/(\s0\.\d+\s)/, ' ')};--accent-dim-override:${accent.replace(/(\d+)%/, m => Math.floor(parseInt(m)/3) + '%')};--accent-glow-override:${accent.replace(')', ' / 0.3)')};` : undefined}>
 
 <div class="noise-overlay" aria-hidden="true"></div>
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
 <!-- 顶部导航 Header -->
 <header class="site-header">
@@ -453,22 +469,30 @@ a:hover { color: var(--gold); }
 <!-- Footer -->
 <div class="container">
   <div class="footer">
+    <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p>
     <a href="/">← 回到作品集</a>
     <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">{title}</p>
   </div>
 </div>
 
 <!-- 返回顶部 -->
-<button class="back-to-top" id="backToTop" aria-label="返回顶部">↑</button>
+<button class="back-to-top" id="backToTop" aria-label="返回顶部">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <script is:inline>
 (function() {
   const btn = document.getElementById('backToTop');
+  const prog = document.getElementById('scrollProgress');
   if (!btn) return;
   let ticking = false;
   function updateBtn() {
     if (window.scrollY > 600) btn.classList.add('visible');
     else btn.classList.remove('visible');
+    if (prog) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
+    }
     ticking = false;
   }
   window.addEventListener('scroll', () => {
