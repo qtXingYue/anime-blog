@@ -228,9 +228,9 @@ const tier = (nums: string[]): Project[] =>
 /** 特写级：工程体量最大、有硬指标的三个 */
 export const projectsFeature: Project[] = tier(['01', '03', '04']);
 /** 专题级：有完整技术拆解、但没有生产体量的六个 */
-export const projectsDepth: Project[] = tier(['05', '06', '07', '08', '10', '12']);
+export const projectsDepth: Project[] = tier(['02', '05', '06', '08', '10', '12']);
 /** 索引级：小品与作品合集，一行一条即可 */
-export const projectsIndex: Project[] = tier(['02', '09', '11', '13', '14']);
+export const projectsIndex: Project[] = tier(['07', '09', '11', '13', '14']);
 
 // 项目详情页导航顺序（用于详情页上一个/下一个按钮）
 export interface ProjectNavEntry {
