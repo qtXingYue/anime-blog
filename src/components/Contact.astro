@@ -42,7 +42,8 @@
           <textarea id="contactMessage" name="message" placeholder="你的消息..." rows="4" required></textarea>
         </div>
         <button type="submit">发送</button>
-        <p class="form-msg" id="formMsg">静态部署下会唤起邮件客户端发送。</p>
+        <!-- 默认留空，只做提交后的状态回显（发送中 / 成功 / 失败），main.js 往里写字 -->
+        <p class="form-msg" id="formMsg"></p>
       </form>
     </div>
   </div>
