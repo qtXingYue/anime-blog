@@ -95,8 +95,8 @@ export const projectsAI: Project[] = [
     gradient: 'linear-gradient(135deg,#0a1628,#1a3a5c)',
     cover: '/projects/covers/06-cartoon-gan.webp',
     title: '卡通风格迁移系统 (CartoonGAN)',
-    desc: 'AnimeGAN2 + ArcaneGAN 多模型风格迁移，覆盖图片和视频双模式转换。支持新海诚、宫崎骏等风格。',
-    metrics: ['3 种动漫风格', 'TensorFlow 训练', '实时预览'],
+    desc: 'AnimeGAN2 + ArcaneGAN 多模型风格迁移，图片 / 视频双模式。新海诚、宫崎骏到《双城之战》五种风格，含人脸检测裁剪与平滑后处理，Gradio 一键分享。',
+    metrics: ['新海诚 / 宫崎骏 / Arcane', '图片+视频双模式', 'Gradio Web 界面'],
     tech: ['Python', 'TensorFlow', 'GAN', 'Gradio'],
     link: { href: 'projects/cartoon-gan-report', label: '查看技术拆解 →' }
   },
@@ -105,8 +105,8 @@ export const projectsAI: Project[] = [
     gradient: 'linear-gradient(135deg,#1c1c4a,#2a5298)',
     cover: '/projects/covers/07-news-classification.svg',
     title: '多模型新闻文本分类系统',
-    desc: 'TextCNN / TextRNN / 朴素贝叶斯三种架构对比，完成头条新闻 6 分类流程。模块化 Config 统一管理超参数。',
-    metrics: ['3 种分类架构', '6 类新闻标签', '模块化 Config'],
+    desc: 'TextCNN / TextRNN / 朴素贝叶斯三架构横向对比，头条新闻 6 分类。加载腾讯 AILab 中文预训练词向量微调，自动输出准确率 / F1 / 混淆矩阵对比报告。',
+    metrics: ['TextCNN F1 0.91', '腾讯预训练词向量', '三模型对比评估'],
     tech: ['TensorFlow', 'TextCNN', 'NLP', 'Jieba'],
     link: { href: 'projects/news-classification-report', label: '查看技术拆解 →' }
   },
@@ -115,17 +115,37 @@ export const projectsAI: Project[] = [
     gradient: 'linear-gradient(135deg,#2e1a3e,#5a1a6e)',
     cover: '/projects/covers/08-japanese-ocr.webp',
     title: '日语假名手写识别系统',
-    desc: 'CNN 识别 49 类日本草书字符——3 层卷积块 + BatchNorm + Dropout，早停法 + 学习率调度，测试集准确率 88.2%。Tkinter 手写板 GUI 实时识别。',
-    metrics: ['49 类假名', '88.2% 准确率', '3 层卷积块'],
+    desc: '基于 Kuzushiji-49（27 万张古典草书假名）训练 CNN——三层卷积 + BatchNorm/Dropout，早停 + 学习率调度，测试集 88.2%。Tkinter 手写板实时识别，含黑白反转与截图偏移两个实战踩坑修复。',
+    metrics: ['Kuzushiji-49 · 27 万张', '88.2% 准确率', '手写板实时识别'],
     tech: ['TensorFlow', 'CNN', 'Tkinter', 'Keras', 'OpenCV'],
     link: { href: 'projects/japanese-ocr-report', label: '查看技术拆解 →' }
+  },
+  {
+    num: '09', category: '计算机视觉', emoji: '📝',
+    gradient: 'linear-gradient(135deg,#1c2733,#33475c)',
+    cover: '/projects/covers/omr-grader.webp',
+    title: '答题卡智能批改系统',
+    desc: '纯 OpenCV 图像处理流水线实现自动阅卷：Canny 边缘检测 + 轮廓四顶点定位答题卡，透视变换校正为正视图，Otsu 二值化后霍夫圆检测选项，按填涂灰度判定答案并与标准答案比对判分标注。',
+    metrics: ['全传统 CV 流水线', '透视校正 + 霍夫圆', '自动判分标注'],
+    tech: ['Python', 'OpenCV', 'NumPy', 'Matplotlib'],
+    link: { href: 'projects/omr-grader-report', label: '查看技术拆解 →' }
+  },
+  {
+    num: '10', category: '工业视觉', emoji: '🏭',
+    gradient: 'linear-gradient(135deg,#1a2129,#2e3d4d)',
+    cover: '/projects/covers/industrial-vision.webp',
+    title: '工业零件质检系统（ResNet18）',
+    desc: '面向产线的合格 / 不合格自动判定：工业相机采图 + labelme 标注管线，ResNet18 迁移学习（ImageNet 权重）+ BCE 二分类，train/val/test 全流程评估，Gradio 检测台上传即判。实训覆盖亚克力板、纽扣、垫片、电阻、电池等十类零件检测课题。',
+    metrics: ['ResNet18 迁移学习', '十类工业零件', 'Gradio 检测台'],
+    tech: ['PyTorch', 'ResNet18', 'Gradio', 'labelme'],
+    link: { href: 'projects/industrial-vision-report', label: '查看技术拆解 →' }
   }
 ];
 
 // Web / 小程序组
 export const projectsWeb: Project[] = [
   {
-    num: '09', category: '数据可视化', emoji: '🗺️',
+    num: '11', category: '数据可视化', emoji: '🗺️',
     gradient: 'linear-gradient(135deg,#1a3a1a,#2d5a1e)',
     cover: '/projects/covers/09-meizhou.svg',
     title: '梅州美食地理可视化系统',
@@ -135,7 +155,7 @@ export const projectsWeb: Project[] = [
     link: { href: 'projects/meizhou-demo', label: '查看运行截图 →' }
   },
   {
-    num: '10', category: '全栈开发', emoji: '🛒',
+    num: '12', category: '全栈开发', emoji: '🛒',
     gradient: 'linear-gradient(135deg,#1a3a2e,#0d4a3e)',
     cover: '/projects/covers/10-wx-store.webp',
     title: '动漫商城管理系统',
@@ -145,7 +165,7 @@ export const projectsWeb: Project[] = [
     link: { href: 'projects/wx-store-report', label: '查看项目详解 →' }
   },
   {
-    num: '11', category: 'AI 生图', emoji: '✨',
+    num: '13', category: 'AI 生图', emoji: '✨',
     gradient: 'linear-gradient(135deg,#2b1645,#7c3aed)',
     cover: '/projects/covers/11-ai-gallery.webp',
     title: 'AI 生图作品集',
@@ -155,7 +175,7 @@ export const projectsWeb: Project[] = [
     link: { href: 'projects/ai-gallery', label: '🖼️ 查看完整画廊' }
   },
   {
-    num: '12', category: 'AI 视频', emoji: '🎬',
+    num: '14', category: 'AI 视频', emoji: '🎬',
     gradient: 'linear-gradient(135deg,#0d1b2a,#1b2838)',
     cover: '/projects/covers/12-ai-video.webp',
     title: 'AI 视频作品',
@@ -185,8 +205,10 @@ export const projectNav: ProjectNavEntry[] = [
   { slug: 'cartoon-gan-report', href: 'projects/cartoon-gan-report', num: '06', title: '卡通风格迁移', emoji: '🎨' },
   { slug: 'news-classification-report', href: 'projects/news-classification-report', num: '07', title: '新闻文本分类', emoji: '📰' },
   { slug: 'japanese-ocr-report', href: 'projects/japanese-ocr-report', num: '08', title: '日语假名手写识别', emoji: '🇯🇵' },
-  { slug: 'meizhou-demo', href: 'projects/meizhou-demo', num: '09', title: '梅州美食可视化', emoji: '🗺️' },
-  { slug: 'wx-store-report', href: 'projects/wx-store-report', num: '10', title: '动漫商城管理', emoji: '🛒' },
-  { slug: 'ai-gallery', href: 'projects/ai-gallery', num: '11', title: 'AI 生图作品集', emoji: '✨' },
-  { slug: 'ai-video', href: 'projects/ai-video', num: '12', title: 'AI 视频作品', emoji: '🎬' },
+  { slug: 'omr-grader-report', href: 'projects/omr-grader-report', num: '09', title: '答题卡智能批改', emoji: '📝' },
+  { slug: 'industrial-vision-report', href: 'projects/industrial-vision-report', num: '10', title: '工业零件质检', emoji: '🏭' },
+  { slug: 'meizhou-demo', href: 'projects/meizhou-demo', num: '11', title: '梅州美食可视化', emoji: '🗺️' },
+  { slug: 'wx-store-report', href: 'projects/wx-store-report', num: '12', title: '动漫商城管理', emoji: '🛒' },
+  { slug: 'ai-gallery', href: 'projects/ai-gallery', num: '13', title: 'AI 生图作品集', emoji: '✨' },
+  { slug: 'ai-video', href: 'projects/ai-video', num: '14', title: 'AI 视频作品', emoji: '🎬' },
 ];

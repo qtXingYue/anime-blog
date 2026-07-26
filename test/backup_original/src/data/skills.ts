@@ -61,7 +61,7 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const stats = [
-  { number: '14', label: '实战项目' },
+  { number: '12', label: '实战项目' },
   { number: '5+', label: '数据平台集成' },
   { number: '300+', label: '活跃广告账号' },
   { number: '省二等', label: '蓝桥杯 Python' },

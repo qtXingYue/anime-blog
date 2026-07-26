@@ -30,7 +30,14 @@
     "public/projects/covers/09-meizhou.svg",
     "public/projects/covers/10-wx-store.webp",
     "public/projects/covers/11-ai-gallery.webp",
-    "public/projects/covers/12-ai-video.webp"
+    "public/projects/covers/12-ai-video.webp",
+    "public/lab/exp-01-motion.html",
+    "public/lab/exp-01-thumb.webp",
+    "public/lab/exp-02-bento.html",
+    "public/lab/exp-02-thumb.webp",
+    "src/data/skills.ts",
+    "src/pages/lab.astro",
+    "src/pages/projects/news-classification-report.astro"
   ],
   "added": [
     "public/bg-poster.jpg",
@@ -56,7 +63,14 @@
     "public/lab/exp-01-thumb.webp",
     "public/lab/exp-02-bento.html",
     "public/lab/exp-02-thumb.webp",
-    "src/pages/lab.astro"
+    "src/pages/lab.astro",
+    "public/projects/covers/industrial-vision.webp",
+    "public/projects/covers/omr-grader.webp",
+    "public/projects/industrial-imgs/industrial-camera.webp",
+    "public/projects/omr-imgs/omr-results.webp",
+    "public/projects/omr-imgs/omr-warped.webp",
+    "src/pages/projects/industrial-vision-report.astro",
+    "src/pages/projects/omr-grader-report.astro"
   ],
   "moved_redundant": [
     "public/bg-video.orig.mp4",

@@ -93,7 +93,6 @@ const slug = 'news-classification-report';
     <div class="feature-list">
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>Config 统一管理</strong><br>所有超参数集中在 <code>config.py</code>：词表大小、序列长度、Embedding 维度、卷积核尺寸、学习率、Batch Size、Epochs 等，修改一处全局生效。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>模型工厂模式</strong><br><code>model = create_model('textcnn', config)</code> 一行切换架构，无需修改训练和评估代码。</div></div>
-      <div class="feature-item"><div class="dot"></div><div class="text"><strong>腾讯预训练词向量</strong><br>Embedding 层加载<strong>腾讯 AILab 中文词向量</strong>初始化并微调（<code>trainable=True</code>），词表按词频截断在 45,600 处，显著优于随机初始化。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>自动化评估</strong><br>训练结束后自动生成准确率、精确率、召回率、F1 值及归一化混淆矩阵图表。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>早停 & 模型保存</strong><br><code>EarlyStopping</code> + <code>ModelCheckpoint</code>，自动保存验证集最优模型权重。</div></div>
     </div>
