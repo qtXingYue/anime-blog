@@ -101,25 +101,48 @@ a:hover { color: var(--gold); }
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ═══ HEADER ═══ */
+/* ═══ HEADER（实验二的居中胶囊悬浮导航，/lab/exp-02-bento.html 移植）═══ */
 .site-header {
-  position: fixed; top: 3px; left: 0; right: 0; z-index: 100; height: var(--header-h);
-  background: oklch(14% 0.015 270 / 0.55);
-  backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 1px 0 oklch(100% 0 0 / 0.03) inset;
-  transition: height 0.5s var(--spring), background 0.4s ease, box-shadow 0.4s ease;
+  /* 居中不能用 left:50% + translateX：fixed 元素的收缩宽度会被限到视口的一半，
+     手机上 187px 就把品牌文字挤折行了。inset-inline:0 + margin auto 没这个约束 */
+  position: fixed; top: 14px; inset-inline: 0; margin-inline: auto;
+  z-index: 100; width: fit-content; max-width: calc(100vw - 24px);
+  border-radius: 999px;
+  background: oklch(12% 0.015 270 / 0.8);
+  backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px oklch(0% 0 0 / 0.4);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
 }
-[data-theme="light"] .site-header { background: oklch(100% 0 0 / 0.55); }
-.site-header.scrolled { height: 52px; box-shadow: 0 4px 24px oklch(0% 0 0 / 0.2); }
-.header-inner { max-width: var(--content-max); margin-inline: auto; padding-inline: var(--space-xl); height: 100%; display: flex; align-items: center; justify-content: space-between; }
-.brand { display: flex; align-items: center; gap: var(--space-sm); font-family: var(--font-sans); font-weight: 800; font-size: var(--text-base); color: var(--text-primary); letter-spacing: 0.04em; }
-.brand-mark { width: 28px; height: 28px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-soft)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #fff; transition: transform 0.45s var(--spring); }
+[data-theme="light"] .site-header {
+  background: oklch(100% 0 0 / 0.72);
+  box-shadow: 0 12px 40px oklch(30% 0.05 280 / 0.16);
+}
+.site-header.scrolled { box-shadow: 0 16px 48px oklch(0% 0 0 / 0.55); background: oklch(12% 0.015 270 / 0.92); }
+[data-theme="light"] .site-header.scrolled { background: oklch(100% 0 0 / 0.9); box-shadow: 0 14px 44px oklch(30% 0.05 280 / 0.22); }
+.header-inner { display: flex; align-items: center; gap: 4px; padding: 8px 10px 8px 18px; }
+.brand { display: flex; align-items: center; gap: var(--space-sm); font-family: var(--font-sans); font-weight: 800; font-size: var(--text-sm); color: var(--text-primary); letter-spacing: 0.04em; margin-right: var(--space-sm); }
+.brand-mark { width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-soft)); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #fff; transition: transform 0.45s var(--spring); }
 .brand:hover .brand-mark { transform: rotate(-12deg) scale(1.08); }
-.nav-links { display: flex; align-items: center; gap: var(--space-xl); list-style: none; }
-.nav-links a { font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary); position: relative; padding-block: var(--space-xs); }
-.nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--accent); border-radius: 1px; transition: width 300ms var(--ease-out-expo); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+.nav-links a {
+  font-size: var(--text-sm); font-weight: 500; color: var(--text-secondary);
+  padding: 7px 14px; border-radius: 999px;
+  transition: color 200ms, background 200ms;
+}
+.nav-links a:hover { color: var(--text-primary); background: oklch(100% 0 0 / 0.07); }
+[data-theme="light"] .nav-links a:hover { background: oklch(0% 0 0 / 0.05); }
+/* 白底胶囊 GitHub 按钮（亮色主题反转成深底白字，否则和玻璃底融成一片） */
+.nav-gh {
+  font-size: var(--text-sm); font-weight: 600;
+  background: #fff; color: #111;
+  padding: 7px 16px; border-radius: 999px; margin-inline: 6px 2px;
+  transition: transform 200ms var(--ease-out-expo), box-shadow 200ms;
+  white-space: nowrap;
+}
+.nav-gh:hover { transform: translateY(-1px); box-shadow: 0 8px 24px oklch(100% 0 0 / 0.2); color: #111; }
+[data-theme="light"] .nav-gh { background: oklch(18% 0.02 270); color: #fff; }
+[data-theme="light"] .nav-gh:hover { box-shadow: 0 8px 24px oklch(0% 0 0 / 0.25); color: #fff; }
 .theme-toggle, .bg-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 200ms; }
 .theme-toggle:hover, .bg-toggle:hover { border-color: var(--accent); color: var(--accent); }
 .header-actions { display: flex; align-items: center; gap: 8px; }
@@ -878,8 +901,12 @@ a:hover { color: var(--gold); }
   .container { padding-inline: var(--space-lg); }
   body { font-size: 0.95rem; }
   .nav-links { display: none; }
+  .nav-gh { display: none; }
   .hamburger { display: flex; }
   .bg-toggle { display: none; }
+  /* 手机上胶囊窄条不必居中挤在中间，横向铺开更好点 */
+  .site-header { top: 10px; max-width: calc(100vw - 20px); }
+  .header-inner { padding: 6px 8px 6px 14px; }
   .hero { min-height: auto; padding-block: calc(var(--header-h) + var(--space-4xl)) var(--space-3xl); }
   .hero-grid { grid-template-columns: 1fr; gap: var(--space-2xl); transform: none; }
   /* 档案卡被 order:-1 提到 h1 上方，必须拆壳压扁：
