@@ -302,7 +302,9 @@ function setProjectsProgressVisible(visible) {
 
 let velocityTrigger = null;
 let pageshowBound = false;
-// initStacking 会在每次 resize 时重建 trigger，不回收的话数量会随 resize 次数线性增长
+// initStacking 会在每次 resize 时重建 trigger，不回收的话数量会随 resize 次数线性增长。
+// 压缩补间和它的 trigger 也要登记进来：漏掉的话，桌面拖到手机宽度后旧 trigger 还活着，
+// 会把 transform 重新写回已经解除堆叠的卡片上
 const managedTriggers = [];
 
 function initStacking() {
@@ -341,24 +343,27 @@ function initStacking() {
         // 越靠下层压得越狠。原来是 0.955 - i*0.02，也就是最底下那张反而最大，
         // 层次是反的；每张卡只被触发一次，所以终值要直接按「离最上层几层」给
         const depth = cards.length - 1 - i;
-        gsap.to(card, {
-          scale: 1 - depth * 0.03,
+        const tween = gsap.to(card, {
+          scale: 1 - depth * 0.05,
           y: depth * 8,
           // 从顶边缩：卡片露在上面的那道边不会被缩没，三张卡的露边等宽
           transformOrigin: '50% 0%',
           force3D: true, overwrite: 'auto', ease: 'none',
           scrollTrigger: {
-            trigger: next,
-            // 起止点跟着「下一张卡盖上来」走：它的顶边够到本卡底边时开始压，
-            // 吸顶盖满时压到位。原来写死 88%→48%，压缩早在下一张卡还离着
-            // 三百多像素时就做完了——一张卡孤零零地缩 4%，没有参照物自然看不出来
-            start: () => `top ${Math.round(stickyTopOf(card) + card.offsetHeight)}px`,
+            // 本卡一吸顶就开始缩，一直缩到下一张卡吸顶盖满为止——整段「在位」时间
+            // 都在动，所以从第一张卡起就能看到缩放。早先起点挂在下一张卡身上
+            // （顶边够到本卡底边才开始），前面那截是完全静止的
+            trigger: card,
+            start: () => `top ${Math.round(stickyTopOf(card))}px`,
+            endTrigger: next,
             end: () => `top ${Math.round(stickyTopOf(next))}px`,
             scrub: 0.4,
             fastScrollEnd: true,
             invalidateOnRefresh: true,
           }
         });
+        if (tween.scrollTrigger) managedTriggers.push(tween.scrollTrigger);
+        managedTriggers.push(tween);
       }
     });
   });
