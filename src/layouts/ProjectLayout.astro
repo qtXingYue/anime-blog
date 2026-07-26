@@ -53,6 +53,22 @@ const current = projectNav[currentIdx];
   --font-sans: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei', system-ui, sans-serif;
 }
 
+/* 滚动条与主站 global.css 同款（本布局不引 global.css，需各留一份） */
+html { scrollbar-width: thin; scrollbar-color: oklch(38% 0.04 280 / 0.8) transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: oklch(38% 0.04 280 / 0.8);
+  border-radius: 99px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  min-height: 48px;
+}
+::-webkit-scrollbar-thumb:hover { background: oklch(52% 0.1 280 / 0.9); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background: var(--accent); background-clip: padding-box; }
+::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+
 /* 与首页一致的自托管衬线标题字体 */
 @font-face {
   font-family: 'Noto Serif SC';

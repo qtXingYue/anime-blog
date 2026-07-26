@@ -8,6 +8,9 @@ import os
 import sys
 import time
 
+# Windows 控制台默认 GBK，编不出 ✓ 之类字符会直接崩掉收尾验证
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 try:
     import paramiko
 except ImportError:
