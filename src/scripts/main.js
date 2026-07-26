@@ -245,6 +245,10 @@ function getShouldStack() {
   return !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
 }
 
+// sticky 卡片吸顶后停在视口的哪个高度（CSS 里按 --card-i 逐层错开），
+// 堆叠动画的起止点要拿它对齐，写死百分比在不同视口高度下会错位
+const stickyTopOf = el => parseFloat(getComputedStyle(el).top) || 0;
+
 // ═══ STICKY PROJECT CARD STACKING + PROGRESS WIDGET ═══
 // 参与粘性堆叠的只有特写级大卡；进度器的锚点还额外包含两条 band-rule，
 // 这样滚过专题区与索引区时挂件不会空转。DOM 顺序即锚点顺序，天然单调。
@@ -333,17 +337,26 @@ function initStacking() {
       card.style.zIndex = `${i + 1}`;
 
       if (i < cards.length - 1 && hasGsap) {
-        // 只剩 3 张卡，原来按 6 张调的缩放幅度太小看不出层叠
+        const next = cards[i + 1];
+        // 越靠下层压得越狠。原来是 0.955 - i*0.02，也就是最底下那张反而最大，
+        // 层次是反的；每张卡只被触发一次，所以终值要直接按「离最上层几层」给
+        const depth = cards.length - 1 - i;
         gsap.to(card, {
-          scale: 0.955 - i * 0.02,
-          y: 16 + i * 10,
+          scale: 1 - depth * 0.03,
+          y: depth * 8,
+          // 从顶边缩：卡片露在上面的那道边不会被缩没，三张卡的露边等宽
+          transformOrigin: '50% 0%',
           force3D: true, overwrite: 'auto', ease: 'none',
           scrollTrigger: {
-            trigger: cards[i + 1],
-            start: 'top 88%',
-            end: 'top 48%',
+            trigger: next,
+            // 起止点跟着「下一张卡盖上来」走：它的顶边够到本卡底边时开始压，
+            // 吸顶盖满时压到位。原来写死 88%→48%，压缩早在下一张卡还离着
+            // 三百多像素时就做完了——一张卡孤零零地缩 4%，没有参照物自然看不出来
+            start: () => `top ${Math.round(stickyTopOf(card) + card.offsetHeight)}px`,
+            end: () => `top ${Math.round(stickyTopOf(next))}px`,
             scrub: 0.4,
             fastScrollEnd: true,
+            invalidateOnRefresh: true,
           }
         });
       }
@@ -391,10 +404,11 @@ function initStacking() {
         if (Math.abs(skew) > 0.06) skew = Math.sign(skew) * 0.06;
         stackCards.forEach((card) => {
           if (!card.classList.contains('visible')) return;
+          // 这里只动 skewY。原来还写 scaleY 和 y：它们和堆叠压缩动的是同一批属性，
+          // 而这个 tween 每帧重建且 overwrite:'auto'，等于每帧把压缩的缩放按回 1
+          // （慢滚时 skew≈0 → scaleY≈1），压缩因此几乎看不见；y 用 '+=' 还会逐帧累积漂移
           gsap.to(card, {
             skewY: skew * 6,
-            y: `+=${skew * 35}`,
-            scaleY: 1 - Math.abs(skew) * 0.25,
             duration: 0.5,
             ease: "power3.out",
             overwrite: "auto",
