@@ -1,0 +1,376 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = 'AI 图片作品集 — QT新月';
+const description = 'QT新月的 AI 生成图片作品集，包含文生图、图生图等 AI 艺术创作。';
+const slug = 'ai-gallery';
+---
+
+<ProjectLayout title={title} description={description} slug={slug} wide={true}>
+  <section class="page-hero">
+    <div class="page-hero-icon">🎨</div>
+    <h1>AI 图片作品集</h1>
+    <p>使用 AI 模型生成的艺术作品集合<br>包含文生图、风格迁移等创作</p>
+  </section>
+
+  <div class="filters" id="filterBar">
+    <button class="filter-btn active" data-filter="all">全部 <span class="filter-count">0</span></button>
+    <button class="filter-btn" data-filter="txt2img">文生图 <span class="filter-count">0</span></button>
+    <button class="filter-btn" data-filter="img2img">图生图 <span class="filter-count">0</span></button>
+    <button class="filter-btn" data-filter="other">其他 <span class="filter-count">0</span></button>
+  </div>
+
+  <section>
+    <div class="gallery-grid" id="galleryGrid"></div>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <div class="empty-state-icon">🖼️</div>
+      <h3>还没有作品</h3>
+      <p>把 AI 生成的图片放入 projects/ai-images/ 目录<br>然后在这页的 IMAGES 数组中添加描述即可展示</p>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" loading="lazy" decoding="async">
+    <div class="lightbox-info" id="lightboxInfo">
+      <h3 id="lightboxTitle"></h3>
+      <p class="prompt" id="lightboxPrompt"></p>
+    </div>
+    <div class="lightbox-nav">
+      <button class="lightbox-btn" onclick="lightboxPrev()">&#8249;</button>
+      <span class="lightbox-counter" id="lightboxCounter">1 / 1</span>
+      <button class="lightbox-btn" onclick="lightboxNext()">&#8250;</button>
+    </div>
+  </div>
+</ProjectLayout>
+
+<style is:global>
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Zen+Old+Mincho:wght@400;700;900&display=swap');
+
+:root {
+  --space-xs: 0.25rem; --space-sm: 0.5rem; --space-md: 1rem;
+  --space-lg: 1.5rem; --space-xl: 2rem; --space-2xl: 3rem;
+  --space-3xl: 5rem; --space-4xl: 8rem;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem;
+  --text-lg: 1.25rem; --text-xl: 1.75rem; --text-2xl: 2.5rem;
+  --glass-bg: oklch(100% 0 0 / 0.04);
+  --header-h: 64px;
+}
+
+/* PAGE HERO */
+.page-hero { padding-block: 3rem 2rem; text-align: center; }
+.page-hero-icon { font-size: 3rem; margin-bottom: var(--space-md); }
+.page-hero h1 { font-family: 'Zen Old Mincho', serif; font-weight: 900; font-size: var(--text-2xl); margin: 0 0 var(--space-sm); }
+.page-hero p { color: var(--text-secondary); font-size: var(--text-sm); max-width: 500px; margin: 0.5rem auto 0; }
+
+/* FILTERS */
+.filters {
+  display: flex; justify-content: center; gap: var(--space-sm); flex-wrap: wrap;
+  padding-block: var(--space-md) var(--space-2xl);
+  position: sticky; top: var(--header-h); z-index: 50;
+  background: oklch(12% 0.012 270 / 0.7); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  margin-bottom: var(--space-lg);
+}
+.filter-btn {
+  padding: 8px 20px; border-radius: 100px; font-size: var(--text-sm); font-weight: 500;
+  background: var(--glass-bg); border: 1px solid var(--border);
+  color: var(--text-secondary); cursor: pointer;
+  transition: all 300ms var(--ease-out-expo);
+}
+.filter-btn:hover { border-color: var(--accent-dim); color: var(--accent); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filter-count { font-size: var(--text-xs); opacity: 0.6; margin-left: 2px; }
+
+/* GALLERY GRID */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-xl);
+  padding-bottom: var(--space-3xl);
+}
+@media (max-width: 640px) {
+  .gallery-grid { grid-template-columns: 1fr; gap: var(--space-lg); }
+}
+.gallery-card {
+  background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; cursor: pointer;
+  transition: all 300ms var(--ease-out-expo);
+}
+.gallery-card:hover {
+  border-color: oklch(60% 0.18 280 / 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px oklch(0% 0 0 / 0.3);
+}
+.gallery-card-img-wrap {
+  position: relative; width: 100%; aspect-ratio: 4/3;
+  background: oklch(18% 0.05 280); overflow: hidden;
+}
+.gallery-card-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 400ms var(--ease-out-expo);
+}
+.gallery-card:hover .gallery-card-img { transform: scale(1.05); }
+.gallery-card-body { padding: var(--space-lg); }
+.gallery-card-title {
+  font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-base);
+  color: var(--text-primary); margin: 0 0 var(--space-xs);
+}
+.gallery-card-meta { font-size: var(--text-xs); color: var(--text-muted); margin: 0 0 var(--space-sm); line-height: 1.5; }
+.gallery-card-prompt {
+  font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.gallery-card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: var(--space-sm); }
+.gallery-card-tag {
+  font-size: 0.65rem; padding: 2px 8px; border-radius: 100px;
+  background: oklch(60% 0.18 280 / 0.08); color: var(--accent-soft);
+  border: 1px solid oklch(60% 0.18 280 / 0.1);
+}
+.gallery-card-fallback {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: oklch(18% 0.05 280);
+}
+
+/* LIGHTBOX */
+.lightbox {
+  position: fixed; inset: 0; z-index: 300; background: oklch(0% 0 0 / 0.93);
+  backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center;
+  flex-direction: column;
+}
+.lightbox.open { display: flex; }
+.lightbox-img {
+  max-width: 90vw; max-height: 70vh; border-radius: 12px;
+  box-shadow: 0 24px 80px oklch(0% 0 0 / 0.5);
+  animation: lightboxIn 300ms var(--ease-out-expo);
+}
+@keyframes lightboxIn { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: scale(1); } }
+.lightbox-close {
+  position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%;
+  border: 1px solid oklch(100% 0 0 / 0.15); background: oklch(0% 0 0 / 0.4); color: #fff;
+  font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: all 200ms;
+}
+.lightbox-close:hover { border-color: var(--accent); }
+.lightbox-info {
+  margin-top: 16px; max-width: 500px; text-align: center;
+  padding: var(--space-md); background: oklch(100% 0 0 / 0.04); border-radius: 12px;
+}
+.lightbox-info h3 { font-family: 'M PLUS Rounded 1c', sans-serif; font-weight: 700; font-size: var(--text-sm); color: var(--text-primary); margin: 0; }
+.lightbox-info .prompt { font-size: var(--text-xs); color: var(--text-secondary); margin: var(--space-xs) 0 0; line-height: 1.6; }
+.lightbox-nav { display: flex; align-items: center; gap: 24px; margin-top: 12px; }
+.lightbox-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: 1px solid oklch(100% 0 0 / 0.15);
+  background: oklch(0% 0 0 / 0.4); color: #fff; font-size: 1.2rem; cursor: pointer;
+  transition: all 200ms; display: flex; align-items: center; justify-content: center;
+}
+.lightbox-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+.lightbox-counter { color: var(--text-muted); font-size: var(--text-sm); min-width: 60px; text-align: center; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: var(--space-4xl) var(--space-2xl); }
+.empty-state-icon { font-size: 4rem; margin-bottom: var(--space-lg); opacity: 0.6; }
+.empty-state h3 { font-family: 'Zen Old Mincho', serif; font-size: var(--text-xl); color: var(--text-muted); margin: 0 0 var(--space-sm); }
+.empty-state p { color: var(--text-muted); font-size: var(--text-sm); margin: 0; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .page-hero { padding-block: 2rem var(--space-xl); }
+  .page-hero h1 { font-size: var(--text-xl); }
+  .filters { padding-top: var(--space-sm); padding-bottom: var(--space-lg); }
+  .filter-btn { padding: 6px 14px; font-size: var(--text-xs); }
+  .gallery-card-body { padding: var(--space-sm) var(--space-md); }
+  .lightbox-img { max-width: 95vw; max-height: 60vh; }
+}
+</style>
+
+<script is:inline>
+// ============================================================
+// IMAGE DATA — add entries here
+// Format: { file, title, category, prompt, tags, date }
+// ============================================================
+const IMAGES = [
+  {
+    file: "/projects/ai-images/clipboard-2026-06-02T12-50-08-313Z-ab85d630.jpg",
+    title: "思乐智美容仪 · 萌系广告",
+    category: "img2img",
+    prompt: "粉色毛绒玩偶 mascot 手持美容仪产品，漫画风格爆炸对话框，绿色清新配色，电商广告海报设计，可爱卡通风格，高饱和度，商业摄影质感",
+    tags: ["产品广告", "萌系", "商业设计"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00009.png",
+    title: "ComfyUI 文生图 #1",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00011.png",
+    title: "ComfyUI 文生图 #2",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00012.png",
+    title: "ComfyUI 文生图 #3",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00028.png",
+    title: "ComfyUI 文生图 #4",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  }
+];
+
+// ============================================================
+// RENDER
+// ============================================================
+let currentFilter = "all";
+let lightboxIdx = 0;
+let filteredImages = [];
+
+function getFilteredImages(filter) {
+  return filter === "all" ? IMAGES : IMAGES.filter(img => img.category === filter);
+}
+
+function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  const empty = document.getElementById("emptyState");
+  filteredImages = getFilteredImages(currentFilter);
+
+  if (filteredImages.length === 0) {
+    grid.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+  grid.innerHTML = filteredImages.map((img, i) => `
+    <div class="gallery-card" onclick="openLightbox(${i})">
+      <div class="gallery-card-img-wrap">
+        <img class="gallery-card-img" src="${img.file}" alt="${img.title}" loading="lazy" decoding="async"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="gallery-card-fallback" style="display:none">
+          <svg viewBox="0 0 60 60" width="48" height="48"><rect width="60" height="60" rx="12" fill="oklch(25% 0.05 280)"/><text x="30" y="40" text-anchor="middle" font-size="28">🖼</text></svg>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <h3 class="gallery-card-title">${img.title}</h3>
+        <p class="gallery-card-meta">${img.date} · ${categoryLabel(img.category)}</p>
+        <p class="gallery-card-prompt">${img.prompt}</p>
+        ${img.tags ? `<div class="gallery-card-tags">${img.tags.map(t => `<span class="gallery-card-tag">${t}</span>`).join("")}</div>` : ""}
+      </div>
+    </div>
+  `).join("");
+
+  updateCounts();
+}
+
+function categoryLabel(cat) {
+  const labels = { txt2img: "文生图", img2img: "图生图", other: "其他" };
+  return labels[cat] || cat;
+}
+
+function updateCounts() {
+  const allCount = IMAGES.length;
+  const counts = { txt2img: 0, img2img: 0, other: 0 };
+  IMAGES.forEach(img => {
+    if (counts[img.category] !== undefined) counts[img.category]++;
+  });
+
+  document.querySelectorAll(".filter-count").forEach(el => {
+    const filter = el.parentElement.dataset.filter;
+    if (filter === "all") el.textContent = allCount;
+    else el.textContent = counts[filter] || 0;
+  });
+}
+
+// ============================================================
+// FILTER LOGIC
+// ============================================================
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll(".filter-btn, .filter-nav").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.filter === filter);
+  });
+  renderGallery();
+}
+
+// Filter button clicks
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => setFilter(btn.dataset.filter));
+});
+
+// Filter nav clicks
+document.querySelectorAll(".filter-nav").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    setFilter(link.dataset.filter);
+    document.getElementById("filterBar").scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+function openLightbox(idx) {
+  lightboxIdx = idx;
+  updateLightbox();
+  document.getElementById("lightbox").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function updateLightbox() {
+  const img = filteredImages[lightboxIdx];
+  if (!img) return;
+  document.getElementById("lightboxImg").src = img.file;
+  document.getElementById("lightboxTitle").textContent = img.title;
+  document.getElementById("lightboxPrompt").textContent = img.prompt;
+  document.getElementById("lightboxCounter").textContent = `${lightboxIdx + 1} / ${filteredImages.length}`;
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function lightboxPrev() {
+  lightboxIdx = (lightboxIdx - 1 + filteredImages.length) % filteredImages.length;
+  updateLightbox();
+}
+
+function lightboxNext() {
+  lightboxIdx = (lightboxIdx + 1) % filteredImages.length;
+  updateLightbox();
+}
+
+// Lightbox overlay click
+document.getElementById("lightbox").addEventListener("click", function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+// Keyboard navigation
+document.addEventListener("keydown", function(e) {
+  const lb = document.getElementById("lightbox");
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") lightboxPrev();
+  if (e.key === "ArrowRight") lightboxNext();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+renderGallery();
+</script>

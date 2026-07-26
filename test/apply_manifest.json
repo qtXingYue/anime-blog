@@ -1,0 +1,44 @@
+{
+  "backed_up": [
+    "src/components/BackToTop.astro",
+    "src/components/Contact.astro",
+    "src/components/Footer.astro",
+    "src/components/Header.astro",
+    "src/components/ProjectCard.astro",
+    "src/components/Projects.astro",
+    "src/components/ThemeToggle.vue",
+    "src/components/VideoBg.astro",
+    "src/data/projects.ts",
+    "src/layouts/Base.astro",
+    "src/layouts/ProjectLayout.astro",
+    "src/styles/global.css",
+    "public/desktop-bg.mp4"
+  ],
+  "added": [
+    "public/bg-poster.jpg",
+    "public/desktop-bg.webm",
+    "public/og-image.png",
+    "public/fonts/noto-serif-sc-700.woff",
+    "public/fonts/noto-serif-sc-900.woff",
+    "public/projects/covers/00-featured.webp",
+    "public/projects/covers/01-data-crawler.webp",
+    "public/projects/covers/02-brazil-cnpj.svg",
+    "public/projects/covers/03-rpa.svg",
+    "public/projects/covers/04-android-network.svg",
+    "public/projects/covers/05-gesture-ppt.svg",
+    "public/projects/covers/06-cartoon-gan.webp",
+    "public/projects/covers/07-news-classification.svg",
+    "public/projects/covers/08-japanese-ocr.webp",
+    "public/projects/covers/09-meizhou.svg",
+    "public/projects/covers/10-wx-store.webp",
+    "public/projects/covers/11-ai-gallery.webp",
+    "public/projects/covers/12-ai-video.webp",
+    "public/desktop-bg.mp4"
+  ],
+  "moved_redundant": [
+    "public/bg-video.orig.mp4",
+    "public/bg-video.mp4",
+    "public/sakura-bg.mp4",
+    "public/_bg-720.mp4"
+  ]
+}

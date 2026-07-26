@@ -4,6 +4,54 @@
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// ═══ MOBILE DRAWER ═══
+(function initDrawer() {
+  const hamburger = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('drawerBackdrop');
+  const closeBtn = document.getElementById('drawerClose');
+  if (!hamburger || !drawer) return;
+
+  let scrollY = 0;
+
+  function openDrawer() {
+    scrollY = window.scrollY;
+    hamburger.classList.add('open');
+    hamburger.setAttribute('aria-expanded', 'true');
+    drawer.classList.add('open');
+    if (backdrop) backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDrawer() {
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    drawer.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    if (drawer.classList.contains('open')) closeDrawer();
+    else openDrawer();
+  });
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+  drawer.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (drawer.classList.contains('open')) closeDrawer();
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) {
+      closeDrawer();
+      hamburger.focus();
+    }
+  });
+})();
+
 // ═══ ENTRANCE ANIMATION ═══
 (function initEntrance() {
   function runEntrance() {
@@ -242,8 +290,15 @@ function setProjectsProgressVisible(visible) {
   if (projectProgress) projectProgress.classList.toggle('active', visible);
 }
 
+let velocityTrigger = null;
+
 function initStacking() {
   const shouldStack = getShouldStack();
+
+  if (velocityTrigger) {
+    velocityTrigger.kill();
+    velocityTrigger = null;
+  }
 
   if (!shouldStack) {
     allStackCards.forEach((card, i) => {
@@ -265,7 +320,7 @@ function initStacking() {
   document.querySelectorAll('.projects-stack').forEach(stack => {
     const cards = stack.querySelectorAll('.project-card');
     cards.forEach((card, i) => {
-      card.style.top = `${96 + i * STACK_OFFSET}px`;
+      card.style.setProperty('--card-i', i);
       card.style.zIndex = `${i + 1}`;
 
       if (i < cards.length - 1 && hasGsap) {
@@ -312,6 +367,29 @@ function initStacking() {
     });
   }
 
+  // Spring physics stacking skew on scroll velocity
+  if (hasGsap && allStackCards.length) {
+    velocityTrigger = ScrollTrigger.create({
+      onUpdate: (self) => {
+        const vel = self.getVelocity();
+        let skew = vel / 2500;
+        if (Math.abs(skew) > 0.06) skew = Math.sign(skew) * 0.06;
+        allStackCards.forEach((card) => {
+          if (!card.classList.contains('visible')) return;
+          gsap.to(card, {
+            skewY: skew * 6,
+            y: `+=${skew * 35}`,
+            scaleY: 1 - Math.abs(skew) * 0.25,
+            duration: 0.5,
+            ease: "power3.out",
+            overwrite: "auto",
+            force3D: true
+          });
+        });
+      }
+    });
+  }
+
   window.addEventListener('pageshow', () => requestAnimationFrame(() => setProjectsProgressVisible(true)));
 }
 
@@ -320,6 +398,20 @@ requestAnimationFrame(() => {
   requestAnimationFrame(() => {
     initStacking();
   });
+});
+
+// ═══ KEYBOARD ARROW NAVIGATION FOR CARDS ═══
+window.addEventListener('keydown', (e) => {
+  if (!projectProgress || !projectProgress.classList.contains('active')) return;
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    const direction = e.key === 'ArrowDown' ? 1 : -1;
+    const targetIdx = Math.min(Math.max(0, currentProjectIdx + direction), allStackCards.length - 1);
+    if (targetIdx !== currentProjectIdx && allStackCards[targetIdx]) {
+      e.preventDefault();
+      allStackCards[targetIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 });
 
 let resizeTimer;
@@ -407,7 +499,7 @@ if (btt) {
   window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 600), { passive: true });
 }
 
-// ═══ 3D TILT on project cards + GLOW on stat/contact cards ═══
+// ═══ 3D TILT on project cards + GLOW on stat/contact/project cards + A11y Focus ═══
 (function initTiltAndGlow() {
   if (window.matchMedia('(pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
   const TILT_MAX = 7;
@@ -429,11 +521,43 @@ if (btt) {
     });
   });
 
-  document.querySelectorAll('.stat-card, .contact-item').forEach(card => {
+  // Track mouse move coordinates for glow effect on project cards, stat cards, and contact items
+  document.querySelectorAll('.project-card, .stat-card, .contact-item').forEach(card => {
     card.addEventListener('pointermove', e => {
       const r = card.getBoundingClientRect();
       card.style.setProperty('--gx', ((e.clientX - r.left) / r.width * 100) + '%');
       card.style.setProperty('--gy', ((e.clientY - r.top) / r.height * 100) + '%');
+    });
+  });
+
+  // Keyboard navigation focus / accessibility support
+  document.querySelectorAll('.project-card').forEach(card => {
+    const focusable = card.querySelector('a, button');
+    if (!focusable) return;
+    focusable.addEventListener('focus', () => {
+      card.style.transform = 'perspective(1000px) rotateX(1.5deg) rotateY(1.5deg) scale(1.008)';
+      card.style.boxShadow = `0 24px 64px oklch(0% 0 0 / 0.3), 0 0 0 1px var(--project-accent, var(--accent))`;
+      card.style.setProperty('--gx', '50%');
+      card.style.setProperty('--gy', '50%');
+    });
+    focusable.addEventListener('blur', () => {
+      card.style.transform = '';
+      card.style.boxShadow = '';
+      card.style.setProperty('--gx', '14%');
+      card.style.setProperty('--gy', '0%');
+    });
+  });
+
+  document.querySelectorAll('.stat-card, .contact-item').forEach(card => {
+    const focusable = card.querySelector('a, button, input, textarea');
+    if (!focusable) return;
+    focusable.addEventListener('focus', () => {
+      card.style.setProperty('--gx', '50%');
+      card.style.setProperty('--gy', '50%');
+    });
+    focusable.addEventListener('blur', () => {
+      card.style.setProperty('--gx', '');
+      card.style.setProperty('--gy', '');
     });
   });
 })();

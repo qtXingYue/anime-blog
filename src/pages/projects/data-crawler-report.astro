@@ -1,0 +1,182 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '多平台广告数据爬取系统 — 项目详解';
+const description = '基于 Python、Playwright、Streamlit 的多平台广告数据爬取系统项目详解，覆盖五大广告平台、328+ 账号监控、Token 双重认证、CSV/Excel 自动报表。';
+const slug = 'data-crawler-report';
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">🕷️</div>
+      <h1>多平台广告数据爬取系统</h1>
+      <p class="domain">Python · Playwright · Streamlit · REST API</p>
+      <p class="tagline">覆盖五大广告平台的自动化数据采集系统：Token 双重认证、Playwright 驱动浏览器、Streamlit 仪表盘一键生成报表，日常监控 300+ 广告账号的消耗数据。</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">5</div><div class="label">广告平台</div></div>
+      <div class="stat-item"><div class="num">328+</div><div class="label">活跃账号</div></div>
+      <div class="stat-item"><div class="num">2</div><div class="label">认证层级</div></div>
+      <div class="stat-item"><div class="num">∞</div><div class="label">自动报表</div></div>
+    </div>
+
+    <h2><span class="num">01</span>项目概述</h2>
+    <p>这是一个面向广告投放运营的<strong>多平台数据采集与可视化系统</strong>。系统每天自动登录五大广告平台，拉取账号消耗、投放数据与转化指标，统一汇总到 Streamlit 仪表盘，并一键导出 CSV/Excel 报表。</p>
+    <p>项目重点解决的是运营人员每天重复登录多个平台、手动复制粘贴数据的痛点：用 Playwright 自动化浏览器登录、用 Token 双重认证保证安全、用 Streamlit 构建可交互仪表盘、用 Pandas 做数据清洗与汇总。</p>
+
+    <div class="note">公开作品集页面仅展示系统设计和工程能力，真实账号、平台 API Key、原始消耗数据和客户信息均已脱敏处理。</div>
+
+    <h2><span class="num">02</span>系统架构</h2>
+    <div class="arch-diagram">                    <span class="dim">账号配置 · 平台凭据</span>
+                           │
+                           ▼
+      <span class="dim">┌──────────────────────────────────────┐</span>
+      <span class="dim">│</span> <span class="hl">任务调度器</span> 定时触发 · 平台分发        <span class="dim">│</span>
+      <span class="dim">│</span> 并发控制 · 失败重试 · 启动间隔         <span class="dim">│</span>
+      <span class="dim">└──────────────┬───────────────────────┘</span>
+                     │
+          ┌──────────┼──────────┐
+          ▼          ▼          ▼
+ <span class="dim">┌──────────┐</span> <span class="dim">┌──────────┐</span> <span class="dim">┌──────────┐</span>
+ <span class="dim">│</span> <span class="hl">平台 A</span>   <span class="dim">│</span> <span class="dim">│</span> <span class="hl">平台 B</span>   <span class="dim">│</span> <span class="dim">│</span> <span class="hl">平台 C...</span><span class="dim">│</span>
+ <span class="dim">│</span> Token 认证 <span class="dim">│</span> <span class="dim">│</span> Cookie 同步 <span class="dim">│</span> <span class="dim">│</span> Playwright  <span class="dim">│</span>
+ <span class="dim">└─────┬────┘</span> <span class="dim">└─────┬────┘</span> <span class="dim">└─────┬────┘</span>
+       └────────────┼────────────┘
+                    ▼
+      <span class="dim">┌──────────────────────────────────────┐</span>
+      <span class="dim">│</span> <span class="hl">数据清洗层</span> Pandas · 字段对齐        <span class="dim">│</span>
+      <span class="dim">│</span> 去重 · 单位换算 · 时间标准化           <span class="dim">│</span>
+      <span class="dim">└──────────────┬───────────────────────┘</span>
+                     │
+                     ▼
+      <span class="dim">┌──────────────────────────────────────┐</span>
+      <span class="dim">│</span> <span class="gold">Streamlit 仪表盘</span>                  <span class="dim">│</span>
+      <span class="dim">│</span> 仪表盘 · 趋势图 · 排行榜 · 异常告警    <span class="dim">│</span>
+      <span class="dim">│</span> CSV/Excel 导出 · 邮件推送             <span class="dim">│</span>
+      <span class="dim">└──────────────────────────────────────┘</span></div>
+
+    <h2><span class="num">03</span>技术栈与软件环境</h2>
+    <div class="card-grid">
+      <div class="card"><div class="icon">🐍</div><div class="name">Python</div><div class="desc">主流程编排、数据处理、任务调度</div></div>
+      <div class="card"><div class="icon">🎭</div><div class="name">Playwright</div><div class="desc">跨浏览器自动化，处理复杂登录流程</div></div>
+      <div class="card"><div class="icon">📊</div><div class="name">Streamlit</div><div class="desc">交互式仪表盘，支持筛选与导出</div></div>
+      <div class="card"><div class="icon">🐼</div><div class="name">Pandas</div><div class="desc">数据清洗、聚合、多源合并</div></div>
+      <div class="card"><div class="icon">🔐</div><div class="name">Token 双重认证</div><div class="desc">账号密码 + 短信/邮箱验证码双因子</div></div>
+      <div class="card"><div class="icon">🌐</div><div class="name">REST API</div><div class="desc">平台开放接口对接，减少浏览器开销</div></div>
+      <div class="card"><div class="icon">📄</div><div class="name">CSV / Excel</div><div class="desc">自动报表生成，运营人员直接使用</div></div>
+      <div class="card"><div class="icon">⏰</div><div class="name">定时调度</div><div class="desc">每日自动运行，无需人工干预</div></div>
+      <div class="card"><div class="icon">🚨</div><div class="name">异常告警</div><div class="desc">消耗异常、登录失败自动通知</div></div>
+    </div>
+
+    <h2><span class="num">04</span>核心模块</h2>
+    <table>
+      <thead><tr><th>模块</th><th>职责</th><th>工程重点</th></tr></thead>
+      <tr><td>auth_manager.py</td><td>管理多平台登录态、Token 刷新、Cookie 持久化</td><td>双因子认证、会话过期处理</td></tr>
+      <tr><td>crawler_base.py</td><td>爬虫基类：Playwright 启动、反检测、页面等待</td><td>浏览器指纹、CDP 隐藏</td></tr>
+      <tr><td>platform_*.py</td><td>5 个平台子模块：登录、拉数据、解析、标准化</td><td>字段对齐、单位换算</td></tr>
+      <tr><td>data_cleaner.py</td><td>多源数据合并、去重、时间标准化、异常值过滤</td><td>数据质量保障</td></tr>
+      <tr><td>dashboard.py</td><td>Streamlit 仪表盘：筛选、图表、排行榜、导出</td><td>交互体验、性能优化</td></tr>
+      <tr><td>scheduler.py</td><td>定时任务、并发控制、失败重试、告警推送</td><td>稳定性、可观测性</td></tr>
+    </table>
+
+    <h2><span class="num">05</span>核心功能</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>多平台统一采集</strong><br>五大广告平台一套代码管理，新增平台只需实现爬虫基类的抽象方法。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>Token 双重认证</strong><br>账号密码 + 短信/邮箱验证码双因子登录，支持会话过期自动刷新。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>328+ 账号监控</strong><br>支持批量账号管理，按客户/项目分组，一键查看所有账号消耗。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>Streamlit 仪表盘</strong><br>交互式图表：趋势图、饼图、排行榜、Top20 高消耗账号，支持时间筛选。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>CSV/Excel 自动报表</strong><br>每日定时生成报表，运营人员直接打开使用，无需手动复制粘贴。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>异常消耗告警</strong><br>消耗突增、突降、登录失败等异常自动告警，避免预算浪费。</div></div>
+    </div>
+
+    <h2><span class="num">06</span>数据流设计</h2>
+    <table>
+      <thead><tr><th>阶段</th><th>输入</th><th>处理</th><th>输出</th></tr></thead>
+      <tr><td>账号读取</td><td>账号配置文件</td><td>按平台分组、加载凭据</td><td>待采集账号列表</td></tr>
+      <tr><td>平台登录</td><td>账号 + Token</td><td>双因子认证、会话刷新</td><td>有效登录态</td></tr>
+      <tr><td>数据拉取</td><td>登录态 + 时间范围</td><td>API 调用或页面解析</td><td>原始消耗数据</td></tr>
+      <tr><td>数据清洗</td><td>多平台原始数据</td><td>字段对齐、单位换算、去重</td><td>标准化数据表</td></tr>
+      <tr><td>报表生成</td><td>标准化数据</td><td>聚合、排序、图表渲染</td><td>CSV/Excel + 仪表盘</td></tr>
+    </table>
+
+    <h2><span class="num">07</span>稳定性设计</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>登录态自动恢复</strong><br>Token 过期或 Cookie 失效时自动重新登录，避免任务中断。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>失败任务重试</strong><br>单账号失败不影响其他账号，失败任务自动重试 3 次。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>反检测策略</strong><br>Playwright 指纹隐藏、CDP 反检测、人类化操作间隔，降低封号风险。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>并发控制</strong><br>按平台限流，避免触发平台风控；并发数可配置。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>结构化日志</strong><br>每个账号、每次任务输出 JSON 日志，便于追踪问题。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>异常告警推送</strong><br>登录失败、消耗异常等情况自动推送告警，支持邮件/企业微信。</div></div>
+    </div>
+
+    <h2><span class="num">08</span>仪表盘截图</h2>
+    <p>以下是 Streamlit 仪表盘的实际运行截图（已脱敏处理）：</p>
+    <div class="screenshot-grid">
+      <div class="screenshot">
+        <img src="/projects/data-crawler/dashboard-1.png" alt="仪表盘主界面" loading="lazy" decoding="async">
+        <div class="caption">仪表盘主界面 · 多账号汇总</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/search.png" alt="账号搜索" loading="lazy" decoding="async">
+        <div class="caption">账号搜索 · 按客户/项目筛选</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/chart-trend.png" alt="消耗趋势图" loading="lazy" decoding="async">
+        <div class="caption">消耗趋势图 · 时间序列</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/chart-pie.png" alt="平台分布饼图" loading="lazy" decoding="async">
+        <div class="caption">平台分布 · 各平台占比</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/daily-trend.png" alt="每日趋势" loading="lazy" decoding="async">
+        <div class="caption">每日趋势 · 日消耗变化</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/top20-balance.png" alt="Top20 余额" loading="lazy" decoding="async">
+        <div class="caption">Top20 余额排行</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/top20-month.png" alt="Top20 月消耗" loading="lazy" decoding="async">
+        <div class="caption">Top20 月消耗排行</div>
+      </div>
+      <div class="screenshot">
+        <img src="/projects/data-crawler/alert.png" alt="异常告警" loading="lazy" decoding="async">
+        <div class="caption">异常告警 · 消耗突增提醒</div>
+      </div>
+    </div>
+
+    <h2><span class="num">09</span>安全与脱敏处理</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>凭据外置</strong><br>平台账号、API Key、Token 只从环境变量或本地私有文件读取，不写入公开仓库。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>数据脱敏</strong><br>截图中的账号名、客户名、真实消耗金额均已脱敏处理。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>合规采集</strong><br>仅采集授权账号的消耗数据，不涉及用户隐私和第三方数据。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>访问控制</strong><br>仪表盘部署在内网，仅授权运营人员可访问。</div></div>
+    </div>
+
+    <h2><span class="num">10</span>项目收获</h2>
+    <p>这个项目锻炼的是完整的<strong>数据采集到可视化</strong>的工程闭环能力：不是单点脚本，而是包含多平台适配、认证管理、数据清洗、可视化展示、定时调度、异常告警的一整套系统。</p>
+    <p>最终沉淀出的能力包括：Playwright 复杂登录流程自动化、多平台数据字段标准化、Streamlit 交互式仪表盘开发、Pandas 多源数据清洗、定时任务稳定性设计、反检测策略、以及数据采集系统的合规化处理方法。</p>
+
+  </div>
+</ProjectLayout>
+
+<style>
+/* 页面特有样式：截图网格 */
+.screenshot-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin: 1.5rem 0;
+}
+@media (max-width: 640px) { .screenshot-grid { grid-template-columns: 1fr; } }
+.screenshot {
+  background: var(--bg-raised); border: 1px solid var(--border);
+  border-radius: 14px; padding: 0.75rem; transition: all 260ms var(--ease-out-expo);
+}
+.screenshot:hover { border-color: oklch(66% 0.19 285 / 0.28); transform: translateY(-2px); }
+.screenshot img { width: 100%; border-radius: 8px; display: block; }
+.screenshot .caption { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center; }
+</style>

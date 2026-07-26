@@ -1,0 +1,105 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '手势控制 PPT 系统 — 毕业答辩';
+const description = 'MediaPipe 21 点手部关键点检测，6 种手势实时控制 PPT 翻页与放映，15 帧防抖缓冲 + 握拳死锁保护。';
+const slug = 'gesture-ppt-report';
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">✋</div>
+      <h1>基于手势识别的 PPT 智能控制系统</h1>
+      <p class="domain">毕业设计 · 深圳职业技术大学</p>
+      <p class="tagline">MediaPipe 21 点手部关键点检测 · 6 种手势 · 实时控制</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">6</div><div class="label">种支持手势</div></div>
+      <div class="stat-item"><div class="num">21</div><div class="label">个手部关键点</div></div>
+      <div class="stat-item"><div class="num">15</div><div class="label">帧防抖缓冲</div></div>
+      <div class="stat-item"><div class="num">20ms</div><div class="label">UI 刷新间隔</div></div>
+    </div>
+
+    <h2><span class="num">01</span>研究背景与目标</h2>
+    <p>人机交互从键盘鼠标发展到触摸、语音，<strong>手势交互是下一代自然交互方式</strong>。演讲场景中演示者受限于遥控器，无法在台上自由走动与观众互动。</p>
+    <p>本系统基于 <code>MediaPipe</code> + <code>OpenCV</code> + <code>CustomTkinter</code> 实现低延迟、高精度的实时手势识别，通过手势控制 PPT 翻页与放映。</p>
+
+    <h2><span class="num">02</span>支持手势</h2>
+    <div class="gesture-grid">
+      <div class="gesture-card"><div class="gi">☝️</div><div class="gn">食指</div><div class="gd">仅食指 → 上一页</div></div>
+      <div class="gesture-card"><div class="gi">✌️</div><div class="gn">剪刀手</div><div class="gd">食指+中指 → 下一页</div></div>
+      <div class="gesture-card"><div class="gi">🖐️</div><div class="gn">张开手掌</div><div class="gd">五根手指 → 放映模式</div></div>
+      <div class="gesture-card"><div class="gi">👍</div><div class="gn">点赞手势</div><div class="gd">仅拇指 → 退出放映</div></div>
+      <div class="gesture-card"><div class="gi">✊</div><div class="gn">握拳</div><div class="gd">零根手指 → 死锁暂停</div></div>
+      <div class="gesture-card"><div class="gi">👌</div><div class="gn">OK 手势</div><div class="gd">拇指+食指 → 解锁</div></div>
+    </div>
+
+    <h2><span class="num">03</span>核心识别算法</h2>
+    <h3>手指状态分析</h3>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>指尖-指根判据</strong><br><code>TIP.y &lt; MCP.y</code> → 手指伸展（指尖高于指根）</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>拇指特殊处理</strong><br>距离 / 掌宽 &gt; 0.9 → 拇指伸出（归一化比例，免疫远近）</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>OK 手势</strong><br>拇指-食指闭合距离 &lt; 0.05</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>防抖平滑</strong><br>15 帧缓冲队列，连续帧过阈值才输出 · 多数投票机制</div></div>
+    </div>
+
+    <h3>死锁保护</h3>
+    <p>握拳 → <code>is_paused=True</code>，拦截一切指令。仅 OK 手势可解除死锁状态，防止演讲中误触发。</p>
+
+    <h2><span class="num">04</span>系统架构</h2>
+    <table>
+      <thead><tr><th>文件</th><th>职责</th></tr></thead>
+      <tr><td>main.py</td><td>程序入口，启动 CustomTkinter 主循环</td></tr>
+      <tr><td>gesture_detector.py</td><td>手势识别核心（MediaPipe 21 点骨架）</td></tr>
+      <tr><td>ppt_controller.py</td><td>PPT 控制（PyAutoGUI 按键注入）</td></tr>
+      <tr><td>ctk_app.py</td><td>UI 界面（暗色仪表盘 + 手势图鉴双栏卡片）</td></tr>
+    </table>
+
+    <h2><span class="num">05</span>技术栈</h2>
+    <table>
+      <thead><tr><th>技术</th><th>用途</th></tr></thead>
+      <tr><td>MediaPipe 0.10</td><td>手部检测 + 21 点骨架提取</td></tr>
+      <tr><td>OpenCV 4.x</td><td>摄像头采集 + 图像处理</td></tr>
+      <tr><td>PyAutoGUI</td><td>模拟键盘按键（翻页/放映/退出）</td></tr>
+      <tr><td>CustomTkinter</td><td>现代化暗色 GUI 框架</td></tr>
+      <tr><td>Threading</td><td>多线程解耦：AI后台计算 + UI主线程 20ms 轮询</td></tr>
+    </table>
+
+    <h2><span class="num">06</span>UI 设计亮点</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>暗色主题</strong><br>深色背景 + 霓虹配色，符合演讲场景低亮度需求</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>实时状态栏</strong><br>摄像头/手势/动作三行状态显示</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>手势图鉴</strong><br>双栏卡片式指令说明，一目了然</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>全屏模式</strong><br>F11 无缝全屏切换</div></div>
+    </div>
+
+    <h2><span class="num">07</span>测试结果与总结</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>系统优势</strong><br>防抖+死锁双保险 · 多线程解耦 · 比例算法免疫远近 · 全兼容 WPS/PowerPoint</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>已知限制</strong><br>仅静态手势 · 强光下检测率下降 · 依赖摄像头质量</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>未来展望</strong><br>LSTM 动态手势 · 自定义训练 · 双手交互 · 手机 App 移植</div></div>
+    </div>
+  </div>
+</ProjectLayout>
+
+<style>
+/* 页面特有样式：手势卡片网格 */
+.gesture-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1rem 0; }
+@media(max-width:550px) { .gesture-grid { grid-template-columns:repeat(2,1fr); } }
+.gesture-card {
+  background:var(--bg-raised); border:1px solid var(--border);
+  border-radius:14px; padding:1.25rem; text-align:center;
+  transition:all .3s var(--ease-out-expo);
+}
+.gesture-card:hover {
+  border-color:oklch(66% 0.19 285 / .15);
+  transform:translateY(-2px);
+}
+.gesture-card .gi { font-size:2.5rem; margin-bottom:.5rem; }
+.gesture-card .gn { color:var(--accent); font-weight:700; font-size:.9rem; margin-bottom:.25rem; }
+.gesture-card .gd { font-size:.75rem; color:var(--text-muted); }
+</style>

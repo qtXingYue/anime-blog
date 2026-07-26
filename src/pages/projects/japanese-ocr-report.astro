@@ -1,0 +1,96 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '日语假名手写识别系统 — 课程设计报告';
+const description = 'TensorFlow CNN 识别 49 类日语假名，270K 训练图像，88.2% 准确率，Tkinter 桌面手写应用。';
+const slug = 'japanese-ocr-report';
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">🇯🇵</div>
+      <h1>日语假名手写识别系统</h1>
+      <p class="domain">深度学习课程设计 · 深圳职业技术大学 · 23智能2</p>
+      <p class="tagline">TensorFlow CNN · 49 类假名 · 88.2% 准确率 · Tkinter 桌面应用</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">49</div><div class="label">假名字符类别</div></div>
+      <div class="stat-item"><div class="num">270K</div><div class="label">训练图像</div></div>
+      <div class="stat-item"><div class="num">88.2%</div><div class="label">识别准确率</div></div>
+      <div class="stat-item"><div class="num">3</div><div class="label">卷积层</div></div>
+    </div>
+
+    <h2><span class="num">01</span>项目简介</h2>
+    <p>基于深度学习的手写日语假名识别系统，使用 <code>TensorFlow</code> + <code>Keras CNN</code> 搭建三级卷积神经网络。支持用户在 <code>Tkinter</code> 画布上直接手写假名，实时识别并显示结果。完整实现数据预处理、模型训练、评估优化到桌面应用部署的全流程。</p>
+
+    <h2><span class="num">02</span>数据集</h2>
+    <p>使用 <strong>Kuzushiji-49</strong> 数据集：包含 49 个日语假名字符类别（48 平假名 + 1 迭代标记），总计 <strong>270,912 张</strong> 28×28 灰度图像，是经典 MNIST 格式的日语版本。</p>
+
+    <h2><span class="num">03</span>模型架构</h2>
+    <table>
+      <thead><tr><th>层</th><th>配置</th></tr></thead>
+      <tr><td>卷积层 1</td><td>32 通道 → BatchNorm → Dropout</td></tr>
+      <tr><td>卷积层 2</td><td>64 通道 → BatchNorm → Dropout</td></tr>
+      <tr><td>卷积层 3</td><td>128 通道 → BatchNorm → Dropout</td></tr>
+      <tr><td>全连接 1</td><td>1024 神经元</td></tr>
+      <tr><td>全连接 2</td><td>512 神经元</td></tr>
+      <tr><td>输出层</td><td>49 类 Softmax</td></tr>
+    </table>
+
+    <h2><span class="num">04</span>训练策略</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>优化器</strong><br>Adam · 交叉熵损失 · Epochs: 7 · Batch Size: 64</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>早停法</strong><br>patience=7，防止过拟合</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>学习率调度</strong><br><code>ReduceLROnPlateau</code> 动态调整</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>最终准确率</strong><br>约 88.2%，49 类分类任务</div></div>
+    </div>
+
+    <h2><span class="num">05</span>UI 界面与关键问题解决</h2>
+    <h3>Tkinter 桌面应用</h3>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>白色画布 + 黑色笔迹</strong><br>与训练数据格式一致，避免黑白反转</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>精准截图定位</strong><br><code>ImageGrab.grab()</code> 配合 <code>winfo_rootx()</code> 坐标计算</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>操作按钮</strong><br>"清除"清空画布 · "识别"触发预测 · 实时显示结果</div></div>
+    </div>
+
+    <h3>关键问题</h3>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>黑底白字导致识别错误</strong><br>画布背景色与训练数据反色，识别率大幅下降。解决：统一白色画布</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>截图区域偏移</strong><br>窗口坐标与实际截图位置偏差。解决：使用 <code>winfo_rootx/y</code> 精准定位</div></div>
+    </div>
+
+    <h2><span class="num">06</span>技术选型</h2>
+    <table>
+      <thead><tr><th>模块</th><th>技术</th></tr></thead>
+      <tr><td>数据处理</td><td>NumPy · Matplotlib</td></tr>
+      <tr><td>模型构建</td><td>TensorFlow · Keras CNN（3 层卷积）</td></tr>
+      <tr><td>UI 界面</td><td>Tkinter 桌面应用</td></tr>
+      <tr><td>模型部署</td><td>load_model 函数热加载</td></tr>
+    </table>
+
+    <div class="img-row">
+      <img src="/projects/japanese-ocr-imgs/image1.png" alt="训练曲线" loading="lazy">
+      <img src="/projects/japanese-ocr-imgs/image2.png" alt="黑底白字版本" loading="lazy">
+      <img src="/projects/japanese-ocr-imgs/image3.png" alt="白底黑字正确识别" loading="lazy">
+    </div>
+  </div>
+</ProjectLayout>
+
+<style>
+/* 页面特有样式：3 列图片网格 */
+.img-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.5rem 0; }
+@media(max-width:600px) { .img-row { grid-template-columns:1fr; } }
+.img-row img {
+  width:100%; border-radius:12px; border:1px solid var(--border);
+  transition:all .3s var(--ease-out-expo);
+}
+.img-row img:hover {
+  transform:scale(1.05);
+  border-color:oklch(66% 0.19 285 / .3);
+  box-shadow:0 8px 32px oklch(0% 0 0 / .4);
+}
+</style>

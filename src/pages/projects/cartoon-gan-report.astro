@@ -1,0 +1,86 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '卡通风格迁移系统 — 设计报告';
+const description = 'AnimeGAN2 + ArcaneGAN 多模型风格迁移应用，支持 5 种动漫风格，图片+视频双模式转换，Gradio Web 界面。';
+const slug = 'cartoon-gan-report';
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">🎨</div>
+      <h1>卡通风格迁移系统 (CartoonGAN)</h1>
+      <p class="domain">深度学习课程设计 · 深圳职业技术大学</p>
+      <p class="tagline">AnimeGAN2 · ArcaneGAN · 5 种动漫风格 · 图片+视频双模式</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">2</div><div class="label">套 GAN 模型</div></div>
+      <div class="stat-item"><div class="num">5</div><div class="label">种动漫风格</div></div>
+      <div class="stat-item"><div class="num">2</div><div class="label">种输入模式</div></div>
+    </div>
+
+    <h2><span class="num">01</span>项目概述</h2>
+    <p>集成 <code>AnimeGAN2</code> 与 <code>ArcaneGAN</code> 多模型风格迁移应用。支持多种动漫风格，覆盖<strong>图片 + 视频双模式</strong>转换，通过 Gradio Web 界面一键分享，含人脸检测裁剪与高斯平滑后处理。</p>
+    <p>项目实现了从论文原理到工程落地的完整流程，涵盖模型加载、图像预处理、风格推理、后处理优化和交互界面设计。</p>
+
+    <h2><span class="num">02</span>支持风格</h2>
+    <div class="style-tags">
+      <span class="style-tag">新海誠</span><span class="style-tag">宮崎駿</span><span class="style-tag">Paprika</span><span class="style-tag">Illustration</span><span class="style-tag">Arcane</span>
+    </div>
+    <p>每种风格对应独立的 GAN 模型权重，通过统一接口热切换，无需重启应用。</p>
+
+    <h2><span class="num">03</span>技术栈</h2>
+    <table>
+      <thead><tr><th>模块</th><th>技术选型</th></tr></thead>
+      <tr><td>模型推理</td><td>PyTorch · AnimeGAN2 · ArcaneGAN</td></tr>
+      <tr><td>Web 界面</td><td>Gradio — 一键启动，浏览器访问</td></tr>
+      <tr><td>图像处理</td><td>OpenCV · PIL</td></tr>
+      <tr><td>人脸检测</td><td>Haar Cascade / MTCNN</td></tr>
+      <tr><td>视频处理</td><td>FFmpeg 帧提取与合成</td></tr>
+    </table>
+
+    <h2><span class="num">04</span>效果展示</h2>
+    <div class="gallery">
+      <img src="/projects/cartoon-gan-imgs/page-1.png" alt="效果展示 1" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-2.png" alt="效果展示 2" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-3.png" alt="效果展示 3" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-4.png" alt="效果展示 4" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-5.png" alt="效果展示 5" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-6.png" alt="效果展示 6" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-7.png" alt="效果展示 7" loading="lazy">
+      <img src="/projects/cartoon-gan-imgs/page-8.png" alt="效果展示 8" loading="lazy">
+    </div>
+  </div>
+</ProjectLayout>
+
+<style>
+/* 页面特有样式 */
+.style-tags { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0; }
+.style-tag {
+  padding:6px 16px; border-radius:100px;
+  background:var(--bg-raised); border:1px solid var(--border);
+  font-size:.85rem; color:var(--accent);
+  transition:all .2s var(--ease-out-expo);
+}
+.style-tag:hover { border-color:var(--accent); background:oklch(66% 0.19 285 / .08); }
+
+.gallery { display:grid; grid-template-columns:repeat(2, 1fr); gap:1rem; margin:1.5rem 0; }
+@media(max-width:640px) { .gallery { grid-template-columns:1fr; } }
+.gallery img {
+  width:100%; border-radius:12px; border:1px solid var(--border);
+  transition:all .3s var(--ease-out-expo);
+}
+.gallery img:hover {
+  transform:scale(1.03);
+  border-color:oklch(66% 0.19 285 / .3);
+  box-shadow:0 8px 32px oklch(0% 0 0 / .4);
+}
+
+/* 本页 stats-strip 是 3 列 */
+.stats-strip { grid-template-columns: repeat(3, 1fr) !important; }
+@media(max-width:500px) { .stats-strip { grid-template-columns: repeat(2, 1fr) !important; } }
+</style>

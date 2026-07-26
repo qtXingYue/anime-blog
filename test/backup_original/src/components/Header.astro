@@ -1,0 +1,36 @@
+---
+import ThemeToggle from './ThemeToggle.vue';
+---
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#" class="brand"><span class="brand-mark">月</span><span>QT新月</span></a>
+    <nav class="nav-links" id="navLinks" aria-label="主导航">
+      <a href="#about">关于</a>
+      <a href="#skills">技能</a>
+      <a href="#projects">项目</a>
+      <a href="/blog/">博客</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <div class="header-actions">
+      <button class="bg-toggle" id="bgToggle" aria-label="切换视频背景" title="视频背景 开/关">🎬</button>
+      <ThemeToggle client:idle />
+      <button class="hamburger" id="hamburger" aria-label="导航菜单" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+<div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+<nav class="mobile-drawer" id="mobileDrawer" aria-label="移动端导航">
+  <div class="drawer-header">
+    <span class="brand-mark">月</span>
+    <button class="drawer-close" id="drawerClose" aria-label="关闭菜单">✕</button>
+  </div>
+  <div class="drawer-links">
+    <a href="#about">关于</a>
+    <a href="#skills">技能</a>
+    <a href="#projects">项目</a>
+    <a href="/blog/">博客</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>

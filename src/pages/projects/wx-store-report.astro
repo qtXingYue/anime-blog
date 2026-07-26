@@ -1,0 +1,186 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '动漫商城管理系统 — 课程设计报告';
+const description = 'Java Servlet MVC 后端 + 微信小程序前端的完整电商应用，7 个 API 接口、6 个页面、MySQL 数据存储。';
+const slug = 'wx-store-report';
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">🛒</div>
+      <h1>动漫商城管理系统</h1>
+      <p class="domain">移动应用开发课程设计 · 深圳职业技术大学</p>
+      <p class="tagline">Java Servlet MVC · 微信小程序 · MySQL · 7 个 API · 6 个页面</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">7</div><div class="label">Servlet API</div></div>
+      <div class="stat-item"><div class="num">6</div><div class="label">小程序页面</div></div>
+      <div class="stat-item"><div class="num">MySQL</div><div class="label">数据库</div></div>
+    </div>
+
+    <h2><span class="num">01</span>项目概述</h2>
+    <p>基于 <code>Java Servlet MVC</code> 架构的后端 + <code>微信小程序</code> 前端的完整电商应用。后端提供 7 个 Servlet 控制器，覆盖商品 CRUD、图片上传、批量删除等核心功能，通过 <code>Jackson</code> JSON 序列化与小程序通信。小程序端 6 个页面实现首页浏览、列表搜索、详情查看、编辑管理等完整购物流程。</p>
+
+    <h2><span class="num">02</span>技术架构</h2>
+    <table>
+      <thead><tr><th>层次</th><th>技术</th><th>职责</th></tr></thead>
+      <tr><td>数据库</td><td>MySQL 8.0</td><td>db_store 库，tb_product 表（_id/name/price/source/image）</td></tr>
+      <tr><td>实体层</td><td>Java Bean (Product)</td><td>商品属性映射</td></tr>
+      <tr><td>数据访问</td><td>DAO 模式</td><td>SQL 查询、CRUD 操作、批量删除</td></tr>
+      <tr><td>业务逻辑</td><td>Service 层</td><td>数据验证、请求封装、业务编排</td></tr>
+      <tr><td>控制层</td><td>Servlet（7 个控制器）</td><td>HTTP 请求路由、JSON 响应（Jackson）</td></tr>
+      <tr><td>前端</td><td>微信小程序</td><td>WXML / WXSS / JS，6 个页面</td></tr>
+    </table>
+
+    <h2><span class="num">03</span>Servlet API 接口</h2>
+    <table class="api-table">
+      <thead><tr><th>Servlet</th><th>功能</th><th>HTTP</th></tr></thead>
+      <tr><td>ProductList</td><td>商品列表（含搜索）</td><td>GET</td></tr>
+      <tr><td>ProductShow</td><td>商品详情</td><td>GET ?_id=</td></tr>
+      <tr><td>ProductAdd</td><td>添加商品</td><td>POST</td></tr>
+      <tr><td>ProductEdit</td><td>修改商品信息</td><td>POST</td></tr>
+      <tr><td>ProductDelete</td><td>删除单个商品</td><td>GET ?_id=</td></tr>
+      <tr><td>ImageUpload</td><td>上传商品图片</td><td>POST multipart</td></tr>
+      <tr><td>ImageEdit / Delete</td><td>更换/删除图片</td><td>POST / GET</td></tr>
+    </table>
+
+    <h2><span class="num">04</span>小程序页面</h2>
+    <div class="card-grid">
+      <div class="card"><div class="icon">🏠</div><div class="name">首页（home）</div><div class="desc">商品网格展示，下拉刷新加载</div></div>
+      <div class="card"><div class="icon">📋</div><div class="name">列表（list）</div><div class="desc">纵向列表视图，TabBar 切换</div></div>
+      <div class="card"><div class="icon">🔍</div><div class="name">详情（show）</div><div class="desc">商品大图 + 详情信息展示</div></div>
+      <div class="card"><div class="icon">➕</div><div class="name">添加（add）</div><div class="desc">表单录入新商品 + 图片上传</div></div>
+      <div class="card"><div class="icon">✏️</div><div class="name">编辑（edit）</div><div class="desc">修改已有商品信息</div></div>
+      <div class="card"><div class="icon">👤</div><div class="name">我的（me）</div><div class="desc">用户管理入口</div></div>
+    </div>
+
+    <h2><span class="num">05</span>小程序运行截图</h2>
+    <p style="margin-bottom:1rem">微信小程序实机运行截图，点击图片可放大查看：</p>
+    <div class="img-gallery" id="gallery">
+      <div class="img-card" onclick="openLightbox('/projects/wx-store-imgs/image1.png','小程序首页')"><img src="/projects/wx-store-imgs/image1.png" alt="小程序首页" loading="lazy"><div class="caption">小程序首页</div></div>
+      <div class="img-card" onclick="openLightbox('/projects/wx-store-imgs/image2.png','商品列表页')"><img src="/projects/wx-store-imgs/image2.png" alt="商品列表页" loading="lazy"><div class="caption">商品列表页</div></div>
+      <div class="img-card" onclick="openLightbox('/projects/wx-store-imgs/image3.png','商品详情页')"><img src="/projects/wx-store-imgs/image3.png" alt="商品详情页" loading="lazy"><div class="caption">商品详情页</div></div>
+      <div class="img-card" onclick="openLightbox('/projects/wx-store-imgs/image4.png','增加/编辑页面')"><img src="/projects/wx-store-imgs/image4.png" alt="编辑页" loading="lazy"><div class="caption">增加/编辑页面</div></div>
+      <div class="img-card" onclick="openLightbox('/projects/wx-store-imgs/image5.png','个人管理页')"><img src="/projects/wx-store-imgs/image5.png" alt="管理页" loading="lazy"><div class="caption">个人管理页</div></div>
+    </div>
+
+    <div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+      <span class="lb-close">&times;</span>
+      <img src="" alt="" id="lightboxImg">
+      <p class="lb-caption" id="lightboxCaption"></p>
+    </div>
+
+    <h2><span class="num">06</span>技术栈</h2>
+    <div class="card-grid">
+      <div class="card"><div class="icon">☕</div><div class="name">后端</div><div class="desc">Java · Servlet MVC<br>Jackson JSON · DAO 模式</div></div>
+      <div class="card"><div class="icon">📱</div><div class="name">前端</div><div class="desc">微信小程序<br>WXML · WXSS · JavaScript</div></div>
+      <div class="card"><div class="icon">🗄️</div><div class="name">数据库</div><div class="desc">MySQL 8.0<br>db_store · tb_product</div></div>
+    </div>
+  </div>
+</ProjectLayout>
+
+<script is:inline>
+function openLightbox(src, caption) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightboxCaption').textContent = caption;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+</script>
+
+<style>
+/* 本页 stats-strip 是 3 列 */
+.stats-strip { grid-template-columns: repeat(3, 1fr) !important; }
+@media (max-width: 500px) { .stats-strip { grid-template-columns: repeat(2, 1fr) !important; } }
+
+/* API 表格：第 3 列 HTTP 方法用 gold 色 Consolas */
+.api-table td:nth-child(3) {
+  font-family: Consolas, monospace;
+  font-size: .78rem;
+  color: var(--gold);
+}
+
+/* 图片画廊 */
+.img-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media (max-width: 700px) { .img-gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 450px) { .img-gallery { grid-template-columns: 1fr; } }
+.img-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all .3s var(--ease-out-expo);
+}
+.img-card:hover {
+  border-color: oklch(60% 0.18 280 / .2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px oklch(0% 0 0 / .4);
+}
+.img-card img {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  display: block;
+}
+.img-card .caption {
+  font-size: .75rem;
+  color: var(--text-muted);
+  padding: .6rem .9rem;
+  text-align: center;
+}
+
+/* 灯箱遮罩 */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: oklch(0% 0 0 / 0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox-overlay.active { display: flex; }
+.lightbox-overlay img {
+  max-width: 92vw;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px oklch(0% 0 0 / 0.6);
+  animation: lbIn .3s ease;
+}
+@keyframes lbIn {
+  from { transform: scale(.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.lb-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-size: 2rem;
+  color: #fff;
+  cursor: pointer;
+  opacity: .6;
+  transition: opacity .2s;
+}
+.lb-close:hover { opacity: 1; }
+.lb-caption {
+  position: absolute;
+  bottom: 2rem;
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+</style>
