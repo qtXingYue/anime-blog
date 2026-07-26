@@ -957,6 +957,9 @@ a:hover { color: var(--gold); }
   .projects-stack { padding-bottom: var(--space-2xl); }
   .project-card { position: relative; top: auto; }
   .project-visual { min-height: 160px; }
+  /* 封面原图是 880×550(16:10)。桌面堆叠卡刻意用 4/3 高构图，cover 裁掉左右各 ~8%；
+     手机单列没有堆叠构图需求，容器比例对齐原图就不裁了 */
+  .projects-stack .project-visual { aspect-ratio: 16 / 10; min-height: 0; }
   .project-visual-emoji { font-size: 3rem; }
   .contact-grid { grid-template-columns: 1fr 1fr; }
   .form-row { grid-template-columns: 1fr; }
