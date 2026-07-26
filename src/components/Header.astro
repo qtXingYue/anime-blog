@@ -13,7 +13,8 @@ import ThemeToggle from './ThemeToggle.vue';
       <a href="/#contact">联系</a>
     </nav>
     <div class="header-actions">
-      <button class="bg-toggle" id="bgToggle" aria-label="切换视频背景" title="视频背景 开/关">
+      <!-- 标签由 VideoBg 的脚本按当前模式改写（视频 / 实验一 · 极光 / 静态） -->
+      <button class="bg-toggle" id="bgToggle" aria-label="切换背景" title="切换背景">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7.5 3v18M16.5 3v18M3 8h4.5M3 16h4.5M16.5 8H21M16.5 16H21"/></svg>
       </button>
       <ThemeToggle client:idle />

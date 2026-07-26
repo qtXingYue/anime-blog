@@ -820,6 +820,39 @@ a:hover { color: var(--gold); }
   .bg-video, .bg-video-overlay { transition: none; }
 }
 
+/* ═══ 实验一 · 极光背景（移植自 /lab/exp-01-motion.html，背景切换的第二态）═══ */
+:root { --lab-net-dot: oklch(88% 0.03 280 / 0.55); --lab-net-line: 139, 123, 251; }
+[data-theme="light"] { --lab-net-dot: oklch(45% 0.08 280 / 0.5); --lab-net-line: 109, 40, 217; }
+.bg-lab {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  opacity: 0; transition: opacity 1.2s ease;
+}
+.bg-lab.on { opacity: 1; }
+/* 模糊放在容器上：四团光斑共用一次滤镜，比每团各自 blur 便宜得多。
+   星网画布是同级兄弟而不是子元素，否则会被这层模糊一起糊掉 */
+.bg-lab-aurora { position: absolute; inset: -20%; filter: blur(60px); opacity: 0.55; }
+.bg-lab-aurora i {
+  position: absolute; border-radius: 50%; mix-blend-mode: screen;
+  animation: auroraDrift 22s ease-in-out infinite;
+}
+.bg-lab-aurora i:nth-child(1) { width: 46vw; height: 46vw; background: #6d4bff; left: 2%; top: -6%; animation-delay: 0s; }
+.bg-lab-aurora i:nth-child(2) { width: 40vw; height: 40vw; background: #2f7dff; right: 0; top: 10%; animation-delay: -6s; }
+.bg-lab-aurora i:nth-child(3) { width: 38vw; height: 38vw; background: #18b98a; left: 24%; top: 52%; animation-delay: -12s; }
+.bg-lab-aurora i:nth-child(4) { width: 30vw; height: 30vw; background: #f472b6; right: 14%; top: 60%; animation-delay: -9s; }
+@keyframes auroraDrift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6vw, 4vh) scale(1.15); }
+  66% { transform: translate(-4vw, -3vh) scale(0.9); }
+}
+.bg-lab-net { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* 亮色下 screen 会把光斑冲成一片白，换成 multiply 当淡彩晕染 */
+[data-theme="light"] .bg-lab-aurora { opacity: 0.26; }
+[data-theme="light"] .bg-lab-aurora i { mix-blend-mode: multiply; }
+@media (prefers-reduced-motion: reduce) {
+  .bg-lab { transition: none; }
+  .bg-lab-aurora i { animation: none; }
+}
+
 /* ═══ CLICK TRANSITION FX (demo) ═══ */
 .fx-canvas {
   position: fixed; inset: 0; z-index: 10000;
