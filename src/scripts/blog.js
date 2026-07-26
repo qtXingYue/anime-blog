@@ -62,10 +62,19 @@ async function loadArticle(slug) {
       `<div class="meta">${escapeHtml(a.created_at?.slice(0, 10))} · ${escapeHtml(a.created_at?.slice(11, 16) || '')}</div>`;
     // content 为受信任的 HTML（仅管理员可发布），用 DOMPurify-style 清理过于重；
     // 这里采用 sandbox：关闭 script/事件处理。如需更强约束可在后端入库时 sanitize。
+    // 必须先在 DOMParser 的惰性文档里净化再导入——直接 innerHTML 会让
+    // <img onerror> 在 remove() 之前就触发（图片在节点未挂载时也会加载）。
+    const doc = new DOMParser().parseFromString(a.content, 'text/html');
+    doc.querySelectorAll('script, iframe, object, embed').forEach(el => el.remove());
+    doc.querySelectorAll('*').forEach(el => {
+      for (const attr of [...el.attributes]) {
+        if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
+        else if ((attr.name === 'href' || attr.name === 'src') && /^\s*javascript:/i.test(attr.value)) el.removeAttribute(attr.name);
+      }
+    });
     const body = document.createElement('div');
     body.className = 'body';
-    body.innerHTML = a.content;
-    body.querySelectorAll('script, iframe, object, embed, [onload], [onerror], [onclick]').forEach(el => el.remove());
+    body.append(...doc.body.childNodes);
     content.appendChild(body);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (e) {
