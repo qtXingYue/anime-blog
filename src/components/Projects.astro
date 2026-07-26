@@ -11,8 +11,13 @@ import { featured, projectsFeature, projectsDepth, projectsIndex } from '../data
     <div class="section-divider reveal"></div>
     <p class="projects-legend reveal">14 个项目 · 3 篇特写 · 6 个专题 · 5 则索引</p>
 
-    <!-- 右侧滚动进度挂件已按需求移除；main.js 里的相关逻辑全部做了空值防护，
-         is-current 高亮走的是同一批锚点触发器，不受影响 -->
+    <aside class="project-progress" id="projectProgress" aria-hidden="true">
+      <span class="project-progress-count" id="projectProgressCount"><b>01</b><small>/ 05</small></span>
+      <span class="project-progress-type" id="projectProgressType">核心工程</span>
+      <span class="project-progress-name" id="projectProgressName">多平台广告数据爬取系统</span>
+      <span class="project-progress-dots" id="projectProgressDots"></span>
+    </aside>
+
     <a href={featured.href} class="featured-card reveal">
       <div class="featured-card-inner">
         <div class="featured-card-media" aria-hidden="true">
