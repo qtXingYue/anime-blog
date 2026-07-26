@@ -925,7 +925,6 @@ a:hover { color: var(--gold); }
   .nav-links { display: none; }
   .nav-gh { display: none; }
   .hamburger { display: flex; }
-  .bg-toggle { display: none; }
   /* 手机上胶囊窄条不必居中挤在中间，横向铺开更好点 */
   .site-header { top: 10px; max-width: calc(100vw - 20px); }
   .header-inner { padding: 6px 8px 6px 14px; }

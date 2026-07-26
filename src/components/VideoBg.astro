@@ -34,13 +34,12 @@
   const net = document.getElementById('bgLabNet');
   const btn = document.getElementById('bgToggle');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = window.matchMedia('(max-width: 768px)').matches;
   const saveData = !!(navigator.connection && navigator.connection.saveData);
   // 三态循环:视频 → 实验一极光 → 静态。
-  // 移动端 / 省流模式 / 减少动态:默认停在静态,只显示渐变占位
+  // 视频约 750KB,移动端也放开;省流模式 / 减少动态默认停在静态占位
   const MODES = ['video', 'lab', 'off'];
   const LABELS = { video: '视频', lab: '实验一 · 极光', off: '静态' };
-  let mode = (!reduced && !isMobile && !saveData) ? 'video' : 'off';
+  let mode = (!reduced && !saveData) ? 'video' : 'off';
   let active = videoA;
   let standby = videoB;
   let started = false;
@@ -101,7 +100,8 @@
   // ═══ 实验一的粒子星网(移植自 /lab/exp-01-motion.html)═══
   // 粒子数按屏宽收敛,且只在极光模式 + 页面可见时跑;切走立刻停 rAF,
   // 免得和首页的 GSAP 滚动动画抢帧
-  const netOk = !!net && !reduced && !isMobile;
+  // 粒子数本就按屏宽收敛(375px 下只有 ~17 个),手机跑得动
+  const netOk = !!net && !reduced;
   let netCtx = null, netRaf = 0, netPts = [], netW = 0, netH = 0, netDpr = 1;
   let netDot = 'rgba(200,205,240,.55)', netLine = '139,123,251';
   const ptr = { x: -9999, y: -9999 };
