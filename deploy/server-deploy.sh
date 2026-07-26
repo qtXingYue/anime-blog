@@ -66,6 +66,10 @@ server {
     root /var/www/portfolio;
     index index.html;
 
+    # 旧博客路径 301 到并壳后的新页面（/blog/index.html 里还有跳转桩兜底）
+    location = /blog { return 301 /blog.html; }
+    location = /blog/ { return 301 /blog.html; }
+
     # 静态文件（Astro 构建产物）
     location / {
         try_files $uri $uri/ /index.html;

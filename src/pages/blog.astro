@@ -1,0 +1,136 @@
+---
+// 博客 — 与主站同壳(Base + Header + Footer + 视频背景)
+// 文章数据来自 Sakura Backend,客户端 fetch 渲染,逻辑在 scripts/blog.js
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+import VideoBg from '../components/VideoBg.astro';
+import ClickFx from '../components/ClickFx.astro';
+---
+<Base
+  title="博客 — QT新月（钟文清）"
+  description="QT新月的博客，技术笔记、生活随笔与创作记录。"
+  canonical="https://qtxingyue.me/blog.html"
+>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <VideoBg />
+  <Header />
+
+  <section class="section blog-hero">
+    <div class="container">
+      <p class="section-label reveal">BLOG</p>
+      <h2 class="section-title reveal">博客</h2>
+      <div class="section-divider reveal"></div>
+      <p class="blog-intro reveal">技术笔记 · 生活随笔 · 创作记录</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <div class="blog-shell">
+      <div class="article-list" id="articleList">
+        <div class="blog-loading">加载中...</div>
+      </div>
+
+      <div class="article-detail" id="articleDetail">
+        <button class="back-btn" type="button">← 返回列表</button>
+        <div id="articleContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <Footer />
+  <BackToTop />
+  <ClickFx />
+</Base>
+
+<style>
+  /* 博客用更窄的阅读宽度。不能写 :root{--content-max}——Astro 的 scoped
+     样式不会给 :root 加作用域,会把同页 Header/Footer 一起压窄 */
+  .blog-shell { max-width: 780px; margin-inline: auto; padding-bottom: var(--space-4xl); }
+  .blog-hero { padding-block: calc(var(--header-h) + var(--space-2xl)) var(--space-lg); }
+  .blog-intro { font-size: var(--text-sm); color: var(--text-muted); letter-spacing: 0.08em; }
+
+  .blog-shell :global(.article-card) {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border); border-radius: 16px;
+    padding: var(--space-lg) var(--space-xl); margin-bottom: var(--space-md);
+    cursor: pointer; display: block;
+    box-shadow: 0 10px 30px oklch(0% 0 0 / 0.16);
+    transition: border-color 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
+    position: relative; overflow: hidden;
+  }
+  /* 鼠标光晕:跟 stat-card 同一套 --gx/--gy 机制,由 card-fx 驱动 */
+  .blog-shell :global(.article-card::before) {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), oklch(60% 0.18 280 / 0.13), transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .blog-shell :global(.article-card:hover::before) { opacity: 1; }
+  .blog-shell :global(.article-card:hover) {
+    border-color: oklch(60% 0.18 280 / 0.4);
+    box-shadow: 0 18px 44px oklch(0% 0 0 / 0.24);
+  }
+  .blog-shell :global(.article-date) { font-size: var(--text-xs); color: var(--gold); margin-bottom: 4px; }
+  .blog-shell :global(.article-title) {
+    font-family: var(--font-sans); font-weight: 800; font-size: var(--text-lg);
+    color: var(--text-primary); line-height: 1.4;
+  }
+  .blog-shell :global(.article-excerpt) {
+    font-size: var(--text-sm); color: var(--text-secondary); margin-top: var(--space-xs); line-height: 1.7;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .blog-shell :global(.article-readmore) { font-size: var(--text-xs); color: var(--accent); margin-top: var(--space-sm); }
+
+  .article-detail { display: none; }
+  .article-detail.open { display: block; }
+  .blog-shell :global(.article-detail h1),
+  .article-detail :global(h1) {
+    font-family: var(--font-sans); font-weight: 800; font-size: var(--text-2xl);
+    margin-bottom: var(--space-xs); color: var(--text-primary); line-height: 1.35;
+  }
+  .article-detail :global(.meta) { font-size: var(--text-xs); color: var(--gold); margin-bottom: var(--space-xl); }
+  .article-detail :global(.body) { line-height: 2; color: var(--text-secondary); }
+  .article-detail :global(.body h2), .article-detail :global(.body h3) {
+    color: var(--text-primary); margin-top: var(--space-lg); margin-bottom: var(--space-sm);
+  }
+  .article-detail :global(.body p) { margin-bottom: var(--space-md); }
+  .article-detail :global(.body img) { max-width: 100%; border-radius: 8px; margin: var(--space-md) 0; }
+  .article-detail :global(.body pre) { background: var(--bg-high); padding: var(--space-md); border-radius: 8px; overflow-x: auto; }
+  .article-detail :global(.body code) { background: oklch(60% 0.18 280 / 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .article-detail :global(.body blockquote) { border-left: 3px solid var(--accent); margin-left: 0; padding-left: var(--space-md); color: var(--text-muted); }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: var(--text-sm); color: var(--accent);
+    padding: 8px 16px; border: 1px solid var(--accent-dim); border-radius: 100px;
+    cursor: pointer; transition: all 200ms; margin-bottom: var(--space-xl); background: none;
+  }
+  .back-btn:hover { background: var(--accent-dim); color: #fff; }
+
+  .blog-loading { text-align: center; padding: var(--space-3xl); color: var(--text-muted); }
+  .blog-shell :global(.blog-empty) { text-align: center; padding: var(--space-4xl) var(--space-xl); }
+  .blog-shell :global(.blog-empty-icon) { font-size: 3rem; margin-bottom: var(--space-md); opacity: 0.5; }
+  .blog-shell :global(.blog-empty h3) {
+    color: var(--text-muted); font-family: var(--font-serif); font-weight: 700;
+    font-size: var(--text-lg); margin-bottom: var(--space-xs);
+  }
+  .blog-shell :global(.blog-empty p) { color: var(--text-muted); font-size: var(--text-sm); }
+  .blog-shell :global(.blog-empty a) { color: var(--accent); }
+
+  [data-theme="light"] .blog-shell :global(.article-card) {
+    background: oklch(100% 0 0 / 0.72); border-color: oklch(0% 0 0 / 0.09);
+    box-shadow: 0 8px 26px oklch(0% 0 0 / 0.07);
+  }
+
+  @media (max-width: 640px) {
+    .blog-shell :global(.article-card) { padding: var(--space-md) var(--space-lg); }
+    .blog-shell :global(.article-title) { font-size: var(--text-base); }
+  }
+</style>
+
+<script>
+  import '../scripts/blog.js';
+</script>
