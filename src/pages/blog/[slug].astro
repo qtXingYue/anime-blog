@@ -1,0 +1,108 @@
+---
+// 博客文章静态页 — 构建时从 Sakura Backend 拉取文章预渲染，
+// 让搜索引擎可以直接抓取正文（列表页仍是客户端渲染）。
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BackToTop from '../../components/BackToTop.astro';
+import VideoBg from '../../components/VideoBg.astro';
+import ClickFx from '../../components/ClickFx.astro';
+
+interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content: string;
+  created_at: string;
+}
+
+// 正文是管理员发布的可信 HTML，但静态页会直接执行脚本，
+// 所以仍要剥掉 script/iframe/object/embed 与 on* 属性做纵深防御。
+function sanitize(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+    .replace(/<object[\s\S]*?<\/object>/gi, '')
+    .replace(/<embed[\s\S]*?>/gi, '')
+    .replace(/\s+on\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/(href|src)\s*=\s*("javascript:[^"]*"|'javascript:[^']*'|javascript:[^\s>]+)/gi, '');
+}
+
+export async function getStaticPaths() {
+  // 拉取逻辑必须内联在 getStaticPaths 里：Astro 编译时只提升该函数，
+  // 顶层其它函数不会被带到模块作用域。
+  let articles: Article[] = [];
+  try {
+    const resp = await fetch('https://qtxingyue.me/api/articles', {
+      signal: AbortSignal.timeout(8000),
+    });
+    if (resp.ok) {
+      const data = await resp.json();
+      if (Array.isArray(data)) articles = data;
+    }
+  } catch {
+    articles = [];
+  }
+  return articles.map((a) => ({
+    params: { slug: a.slug },
+    props: { article: a },
+  }));
+}
+
+const { article } = Astro.props;
+const safeContent = sanitize(article.content ?? '');
+---
+<Base
+  title={`${article.title} — QT新月博客`}
+  description={article.excerpt ?? article.title}
+  canonical={`https://qtxingyue.me/blog/${article.slug}.html`}
+>
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <div class="noise-overlay" aria-hidden="true"></div>
+  <VideoBg />
+  <Header />
+
+  <section class="section blog-hero">
+    <div class="container">
+      <p class="section-label reveal">BLOG</p>
+      <h2 class="section-title reveal">博客</h2>
+      <div class="section-divider reveal"></div>
+      <p class="blog-intro reveal"><a href="/blog.html">← 返回列表</a></p>
+    </div>
+  </section>
+
+  <div class="container">
+    <article class="blog-shell article-detail open">
+      <h1>{article.title}</h1>
+      <div class="meta">{article.created_at?.slice(0, 10)} · {article.created_at?.slice(11, 16) || ''}</div>
+      <div class="body" set:html={safeContent} />
+    </article>
+  </div>
+
+  <Footer />
+  <BackToTop />
+  <ClickFx />
+</Base>
+
+<style>
+  .blog-hero { padding-block: calc(var(--header-h) + var(--space-2xl)) var(--space-lg); }
+  .blog-intro { font-size: var(--text-sm); color: var(--text-muted); letter-spacing: 0.08em; }
+  .blog-intro a { color: var(--accent); }
+
+  .blog-shell { max-width: 780px; margin-inline: auto; padding-bottom: var(--space-4xl); }
+  .blog-shell h1 {
+    font-family: var(--font-sans); font-weight: 800; font-size: var(--text-2xl);
+    margin-bottom: var(--space-xs); color: var(--text-primary); line-height: 1.35;
+  }
+  .blog-shell .meta { font-size: var(--text-xs); color: var(--gold); margin-bottom: var(--space-xl); }
+  .blog-shell .body { line-height: 2; color: var(--text-secondary); }
+  .blog-shell .body h2, .blog-shell .body h3 {
+    color: var(--text-primary); margin-top: var(--space-lg); margin-bottom: var(--space-sm);
+  }
+  .blog-shell .body p { margin-bottom: var(--space-md); }
+  .blog-shell .body img { max-width: 100%; border-radius: 8px; margin: var(--space-md) 0; }
+  .blog-shell .body pre { background: var(--bg-high); padding: var(--space-md); border-radius: 8px; overflow-x: auto; }
+  .blog-shell .body code { background: oklch(60% 0.18 280 / 0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+  .blog-shell .body blockquote { border-left: 3px solid var(--accent); margin-left: 0; padding-left: var(--space-md); color: var(--text-muted); }
+</style>

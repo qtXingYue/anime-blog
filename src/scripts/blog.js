@@ -30,11 +30,12 @@ async function loadArticles() {
       return;
     }
 
-    // 用 DOM API 创建卡片，避免 onclick 拼接 slug 的注入风险
+    // 卡片做成指向静态页的真实链接（SEO 可抓取），点击时仍拦截走 SPA 详情
     list.innerHTML = '';
     articles.forEach(a => {
-      const card = document.createElement('article');
+      const card = document.createElement('a');
       card.className = 'article-card';
+      card.href = '/blog/' + encodeURIComponent(a.slug) + '.html';
       card.dataset.slug = a.slug;   // slug 存在属性里，不拼进 HTML
       card.innerHTML =
         `<div class="article-date">${escapeHtml(a.created_at?.slice(0, 10))}</div>` +
@@ -92,7 +93,7 @@ if (list && detail && content) {
   // 事件委托：列表点击统一处理，避免给每张卡绑 onclick
   list.addEventListener('click', e => {
     const card = e.target.closest('.article-card');
-    if (card) loadArticle(card.dataset.slug);
+    if (card) { e.preventDefault(); loadArticle(card.dataset.slug); }
   });
   detail.addEventListener('click', e => {
     if (e.target.closest('.back-btn')) backToList();
