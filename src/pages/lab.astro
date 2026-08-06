@@ -23,14 +23,6 @@ const experiments = [
     tags: ['Bento Grid', '玻璃拟态', '聚光灯', '辉光追踪'],
     thumb: '/lab/exp-02-thumb.webp',
     href: '/lab/exp-02-bento.html'
-  },
-  {
-    no: '实验品三',
-    title: '瑰丽幻境',
-    desc: '华丽 UI 交互合集:流动极光 + 粒子星网、辉光自定义光标、分字揭示、3D 旋转描边光卡、磁吸按钮、文字解构，还有实时调参的色相/粒子控制台。',
-    tags: ['流动极光', '3D 光卡', '磁吸交互', '文字解构'],
-    thumb: '/lab/exp-03-thumb.webp',
-    href: '/lab/exp-03-glam.html'
   }
 ];
 ---
@@ -71,6 +63,12 @@ const experiments = [
             </div>
           </a>
         ))}
+        <div class="lab-card lab-card-next reveal" aria-hidden="true">
+          <div class="lab-next-inner">
+            <span class="lab-next-plus">+</span>
+            <p>实验品三 · 孵化中</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -89,7 +87,7 @@ const experiments = [
   }
   .lab-list { padding-top: var(--space-2xl); }
   .lab-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg);
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg);
   }
   .lab-card {
     display: flex; flex-direction: column; overflow: hidden;
@@ -135,10 +133,16 @@ const experiments = [
     line-height: 1.8; margin-bottom: var(--space-md);
   }
   .lab-card-tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+  .lab-card-next {
+    border-style: dashed; align-items: center; justify-content: center;
+    min-height: 260px; opacity: 0.6;
+  }
+  .lab-next-inner { text-align: center; color: var(--text-muted); }
+  .lab-next-plus {
+    display: block; font-size: 2.5rem; font-weight: 200;
+    margin-bottom: var(--space-sm); color: var(--accent);
+  }
   @media (max-width: 768px) {
     .lab-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 1080px) and (min-width: 769px) {
-    .lab-grid { grid-template-columns: 1fr 1fr; }
   }
 </style>
