@@ -1,0 +1,212 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI 图片作品集 — QT新月</title><meta name="description" content="QT新月的 AI 生成图片作品集，包含文生图、图生图等 AI 艺术创作。"><meta property="og:title" content="AI 图片作品集 — QT新月"><meta property="og:description" content="QT新月的 AI 生成图片作品集，包含文生图、图生图等 AI 艺术创作。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/_astro/ai-gallery.BbCPeQ8O.css">
+<link rel="stylesheet" href="/_astro/ai-gallery.Cvzt_vxf.css"></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">13</span> <span class="crumb-title">AI 生图作品集</span> </div> <nav class="header-nav"> <a href="/projects/wx-store-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🛒</span><span class="nav-label">动漫商城管理</span> </a> <a href="/projects/ai-video" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">AI 视频作品</span><span class="nav-emoji">🎬</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container wide">  <section class="page-hero"> <div class="page-hero-icon">🎨</div> <h1>AI 图片作品集</h1> <p>使用 AI 模型生成的艺术作品集合<br>包含文生图、风格迁移等创作</p> </section> <div class="filters" id="filterBar"> <button class="filter-btn active" data-filter="all">全部 <span class="filter-count">0</span></button> <button class="filter-btn" data-filter="txt2img">文生图 <span class="filter-count">0</span></button> <button class="filter-btn" data-filter="img2img">图生图 <span class="filter-count">0</span></button> <button class="filter-btn" data-filter="other">其他 <span class="filter-count">0</span></button> </div> <section> <div class="gallery-grid" id="galleryGrid"></div> <div class="empty-state" id="emptyState" style="display:none;"> <div class="empty-state-icon">🖼️</div> <h3>还没有作品</h3> <p>把 AI 生成的图片放入 projects/ai-images/ 目录<br>然后在这页的 IMAGES 数组中添加描述即可展示</p> </div> </section> <div class="lightbox" id="lightbox"> <button class="lightbox-close" onclick="closeLightbox()">&times;</button> <img class="lightbox-img" id="lightboxImg" src="" alt="" loading="lazy" decoding="async"> <div class="lightbox-info" id="lightboxInfo"> <h3 id="lightboxTitle"></h3> <p class="prompt" id="lightboxPrompt"></p> </div> <div class="lightbox-nav"> <button class="lightbox-btn" onclick="lightboxPrev()">&#8249;</button> <span class="lightbox-counter" id="lightboxCounter">1 / 1</span> <button class="lightbox-btn" onclick="lightboxNext()">&#8250;</button> </div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/wx-store-report" class="nav-card prev"> <span class="nav-card-emoji">🛒</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">12</span> <span class="nav-card-title">动漫商城管理</span> </div> </a> <a href="/projects/ai-video" class="nav-card next"> <div class="nav-card-info"> <span class="nav-card-dir">下一个 →</span> <span class="nav-card-num">14</span> <span class="nav-card-title">AI 视频作品</span> </div> <span class="nav-card-emoji">🎬</span> </a> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">AI 图片作品集 — QT新月</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <script>
+(function() {
+  const btn = document.getElementById('backToTop');
+  const prog = document.getElementById('scrollProgress');
+  if (!btn) return;
+  let ticking = false;
+  function updateBtn() {
+    if (window.scrollY > 600) btn.classList.add('visible');
+    else btn.classList.remove('visible');
+    if (prog) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateBtn); ticking = true; }
+  }, { passive: true });
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script> </body> </html>  <script>
+// ============================================================
+// IMAGE DATA — add entries here
+// Format: { file, title, category, prompt, tags, date }
+// ============================================================
+const IMAGES = [
+  {
+    file: "/projects/ai-images/clipboard-2026-06-02T12-50-08-313Z-ab85d630.jpg",
+    title: "思乐智美容仪 · 萌系广告",
+    category: "img2img",
+    prompt: "粉色毛绒玩偶 mascot 手持美容仪产品，漫画风格爆炸对话框，绿色清新配色，电商广告海报设计，可爱卡通风格，高饱和度，商业摄影质感",
+    tags: ["产品广告", "萌系", "商业设计"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00009.webp",
+    title: "ComfyUI 文生图 #1",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00011.webp",
+    title: "ComfyUI 文生图 #2",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00012.webp",
+    title: "ComfyUI 文生图 #3",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  },
+  {
+    file: "/projects/ai-images/comfyui-00028.webp",
+    title: "ComfyUI 文生图 #4",
+    category: "txt2img",
+    prompt: "通过 ComfyUI 工作流进行文生图创作，AI 从文本描述生成图像",
+    tags: ["ComfyUI", "文生图", "文本到图像"],
+    date: "2026-06"
+  }
+];
+
+// ============================================================
+// RENDER
+// ============================================================
+let currentFilter = "all";
+let lightboxIdx = 0;
+let filteredImages = [];
+
+function getFilteredImages(filter) {
+  return filter === "all" ? IMAGES : IMAGES.filter(img => img.category === filter);
+}
+
+function renderGallery() {
+  const grid = document.getElementById("galleryGrid");
+  const empty = document.getElementById("emptyState");
+  filteredImages = getFilteredImages(currentFilter);
+
+  if (filteredImages.length === 0) {
+    grid.innerHTML = "";
+    empty.style.display = "block";
+    return;
+  }
+
+  empty.style.display = "none";
+  grid.innerHTML = filteredImages.map((img, i) => `
+    <div class="gallery-card" onclick="openLightbox(${i})">
+      <div class="gallery-card-img-wrap">
+        <img class="gallery-card-img" src="${img.file}" alt="${img.title}" loading="lazy" decoding="async"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="gallery-card-fallback" style="display:none">
+          <svg viewBox="0 0 60 60" width="48" height="48"><rect width="60" height="60" rx="12" fill="oklch(25% 0.05 280)"/><text x="30" y="40" text-anchor="middle" font-size="28">🖼</text></svg>
+        </div>
+      </div>
+      <div class="gallery-card-body">
+        <h3 class="gallery-card-title">${img.title}</h3>
+        <p class="gallery-card-meta">${img.date} · ${categoryLabel(img.category)}</p>
+        <p class="gallery-card-prompt">${img.prompt}</p>
+        ${img.tags ? `<div class="gallery-card-tags">${img.tags.map(t => `<span class="gallery-card-tag">${t}</span>`).join("")}</div>` : ""}
+      </div>
+    </div>
+  `).join("");
+
+  updateCounts();
+}
+
+function categoryLabel(cat) {
+  const labels = { txt2img: "文生图", img2img: "图生图", other: "其他" };
+  return labels[cat] || cat;
+}
+
+function updateCounts() {
+  const allCount = IMAGES.length;
+  const counts = { txt2img: 0, img2img: 0, other: 0 };
+  IMAGES.forEach(img => {
+    if (counts[img.category] !== undefined) counts[img.category]++;
+  });
+
+  document.querySelectorAll(".filter-count").forEach(el => {
+    const filter = el.parentElement.dataset.filter;
+    if (filter === "all") el.textContent = allCount;
+    else el.textContent = counts[filter] || 0;
+  });
+}
+
+// ============================================================
+// FILTER LOGIC
+// ============================================================
+function setFilter(filter) {
+  currentFilter = filter;
+  document.querySelectorAll(".filter-btn, .filter-nav").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.filter === filter);
+  });
+  renderGallery();
+}
+
+// Filter button clicks
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => setFilter(btn.dataset.filter));
+});
+
+// Filter nav clicks
+document.querySelectorAll(".filter-nav").forEach(link => {
+  link.addEventListener("click", e => {
+    e.preventDefault();
+    setFilter(link.dataset.filter);
+    document.getElementById("filterBar").scrollIntoView({ behavior: "smooth" });
+  });
+});
+
+// ============================================================
+// LIGHTBOX
+// ============================================================
+function openLightbox(idx) {
+  lightboxIdx = idx;
+  updateLightbox();
+  document.getElementById("lightbox").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function updateLightbox() {
+  const img = filteredImages[lightboxIdx];
+  if (!img) return;
+  document.getElementById("lightboxImg").src = img.file;
+  document.getElementById("lightboxTitle").textContent = img.title;
+  document.getElementById("lightboxPrompt").textContent = img.prompt;
+  document.getElementById("lightboxCounter").textContent = `${lightboxIdx + 1} / ${filteredImages.length}`;
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox").classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+function lightboxPrev() {
+  lightboxIdx = (lightboxIdx - 1 + filteredImages.length) % filteredImages.length;
+  updateLightbox();
+}
+
+function lightboxNext() {
+  lightboxIdx = (lightboxIdx + 1) % filteredImages.length;
+  updateLightbox();
+}
+
+// Lightbox overlay click
+document.getElementById("lightbox").addEventListener("click", function(e) {
+  if (e.target === this) closeLightbox();
+});
+
+// Keyboard navigation
+document.addEventListener("keydown", function(e) {
+  const lb = document.getElementById("lightbox");
+  if (!lb.classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") lightboxPrev();
+  if (e.key === "ArrowRight") lightboxNext();
+});
+
+// ============================================================
+// INIT
+// ============================================================
+renderGallery();
+</script>

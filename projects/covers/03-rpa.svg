@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 550" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151223"/>
+      <stop offset="1" stop-color="#0a0912"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="22%" r="72%">
+      <stop offset="0" stop-color="#a88bfa" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#a88bfa" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="880" height="550" fill="url(#bg)"/>
+  <rect width="880" height="550" fill="url(#glow)"/>
+  <rect width="880" height="550" fill="url(#grid)"/>
+  <rect x="0" y="0" width="880" height="2" fill="#a88bfa" opacity="0.55"/>
+  <g fill="none" stroke="#a88bfa" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="128" y="128" width="300" height="200" rx="12" opacity="0.45"/>
+  <line x1="128" y1="166" x2="428" y2="166" opacity="0.45"/>
+  <rect x="188" y="188" width="300" height="200" rx="12" opacity="0.7"/>
+  <line x1="188" y1="226" x2="488" y2="226" opacity="0.7"/>
+  <rect x="248" y="248" width="300" height="200" rx="12"/>
+  <line x1="248" y1="286" x2="548" y2="286"/>
+  <circle cx="270" cy="267" r="5"/>
+  <circle cx="292" cy="267" r="5"/>
+  <circle cx="314" cy="267" r="5"/>
+  <line x1="278" y1="330" x2="430" y2="330" opacity="0.6"/>
+  <line x1="278" y1="365" x2="480" y2="365" opacity="0.6"/>
+  <line x1="278" y1="400" x2="400" y2="400" opacity="0.6"/>
+</g>
+  <path d="M600 170 C 700 210, 700 330, 620 380" fill="none" stroke="#d9b96a" stroke-width="3" stroke-dasharray="2 12" stroke-linecap="round"/>
+  <path d="M614 366 l10 34 l9 -13 l15 6 z" fill="#d9b96a"/>
+  <text x="836" y="512" text-anchor="end" font-family="Georgia,'Noto Serif SC','Songti SC',serif" font-weight="900" font-size="210" fill="#a88bfa" opacity="0.13">03</text>
+</svg>

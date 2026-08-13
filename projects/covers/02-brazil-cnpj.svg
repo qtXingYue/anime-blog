@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 550" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#151223"/>
+      <stop offset="1" stop-color="#0a0912"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="28%" cy="22%" r="72%">
+      <stop offset="0" stop-color="#7c9bff" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#7c9bff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="880" height="550" fill="url(#bg)"/>
+  <rect width="880" height="550" fill="url(#glow)"/>
+  <rect width="880" height="550" fill="url(#grid)"/>
+  <rect x="0" y="0" width="880" height="2" fill="#7c9bff" opacity="0.55"/>
+  <g fill="none" stroke="#7c9bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="150" y="150" width="270" height="250" rx="14"/>
+  <line x1="150" y1="210" x2="420" y2="210"/>
+  <line x1="240" y1="150" x2="240" y2="400"/>
+  <line x1="150" y1="273" x2="420" y2="273"/>
+  <line x1="150" y1="336" x2="420" y2="336"/>
+</g><g fill="none" stroke="#d9b96a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M470 275 h95 m-18 -16 l18 16 l-18 16"/>
+</g><g fill="none" stroke="#7c9bff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M652 190 c-24 0 -24 24 -24 40 c0 22 -6 30 -20 45 c14 15 20 23 20 45 c0 16 0 40 24 40"/>
+  <path d="M708 190 c24 0 24 24 24 40 c0 22 6 30 20 45 c-14 15 -20 23 -20 45 c0 16 0 40 -24 40"/>
+  <circle cx="680" cy="240" r="4" fill="#7c9bff" stroke="none"/>
+  <circle cx="680" cy="275" r="4" fill="#7c9bff" stroke="none"/>
+  <circle cx="680" cy="310" r="4" fill="#7c9bff" stroke="none"/>
+</g>
+  <g fill="#7c9bff" opacity="0.85" font-family="Consolas,monospace" font-size="21">
+    <text x="172" y="188">CNPJ</text>
+  </g>
+  <g stroke="#d9b96a" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.9">
+    <path d="M258 244 l9 9 l17 -17"/>
+    <path d="M258 307 l9 9 l17 -17"/>
+    <path d="M258 370 l9 9 l17 -17"/>
+  </g>
+  <text x="836" y="512" text-anchor="end" font-family="Georgia,'Noto Serif SC','Songti SC',serif" font-weight="900" font-size="210" fill="#7c9bff" opacity="0.13">02</text>
+</svg>
