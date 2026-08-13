@@ -39,14 +39,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p /tmp/deploy-dist
+          cp -r dist/. /tmp/deploy-dist/
           git fetch origin astro-refactor:refs/remotes/origin/astro-refactor
           git checkout -B astro-refactor origin/astro-refactor
           # 清空旧产物（保留 .git/.gitignore/node_modules），再放入新构建
           find . -mindepth 1 -maxdepth 1 \
             ! -name '.git' ! -name '.gitignore' ! -name 'node_modules' \
             -exec rm -rf {} +
-          cp -r dist/. .
-          rm -rf dist node_modules
+          cp -r /tmp/deploy-dist/. .
+          rm -rf /tmp/deploy-dist node_modules
           git add -A
           if git diff --cached --quiet; then
             echo "no changes to deploy"
