@@ -7,7 +7,7 @@
 ---
 <div class="bg-video-stack" id="bgVideoStack">
   <div class="bg-video-placeholder" id="bgVideoPlaceholder"></div>
-  <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="auto" poster="/bg-poster.jpg" aria-hidden="true">
+  <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true">
     <source src="/desktop-bg.webm#t=0.1" type="video/webm">
     <source src="/desktop-bg.mp4#t=0.1" type="video/mp4">
   </video>
@@ -23,6 +23,23 @@
 </div>
 <div class="bg-video-overlay" id="bgOverlay" aria-hidden="true"></div>
 
+<script is:inline>
+// 省流/减少动态/2G 网络不预加载 760KB 视频；正常环境立即升级 preload=auto，
+// 让首屏视频与页面资源并行加载
+(function () {
+  var slowNet = false;
+  try {
+    var c = navigator.connection;
+    slowNet = !!(c && (c.saveData || c.effectiveType === 'slow-2g' || c.effectiveType === '2g'));
+  } catch (e) {}
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!slowNet && !reduced) {
+    var v = document.getElementById('bgVideoA');
+    if (v) v.preload = 'auto';
+  }
+})();
+</script>
+
 <script>
 (function initVideoBg() {
   const videoA = document.getElementById('bgVideoA');
@@ -34,12 +51,14 @@
   const net = document.getElementById('bgLabNet');
   const btn = document.getElementById('bgToggle');
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const conn = navigator.connection || {};
+  const saveData = !!conn.saveData;
+  const slowNet = conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g';
   // 三态循环:视频 → 实验一极光 → 静态。
   // 视频约 750KB,移动端也放开;省流模式 / 减少动态默认停在静态占位
   const MODES = ['video', 'lab', 'off'];
   const LABELS = { video: '视频', lab: '实验一 · 极光', off: '静态' };
-  let mode = (!reduced && !saveData) ? 'video' : 'off';
+  let mode = (!reduced && !saveData && !slowNet) ? 'video' : 'off';
   let active = videoA;
   let standby = videoB;
   let started = false;

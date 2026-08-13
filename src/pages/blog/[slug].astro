@@ -7,6 +7,7 @@ import Footer from '../../components/Footer.astro';
 import BackToTop from '../../components/BackToTop.astro';
 import VideoBg from '../../components/VideoBg.astro';
 import ClickFx from '../../components/ClickFx.astro';
+import fallbackArticles from '../../data/articles.fallback.json';
 
 interface Article {
   id: number;
@@ -39,11 +40,14 @@ export async function getStaticPaths() {
     });
     if (resp.ok) {
       const data = await resp.json();
-      if (Array.isArray(data)) articles = data;
+      if (Array.isArray(data) && data.length) articles = data;
     }
   } catch {
     articles = [];
   }
+  // 线上 API 偶发超时/不可达时，用仓库内快照兜底，
+  // 避免文章静态页与 sitemap 条目静默丢失
+  if (!articles.length) articles = fallbackArticles as Article[];
   return articles.map((a) => ({
     params: { slug: a.slug },
     props: { article: a },
