@@ -73,7 +73,7 @@ const apiBaseUrl = 'https://brasilapi.com.br/api/cnpj/v1/{cnpj}';
     <div class="feature-list">
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>Excel 批量读取</strong><br>使用 <code>pandas.read_excel</code> 读取指定 sheet，并按每 5 行一组解析企业记录。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>CNPJ 标准化</strong><br>通过正则清理 <code>.</code>、<code>-</code>、<code>/</code>，兼容带分隔符的税号格式。</div></div>
-      <div class="feature-item"><div class="dot"></div><div class="text"><strong>BrasilAPI 查询</strong><br>调用 <code set:html={apiBaseUrl}></code>，获取企业注册与经营信息。</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>BrasilAPI 查询</strong><br>调用 <code>{apiBaseUrl}</code>，获取企业注册与经营信息。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>节流控制</strong><br>每次查询后短暂停顿，每 10 条额外等待，降低连续请求对公共接口的压力。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>结果留痕</strong><br>每个成功 CNPJ 单独保存 JSON，便于后续排查、复跑和字段扩展。</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>失败记录</strong><br>HTTP 404、超时或异常不会中断批次，会写入失败列表方便人工复核。</div></div>

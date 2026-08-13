@@ -55,5 +55,8 @@ jobs:
           else
             git commit -m "deploy: build $(date -u +'%Y%m%d-%H%M%S')"
             git push origin astro-refactor
-            git push origin astro-refactor:main || echo "main 与 astro-refactor 不在同一提交线，跳过 main 同步"
+            # main 与 astro-refactor 是两条提交线，force 覆盖保持 main 始终等于线上内容；
+            # 即使失败也不阻断部署（服务器 crontab 以 merge astro-refactor -X theirs 为准）
+            git push --force origin astro-refactor:main \
+              || echo "::warning::main 同步失败（不影响部署，服务器以 astro-refactor 合并为准）"
           fi

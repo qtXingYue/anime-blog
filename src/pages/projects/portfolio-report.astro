@@ -50,11 +50,11 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
     </div>
 
     <h2><span class="num">01</span>项目概述</h2>
-    <p>这是一个<strong>从域名注册到全站上线</strong>全部独立完成的个人技术作品集。采用 JAMstack Lite 架构 — 前端纯静态页面配合轻量 Python 后端，部署于阿里云 Ubuntu 服务器。设计理念是<strong>零构建工具、最小依赖、高性能、高视觉品质</strong>。</p>
-    <p>不是套模板，不是用框架。每一行 CSS 动效、每一条 API 路由、每一个 Nginx 配置都是手写。</p>
+    <p>这是一个<strong>从域名注册到全站上线</strong>全部独立完成的个人技术作品集。前端用 Astro 5 构建为纯静态站，配合轻量 Python 后端，部署于阿里云 Ubuntu 服务器。设计理念是<strong>最小依赖、高性能、高视觉品质</strong>。</p>
+    <p>不用模板，不追组件库。动效逻辑、每一条 API 路由、每一个 Nginx 配置都是手写。</p>
 
     <div class="feature-list">
-      <div class="feature-item"><div class="dot"></div><div class="text"><strong>前端零框架</strong><br>纯 HTML/CSS/JS，无 React/Vue/构建工具，加载即渲染</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>Astro 5 + Vue 岛</strong><br>组件化构建为纯静态站，GSAP 自托管，加载即渲染</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>OKLCH 色彩系统</strong><br>感知均匀的色彩空间，暗色/亮色双主题无缝切换</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>GSAP 滚动动效</strong><br>卡片堆叠、时间线绘制、视差效果，触屏自动降级</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>FastAPI 后端</strong><br>Python 异步框架，15 个 API 端点，Cookie 认证</div></div>
@@ -69,7 +69,7 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
     <div class="card-grid">
       <div class="card"><div class="icon">🎨</div><div class="name">前端核心</div><div class="desc">HTML5 + CSS3 + Vanilla JS<br>OKLCH 色彩 · Design Tokens<br>暗色/亮色双主题</div></div>
       <div class="card"><div class="icon">✨</div><div class="name">动画引擎</div><div class="desc">GSAP 3.12 + ScrollTrigger<br>卡片堆叠 · 视差 · 时间线<br>prefers-reduced-motion</div></div>
-      <div class="card"><div class="icon">⚡</div><div class="name">粒子系统</div><div class="desc">tsParticles 2.12<br>18 粒子可交互背景<br>触屏自动禁用</div></div>
+      <div class="card"><div class="icon">⚡</div><div class="name">粒子系统</div><div class="desc">手写 Canvas 粒子星网<br>按屏宽收敛粒子数<br>触屏 / 省流自动禁用</div></div>
       <div class="card"><div class="icon">🐍</div><div class="name">后端框架</div><div class="desc">FastAPI + Uvicorn<br>Python 异步 · 15 端点<br>Cookie SHA-256 认证</div></div>
       <div class="card"><div class="icon">🗄️</div><div class="name">数据库</div><div class="desc">SQLite 单文件<br>4 张表 · 轻量零配置<br>访问/文章/文件/留言</div></div>
       <div class="card"><div class="icon">🔒</div><div class="name">Web 服务器</div><div class="desc">Nginx 反向代理<br>Let's Encrypt HTTPS<br>Gzip · 90天缓存</div></div>
@@ -85,7 +85,7 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
       <tr><td>GET</td><td>/api/analytics/summary</td><td>PV / UV / 热门页面</td><td>—</td></tr>
       <tr><td>GET</td><td>/api/articles</td><td>文章列表</td><td>—</td></tr>
       <tr><td>GET</td><td>{'/api/articles/{slug}'}</td><td>文章详情</td><td>—</td></tr>
-      <tr><td>POST</td><td>/api/contact</td><td>联系表单 + Honeypot</td><td>—</td></tr>
+      <tr><td>POST</td><td>/api/contact</td><td>联系表单 + 内存限流</td><td>—</td></tr>
       <tr><td>POST</td><td>/api/admin/login</td><td>管理端登录</td><td>密码</td></tr>
       <tr><td>GET / POST</td><td>/api/admin/articles</td><td>文章管理</td><td>Cookie</td></tr>
       <tr><td>PUT / DELETE</td><td>{'/api/admin/articles/{id}'}</td><td>文章编辑删除</td><td>Cookie</td></tr>
@@ -114,7 +114,7 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
     <h3>性能优化</h3>
     <div class="feature-list">
       <div class="feature-item"><div class="dot"></div><div class="text">图片 <code>loading="lazy"</code> + <code>decoding="async"</code></div></div>
-      <div class="feature-item"><div class="dot"></div><div class="text">Google Fonts 精简字重，仅 120KB</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text">思源宋体子集自托管（woff2），无 Google Fonts 依赖</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text">Nginx 静态资源 90 天缓存 + Gzip</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text">触屏设备自动禁用粒子和复杂动效</div></div>
     </div>
@@ -122,7 +122,7 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
     <h2><span class="num">07</span>安全与 SEO</h2>
     <div class="card-grid">
       <div class="card"><div class="icon">🛡️</div><div class="name">认证</div><div class="desc">Cookie Token · SHA-256<br>HttpOnly · 30 天有效期</div></div>
-      <div class="card"><div class="icon">🚫</div><div class="name">反垃圾</div><div class="desc">Honeypot 隐藏字段<br>IP 频率限制 3条/分钟</div></div>
+      <div class="card"><div class="icon">🚫</div><div class="name">反垃圾</div><div class="desc">内存限流（按真实 IP）<br>登录 5 次 · 留言 5 次/分钟</div></div>
       <div class="card"><div class="icon">📁</div><div class="name">文件安全</div><div class="desc">类型白名单 · UUID 重命名<br>200MB 上传上限</div></div>
       <div class="card"><div class="icon">🔐</div><div class="name">Webhook</div><div class="desc">HMAC-SHA256 签名<br>防篡改验证</div></div>
       <div class="card"><div class="icon">🔍</div><div class="name">SEO</div><div class="desc">Schema.org Person<br>OG + Twitter Card · sitemap</div></div>
