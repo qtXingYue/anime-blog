@@ -35,8 +35,9 @@ const {
 <meta name="view-transition" content="same-origin">
 <link rel="canonical" href={canonical}>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%236d28d9'/><text x='32' y='46' text-anchor='middle' font-size='36' font-family='sans-serif' fill='white'>月</text></svg>">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<!-- GSAP 自托管：国内直连，不依赖 cdnjs.cloudflare.com（该 CDN 不稳定会静默失效卡片堆叠） -->
+<script src="/vendor/gsap.min.js" defer></script>
+<script src="/vendor/ScrollTrigger.min.js" defer></script>
 <!-- 标题衬线字体:自托管思源宋体子集(国内可直连,无 Google Fonts 依赖) -->
 <link rel="preload" href="/fonts/noto-serif-sc-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/noto-serif-sc-700.woff2" as="font" type="font/woff2" crossorigin>

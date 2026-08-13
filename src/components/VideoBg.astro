@@ -7,7 +7,7 @@
 ---
 <div class="bg-video-stack" id="bgVideoStack">
   <div class="bg-video-placeholder" id="bgVideoPlaceholder"></div>
-  <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true">
+  <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="auto" poster="/bg-poster.jpg" aria-hidden="true">
     <source src="/desktop-bg.webm#t=0.1" type="video/webm">
     <source src="/desktop-bg.mp4#t=0.1" type="video/mp4">
   </video>
@@ -72,6 +72,37 @@
   videoA.addEventListener('timeupdate', onTimeUpdate);
   videoB.addEventListener('timeupdate', onTimeUpdate);
 
+  let playFailed = false;
+  let recoveryBound = false;
+
+  function bindAutoplayRecovery() {
+    if (recoveryBound) return;
+    recoveryBound = true;
+    const recover = () => {
+      if (mode === 'video' && active.paused) {
+        active.play().then(() => {
+          playFailed = false;
+          if (placeholder) placeholder.classList.add('fade-out');
+        }).catch(() => {});
+      }
+    };
+    // 自动播放被浏览器拦截时，第一次任意交互立即补播，保证视频背景成为首屏展示
+    ['pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(type =>
+      window.addEventListener(type, recover, { once: true, passive: true }));
+  }
+
+  function tryPlay() {
+    if (mode !== 'video') return;
+    active.play().then(() => {
+      playFailed = false;
+      if (placeholder) placeholder.classList.add('fade-out');
+    }).catch(() => {
+      // 自动播放被拦：保留静态占位，等首次交互补播；不要假装成功直接淡出占位
+      playFailed = true;
+      bindAutoplayRecovery();
+    });
+  }
+
   function start() {
     if (started) return;
     started = true;
@@ -80,16 +111,13 @@
     active.classList.add('active');
     standby.classList.remove('active');
     active.currentTime = 0;
-    active.play().then(() => {
-      if (placeholder) placeholder.classList.add('fade-out');
-    }).catch(() => {
-      // In case autoplay is blocked or fails initially, fade out anyway or wait for interaction
-      if (placeholder) placeholder.classList.add('fade-out');
-    });
+    tryPlay();
   }
 
   function stop() {
     started = false;
+    playFailed = false;
+    recoveryBound = false;
     videoA.pause();
     videoB.pause();
     videoA.classList.remove('active');
