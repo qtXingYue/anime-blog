@@ -72,6 +72,14 @@
   videoA.addEventListener('timeupdate', onTimeUpdate);
   videoB.addEventListener('timeupdate', onTimeUpdate);
 
+  // 无论自动播放、首次交互补播还是切回标签页，只要视频真正开始播放就撤掉静态占位，
+  // 不依赖 play() promise 是否兑现，避免严格浏览器下占位残留盖在视频上
+  function onPlaying() {
+    if (mode === 'video' && placeholder) placeholder.classList.add('fade-out');
+  }
+  videoA.addEventListener('playing', onPlaying);
+  videoB.addEventListener('playing', onPlaying);
+
   let playFailed = false;
   let recoveryBound = false;
 
@@ -242,7 +250,7 @@
       videoB.pause();
       netStop();
     } else {
-      if (mode === 'video' && started) active.play().catch(() => {});
+      if (mode === 'video' && started) tryPlay();
       if (mode === 'lab') netStart();
     }
   });
