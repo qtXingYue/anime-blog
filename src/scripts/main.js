@@ -337,9 +337,6 @@ function initStacking() {
     cards.forEach((card, i) => {
       card.style.setProperty('--card-i', i);
       card.style.zIndex = `${i + 1}`;
-      // 清掉上一次运行（如 resize 重建）残留的内联 transform，
-      // 新 tween 会按当前滚动位置重新渲染正确值
-      card.style.transform = '';
 
       if (i < cards.length - 1 && hasGsap) {
         const next = cards[i + 1];
@@ -360,9 +357,8 @@ function initStacking() {
             start: () => `top ${Math.round(stickyTopOf(card))}px`,
             endTrigger: next,
             end: () => `top ${Math.round(stickyTopOf(next))}px`,
-            // 精确跟随滚动：去掉 0.4s 平滑滞后与 fastScrollEnd 的「落地后突然缩到底」，
-            // 卡片尺寸始终是滚动位置的确定性函数——进入堆叠区时必然还是原大小
-            scrub: true,
+            scrub: 0.4,
+            fastScrollEnd: true,
             invalidateOnRefresh: true,
           }
         });
