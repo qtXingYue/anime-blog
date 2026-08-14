@@ -545,6 +545,62 @@ if (btt) {
   window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 600), { passive: true });
 }
 
+// ═══ MOBILE PROJECT TABS (移动端分类吸顶筛选与平滑滚动定位) ═══
+function initMobileProjectTabs() {
+  const tabsContainer = document.getElementById('mobileProjectTabs');
+  if (!tabsContainer) return;
+  const buttons = tabsContainer.querySelectorAll('.mobile-tab-btn');
+  if (!buttons.length) return;
+  
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetSelector = btn.getAttribute('data-target');
+      if (!targetSelector) return;
+      const targetEl = document.querySelector(targetSelector);
+      if (targetEl) {
+        const headerOffset = 110;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // 滚动监听高亮
+  const sections = [
+    { target: document.getElementById('projects'), btn: buttons[0] },
+    { target: document.querySelector('.projects-stack--feature'), btn: buttons[1] },
+    { target: document.getElementById('bandDepth'), btn: buttons[2] },
+    { target: document.getElementById('bandIndex'), btn: buttons[3] },
+  ].filter(item => item.target && item.btn);
+
+  let tabScrollTimer = null;
+  window.addEventListener('scroll', () => {
+    if (window.innerWidth > 768) return;
+    if (tabScrollTimer) return;
+    tabScrollTimer = requestAnimationFrame(() => {
+      const scrollPos = window.scrollY + 180;
+      let activeIndex = 0;
+      sections.forEach((s, idx) => {
+        if (s.target.offsetTop <= scrollPos) {
+          activeIndex = idx;
+        }
+      });
+      buttons.forEach((b, idx) => {
+        b.classList.toggle('active', idx === activeIndex);
+      });
+      tabScrollTimer = null;
+    });
+  }, { passive: true });
+}
+
+requestAnimationFrame(() => {
+  initMobileProjectTabs();
+});
+
 // ═══ 3D TILT on project cards + GLOW on stat/contact/project cards + A11y Focus ═══
 // 实现在 card-fx.js，博客页复用同一套（那边的文章卡是动态渲染，需要重复绑定）
 // 中卡与索引行刻意不参与倾斜：它们靠平移+描边表达可点，倾斜是大卡量级的语言

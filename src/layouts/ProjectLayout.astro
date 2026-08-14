@@ -295,11 +295,48 @@ td { color: var(--text-secondary); }
 tr:hover td { background: oklch(100% 0 0 / 0.02); }
 td:first-child { font-family: 'Consolas','Microsoft YaHei', monospace; color: var(--accent); font-size: 0.82rem; }
 
-/* ═══ Code ═══ */
+/* ═══ Code & Copy Button ═══ */
 code {
   background: oklch(66% 0.19 285 / 0.1); color: var(--accent);
   padding: 2px 7px; border-radius: 5px; font-size: 0.85rem;
   font-family: 'Consolas', 'Courier New', monospace;
+}
+.code-block-wrapper {
+  position: relative; margin: 1.4rem 0;
+  border-radius: 14px; border: 1px solid var(--border);
+  background: var(--bg-raised); overflow: hidden;
+  box-shadow: 0 10px 30px oklch(0% 0 0 / 0.18);
+}
+.code-block-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: oklch(100% 0 0 / 0.035);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.75rem; color: var(--text-muted);
+  font-family: 'Consolas', monospace;
+}
+.code-block-copy-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; font-size: 0.72rem; font-weight: 600;
+  color: var(--text-secondary);
+  background: oklch(100% 0 0 / 0.05);
+  border: 1px solid var(--border); border-radius: 6px;
+  cursor: pointer; transition: all 180ms ease;
+}
+.code-block-copy-btn:hover {
+  color: var(--text-primary); border-color: var(--accent);
+  background: oklch(66% 0.19 285 / 0.15); transform: translateY(-1px);
+}
+.code-block-copy-btn.copied {
+  color: oklch(78% 0.18 150);
+  border-color: oklch(78% 0.18 150 / 0.4);
+  background: oklch(78% 0.18 150 / 0.12);
+}
+pre {
+  margin: 0; padding: 1.1rem 1.3rem; overflow-x: auto;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 0.85rem; line-height: 1.75;
+  color: var(--text-secondary);
 }
 
 /* ═══ Feature List ═══ */
@@ -327,10 +364,62 @@ code {
   font-family: 'Consolas','Courier New', monospace;
   font-size: 0.82rem; line-height: 2; color: var(--text-secondary);
   white-space: pre; overflow-x: auto;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+.arch-diagram:hover {
+  border-color: oklch(66% 0.19 285 / 0.38);
+  box-shadow: 0 14px 40px oklch(0% 0 0 / 0.4), 0 0 24px oklch(66% 0.19 285 / 0.1);
 }
 .arch-diagram .hl { color: var(--accent); font-weight: 700; }
 .arch-diagram .dim { color: var(--text-muted); }
 .arch-diagram .gold { color: var(--gold); }
+
+/* ═══ Interactive Lightbox Modal ═══ */
+.image-lightbox {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 260ms var(--ease-out-expo), visibility 260ms;
+}
+.image-lightbox.active {
+  opacity: 1; visibility: visible; pointer-events: auto;
+}
+.lightbox-backdrop {
+  position: absolute; inset: 0;
+  background: oklch(4% 0.015 270 / 0.88);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  cursor: zoom-out;
+}
+.lightbox-img {
+  position: relative; z-index: 2;
+  max-width: 92vw; max-height: 88vh; object-fit: contain;
+  border-radius: 14px; border: 1px solid oklch(100% 0 0 / 0.16);
+  box-shadow: 0 30px 90px oklch(0% 0 0 / 0.65);
+  transform: scale(0.92);
+  transition: transform 300ms var(--spring);
+  cursor: default;
+}
+.image-lightbox.active .lightbox-img { transform: scale(1); }
+.lightbox-close {
+  position: absolute; top: 1.5rem; right: 1.5rem; z-index: 3;
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--bg-raised);
+  color: var(--text-primary); font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 200ms ease;
+}
+.lightbox-close:hover {
+  border-color: var(--accent); transform: scale(1.08); color: var(--accent);
+}
+.screenshot img, .gallery-card-img, .card-grid img, table img {
+  cursor: zoom-in;
+  transition: transform 260ms var(--ease-out-expo), border-color 260ms;
+}
+.screenshot img:hover, .gallery-card-img:hover {
+  transform: scale(1.012);
+  border-color: oklch(66% 0.19 285 / 0.45);
+}
 
 /* ═══ Note ═══ */
 .note {
@@ -496,15 +585,24 @@ a:hover { color: var(--gold); }
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
+<!-- 沉浸式图片预览灯箱 -->
+<div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+  <img class="lightbox-img" id="lightboxImg" alt="大图预览" />
+  <button class="lightbox-close" id="lightboxClose" aria-label="关闭预览">✕</button>
+</div>
+
 <script is:inline>
 (function() {
+  // 1. 返回顶部 & 滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
-  if (!btn) return;
   let ticking = false;
   function updateBtn() {
-    if (window.scrollY > 600) btn.classList.add('visible');
-    else btn.classList.remove('visible');
+    if (btn) {
+      if (window.scrollY > 600) btn.classList.add('visible');
+      else btn.classList.remove('visible');
+    }
     if (prog) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
@@ -514,9 +612,105 @@ a:hover { color: var(--gold); }
   window.addEventListener('scroll', () => {
     if (!ticking) { requestAnimationFrame(updateBtn); ticking = true; }
   }, { passive: true });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // 2. 代码块一键复制增强
+  document.querySelectorAll('pre').forEach(pre => {
+    if (pre.closest('.code-block-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+    
+    // 语言推断
+    let lang = 'CODE';
+    const codeEl = pre.querySelector('code');
+    if (codeEl) {
+      const classes = codeEl.className.split(' ');
+      for (const c of classes) {
+        if (c.startsWith('language-')) {
+          lang = c.replace('language-', '').toUpperCase();
+          break;
+        }
+      }
+    }
+    
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = lang;
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-block-copy-btn';
+    copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+    
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+        }, 1800);
+      } catch (err) {
+        copyBtn.textContent = '复制失败';
+      }
+    });
+    
+    header.appendChild(titleSpan);
+    header.appendChild(copyBtn);
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
   });
+
+  // 3. 沉浸式图片灯箱组件
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+
+  function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '大图预览';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (lightbox) {
+    document.querySelectorAll('.screenshot img, .gallery-card-img, .card-grid img, table img, .container img').forEach(img => {
+      // 过滤 header icon 等微型图标
+      if (img.closest('.site-header') || img.closest('.brand')) return;
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(img.currentSrc || img.src, img.alt);
+      });
+    });
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+    
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  }
 })();
 </script>
 

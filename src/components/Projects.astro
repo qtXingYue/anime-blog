@@ -11,6 +11,14 @@ import { featured, projectsFeature, projectsDepth, projectsIndex } from '../data
     <div class="section-divider reveal"></div>
     <p class="projects-legend reveal">14 个项目 · 3 篇特写 · 6 个专题 · 5 则索引</p>
 
+    <!-- 移动端专属吸顶分类筛选胶囊条 -->
+    <nav class="mobile-project-tabs reveal" id="mobileProjectTabs" aria-label="项目分类导航">
+      <button type="button" class="mobile-tab-btn active" data-target="#projects">全部</button>
+      <button type="button" class="mobile-tab-btn" data-target=".projects-stack--feature">⭐ 特写 (3)</button>
+      <button type="button" class="mobile-tab-btn" data-target="#bandDepth">🔬 专题 (6)</button>
+      <button type="button" class="mobile-tab-btn" data-target="#bandIndex">📋 索引 (5)</button>
+    </nav>
+
     <aside class="project-progress" id="projectProgress" aria-hidden="true">
       <span class="project-progress-count" id="projectProgressCount"><b>01</b><small>/ 05</small></span>
       <span class="project-progress-type" id="projectProgressType">核心工程</span>
