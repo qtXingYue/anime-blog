@@ -6,11 +6,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && node scripts/generate-sitemap.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro check",
+    "test:api": "cd ../server && python -m pytest test_main.py -v"
   },
   "devDependencies": {
     "astro": "^5.0.0",
     "@astrojs/vue": "^5.0.0",
-    "vue": "^3.5.0"
+    "vue": "^3.5.0",
+    "@astrojs/check": "^0.9.4",
+    "typescript": "^5.6.0"
   }
 }

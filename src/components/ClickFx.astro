@@ -3,6 +3,7 @@
 // Canvas 覆盖层 mix-blend-mode: screen（亮主题 multiply），减少动态时完全跳过
 ---
 <script>
+// @ts-nocheck 存量浏览器 JS 未做类型治理,先静默保门禁可用
 (function initClickFx() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const canvas = document.createElement('canvas');

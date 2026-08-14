@@ -658,16 +658,24 @@ window.handleContactSubmit = async function(e) {
 };
 
 // ═══ ANALYTICS HIT (Sakura Backend) ═══
-(function reportAnalytics() {
+// sendBeacon 不阻塞、页面卸载也可靠送达;挂在 astro:page-load 上,
+// 首次加载与 SPA 路由切换都会上报(旧实现只在整页加载时上报,SPA 内导航漏计)
+function reportAnalytics() {
   try {
-    fetch('/api/analytics/hit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ path: location.pathname, ref: document.referrer || '' }),
-      keepalive: true
-    }).catch(() => {});
+    const payload = JSON.stringify({ path: location.pathname, ref: document.referrer || '' });
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('/api/analytics/hit', new Blob([payload], { type: 'application/json' }));
+    } else {
+      fetch('/api/analytics/hit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true
+      }).catch(() => {});
+    }
   } catch (e) {}
-})();
+}
+document.addEventListener('astro:page-load', reportAnalytics);
 
 // ═══ 字体回流兜底：思源宋体加载完成后标题高度会变，重算 ScrollTrigger 位置 ═══
 if (document.fonts && document.fonts.ready) {
