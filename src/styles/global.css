@@ -52,6 +52,7 @@
   --text-muted:     oklch(48% 0.02 265);
   --border: oklch(0% 0 0 / 0.08);
   --glass-bg: oklch(100% 0 0 / 0.82);
+  --gold: oklch(46% 0.15 65); /* 亮色下优化为高对比度暖琥珀金 */
 }
 
 /* ═══ SKIP LINK (Accessibility) ═══ */
@@ -419,14 +420,28 @@ a:hover { color: var(--gold); }
 
 /* ═══ TIMELINE ═══ */
 .timeline { position: relative; padding-left: var(--space-2xl); }
-.timeline-track { position: absolute; left: 5px; top: 0; bottom: 0; width: 2px; background: oklch(100% 0 0 / 0.06); }
-.timeline-track-fill { position: absolute; left: 5px; top: 0; width: 2px; height: 0; background: linear-gradient(to bottom, var(--accent), var(--gold)); transition: height 0.3s ease; }
-.timeline-item { position: relative; margin-bottom: var(--space-2xl); }
+.timeline-track {
+  position: absolute; left: 5px; top: 16px; bottom: 16px; width: 2px;
+  background: oklch(100% 0 0 / 0.08); border-radius: 999px;
+}
+[data-theme="light"] .timeline-track { background: oklch(0% 0 0 / 0.1); }
+.timeline-track-fill {
+  position: absolute; left: 5px; top: 16px; width: 2px; height: 0;
+  background: linear-gradient(to bottom, var(--accent), var(--gold)); border-radius: 999px;
+  transition: height 0.3s ease;
+}
+.timeline-item {
+  position: relative; margin-bottom: var(--space-lg);
+  background: transparent !important; border: none !important; box-shadow: none !important;
+}
 .timeline-dot {
-  position: absolute; left: calc(-1 * var(--space-2xl) + 1px); top: 6px;
+  position: absolute; left: calc(-1 * var(--space-2xl) + 1px); top: 18px;
   width: 10px; height: 10px; border-radius: 50%; background: var(--bg-deep);
   border: 2px solid var(--border); transition: all 400ms var(--ease-out-expo);
-  transform: scale(0.8); opacity: 0.7;
+  transform: scale(0.9); opacity: 0.8; z-index: 2;
+}
+[data-theme="light"] .timeline-dot {
+  background: #fff; border-color: oklch(60% 0.18 280 / 0.6);
 }
 .timeline-dot::after {
   content: ''; position: absolute; inset: -2px; border-radius: 50%;
@@ -438,11 +453,34 @@ a:hover { color: var(--gold); }
   0% { transform: scale(1); opacity: 0.7; }
   100% { transform: scale(3.5); opacity: 0; }
 }
-.timeline-content { opacity: 0.45; transition: opacity 500ms var(--ease-out-expo); }
-.timeline-content.active { opacity: 1; }
-.timeline-date { font-family: var(--font-sans); font-size: var(--text-xs); color: var(--gold); letter-spacing: 0.1em; margin-bottom: var(--space-xs); }
-.timeline-title { font-family: var(--font-sans); font-weight: 700; font-size: var(--text-base); color: var(--text-primary); margin-bottom: var(--space-xs); }
-.timeline-desc { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+.timeline-content {
+  position: relative; padding: 1.25rem 1.6rem; border-radius: 16px;
+  border: 1px solid var(--border);
+  background: linear-gradient(150deg, var(--bg-raised), var(--bg-high));
+  box-shadow: 0 8px 24px oklch(0% 0 0 / 0.14);
+  transition: all 300ms var(--ease-out-expo);
+  opacity: 0.88;
+}
+.timeline-content:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  box-shadow: 0 14px 32px oklch(0% 0 0 / 0.22);
+}
+[data-theme="light"] .timeline-content {
+  background: oklch(100% 0 0 / 0.88);
+  border-color: oklch(0% 0 0 / 0.08);
+  box-shadow: 0 10px 28px oklch(30% 0.05 280 / 0.05), 0 1px 3px oklch(0% 0 0 / 0.03);
+  opacity: 1;
+}
+[data-theme="light"] .timeline-content:hover {
+  border-color: oklch(60% 0.18 280 / 0.4);
+  box-shadow: 0 16px 36px oklch(30% 0.06 280 / 0.09), 0 2px 6px oklch(0% 0 0 / 0.04);
+}
+.timeline-date { font-family: var(--font-sans); font-size: var(--text-xs); font-weight: 700; color: var(--gold); letter-spacing: 0.08em; margin-bottom: var(--space-xs); }
+.timeline-title { font-family: var(--font-sans); font-weight: 800; font-size: var(--text-base); color: var(--text-primary); margin-bottom: var(--space-xs); line-height: 1.4; }
+.timeline-org { font-size: var(--text-xs); font-weight: 600; color: var(--accent); margin-bottom: var(--space-xs); }
+[data-theme="light"] .timeline-org { color: oklch(45% 0.18 280); }
+.timeline-desc { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.75; }
 
 /* ═══ PROJECTS ═══ */
 .projects-stack { position: relative; padding-bottom: clamp(140px, 18vh, 240px); }
@@ -1144,7 +1182,6 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .project-card-m,
 [data-theme="light"] .stat-card,
 [data-theme="light"] .about-card,
-[data-theme="light"] .timeline-item,
 [data-theme="light"] .contact-card {
   background: oklch(100% 0 0 / 0.88) !important;
   border-color: oklch(0% 0 0 / 0.08) !important;
