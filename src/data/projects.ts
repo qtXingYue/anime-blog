@@ -1,4 +1,4 @@
-﻿export interface ProjectLink {
+export interface ProjectLink {
   href: string;
   label: string;
 }
@@ -21,6 +21,8 @@ export interface Project {
   /** 一句话硬指标,只给特写级大卡填,是"这个项目真跑起来了"的证据 */
   highlight?: { value: string; label: string };
   link?: ProjectLink;
+  /** Bento 布局跨两列大卡 */
+  bentoWide?: boolean;
 }
 
 export const featured = {
@@ -97,6 +99,7 @@ export const projectsAI: Project[] = [
     num: '05', category: 'AI · 毕设', emoji: '✋',
     gradient: 'linear-gradient(135deg,#0f0c29,#302260)',
     accent: 'azure',
+    bentoWide: true,
     cover: '/projects/covers/05-gesture-ppt.svg',
     title: '手势控制 PPT 系统',
     highlight: { value: '20+ FPS', label: '720P 实时手势追踪 · 21 点关键点' },
@@ -109,6 +112,7 @@ export const projectsAI: Project[] = [
     num: '06', category: '深度学习', emoji: '🎨',
     gradient: 'linear-gradient(135deg,#0a1628,#1a3a5c)',
     accent: 'magenta',
+    bentoWide: true,
     cover: '/projects/covers/06-cartoon-gan.webp',
     title: '卡通风格迁移系统 (CartoonGAN)',
     highlight: { value: '5 种风格', label: '图片 / 视频双模式 · Gradio 一键分享' },

@@ -1,5 +1,6 @@
-﻿---
+---
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import ImageCompare from '../../components/ImageCompare.astro';
 
 const title = '卡通风格迁移系统 — 设计报告';
 const description = 'AnimeGAN2 + ArcaneGAN 多模型风格迁移应用，支持 5 种动漫风格，图片+视频双模式转换，Gradio Web 界面。';
@@ -43,10 +44,17 @@ const slug = 'cartoon-gan-report';
       <tr><td>视频处理</td><td>FFmpeg 帧提取与合成</td></tr>
     </table>
 
-    <h2><span class="num">04</span>效果展示</h2>
+    <h2><span class="num">04</span>效果展示与实时交互对比</h2>
+    <p>左右拖动下方发光滑块手柄，可实时对比输入原图与 AnimeGAN2 / ArcaneGAN 动漫风格迁移的细节效果：</p>
+
+    <ImageCompare
+      beforeImg="/projects/cartoon-gan-imgs/page-1.webp"
+      afterImg="/projects/cartoon-gan-imgs/page-2.webp"
+      beforeLabel="真人原图输入"
+      afterLabel="GAN 动漫风格化"
+    />
+
     <div class="gallery">
-      <img src="/projects/cartoon-gan-imgs/page-1.webp" alt="效果展示 1" loading="lazy">
-      <img src="/projects/cartoon-gan-imgs/page-2.webp" alt="效果展示 2" loading="lazy">
       <img src="/projects/cartoon-gan-imgs/page-3.webp" alt="效果展示 3" loading="lazy">
       <img src="/projects/cartoon-gan-imgs/page-4.webp" alt="效果展示 4" loading="lazy">
       <img src="/projects/cartoon-gan-imgs/page-5.webp" alt="效果展示 5" loading="lazy">

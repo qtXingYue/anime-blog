@@ -1,0 +1,207 @@
+---
+interface Props {
+  beforeImg: string;
+  afterImg: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+  aspectRatio?: string;
+  class?: string;
+}
+
+const {
+  beforeImg,
+  afterImg,
+  beforeLabel = '原始图像',
+  afterLabel = 'GAN 动漫风格化',
+  aspectRatio = '16 / 10',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`img-compare ${className}`} style={`--aspect:${aspectRatio};`} role="region" aria-label="图片风格对比滑块">
+  <div class="img-compare-inner">
+    <!-- Before 原始图 -->
+    <div class="img-compare-item before">
+      <img src={beforeImg} alt={beforeLabel} loading="lazy" decoding="async" />
+      <span class="compare-badge before-badge">📸 {beforeLabel}</span>
+    </div>
+
+    <!-- After 风格化图 (带 clip-path 裁切) -->
+    <div class="img-compare-item after">
+      <img src={afterImg} alt={afterLabel} loading="lazy" decoding="async" />
+      <span class="compare-badge after-badge">🎨 {afterLabel}</span>
+    </div>
+
+    <!-- 中间交互滑块手柄 -->
+    <div class="compare-divider" aria-hidden="true">
+      <div class="divider-line"></div>
+      <div class="divider-handle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 6 15 12 9 18"></polyline>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function initImageCompare() {
+  document.querySelectorAll('.img-compare').forEach((container) => {
+    const el = container as HTMLElement;
+    const after = el.querySelector('.img-compare-item.after') as HTMLElement;
+    const divider = el.querySelector('.compare-divider') as HTMLElement;
+    if (!after || !divider) return;
+
+    let isDown = false;
+
+    function setPosition(percentage: number) {
+      const p = Math.max(0, Math.min(100, percentage));
+      el.style.setProperty('--pos', `${p}%`);
+    }
+
+    function onMove(clientX: number) {
+      const rect = el.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const p = (x / rect.width) * 100;
+      setPosition(p);
+    }
+
+    // 鼠标事件
+    el.addEventListener('mousedown', (e) => {
+      isDown = true;
+      onMove(e.clientX);
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      onMove(e.clientX);
+    });
+    window.addEventListener('mouseup', () => { isDown = false; });
+
+    // 触摸手势事件
+    el.addEventListener('touchstart', (e) => {
+      isDown = true;
+      if (e.touches.length) onMove(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      if (!isDown || !e.touches.length) return;
+      onMove(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('touchend', () => { isDown = false; });
+
+    // 初始位置 50%
+    setPosition(50);
+  });
+})();
+</script>
+
+<style>
+.img-compare {
+  --pos: 50%;
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--aspect, 16 / 10);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  box-shadow: 0 16px 48px oklch(0% 0 0 / 0.35);
+  margin: 1.8rem 0;
+  user-select: none;
+  touch-action: pan-y;
+  cursor: ew-resize;
+}
+.img-compare-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.img-compare-item {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.img-compare-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.img-compare-item.after {
+  clip-path: polygon(var(--pos) 0, 100% 0, 100% 100%, var(--pos) 100%);
+}
+.compare-badge {
+  position: absolute;
+  top: 1rem;
+  z-index: 5;
+  padding: 5px 12px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border-radius: 999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 16px oklch(0% 0 0 / 0.25);
+  pointer-events: none;
+}
+.before-badge {
+  left: 1rem;
+  background: oklch(14% 0.015 270 / 0.75);
+  color: var(--text-primary);
+}
+.after-badge {
+  right: 1rem;
+  background: color-mix(in oklab, var(--accent) 35%, oklch(14% 0.015 270 / 0.75));
+  color: #fff;
+  border-color: var(--accent);
+}
+.compare-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--pos);
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.divider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #fff;
+  box-shadow: 0 0 12px var(--accent), 0 0 2px #fff;
+}
+.divider-handle {
+  position: relative;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  box-shadow: 0 4px 18px oklch(0% 0 0 / 0.5), 0 0 0 3px oklch(60% 0.18 280 / 0.4);
+  transition: transform 200ms var(--spring);
+}
+.img-compare:hover .divider-handle {
+  transform: scale(1.12);
+}
+[data-theme="light"] .img-compare {
+  box-shadow: 0 14px 36px oklch(30% 0.05 280 / 0.08);
+}
+[data-theme="light"] .before-badge {
+  background: oklch(100% 0 0 / 0.85);
+  color: var(--text-primary);
+}
+</style>

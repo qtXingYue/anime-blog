@@ -592,14 +592,29 @@ a:hover { color: var(--gold); }
 .projects-grid + .band-rule { margin-top: var(--space-3xl); }
 .section--tight { padding-block: var(--space-2xl) var(--space-4xl); }
 
-/* ── 专题级中卡：满宽出血封面 + 收窄的字段集 ── */
-.projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-lg); }
+/* ── 专题级中卡：现代非对称 Bento Grid (便当盒) ── */
+.projects-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-lg); }
 .project-card-m {
   position: static; display: flex; flex-direction: column;
   border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
   background: linear-gradient(150deg, var(--bg-raised), var(--bg-high));
   box-shadow: 0 10px 30px oklch(0% 0 0 / 0.18);
   transition: transform 300ms var(--ease-out-expo), border-color 300ms var(--ease-out-expo), box-shadow 300ms var(--ease-out-expo);
+}
+.project-card-m.bento-wide {
+  grid-column: span 2;
+}
+.project-card-m.bento-wide .project-m-visual {
+  aspect-ratio: 16 / 7;
+}
+@media (max-width: 1024px) {
+  .projects-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-card-m.bento-wide { grid-column: span 2; }
+}
+@media (max-width: 768px) {
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card-m.bento-wide { grid-column: span 1; }
+  .project-card-m.bento-wide .project-m-visual { aspect-ratio: 2 / 1; }
 }
 .project-card-m:hover {
   transform: translateY(-4px);

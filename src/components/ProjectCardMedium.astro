@@ -11,7 +11,7 @@ const { project: p, index = 0 } = Astro.props;
 const useEmoji = !p.cover || p.cover.endsWith('.svg');
 ---
 <a
-  class="project-card-m reveal"
+  class={`project-card-m reveal ${p.bentoWide ? 'bento-wide' : ''}`}
   href={p.link?.href}
   data-accent={p.accent}
   data-reveal-delay={index * 70}
