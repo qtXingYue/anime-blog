@@ -3,7 +3,7 @@
 </script><script>
   // 首屏前应用已保存主题，避免闪烁
   try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
-</script><link rel="stylesheet" href="/_astro/blog.SNwC3ezZ.css">
+</script><link rel="stylesheet" href="/_astro/blog.oVgeyChN.css">
 <style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
 </style></head> <body> <a href="#main" class="skip-link">跳至主要内容</a> <main id="main">  <div class="scroll-progress" id="scrollProgress"></div> <div class="noise-overlay" aria-hidden="true"></div> <div class="bg-video-stack" id="bgVideoStack"> <div class="bg-video-placeholder" id="bgVideoPlaceholder"></div> <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> <video class="bg-video-layer" id="bgVideoB" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> </div> <!-- 实验一（/lab/exp-01-motion.html）的极光 + 粒子星网，作为背景的第二种选择 --> <div class="bg-lab" id="bgLab" aria-hidden="true"> <div class="bg-lab-aurora"><i></i><i></i><i></i><i></i></div> <canvas class="bg-lab-net" id="bgLabNet"></canvas> </div> <div class="bg-video-overlay" id="bgOverlay" aria-hidden="true"></div> <script>
 // 省流/减少动态/2G 网络不预加载 760KB 视频；正常环境立即升级 preload=auto，
