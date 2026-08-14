@@ -6,6 +6,30 @@ import { bindCardFx, bindGlowFocus } from './card-fx.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+// ═══ TURBO TOP LOADER (毫秒级顶部极速光感进度条) ═══
+function getOrCreateTurboLoader() {
+  let loader = document.getElementById('turbo-loader');
+  if (!loader) {
+    loader = document.createElement('div');
+    loader.id = 'turbo-loader';
+    document.body.appendChild(loader);
+  }
+  return loader;
+}
+
+document.addEventListener('astro:before-preparation', () => {
+  const loader = getOrCreateTurboLoader();
+  loader.className = 'loading';
+});
+
+document.addEventListener('astro:page-load', () => {
+  const loader = getOrCreateTurboLoader();
+  loader.className = 'completed';
+  setTimeout(() => {
+    loader.className = '';
+  }, 380);
+});
+
 // ═══ MOBILE DRAWER ═══
 (function initDrawer() {
   const hamburger = document.getElementById('hamburger');
@@ -649,3 +673,14 @@ window.handleContactSubmit = async function(e) {
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); });
 }
+
+// ═══ 路由页面切换安全重新绑定 (SPA 无缝流体路由) ═══
+document.addEventListener('astro:page-load', () => {
+  bindCardFx(document, { skipWithin: '.projects-stack' });
+  bindGlowFocus(document);
+  initMobileProjectTabs();
+  updateScroll();
+  if (window.ScrollTrigger) {
+    window.ScrollTrigger.refresh();
+  }
+});

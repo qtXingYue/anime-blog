@@ -1,7 +1,6 @@
 ---
-// ProjectLayout.astro — 项目详情页通用布局
-// 含：顶部导航 header、noise-overlay、通用 CSS 变量、footer、返回顶部、项目间导航
 import { projectNav } from '../data/projects';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title: string;           // 页面标题
@@ -26,6 +25,7 @@ const current = projectNav[currentIdx];
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
+<ClientRouter />
 {description && <meta name="description" content={description}>}
 <meta property="og:title" content={title}>
 {description && <meta property="og:description" content={description}>}
@@ -593,8 +593,8 @@ a:hover { color: var(--gold); }
 </div>
 
 <script is:inline>
-(function() {
-  // 1. 返回顶部 & 滚动进度条
+function initProjectLayout() {
+  // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
   let ticking = false;
@@ -694,8 +694,8 @@ a:hover { color: var(--gold); }
 
   if (lightbox) {
     document.querySelectorAll('.screenshot img, .gallery-card-img, .card-grid img, table img, .container img').forEach(img => {
-      // 过滤 header icon 等微型图标
       if (img.closest('.site-header') || img.closest('.brand')) return;
+      img.style.cursor = 'zoom-in';
       img.addEventListener('click', (e) => {
         e.preventDefault();
         openLightbox(img.currentSrc || img.src, img.alt);
@@ -711,7 +711,10 @@ a:hover { color: var(--gold); }
       }
     });
   }
-})();
+}
+
+document.addEventListener('astro:page-load', initProjectLayout);
+initProjectLayout();
 </script>
 
 </body>

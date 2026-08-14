@@ -31,6 +31,7 @@ function toggle(event: MouseEvent) {
       Math.max(x, innerWidth - x),
       Math.max(y, innerHeight - y)
     );
+    document.documentElement.classList.add('theme-transitioning');
     const transition = doc.startViewTransition(() => {
       document.documentElement.dataset.theme = next;
       try { localStorage.setItem('theme', next); } catch (e) {}
@@ -45,6 +46,9 @@ function toggle(event: MouseEvent) {
         { clipPath: clipPath },
         { duration: 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' }
       );
+    });
+    transition.finished.finally(() => {
+      document.documentElement.classList.remove('theme-transitioning');
     });
   } else {
     document.documentElement.dataset.theme = next;

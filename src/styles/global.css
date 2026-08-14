@@ -837,11 +837,44 @@ a:hover { color: var(--gold); }
 .back-to-top.visible { opacity: 1; visibility: visible; }
 .back-to-top:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 28px var(--accent-glow); }
 
-/* ═══ VIEW TRANSITION (theme toggle circular reveal) ═══ */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+/* ═══ VIEW TRANSITION & TURBO ROUTE LOADER ═══ */
+#turbo-loader {
+  position: fixed; top: 0; left: 0; right: 0; height: 2.5px; z-index: 99999;
+  pointer-events: none; opacity: 0;
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent));
+  background-size: 200% 100%;
+  transform: scaleX(0); transform-origin: left;
+  box-shadow: 0 0 12px var(--accent-glow), 0 0 4px var(--gold);
+  transition: transform 300ms var(--ease-out-expo), opacity 200ms ease;
+}
+#turbo-loader.loading {
+  opacity: 1; transform: scaleX(0.78);
+  animation: turboShimmer 1.4s linear infinite;
+}
+#turbo-loader.completed {
+  opacity: 1; transform: scaleX(1);
+  transition: transform 120ms ease-out, opacity 260ms ease 120ms;
+}
+@keyframes turboShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@keyframes pageFadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.988); }
+}
+@keyframes pageSlideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 页面路由跳转时的物理弹性滑动与淡入淡出 */
+html:not(.theme-transitioning)::view-transition-old(root) {
+  animation: 140ms cubic-bezier(0.25, 1, 0.5, 1) both pageFadeOut;
+}
+html:not(.theme-transitioning)::view-transition-new(root) {
+  animation: 240ms cubic-bezier(0.16, 1, 0.3, 1) both pageSlideIn;
 }
 ::view-transition-old(root) { z-index: 1; }
 ::view-transition-new(root) { z-index: 9999; }
