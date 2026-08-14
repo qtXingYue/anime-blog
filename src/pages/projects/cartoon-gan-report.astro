@@ -45,26 +45,15 @@ const slug = 'cartoon-gan-report';
     </table>
 
     <h2><span class="num">04</span>效果展示与实时交互对比</h2>
-    <p>左右拖动下方发光滑块手柄，可实时对比输入真实人像与 AnimeGAN2 / ArcaneGAN 动漫风格迁移的细节质感：</p>
+    <p>左右拖动下方发光滑块手柄，可实时对比输入真实人像与 ArcaneGAN / AnimeGAN 模型推理生成的动漫风格化细节：</p>
 
     <ImageCompare
-      beforeImg="/projects/cartoon-gan-imgs/compare-sample-1-before.webp"
-      afterImg="/projects/cartoon-gan-imgs/compare-sample-1-after.webp"
+      beforeImg="/projects/cartoon-gan-imgs/arcanegan-input-real.webp"
+      afterImg="/projects/cartoon-gan-imgs/arcanegan-output-anime.webp"
       beforeLabel="真人原图输入"
-      afterLabel="新海诚/动漫风格迁移"
+      afterLabel="ArcaneGAN 动漫风格迁移"
       aspectRatio="1 / 1"
     />
-
-    <h3 style="margin-top:2rem;margin-bottom:0.8rem;font-size:1.1rem;color:var(--text-primary)">更多成对转换效果</h3>
-    <div style="margin-bottom:1.5rem">
-      <ImageCompare
-        beforeImg="/projects/cartoon-gan-imgs/compare-sample-10-before.webp"
-        afterImg="/projects/cartoon-gan-imgs/compare-sample-10-after.webp"
-        beforeLabel="人像照片输入"
-        afterLabel="动漫风格化结果"
-        aspectRatio="1 / 1"
-      />
-    </div>
 
     <h3 style="margin-top:2rem;margin-bottom:0.8rem;font-size:1.1rem;color:var(--text-primary)">系统设计报告与架构</h3>
     <div class="gallery">
