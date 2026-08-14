@@ -1,14 +1,16 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>工业零件质检系统（ResNet18）— 视觉实训报告</title><meta name="description" content="ResNet18 迁移学习实现产线合格/不合格自动判定：工业相机采图、labelme 标注、train/val/test 全流程评估、Gradio 检测台。"><meta property="og:title" content="工业零件质检系统（ResNet18）— 视觉实训报告"><meta property="og:description" content="ResNet18 迁移学习实现产线合格/不合格自动判定：工业相机采图、labelme 标注、train/val/test 全流程评估、Gradio 检测台。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.screenshot[data-astro-cid-hewxg3wq]{margin:1.4rem 0}.screenshot[data-astro-cid-hewxg3wq] img[data-astro-cid-hewxg3wq]{width:100%;border-radius:14px;border:1px solid var(--border);display:block}.screenshot[data-astro-cid-hewxg3wq] .caption[data-astro-cid-hewxg3wq]{font-size:.8rem;color:var(--text-muted);margin-top:.6rem;text-align:center}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.Cvzt_vxf.css"></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">10</span> <span class="crumb-title">工业零件质检</span> </div> <nav class="header-nav"> <a href="/projects/omr-grader-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">📝</span><span class="nav-label">答题卡智能批改</span> </a> <a href="/projects/meizhou-demo" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">梅州美食可视化</span><span class="nav-emoji">🗺️</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-hewxg3wq> <div class="container" data-astro-cid-hewxg3wq> <div class="hero-icon" data-astro-cid-hewxg3wq>🏭</div> <h1 data-astro-cid-hewxg3wq>工业零件质检系统</h1> <p class="domain" data-astro-cid-hewxg3wq>机器视觉实训 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-hewxg3wq>工业相机采图 · labelme 标注管线 · ResNet18 迁移学习 · Gradio 检测台</p> </div> </div> <div class="container" data-astro-cid-hewxg3wq> <div class="stats-strip" data-astro-cid-hewxg3wq> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>10</div><div class="label" data-astro-cid-hewxg3wq>零件检测课题</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>224²</div><div class="label" data-astro-cid-hewxg3wq>输入分辨率</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>1920P</div><div class="label" data-astro-cid-hewxg3wq>工业相机采图</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>2</div><div class="label" data-astro-cid-hewxg3wq>合格 / 不合格</div></div> </div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>01</span>项目概述</h2> <p data-astro-cid-hewxg3wq>面向制造业产线场景的<strong data-astro-cid-hewxg3wq>外观质检系统</strong>：工业相机环形光源下采集零件图像，经标注、训练得到判定模型，最终通过 Web 检测台实现"上传即判"。实训覆盖<strong data-astro-cid-hewxg3wq>亚克力板、纽扣边缘、垫片外观与尺寸、电阻、薄荷糖、餐具、电池</strong>等十类零件检测课题，最终版聚焦包装外观的合格 / 不合格二分类。</p> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>02</span>数据管线</h2> <div class="feature-list" data-astro-cid-hewxg3wq> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>工业相机采集</strong><br data-astro-cid-hewxg3wq>1920×1080 BMP 原图，环形光源统一成像条件，单张约 2MB</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>labelme 标注</strong><br data-astro-cid-hewxg3wq>逐张 JSON 标注,脚本按标签自动重命名并注入文件名</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>数据集划分</strong><br data-astro-cid-hewxg3wq>脚本自动切分 train / val / test 三集，文件名即标签,无需额外标注文件</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>预处理</strong><br data-astro-cid-hewxg3wq>Resize 224×224 + ImageNet 均值方差归一化，与推理端严格一致</div></div> </div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>03</span>模型与训练</h2> <table data-astro-cid-hewxg3wq> <thead data-astro-cid-hewxg3wq><tr data-astro-cid-hewxg3wq><th data-astro-cid-hewxg3wq>环节</th><th data-astro-cid-hewxg3wq>方案</th></tr></thead> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>骨干网络</td><td data-astro-cid-hewxg3wq>ResNet18（ImageNet 预训练权重迁移）</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>输出头</td><td data-astro-cid-hewxg3wq>全连接层改为单神经元 + Sigmoid 二分类</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>损失函数</td><td data-astro-cid-hewxg3wq>BCEWithLogitsLoss 二元交叉熵</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>优化器</td><td data-astro-cid-hewxg3wq>Adam · lr 0.001 · Batch 32 · 10 Epochs</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>评估</td><td data-astro-cid-hewxg3wq>每轮输出 train/val 双指标，训练后测试集独立评估</td></tr> </table> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>04</span>检测台与运行效果</h2> <p data-astro-cid-hewxg3wq>推理端用 <code data-astro-cid-hewxg3wq>Gradio</code> 搭建质检检测台：上传零件照片,模型输出<strong data-astro-cid-hewxg3wq>合格 / 不合格判定与置信度</strong>。推理管线直接处理 PIL 图像、不落盘临时文件,与训练端共用同一套预处理保证一致性。</p> <div class="screenshot" data-astro-cid-hewxg3wq><img src="/projects/industrial-imgs/industrial-camera.webp" alt="工业相机采集的零件图像" loading="lazy" data-astro-cid-hewxg3wq><p class="caption" data-astro-cid-hewxg3wq>工业相机环形光源下的真实采图（薄荷糖包装质检课题）</p></div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>05</span>技术选型</h2> <table data-astro-cid-hewxg3wq> <thead data-astro-cid-hewxg3wq><tr data-astro-cid-hewxg3wq><th data-astro-cid-hewxg3wq>模块</th><th data-astro-cid-hewxg3wq>技术</th></tr></thead> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>深度学习</td><td data-astro-cid-hewxg3wq>PyTorch · torchvision ResNet18</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>数据标注</td><td data-astro-cid-hewxg3wq>labelme · 自动化划分脚本</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>推理界面</td><td data-astro-cid-hewxg3wq>Gradio Blocks 检测台</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>硬件</td><td data-astro-cid-hewxg3wq>工业相机 + 环形光源 · CUDA 加速训练</td></tr> </table> <div class="note" data-astro-cid-hewxg3wq>这是作品集里唯一直接面向<strong data-astro-cid-hewxg3wq>制造业产线</strong>的项目——从打光采图、标注管线到模型部署走完质检系统的完整闭环，也是迁移学习在小样本工业场景下的标准实践：用 ImageNet 预训练特征,几百张产线图就能得到可用的判定模型。</div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/omr-grader-report" class="nav-card prev"> <span class="nav-card-emoji">📝</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">09</span> <span class="nav-card-title">答题卡智能批改</span> </div> </a> <a href="/projects/meizhou-demo" class="nav-card next"> <div class="nav-card-info"> <span class="nav-card-dir">下一个 →</span> <span class="nav-card-num">11</span> <span class="nav-card-title">梅州美食可视化</span> </div> <span class="nav-card-emoji">🗺️</span> </a> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">工业零件质检系统（ResNet18）— 视觉实训报告</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <script>
+<link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css"></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">10</span> <span class="crumb-title">工业零件质检</span> </div> <nav class="header-nav"> <a href="/projects/omr-grader-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">📝</span><span class="nav-label">答题卡智能批改</span> </a> <a href="/projects/meizhou-demo" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">梅州美食可视化</span><span class="nav-emoji">🗺️</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-hewxg3wq> <div class="container" data-astro-cid-hewxg3wq> <div class="hero-icon" data-astro-cid-hewxg3wq>🏭</div> <h1 data-astro-cid-hewxg3wq>工业零件质检系统</h1> <p class="domain" data-astro-cid-hewxg3wq>机器视觉实训 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-hewxg3wq>工业相机采图 · labelme 标注管线 · ResNet18 迁移学习 · Gradio 检测台</p> </div> </div> <div class="container" data-astro-cid-hewxg3wq> <div class="stats-strip" data-astro-cid-hewxg3wq> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>10</div><div class="label" data-astro-cid-hewxg3wq>零件检测课题</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>224²</div><div class="label" data-astro-cid-hewxg3wq>输入分辨率</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>1920P</div><div class="label" data-astro-cid-hewxg3wq>工业相机采图</div></div> <div class="stat-item" data-astro-cid-hewxg3wq><div class="num" data-astro-cid-hewxg3wq>2</div><div class="label" data-astro-cid-hewxg3wq>合格 / 不合格</div></div> </div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>01</span>项目概述</h2> <p data-astro-cid-hewxg3wq>面向制造业产线场景的<strong data-astro-cid-hewxg3wq>外观质检系统</strong>：工业相机环形光源下采集零件图像，经标注、训练得到判定模型，最终通过 Web 检测台实现"上传即判"。实训覆盖<strong data-astro-cid-hewxg3wq>亚克力板、纽扣边缘、垫片外观与尺寸、电阻、薄荷糖、餐具、电池</strong>等十类零件检测课题，最终版聚焦包装外观的合格 / 不合格二分类。</p> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>02</span>数据管线</h2> <div class="feature-list" data-astro-cid-hewxg3wq> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>工业相机采集</strong><br data-astro-cid-hewxg3wq>1920×1080 BMP 原图，环形光源统一成像条件，单张约 2MB</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>labelme 标注</strong><br data-astro-cid-hewxg3wq>逐张 JSON 标注,脚本按标签自动重命名并注入文件名</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>数据集划分</strong><br data-astro-cid-hewxg3wq>脚本自动切分 train / val / test 三集，文件名即标签,无需额外标注文件</div></div> <div class="feature-item" data-astro-cid-hewxg3wq><div class="dot" data-astro-cid-hewxg3wq></div><div class="text" data-astro-cid-hewxg3wq><strong data-astro-cid-hewxg3wq>预处理</strong><br data-astro-cid-hewxg3wq>Resize 224×224 + ImageNet 均值方差归一化，与推理端严格一致</div></div> </div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>03</span>模型与训练</h2> <table data-astro-cid-hewxg3wq> <thead data-astro-cid-hewxg3wq><tr data-astro-cid-hewxg3wq><th data-astro-cid-hewxg3wq>环节</th><th data-astro-cid-hewxg3wq>方案</th></tr></thead> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>骨干网络</td><td data-astro-cid-hewxg3wq>ResNet18（ImageNet 预训练权重迁移）</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>输出头</td><td data-astro-cid-hewxg3wq>全连接层改为单神经元 + Sigmoid 二分类</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>损失函数</td><td data-astro-cid-hewxg3wq>BCEWithLogitsLoss 二元交叉熵</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>优化器</td><td data-astro-cid-hewxg3wq>Adam · lr 0.001 · Batch 32 · 10 Epochs</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>评估</td><td data-astro-cid-hewxg3wq>每轮输出 train/val 双指标，训练后测试集独立评估</td></tr> </table> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>04</span>检测台与运行效果</h2> <p data-astro-cid-hewxg3wq>推理端用 <code data-astro-cid-hewxg3wq>Gradio</code> 搭建质检检测台：上传零件照片,模型输出<strong data-astro-cid-hewxg3wq>合格 / 不合格判定与置信度</strong>。推理管线直接处理 PIL 图像、不落盘临时文件,与训练端共用同一套预处理保证一致性。</p> <div class="screenshot" data-astro-cid-hewxg3wq><img src="/projects/industrial-imgs/industrial-camera.webp" alt="工业相机采集的零件图像" loading="lazy" data-astro-cid-hewxg3wq><p class="caption" data-astro-cid-hewxg3wq>工业相机环形光源下的真实采图（薄荷糖包装质检课题）</p></div> <h2 data-astro-cid-hewxg3wq><span class="num" data-astro-cid-hewxg3wq>05</span>技术选型</h2> <table data-astro-cid-hewxg3wq> <thead data-astro-cid-hewxg3wq><tr data-astro-cid-hewxg3wq><th data-astro-cid-hewxg3wq>模块</th><th data-astro-cid-hewxg3wq>技术</th></tr></thead> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>深度学习</td><td data-astro-cid-hewxg3wq>PyTorch · torchvision ResNet18</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>数据标注</td><td data-astro-cid-hewxg3wq>labelme · 自动化划分脚本</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>推理界面</td><td data-astro-cid-hewxg3wq>Gradio Blocks 检测台</td></tr> <tr data-astro-cid-hewxg3wq><td data-astro-cid-hewxg3wq>硬件</td><td data-astro-cid-hewxg3wq>工业相机 + 环形光源 · CUDA 加速训练</td></tr> </table> <div class="note" data-astro-cid-hewxg3wq>这是作品集里唯一直接面向<strong data-astro-cid-hewxg3wq>制造业产线</strong>的项目——从打光采图、标注管线到模型部署走完质检系统的完整闭环，也是迁移学习在小样本工业场景下的标准实践：用 ImageNet 预训练特征,几百张产线图就能得到可用的判定模型。</div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/omr-grader-report" class="nav-card prev"> <span class="nav-card-emoji">📝</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">09</span> <span class="nav-card-title">答题卡智能批改</span> </div> </a> <a href="/projects/meizhou-demo" class="nav-card next"> <div class="nav-card-info"> <span class="nav-card-dir">下一个 →</span> <span class="nav-card-num">11</span> <span class="nav-card-title">梅州美食可视化</span> </div> <span class="nav-card-emoji">🗺️</span> </a> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">工业零件质检系统（ResNet18）— 视觉实训报告</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <!-- 沉浸式图片预览灯箱 --> <div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true"> <div class="lightbox-backdrop" id="lightboxBackdrop"></div> <img class="lightbox-img" id="lightboxImg" alt="大图预览"> <button class="lightbox-close" id="lightboxClose" aria-label="关闭预览">✕</button> </div> <script>
 (function() {
+  // 1. 返回顶部 & 滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
-  if (!btn) return;
   let ticking = false;
   function updateBtn() {
-    if (window.scrollY > 600) btn.classList.add('visible');
-    else btn.classList.remove('visible');
+    if (btn) {
+      if (window.scrollY > 600) btn.classList.add('visible');
+      else btn.classList.remove('visible');
+    }
     if (prog) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
@@ -18,8 +20,104 @@
   window.addEventListener('scroll', () => {
     if (!ticking) { requestAnimationFrame(updateBtn); ticking = true; }
   }, { passive: true });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // 2. 代码块一键复制增强
+  document.querySelectorAll('pre').forEach(pre => {
+    if (pre.closest('.code-block-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+    
+    // 语言推断
+    let lang = 'CODE';
+    const codeEl = pre.querySelector('code');
+    if (codeEl) {
+      const classes = codeEl.className.split(' ');
+      for (const c of classes) {
+        if (c.startsWith('language-')) {
+          lang = c.replace('language-', '').toUpperCase();
+          break;
+        }
+      }
+    }
+    
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = lang;
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-block-copy-btn';
+    copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+    
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+        }, 1800);
+      } catch (err) {
+        copyBtn.textContent = '复制失败';
+      }
+    });
+    
+    header.appendChild(titleSpan);
+    header.appendChild(copyBtn);
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
   });
+
+  // 3. 沉浸式图片灯箱组件
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+
+  function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '大图预览';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (lightbox) {
+    document.querySelectorAll('.screenshot img, .gallery-card-img, .card-grid img, table img, .container img').forEach(img => {
+      // 过滤 header icon 等微型图标
+      if (img.closest('.site-header') || img.closest('.brand')) return;
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(img.currentSrc || img.src, img.alt);
+      });
+    });
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+    
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  }
 })();
 </script> </body> </html> 

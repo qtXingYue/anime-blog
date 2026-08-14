@@ -1,14 +1,16 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>日语假名手写识别系统 — 课程设计报告</title><meta name="description" content="TensorFlow CNN 识别 49 类日语假名，270K 训练图像，88.2% 准确率，Tkinter 桌面手写应用。"><meta property="og:title" content="日语假名手写识别系统 — 课程设计报告"><meta property="og:description" content="TensorFlow CNN 识别 49 类日语假名，270K 训练图像，88.2% 准确率，Tkinter 桌面手写应用。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.img-row[data-astro-cid-7owrfpvq]{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0}@media(max-width:600px){.img-row[data-astro-cid-7owrfpvq]{grid-template-columns:1fr}}.img-row[data-astro-cid-7owrfpvq] img[data-astro-cid-7owrfpvq]{width:100%;border-radius:12px;border:1px solid var(--border);transition:all .3s var(--ease-out-expo)}.img-row[data-astro-cid-7owrfpvq] img[data-astro-cid-7owrfpvq]:hover{transform:scale(1.05);border-color:oklch(66% .19 285 / .3);box-shadow:0 8px 32px #0006}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.Cvzt_vxf.css"></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">08</span> <span class="crumb-title">日语假名手写识别</span> </div> <nav class="header-nav"> <a href="/projects/news-classification-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">📰</span><span class="nav-label">新闻文本分类</span> </a> <a href="/projects/omr-grader-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">答题卡智能批改</span><span class="nav-emoji">📝</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-7owrfpvq> <div class="container" data-astro-cid-7owrfpvq> <div class="hero-icon" data-astro-cid-7owrfpvq>🇯🇵</div> <h1 data-astro-cid-7owrfpvq>日语假名手写识别系统</h1> <p class="domain" data-astro-cid-7owrfpvq>深度学习课程设计 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-7owrfpvq>TensorFlow CNN · 49 类假名 · 88.2% 准确率 · Tkinter 桌面应用</p> </div> </div> <div class="container" data-astro-cid-7owrfpvq> <div class="stats-strip" data-astro-cid-7owrfpvq> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>49</div><div class="label" data-astro-cid-7owrfpvq>假名字符类别</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>270K</div><div class="label" data-astro-cid-7owrfpvq>训练图像</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>88.2%</div><div class="label" data-astro-cid-7owrfpvq>识别准确率</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>3</div><div class="label" data-astro-cid-7owrfpvq>卷积层</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>01</span>项目简介</h2> <p data-astro-cid-7owrfpvq>基于深度学习的手写日语假名识别系统，使用 <code data-astro-cid-7owrfpvq>TensorFlow</code> + <code data-astro-cid-7owrfpvq>Keras CNN</code> 搭建三级卷积神经网络。支持用户在 <code data-astro-cid-7owrfpvq>Tkinter</code> 画布上直接手写假名，实时识别并显示结果。完整实现数据预处理、模型训练、评估优化到桌面应用部署的全流程。</p> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>02</span>数据集</h2> <p data-astro-cid-7owrfpvq>使用 <strong data-astro-cid-7owrfpvq>Kuzushiji-49</strong> 数据集：包含 49 个日语假名字符类别（48 平假名 + 1 迭代标记），总计 <strong data-astro-cid-7owrfpvq>270,912 张</strong> 28×28 灰度图像，是经典 MNIST 格式的日语版本。</p> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>03</span>模型架构</h2> <table data-astro-cid-7owrfpvq> <thead data-astro-cid-7owrfpvq><tr data-astro-cid-7owrfpvq><th data-astro-cid-7owrfpvq>层</th><th data-astro-cid-7owrfpvq>配置</th></tr></thead> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 1</td><td data-astro-cid-7owrfpvq>32 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 2</td><td data-astro-cid-7owrfpvq>64 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 3</td><td data-astro-cid-7owrfpvq>128 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>全连接 1</td><td data-astro-cid-7owrfpvq>1024 神经元</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>全连接 2</td><td data-astro-cid-7owrfpvq>512 神经元</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>输出层</td><td data-astro-cid-7owrfpvq>49 类 Softmax</td></tr> </table> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>04</span>训练策略</h2> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>优化器</strong><br data-astro-cid-7owrfpvq>Adam · 交叉熵损失 · Epochs: 7 · Batch Size: 64</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>早停法</strong><br data-astro-cid-7owrfpvq>patience=7，防止过拟合</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>学习率调度</strong><br data-astro-cid-7owrfpvq><code data-astro-cid-7owrfpvq>ReduceLROnPlateau</code> 动态调整</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>最终准确率</strong><br data-astro-cid-7owrfpvq>约 88.2%，49 类分类任务</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>05</span>UI 界面与关键问题解决</h2> <h3 data-astro-cid-7owrfpvq>Tkinter 桌面应用</h3> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>白色画布 + 黑色笔迹</strong><br data-astro-cid-7owrfpvq>与训练数据格式一致，避免黑白反转</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>精准截图定位</strong><br data-astro-cid-7owrfpvq><code data-astro-cid-7owrfpvq>ImageGrab.grab()</code> 配合 <code data-astro-cid-7owrfpvq>winfo_rootx()</code> 坐标计算</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>操作按钮</strong><br data-astro-cid-7owrfpvq>"清除"清空画布 · "识别"触发预测 · 实时显示结果</div></div> </div> <h3 data-astro-cid-7owrfpvq>关键问题</h3> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>黑底白字导致识别错误</strong><br data-astro-cid-7owrfpvq>画布背景色与训练数据反色，识别率大幅下降。解决：统一白色画布</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>截图区域偏移</strong><br data-astro-cid-7owrfpvq>窗口坐标与实际截图位置偏差。解决：使用 <code data-astro-cid-7owrfpvq>winfo_rootx/y</code> 精准定位</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>06</span>技术选型</h2> <table data-astro-cid-7owrfpvq> <thead data-astro-cid-7owrfpvq><tr data-astro-cid-7owrfpvq><th data-astro-cid-7owrfpvq>模块</th><th data-astro-cid-7owrfpvq>技术</th></tr></thead> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>数据处理</td><td data-astro-cid-7owrfpvq>NumPy · Matplotlib</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>模型构建</td><td data-astro-cid-7owrfpvq>TensorFlow · Keras CNN（3 层卷积）</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>UI 界面</td><td data-astro-cid-7owrfpvq>Tkinter 桌面应用</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>模型部署</td><td data-astro-cid-7owrfpvq>load_model 函数热加载</td></tr> </table> <div class="img-row" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image1.webp" alt="训练曲线" loading="lazy" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image2.webp" alt="黑底白字版本" loading="lazy" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image3.webp" alt="白底黑字正确识别" loading="lazy" data-astro-cid-7owrfpvq> </div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/news-classification-report" class="nav-card prev"> <span class="nav-card-emoji">📰</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">07</span> <span class="nav-card-title">新闻文本分类</span> </div> </a> <a href="/projects/omr-grader-report" class="nav-card next"> <div class="nav-card-info"> <span class="nav-card-dir">下一个 →</span> <span class="nav-card-num">09</span> <span class="nav-card-title">答题卡智能批改</span> </div> <span class="nav-card-emoji">📝</span> </a> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">日语假名手写识别系统 — 课程设计报告</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <script>
+<link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css"></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">08</span> <span class="crumb-title">日语假名手写识别</span> </div> <nav class="header-nav"> <a href="/projects/news-classification-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">📰</span><span class="nav-label">新闻文本分类</span> </a> <a href="/projects/omr-grader-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">答题卡智能批改</span><span class="nav-emoji">📝</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-7owrfpvq> <div class="container" data-astro-cid-7owrfpvq> <div class="hero-icon" data-astro-cid-7owrfpvq>🇯🇵</div> <h1 data-astro-cid-7owrfpvq>日语假名手写识别系统</h1> <p class="domain" data-astro-cid-7owrfpvq>深度学习课程设计 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-7owrfpvq>TensorFlow CNN · 49 类假名 · 88.2% 准确率 · Tkinter 桌面应用</p> </div> </div> <div class="container" data-astro-cid-7owrfpvq> <div class="stats-strip" data-astro-cid-7owrfpvq> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>49</div><div class="label" data-astro-cid-7owrfpvq>假名字符类别</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>270K</div><div class="label" data-astro-cid-7owrfpvq>训练图像</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>88.2%</div><div class="label" data-astro-cid-7owrfpvq>识别准确率</div></div> <div class="stat-item" data-astro-cid-7owrfpvq><div class="num" data-astro-cid-7owrfpvq>3</div><div class="label" data-astro-cid-7owrfpvq>卷积层</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>01</span>项目简介</h2> <p data-astro-cid-7owrfpvq>基于深度学习的手写日语假名识别系统，使用 <code data-astro-cid-7owrfpvq>TensorFlow</code> + <code data-astro-cid-7owrfpvq>Keras CNN</code> 搭建三级卷积神经网络。支持用户在 <code data-astro-cid-7owrfpvq>Tkinter</code> 画布上直接手写假名，实时识别并显示结果。完整实现数据预处理、模型训练、评估优化到桌面应用部署的全流程。</p> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>02</span>数据集</h2> <p data-astro-cid-7owrfpvq>使用 <strong data-astro-cid-7owrfpvq>Kuzushiji-49</strong> 数据集：包含 49 个日语假名字符类别（48 平假名 + 1 迭代标记），总计 <strong data-astro-cid-7owrfpvq>270,912 张</strong> 28×28 灰度图像，是经典 MNIST 格式的日语版本。</p> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>03</span>模型架构</h2> <table data-astro-cid-7owrfpvq> <thead data-astro-cid-7owrfpvq><tr data-astro-cid-7owrfpvq><th data-astro-cid-7owrfpvq>层</th><th data-astro-cid-7owrfpvq>配置</th></tr></thead> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 1</td><td data-astro-cid-7owrfpvq>32 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 2</td><td data-astro-cid-7owrfpvq>64 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>卷积层 3</td><td data-astro-cid-7owrfpvq>128 通道 → BatchNorm → Dropout</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>全连接 1</td><td data-astro-cid-7owrfpvq>1024 神经元</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>全连接 2</td><td data-astro-cid-7owrfpvq>512 神经元</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>输出层</td><td data-astro-cid-7owrfpvq>49 类 Softmax</td></tr> </table> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>04</span>训练策略</h2> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>优化器</strong><br data-astro-cid-7owrfpvq>Adam · 交叉熵损失 · Epochs: 7 · Batch Size: 64</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>早停法</strong><br data-astro-cid-7owrfpvq>patience=7，防止过拟合</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>学习率调度</strong><br data-astro-cid-7owrfpvq><code data-astro-cid-7owrfpvq>ReduceLROnPlateau</code> 动态调整</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>最终准确率</strong><br data-astro-cid-7owrfpvq>约 88.2%，49 类分类任务</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>05</span>UI 界面与关键问题解决</h2> <h3 data-astro-cid-7owrfpvq>Tkinter 桌面应用</h3> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>白色画布 + 黑色笔迹</strong><br data-astro-cid-7owrfpvq>与训练数据格式一致，避免黑白反转</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>精准截图定位</strong><br data-astro-cid-7owrfpvq><code data-astro-cid-7owrfpvq>ImageGrab.grab()</code> 配合 <code data-astro-cid-7owrfpvq>winfo_rootx()</code> 坐标计算</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>操作按钮</strong><br data-astro-cid-7owrfpvq>"清除"清空画布 · "识别"触发预测 · 实时显示结果</div></div> </div> <h3 data-astro-cid-7owrfpvq>关键问题</h3> <div class="feature-list" data-astro-cid-7owrfpvq> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>黑底白字导致识别错误</strong><br data-astro-cid-7owrfpvq>画布背景色与训练数据反色，识别率大幅下降。解决：统一白色画布</div></div> <div class="feature-item" data-astro-cid-7owrfpvq><div class="dot" data-astro-cid-7owrfpvq></div><div class="text" data-astro-cid-7owrfpvq><strong data-astro-cid-7owrfpvq>截图区域偏移</strong><br data-astro-cid-7owrfpvq>窗口坐标与实际截图位置偏差。解决：使用 <code data-astro-cid-7owrfpvq>winfo_rootx/y</code> 精准定位</div></div> </div> <h2 data-astro-cid-7owrfpvq><span class="num" data-astro-cid-7owrfpvq>06</span>技术选型</h2> <table data-astro-cid-7owrfpvq> <thead data-astro-cid-7owrfpvq><tr data-astro-cid-7owrfpvq><th data-astro-cid-7owrfpvq>模块</th><th data-astro-cid-7owrfpvq>技术</th></tr></thead> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>数据处理</td><td data-astro-cid-7owrfpvq>NumPy · Matplotlib</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>模型构建</td><td data-astro-cid-7owrfpvq>TensorFlow · Keras CNN（3 层卷积）</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>UI 界面</td><td data-astro-cid-7owrfpvq>Tkinter 桌面应用</td></tr> <tr data-astro-cid-7owrfpvq><td data-astro-cid-7owrfpvq>模型部署</td><td data-astro-cid-7owrfpvq>load_model 函数热加载</td></tr> </table> <div class="img-row" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image1.webp" alt="训练曲线" loading="lazy" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image2.webp" alt="黑底白字版本" loading="lazy" data-astro-cid-7owrfpvq> <img src="/projects/japanese-ocr-imgs/image3.webp" alt="白底黑字正确识别" loading="lazy" data-astro-cid-7owrfpvq> </div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/news-classification-report" class="nav-card prev"> <span class="nav-card-emoji">📰</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">07</span> <span class="nav-card-title">新闻文本分类</span> </div> </a> <a href="/projects/omr-grader-report" class="nav-card next"> <div class="nav-card-info"> <span class="nav-card-dir">下一个 →</span> <span class="nav-card-num">09</span> <span class="nav-card-title">答题卡智能批改</span> </div> <span class="nav-card-emoji">📝</span> </a> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">日语假名手写识别系统 — 课程设计报告</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <!-- 沉浸式图片预览灯箱 --> <div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true"> <div class="lightbox-backdrop" id="lightboxBackdrop"></div> <img class="lightbox-img" id="lightboxImg" alt="大图预览"> <button class="lightbox-close" id="lightboxClose" aria-label="关闭预览">✕</button> </div> <script>
 (function() {
+  // 1. 返回顶部 & 滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
-  if (!btn) return;
   let ticking = false;
   function updateBtn() {
-    if (window.scrollY > 600) btn.classList.add('visible');
-    else btn.classList.remove('visible');
+    if (btn) {
+      if (window.scrollY > 600) btn.classList.add('visible');
+      else btn.classList.remove('visible');
+    }
     if (prog) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
@@ -18,8 +20,104 @@
   window.addEventListener('scroll', () => {
     if (!ticking) { requestAnimationFrame(updateBtn); ticking = true; }
   }, { passive: true });
-  btn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // 2. 代码块一键复制增强
+  document.querySelectorAll('pre').forEach(pre => {
+    if (pre.closest('.code-block-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+    
+    // 语言推断
+    let lang = 'CODE';
+    const codeEl = pre.querySelector('code');
+    if (codeEl) {
+      const classes = codeEl.className.split(' ');
+      for (const c of classes) {
+        if (c.startsWith('language-')) {
+          lang = c.replace('language-', '').toUpperCase();
+          break;
+        }
+      }
+    }
+    
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = lang;
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-block-copy-btn';
+    copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+    
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+        }, 1800);
+      } catch (err) {
+        copyBtn.textContent = '复制失败';
+      }
+    });
+    
+    header.appendChild(titleSpan);
+    header.appendChild(copyBtn);
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
   });
+
+  // 3. 沉浸式图片灯箱组件
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+
+  function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '大图预览';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (lightbox) {
+    document.querySelectorAll('.screenshot img, .gallery-card-img, .card-grid img, table img, .container img').forEach(img => {
+      // 过滤 header icon 等微型图标
+      if (img.closest('.site-header') || img.closest('.brand')) return;
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(img.currentSrc || img.src, img.alt);
+      });
+    });
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+    
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  }
 })();
 </script> </body> </html> 
