@@ -1,6 +1,44 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>批量账号注册与浏览器 RPA 自动化系统 — 项目详解</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="基于 Python、Selenium、ixBrowser Local API 的批量网页注册 RPA 自动化系统项目详解，涵盖浏览器 Profile 调度、流程状态识别、并发任务、CSV 文件锁、日志追踪与配置修复。"><meta property="og:title" content="批量账号注册与浏览器 RPA 自动化系统 — 项目详解"><meta property="og:description" content="基于 Python、Selenium、ixBrowser Local API 的批量网页注册 RPA 自动化系统项目详解，涵盖浏览器 Profile 调度、流程状态识别、并发任务、CSV 文件锁、日志追踪与配置修复。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css">
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>批量账号注册与浏览器 RPA 自动化系统 — 项目详解</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="基于 Python、Selenium、ixBrowser Local API 的批量网页注册 RPA 自动化系统项目详解，涵盖浏览器 Profile 调度、流程状态识别、并发任务、CSV 文件锁、日志追踪与配置修复。"><meta property="og:title" content="批量账号注册与浏览器 RPA 自动化系统 — 项目详解"><meta property="og:description" content="基于 Python、Selenium、ixBrowser Local API 的批量网页注册 RPA 自动化系统项目详解，涵盖浏览器 Profile 调度、流程状态识别、并发任务、CSV 文件锁、日志追踪与配置修复。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+</style>
+<link rel="stylesheet" href="/_astro/ai-gallery.DQ6rSoR7.css">
 <style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
-</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">03</span> <span class="crumb-title">RPA 自动化系统</span> </div> <nav class="header-nav"> <a href="/projects/brazil-cnpj-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🇧🇷</span><span class="nav-label">巴西 CNPJ 批量查询</span> </a> <a href="/projects/android-network-analysis" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">安卓网络调试分析</span><span class="nav-emoji">📡</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero"> <div class="container"> <div class="hero-icon">🤖</div> <h1>批量账号注册与浏览器 RPA 自动化系统</h1> <p class="domain">Python · Selenium · ixBrowser Local API · Chrome DevTools</p> <p class="tagline">面向高重复网页流程的工程化自动化系统：从账号数据读取、浏览器 Profile 调度、表单流程执行到结果回写与日志追踪。</p> </div> </div> <div class="container"> <div class="stats-strip"> <div class="stat-item"><div class="num">4</div><div class="label">核心脚本模块</div></div> <div class="stat-item"><div class="num">8</div><div class="label">最大并发任务</div></div> <div class="stat-item"><div class="num">11</div><div class="label">CSV 结果列</div></div> <div class="stat-item"><div class="num">3</div><div class="label">异常恢复层级</div></div> </div> <h2><span class="num">01</span>项目概述</h2> <p>这是一个基于 <strong>Python + Selenium + ixBrowser Local API</strong> 的浏览器 RPA 自动化系统，用于把重复的网页注册、资料补全、页面状态判断、跳转链路采集和结果回写整合成一条可批量执行的流水线。</p> <p>项目重点不是简单地“点按钮”，而是解决真实网页自动化里的复杂问题：浏览器环境隔离、动态页面状态漂移、弹窗与验证流程适配、文件并发写入冲突、浏览器插件配置不一致、批量任务失败后的日志追踪与复盘。</p> <div class="note">公开作品集页面仅展示系统设计和工程能力，真实账号数据、目标站点、第三方服务 Key、原始日志和完整数据表均已脱敏处理。</div> <h2><span class="num">02</span>系统架构</h2> <div class="arch-diagram"> <span class="dim">CSV 账号数据源</span>
+</style><style>[data-astro-transition-scope="astro-elw6bqpv-1"] { view-transition-name: pt-rpa-registration-system; }@layer astro { ::view-transition-old(pt-rpa-registration-system) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(pt-rpa-registration-system) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(pt-rpa-registration-system) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(pt-rpa-registration-system) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-elw6bqpv-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-elw6bqpv-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-elw6bqpv-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-elw6bqpv-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-elw6bqpv-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-elw6bqpv-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-elw6bqpv-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-elw6bqpv-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">03</span> <span class="crumb-title">RPA 自动化系统</span> </div> <nav class="header-nav"> <a href="/projects/brazil-cnpj-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🇧🇷</span><span class="nav-label">巴西 CNPJ 批量查询</span> </a> <a href="/projects/android-network-analysis" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">安卓网络调试分析</span><span class="nav-emoji">📡</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero"> <div class="container"> <div class="hero-icon">🤖</div> <h1 data-astro-transition-scope="astro-elw6bqpv-1">批量账号注册与浏览器 RPA 自动化系统</h1> <p class="domain">Python · Selenium · ixBrowser Local API · Chrome DevTools</p> <p class="tagline">面向高重复网页流程的工程化自动化系统：从账号数据读取、浏览器 Profile 调度、表单流程执行到结果回写与日志追踪。</p> </div> </div> <div class="container"> <div class="stats-strip"> <div class="stat-item"><div class="num">4</div><div class="label">核心脚本模块</div></div> <div class="stat-item"><div class="num">8</div><div class="label">最大并发任务</div></div> <div class="stat-item"><div class="num">11</div><div class="label">CSV 结果列</div></div> <div class="stat-item"><div class="num">3</div><div class="label">异常恢复层级</div></div> </div> <h2><span class="num">01</span>项目概述</h2> <p>这是一个基于 <strong>Python + Selenium + ixBrowser Local API</strong> 的浏览器 RPA 自动化系统，用于把重复的网页注册、资料补全、页面状态判断、跳转链路采集和结果回写整合成一条可批量执行的流水线。</p> <p>项目重点不是简单地“点按钮”，而是解决真实网页自动化里的复杂问题：浏览器环境隔离、动态页面状态漂移、弹窗与验证流程适配、文件并发写入冲突、浏览器插件配置不一致、批量任务失败后的日志追踪与复盘。</p> <div class="note">公开作品集页面仅展示系统设计和工程能力，真实账号数据、目标站点、第三方服务 Key、原始日志和完整数据表均已脱敏处理。</div> <h2><span class="num">02</span>系统架构</h2> <div class="arch-diagram"> <span class="dim">CSV 账号数据源</span>
 │
                            ▼
 <span class="dim">┌──────────────────────────────────────┐</span> <span class="dim">│</span> <span class="hl">任务调度器</span> ThreadPoolExecutor <span class="dim">│</span> <span class="dim">│</span> profile 范围展开 · 并发限制 · 启动间隔 <span class="dim">│</span> <span class="dim">└──────────────┬───────────────────────┘</span>
@@ -22,13 +60,15 @@ function initProjectLayout() {
   // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
+  // 支持 CSS scroll-driven 时进度条由样式表驱动,JS 不再写 width
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
   let ticking = false;
   function updateBtn() {
     if (btn) {
       if (window.scrollY > 600) btn.classList.add('visible');
       else btn.classList.remove('visible');
     }
-    if (prog) {
+    if (prog && !cssScrollDriven) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
     }

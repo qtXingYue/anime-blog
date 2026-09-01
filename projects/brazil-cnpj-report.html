@@ -1,8 +1,45 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>巴西 CNPJ 批量查询脚本 - 技术报告</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="从 Excel 批量提取 CNPJ，调用 BrasilAPI 补全企业注册、经营、地址与联系方式，并导出 CSV/JSON 结果。"><meta property="og:title" content="巴西 CNPJ 批量查询脚本 - 技术报告"><meta property="og:description" content="从 Excel 批量提取 CNPJ，调用 BrasilAPI 补全企业注册、经营、地址与联系方式，并导出 CSV/JSON 结果。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.section-arch[data-astro-cid-pbomsetw],.code-block[data-astro-cid-pbomsetw]{background:#030707;border:1px solid oklch(50% .15 150 / .15);border-radius:16px;padding:1.5rem;margin:1.25rem 0;font-family:Consolas,SFMono-Regular,monospace;font-size:.82rem;line-height:1.8;color:var(--text-secondary);white-space:pre;overflow-x:auto}.output-grid[data-astro-cid-pbomsetw]{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0}@media(max-width:640px){.output-grid[data-astro-cid-pbomsetw]{grid-template-columns:1fr}}.output-card[data-astro-cid-pbomsetw]{background:linear-gradient(180deg,#ffffff0b,#ffffff05);border:1px solid var(--border);border-radius:16px;padding:1rem}.output-card[data-astro-cid-pbomsetw] strong[data-astro-cid-pbomsetw]{display:block;color:var(--text-primary);font-size:.92rem;margin-bottom:.3rem}.output-card[data-astro-cid-pbomsetw] span[data-astro-cid-pbomsetw]{display:block;color:var(--text-secondary);font-size:.82rem;line-height:1.65}
+@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css">
+<link rel="stylesheet" href="/_astro/ai-gallery.DQ6rSoR7.css">
 <style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
-</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">02</span> <span class="crumb-title">巴西 CNPJ 批量查询</span> </div> <nav class="header-nav"> <a href="/projects/data-crawler-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🕷️</span><span class="nav-label">多平台广告数据爬取</span> </a> <a href="/projects/rpa-registration-system" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">RPA 自动化系统</span><span class="nav-emoji">🤖</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-pbomsetw> <div class="container" data-astro-cid-pbomsetw> <div class="hero-icon" data-astro-cid-pbomsetw>BR</div> <h1 data-astro-cid-pbomsetw>巴西 CNPJ 批量查询脚本</h1> <p class="domain" data-astro-cid-pbomsetw>数据采集实战 · Excel 批处理 · BrasilAPI</p> <p class="tagline" data-astro-cid-pbomsetw>从 Excel 提取 CNPJ 列表，调用 BrasilAPI 查询企业注册信息，批量导出 CSV 与 JSON 结果。</p> </div> </div> <div class="container" data-astro-cid-pbomsetw> <div class="stats-strip" data-astro-cid-pbomsetw> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>200</div><div class="label" data-astro-cid-pbomsetw>输入记录</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>199</div><div class="label" data-astro-cid-pbomsetw>成功查询</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>32</div><div class="label" data-astro-cid-pbomsetw>汇总字段</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>1</div><div class="label" data-astro-cid-pbomsetw>失败记录</div></div> </div> <h2 data-astro-cid-pbomsetw><span class="num" data-astro-cid-pbomsetw>01</span>项目简介</h2> <p data-astro-cid-pbomsetw>这个项目是一个面向巴西企业 CNPJ 税号的批量查询脚本。脚本从 <code data-astro-cid-pbomsetw>CNPJ-100.xlsx</code> 的指定工作表读取企业记录，提取公司名、CNPJ、经营活动和预计资本等原始字段；随后通过 <code data-astro-cid-pbomsetw>requests.Session</code> 调用 <code data-astro-cid-pbomsetw>BrasilAPI</code> 的 CNPJ 接口，补充企业注册状态、法律性质、CNAE 主营业务、开业日期、注册资本、企业规模、地址、联系方式、Simples/MEI 选项等结构化信息。</p> <p data-astro-cid-pbomsetw>项目定位是接口批处理与数据清洗脚本，重点在于把 Excel 中不规则排布的线索数据清洗成可复用的企业信息数据集，并保留完整 JSON 原文用于复核。</p> <div class="note" data-astro-cid-pbomsetw>对应实现包含 <code data-astro-cid-pbomsetw>cnpj_batch_query_v2.py</code>、<code data-astro-cid-pbomsetw>CNPJ-100.xlsx</code> 和 <code data-astro-cid-pbomsetw>cnpj_results/</code> 导出目录。</div> <h2 data-astro-cid-pbomsetw><span class="num" data-astro-cid-pbomsetw>02</span>处理流程</h2> <div class="section-arch" data-astro-cid-pbomsetw>Excel 工作表
+</style><style>[data-astro-transition-scope="astro-k3542wbq-1"] { view-transition-name: pt-brazil-cnpj-report; }@layer astro { ::view-transition-old(pt-brazil-cnpj-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(pt-brazil-cnpj-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(pt-brazil-cnpj-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(pt-brazil-cnpj-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-k3542wbq-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-k3542wbq-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-k3542wbq-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-k3542wbq-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-k3542wbq-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-k3542wbq-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-k3542wbq-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-k3542wbq-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">02</span> <span class="crumb-title">巴西 CNPJ 批量查询</span> </div> <nav class="header-nav"> <a href="/projects/data-crawler-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🕷️</span><span class="nav-label">多平台广告数据爬取</span> </a> <a href="/projects/rpa-registration-system" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">RPA 自动化系统</span><span class="nav-emoji">🤖</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-pbomsetw> <div class="container" data-astro-cid-pbomsetw> <div class="hero-icon" data-astro-cid-pbomsetw>BR</div> <h1 data-astro-cid-pbomsetw data-astro-transition-scope="astro-k3542wbq-1">巴西 CNPJ 批量查询脚本</h1> <p class="domain" data-astro-cid-pbomsetw>数据采集实战 · Excel 批处理 · BrasilAPI</p> <p class="tagline" data-astro-cid-pbomsetw>从 Excel 提取 CNPJ 列表，调用 BrasilAPI 查询企业注册信息，批量导出 CSV 与 JSON 结果。</p> </div> </div> <div class="container" data-astro-cid-pbomsetw> <div class="stats-strip" data-astro-cid-pbomsetw> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>200</div><div class="label" data-astro-cid-pbomsetw>输入记录</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>199</div><div class="label" data-astro-cid-pbomsetw>成功查询</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>32</div><div class="label" data-astro-cid-pbomsetw>汇总字段</div></div> <div class="stat-item" data-astro-cid-pbomsetw><div class="num" data-astro-cid-pbomsetw>1</div><div class="label" data-astro-cid-pbomsetw>失败记录</div></div> </div> <h2 data-astro-cid-pbomsetw><span class="num" data-astro-cid-pbomsetw>01</span>项目简介</h2> <p data-astro-cid-pbomsetw>这个项目是一个面向巴西企业 CNPJ 税号的批量查询脚本。脚本从 <code data-astro-cid-pbomsetw>CNPJ-100.xlsx</code> 的指定工作表读取企业记录，提取公司名、CNPJ、经营活动和预计资本等原始字段；随后通过 <code data-astro-cid-pbomsetw>requests.Session</code> 调用 <code data-astro-cid-pbomsetw>BrasilAPI</code> 的 CNPJ 接口，补充企业注册状态、法律性质、CNAE 主营业务、开业日期、注册资本、企业规模、地址、联系方式、Simples/MEI 选项等结构化信息。</p> <p data-astro-cid-pbomsetw>项目定位是接口批处理与数据清洗脚本，重点在于把 Excel 中不规则排布的线索数据清洗成可复用的企业信息数据集，并保留完整 JSON 原文用于复核。</p> <div class="note" data-astro-cid-pbomsetw>对应实现包含 <code data-astro-cid-pbomsetw>cnpj_batch_query_v2.py</code>、<code data-astro-cid-pbomsetw>CNPJ-100.xlsx</code> 和 <code data-astro-cid-pbomsetw>cnpj_results/</code> 导出目录。</div> <h2 data-astro-cid-pbomsetw><span class="num" data-astro-cid-pbomsetw>02</span>处理流程</h2> <div class="section-arch" data-astro-cid-pbomsetw>Excel 工作表
   ↓ 按每 5 行提取一条企业记录
 字段：序号 / 公司名 / CNPJ / 经营活动 / 预计资本
   ↓
@@ -37,13 +74,15 @@ function initProjectLayout() {
   // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
+  // 支持 CSS scroll-driven 时进度条由样式表驱动,JS 不再写 width
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
   let ticking = false;
   function updateBtn() {
     if (btn) {
       if (window.scrollY > 600) btn.classList.add('visible');
       else btn.classList.remove('visible');
     }
-    if (prog) {
+    if (prog && !cssScrollDriven) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
     }

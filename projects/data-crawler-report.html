@@ -1,8 +1,45 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>多平台广告数据爬取系统 — 项目详解</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="基于 Python、Playwright、Streamlit 的多平台广告数据爬取系统项目详解，覆盖五大广告平台、328+ 账号监控、Token 双重认证、CSV/Excel 自动报表。"><meta property="og:title" content="多平台广告数据爬取系统 — 项目详解"><meta property="og:description" content="基于 Python、Playwright、Streamlit 的多平台广告数据爬取系统项目详解，覆盖五大广告平台、328+ 账号监控、Token 双重认证、CSV/Excel 自动报表。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.screenshot-grid[data-astro-cid-dq2e5hun]{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin:1.5rem 0}@media(max-width:640px){.screenshot-grid[data-astro-cid-dq2e5hun]{grid-template-columns:1fr}}.screenshot[data-astro-cid-dq2e5hun]{background:var(--bg-raised);border:1px solid var(--border);border-radius:14px;padding:.75rem;transition:all .26s var(--ease-out-expo)}.screenshot[data-astro-cid-dq2e5hun]:hover{border-color:oklch(66% .19 285 / .28);transform:translateY(-2px)}.screenshot[data-astro-cid-dq2e5hun] img[data-astro-cid-dq2e5hun]{width:100%;border-radius:8px;display:block}.screenshot[data-astro-cid-dq2e5hun] .caption[data-astro-cid-dq2e5hun]{font-size:.78rem;color:var(--text-muted);margin-top:.5rem;text-align:center}
+@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css">
+<link rel="stylesheet" href="/_astro/ai-gallery.DQ6rSoR7.css">
 <style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
-</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">01</span> <span class="crumb-title">多平台广告数据爬取</span> </div> <nav class="header-nav"> <a href="/projects/portfolio-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🌙</span><span class="nav-label">全栈作品集网站</span> </a> <a href="/projects/brazil-cnpj-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">巴西 CNPJ 批量查询</span><span class="nav-emoji">🇧🇷</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-dq2e5hun> <div class="container" data-astro-cid-dq2e5hun> <div class="hero-icon" data-astro-cid-dq2e5hun>🕷️</div> <h1 data-astro-cid-dq2e5hun>多平台广告数据爬取系统</h1> <p class="domain" data-astro-cid-dq2e5hun>Python · Playwright · Streamlit · REST API</p> <p class="tagline" data-astro-cid-dq2e5hun>覆盖五大广告平台的自动化数据采集系统：Token 双重认证、Playwright 驱动浏览器、Streamlit 仪表盘一键生成报表，日常监控 300+ 广告账号的消耗数据。</p> </div> </div> <div class="container" data-astro-cid-dq2e5hun> <div class="stats-strip" data-astro-cid-dq2e5hun> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>5</div><div class="label" data-astro-cid-dq2e5hun>广告平台</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>328+</div><div class="label" data-astro-cid-dq2e5hun>活跃账号</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>2</div><div class="label" data-astro-cid-dq2e5hun>认证层级</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>∞</div><div class="label" data-astro-cid-dq2e5hun>自动报表</div></div> </div> <h2 data-astro-cid-dq2e5hun><span class="num" data-astro-cid-dq2e5hun>01</span>项目概述</h2> <p data-astro-cid-dq2e5hun>这是一个面向广告投放运营的<strong data-astro-cid-dq2e5hun>多平台数据采集与可视化系统</strong>。系统每天自动登录五大广告平台，拉取账号消耗、投放数据与转化指标，统一汇总到 Streamlit 仪表盘，并一键导出 CSV/Excel 报表。</p> <p data-astro-cid-dq2e5hun>项目重点解决的是运营人员每天重复登录多个平台、手动复制粘贴数据的痛点：用 Playwright 自动化浏览器登录、用 Token 双重认证保证安全、用 Streamlit 构建可交互仪表盘、用 Pandas 做数据清洗与汇总。</p> <div class="note" data-astro-cid-dq2e5hun>公开作品集页面仅展示系统设计和工程能力，真实账号、平台 API Key、原始消耗数据和客户信息均已脱敏处理。</div> <h2 data-astro-cid-dq2e5hun><span class="num" data-astro-cid-dq2e5hun>02</span>系统架构</h2> <div class="arch-diagram" data-astro-cid-dq2e5hun> <span class="dim" data-astro-cid-dq2e5hun>账号配置 · 平台凭据</span>
+</style><style>[data-astro-transition-scope="astro-272qo6wm-1"] { view-transition-name: pt-data-crawler-report; }@layer astro { ::view-transition-old(pt-data-crawler-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(pt-data-crawler-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(pt-data-crawler-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(pt-data-crawler-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-272qo6wm-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-272qo6wm-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-272qo6wm-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-272qo6wm-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-272qo6wm-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-272qo6wm-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-272qo6wm-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-272qo6wm-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">01</span> <span class="crumb-title">多平台广告数据爬取</span> </div> <nav class="header-nav"> <a href="/projects/portfolio-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🌙</span><span class="nav-label">全栈作品集网站</span> </a> <a href="/projects/brazil-cnpj-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">巴西 CNPJ 批量查询</span><span class="nav-emoji">🇧🇷</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-dq2e5hun> <div class="container" data-astro-cid-dq2e5hun> <div class="hero-icon" data-astro-cid-dq2e5hun>🕷️</div> <h1 data-astro-cid-dq2e5hun data-astro-transition-scope="astro-272qo6wm-1">多平台广告数据爬取系统</h1> <p class="domain" data-astro-cid-dq2e5hun>Python · Playwright · Streamlit · REST API</p> <p class="tagline" data-astro-cid-dq2e5hun>覆盖五大广告平台的自动化数据采集系统：Token 双重认证、Playwright 驱动浏览器、Streamlit 仪表盘一键生成报表，日常监控 300+ 广告账号的消耗数据。</p> </div> </div> <div class="container" data-astro-cid-dq2e5hun> <div class="stats-strip" data-astro-cid-dq2e5hun> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>5</div><div class="label" data-astro-cid-dq2e5hun>广告平台</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>328+</div><div class="label" data-astro-cid-dq2e5hun>活跃账号</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>2</div><div class="label" data-astro-cid-dq2e5hun>认证层级</div></div> <div class="stat-item" data-astro-cid-dq2e5hun><div class="num" data-astro-cid-dq2e5hun>∞</div><div class="label" data-astro-cid-dq2e5hun>自动报表</div></div> </div> <h2 data-astro-cid-dq2e5hun><span class="num" data-astro-cid-dq2e5hun>01</span>项目概述</h2> <p data-astro-cid-dq2e5hun>这是一个面向广告投放运营的<strong data-astro-cid-dq2e5hun>多平台数据采集与可视化系统</strong>。系统每天自动登录五大广告平台，拉取账号消耗、投放数据与转化指标，统一汇总到 Streamlit 仪表盘，并一键导出 CSV/Excel 报表。</p> <p data-astro-cid-dq2e5hun>项目重点解决的是运营人员每天重复登录多个平台、手动复制粘贴数据的痛点：用 Playwright 自动化浏览器登录、用 Token 双重认证保证安全、用 Streamlit 构建可交互仪表盘、用 Pandas 做数据清洗与汇总。</p> <div class="note" data-astro-cid-dq2e5hun>公开作品集页面仅展示系统设计和工程能力，真实账号、平台 API Key、原始消耗数据和客户信息均已脱敏处理。</div> <h2 data-astro-cid-dq2e5hun><span class="num" data-astro-cid-dq2e5hun>02</span>系统架构</h2> <div class="arch-diagram" data-astro-cid-dq2e5hun> <span class="dim" data-astro-cid-dq2e5hun>账号配置 · 平台凭据</span>
 │
                            ▼
 <span class="dim" data-astro-cid-dq2e5hun>┌──────────────────────────────────────┐</span> <span class="dim" data-astro-cid-dq2e5hun>│</span> <span class="hl" data-astro-cid-dq2e5hun>任务调度器</span> 定时触发 · 平台分发 <span class="dim" data-astro-cid-dq2e5hun>│</span> <span class="dim" data-astro-cid-dq2e5hun>│</span> 并发控制 · 失败重试 · 启动间隔 <span class="dim" data-astro-cid-dq2e5hun>│</span> <span class="dim" data-astro-cid-dq2e5hun>└──────────────┬───────────────────────┘</span>
@@ -20,13 +57,15 @@ function initProjectLayout() {
   // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
+  // 支持 CSS scroll-driven 时进度条由样式表驱动,JS 不再写 width
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
   let ticking = false;
   function updateBtn() {
     if (btn) {
       if (window.scrollY > 600) btn.classList.add('visible');
       else btn.classList.remove('visible');
     }
-    if (prog) {
+    if (prog && !cssScrollDriven) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
     }

@@ -1,8 +1,45 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>答题卡智能批改系统 — 课程设计报告</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="纯 OpenCV 图像处理流水线实现自动阅卷：边缘检测、透视校正、霍夫圆检测、灰度判分，无深度学习依赖。"><meta property="og:title" content="答题卡智能批改系统 — 课程设计报告"><meta property="og:description" content="纯 OpenCV 图像处理流水线实现自动阅卷：边缘检测、透视校正、霍夫圆检测、灰度判分，无深度学习依赖。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.screenshot[data-astro-cid-tc5zo3tw]{margin:1.4rem 0}.screenshot[data-astro-cid-tc5zo3tw] img[data-astro-cid-tc5zo3tw]{width:100%;border-radius:14px;border:1px solid var(--border);display:block}.screenshot[data-astro-cid-tc5zo3tw] .caption[data-astro-cid-tc5zo3tw]{font-size:.8rem;color:var(--text-muted);margin-top:.6rem;text-align:center}
+@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.BGdLSL1B.css">
+<link rel="stylesheet" href="/_astro/ai-gallery.DQ6rSoR7.css">
 <style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
-</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">09</span> <span class="crumb-title">答题卡智能批改</span> </div> <nav class="header-nav"> <a href="/projects/japanese-ocr-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🇯🇵</span><span class="nav-label">日语假名手写识别</span> </a> <a href="/projects/industrial-vision-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">工业零件质检</span><span class="nav-emoji">🏭</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-tc5zo3tw> <div class="container" data-astro-cid-tc5zo3tw> <div class="hero-icon" data-astro-cid-tc5zo3tw>📝</div> <h1 data-astro-cid-tc5zo3tw>答题卡智能批改系统</h1> <p class="domain" data-astro-cid-tc5zo3tw>人工智能视觉课程设计 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-tc5zo3tw>OpenCV 全流程图像处理 · 透视校正 · 霍夫圆检测 · 自动判分 —— 不依赖深度学习的 CV 基本功</p> </div> </div> <div class="container" data-astro-cid-tc5zo3tw> <div class="stats-strip" data-astro-cid-tc5zo3tw> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>7</div><div class="label" data-astro-cid-tc5zo3tw>处理阶段流水线</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>5×5</div><div class="label" data-astro-cid-tc5zo3tw>题目 × 选项</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>0</div><div class="label" data-astro-cid-tc5zo3tw>深度学习依赖</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>100%</div><div class="label" data-astro-cid-tc5zo3tw>纯 OpenCV 实现</div></div> </div> <h2 data-astro-cid-tc5zo3tw><span class="num" data-astro-cid-tc5zo3tw>01</span>项目概述</h2> <p data-astro-cid-tc5zo3tw>拍一张答题卡照片，系统自动完成从<strong data-astro-cid-tc5zo3tw>定位、校正到判分</strong>的完整阅卷流程。整条流水线只用 <code data-astro-cid-tc5zo3tw>OpenCV</code> + <code data-astro-cid-tc5zo3tw>NumPy</code> 的经典图像处理算法搭建——每一步的中间结果都可视化输出，判分依据可解释、可追溯，这正是它与"黑盒"深度学习方案最大的区别。</p> <h2 data-astro-cid-tc5zo3tw><span class="num" data-astro-cid-tc5zo3tw>02</span>处理流水线</h2> <div class="arch-diagram" data-astro-cid-tc5zo3tw><span class="dim" data-astro-cid-tc5zo3tw>原始照片</span>
+</style><style>[data-astro-transition-scope="astro-aqimry2d-1"] { view-transition-name: pt-omr-grader-report; }@layer astro { ::view-transition-old(pt-omr-grader-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(pt-omr-grader-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(pt-omr-grader-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(pt-omr-grader-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-aqimry2d-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-aqimry2d-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-aqimry2d-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-aqimry2d-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-aqimry2d-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-aqimry2d-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-aqimry2d-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-aqimry2d-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">09</span> <span class="crumb-title">答题卡智能批改</span> </div> <nav class="header-nav"> <a href="/projects/japanese-ocr-report" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🇯🇵</span><span class="nav-label">日语假名手写识别</span> </a> <a href="/projects/industrial-vision-report" class="nav-btn " aria-label="下一个项目"> <span class="nav-label">工业零件质检</span><span class="nav-emoji">🏭</span> <span>→</span> </a> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero" data-astro-cid-tc5zo3tw> <div class="container" data-astro-cid-tc5zo3tw> <div class="hero-icon" data-astro-cid-tc5zo3tw>📝</div> <h1 data-astro-cid-tc5zo3tw data-astro-transition-scope="astro-aqimry2d-1">答题卡智能批改系统</h1> <p class="domain" data-astro-cid-tc5zo3tw>人工智能视觉课程设计 · 深圳职业技术大学 · 23智能2</p> <p class="tagline" data-astro-cid-tc5zo3tw>OpenCV 全流程图像处理 · 透视校正 · 霍夫圆检测 · 自动判分 —— 不依赖深度学习的 CV 基本功</p> </div> </div> <div class="container" data-astro-cid-tc5zo3tw> <div class="stats-strip" data-astro-cid-tc5zo3tw> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>7</div><div class="label" data-astro-cid-tc5zo3tw>处理阶段流水线</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>5×5</div><div class="label" data-astro-cid-tc5zo3tw>题目 × 选项</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>0</div><div class="label" data-astro-cid-tc5zo3tw>深度学习依赖</div></div> <div class="stat-item" data-astro-cid-tc5zo3tw><div class="num" data-astro-cid-tc5zo3tw>100%</div><div class="label" data-astro-cid-tc5zo3tw>纯 OpenCV 实现</div></div> </div> <h2 data-astro-cid-tc5zo3tw><span class="num" data-astro-cid-tc5zo3tw>01</span>项目概述</h2> <p data-astro-cid-tc5zo3tw>拍一张答题卡照片，系统自动完成从<strong data-astro-cid-tc5zo3tw>定位、校正到判分</strong>的完整阅卷流程。整条流水线只用 <code data-astro-cid-tc5zo3tw>OpenCV</code> + <code data-astro-cid-tc5zo3tw>NumPy</code> 的经典图像处理算法搭建——每一步的中间结果都可视化输出，判分依据可解释、可追溯，这正是它与"黑盒"深度学习方案最大的区别。</p> <h2 data-astro-cid-tc5zo3tw><span class="num" data-astro-cid-tc5zo3tw>02</span>处理流水线</h2> <div class="arch-diagram" data-astro-cid-tc5zo3tw><span class="dim" data-astro-cid-tc5zo3tw>原始照片</span>
 │
    ▼
 <span class="hl" data-astro-cid-tc5zo3tw>① 灰度化</span> → <span class="hl" data-astro-cid-tc5zo3tw>② 高斯模糊</span> → <span class="hl" data-astro-cid-tc5zo3tw>③ Canny 边缘检测</span>
@@ -22,13 +59,15 @@ function initProjectLayout() {
   // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
+  // 支持 CSS scroll-driven 时进度条由样式表驱动,JS 不再写 width
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
   let ticking = false;
   function updateBtn() {
     if (btn) {
       if (window.scrollY > 600) btn.classList.add('visible');
       else btn.classList.remove('visible');
     }
-    if (prog) {
+    if (prog && !cssScrollDriven) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
     }
