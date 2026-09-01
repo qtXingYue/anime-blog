@@ -22,7 +22,8 @@ const { project: p } = Astro.props;
   </div>
   <div>
     <p class="project-number">{p.num} / {p.category}</p>
-    <h3 class="project-title">{p.title}</h3>
+    <!-- 共享元素:标题与详情页 h1 同名,ClientRouter 导航时做 morph -->
+    <h3 class="project-title" transition:name={p.link ? `pt-${p.link.href.split('/').pop()}` : undefined}>{p.title}</h3>
     {p.highlight && (
       <p class="project-highlight">
         <b class="project-highlight-value">{p.highlight.value}</b>

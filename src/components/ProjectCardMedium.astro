@@ -24,7 +24,7 @@ const useEmoji = !p.cover || p.cover.endsWith('.svg');
   </div>
   <div class="project-m-body">
     <p class="project-m-num">{p.num} · {p.category}</p>
-    <h3 class="project-m-title">{p.title}</h3>
+    <h3 class="project-m-title" transition:name={p.link ? `pt-${p.link.href.split('/').pop()}` : undefined}>{p.title}</h3>
     <p class="project-m-desc">{p.desc}</p>
     <ul class="project-m-metrics">
       {p.metrics.slice(0, 2).map(m => <li>{m}</li>)}

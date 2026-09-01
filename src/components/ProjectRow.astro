@@ -20,7 +20,7 @@ const cta = p.num === '13' ? '画廊 →' : p.num === '14' ? '视频 →' : '→
   >
     <span class="project-row-icon" aria-hidden="true">{p.emoji}</span>
     <span class="project-row-main">
-      <span class="project-row-title">{p.title}</span>
+      <span class="project-row-title" transition:name={p.link ? `pt-${p.link.href.split('/').pop()}` : undefined}>{p.title}</span>
       <span class="project-row-meta">{p.num} · {p.category} · {p.tech.slice(0, 3).join(' / ')}</span>
     </span>
     <span class="project-row-arrow" aria-hidden="true">{cta}</span>

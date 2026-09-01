@@ -257,8 +257,9 @@ a:hover { color: var(--gold); }
   background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: hueShift 8s ease-in-out infinite;
+  /* 渐变默认静止(无限动画费电且易显廉价),hover 时才流动 */
 }
+.hero-name:hover .highlight { animation: hueShift 8s ease-in-out infinite; }
 @keyframes hueShift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
@@ -1261,4 +1262,33 @@ html:not(.theme-transitioning)::view-transition-new(root) {
 }
 [data-theme="light"] .project-card:hover::before {
   opacity: 0.14;
+}
+
+/* ═══ MOTION UPGRADES (2026): 连续性动效 + 浏览器原生能力 ═══ */
+
+/* ── 行遮罩式标题 reveal:文字从遮罩下方滑入,比整块淡入更有杂志感 ── */
+/* JS(initTitleMasks)把 .section-title 文字包进 .lm-wrap/.lm-inner 并在入视口时加 .lm-in */
+.lm-wrap { display: block; overflow: hidden; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+.lm-inner { display: block; transform: translateY(125%); transition: transform 0.9s var(--ease-out-expo); will-change: transform; }
+.lm-in .lm-inner { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .lm-inner { transform: none; transition: none; }
+}
+
+/* ── 滚动进度条原生化:CSS scroll-driven(合成器线程,零 JS 监听)── */
+/* 不支持 animation-timeline 的浏览器走 main.js 的 width 回退(有 JS 守卫,不会双写) */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    width: 100% !important; transform-origin: 0 50%;
+    animation: scrollGrowX linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes scrollGrowX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* ── 背景视频随滚动轻微放大,让背景"参与"滚动而非自循环 ── */
+  .bg-video-stack {
+    animation: bgDrift linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes bgDrift { from { transform: scale(1); } to { transform: scale(1.06); } }
 }

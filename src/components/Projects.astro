@@ -33,7 +33,7 @@ import { featured, projectsFeature, projectsDepth, projectsIndex } from '../data
         </div>
         <div class="featured-card-body">
           <p class="featured-card-label">{featured.label}</p>
-          <h3 class="featured-card-title">{featured.title} <span>{featured.titleSub}</span></h3>
+          <h3 class="featured-card-title" transition:name={`pt-${featured.href.split('/').pop()}`}>{featured.title} <span>{featured.titleSub}</span></h3>
           <p class="featured-card-desc">{featured.desc}</p>
           <div class="featured-card-tags">
             {featured.tags.map(t => (

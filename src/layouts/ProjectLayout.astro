@@ -109,6 +109,15 @@ body {
   background: linear-gradient(90deg, var(--accent), var(--gold));
   width: 0%; will-change: width;
 }
+/* 支持 scroll-driven 的浏览器由合成器线程驱动,JS 不再写 width */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    width: 100% !important; transform-origin: 0 50%;
+    animation: scrollGrowX linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes scrollGrowX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
 body::before {
   content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background:
@@ -597,13 +606,15 @@ function initProjectLayout() {
   // 1. 返回顶部与滚动进度条
   const btn = document.getElementById('backToTop');
   const prog = document.getElementById('scrollProgress');
+  // 支持 CSS scroll-driven 时进度条由样式表驱动,JS 不再写 width
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
   let ticking = false;
   function updateBtn() {
     if (btn) {
       if (window.scrollY > 600) btn.classList.add('visible');
       else btn.classList.remove('visible');
     }
-    if (prog) {
+    if (prog && !cssScrollDriven) {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
       prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
     }

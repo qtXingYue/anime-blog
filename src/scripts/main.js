@@ -97,6 +97,7 @@ document.addEventListener('astro:page-load', () => {
 })();
 
 // ═══ SCROLL PROGRESS + COMPACT HEADER ═══
+const CSS_SCROLL_DRIVEN = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
 const progressBar = document.getElementById('scrollProgress');
 const siteHeader = document.getElementById('siteHeader');
 const heroVisual = document.querySelector('.hero-visual');
@@ -104,7 +105,8 @@ const heroVisual = document.querySelector('.hero-visual');
 function updateScroll() {
   const scrollTop = window.scrollY;
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  if (progressBar) progressBar.style.width = `${scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0}%`;
+  // 支持 CSS scroll-driven 的浏览器由样式表 scaleX 驱动(合成器线程),JS 不再写 width
+  if (progressBar && !CSS_SCROLL_DRIVEN) progressBar.style.width = `${scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0}%`;
   if (siteHeader) siteHeader.classList.toggle('scrolled', scrollTop > 80);
   if (!prefersReducedMotion && scrollTop < window.innerHeight && heroVisual) {
     heroVisual.style.transform = `translateY(${scrollTop * -0.08}px)`;
@@ -238,10 +240,38 @@ function initSkillTags() {
   document.querySelectorAll('.skill-category').forEach(g => skillObserver.observe(g));
 }
 
+// ═══ LINE-MASK TITLE REVEAL (行遮罩式标题入场) ═══
+// 把 .section-title 的文字包进 overflow:hidden 遮罩,入视口时整行从下方滑入。
+// 与 .reveal 整块淡入互斥:被处理的标题摘掉 reveal 类,由遮罩接管入场。
+const titleMaskObserver = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('lm-in');
+      titleMaskObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 }) : null;
+
+function initTitleMasks() {
+  if (prefersReducedMotion || !titleMaskObserver) return;
+  document.querySelectorAll('.section-title').forEach(el => {
+    if (el.dataset.maskDone) return;
+    const text = (el.textContent || '').trim();
+    if (!text || el.querySelector('.lm-inner')) { el.dataset.maskDone = '1'; return; }
+    // 标题都是纯文本模板输出,这里才敢回填 innerHTML
+    el.classList.remove('reveal', 'visible');
+    el.classList.add('lm-title');
+    el.innerHTML = `<span class="lm-wrap"><span class="lm-inner">${text}</span></span>`;
+    el.dataset.maskDone = '1';
+    titleMaskObserver.observe(el);
+  });
+}
+
 // ═══ INITIALIZE AFTER LAYOUT IS READY ═══
 // ES modules execute after DOM parsing, but we need 2 rAFs to ensure layout is complete
 requestAnimationFrame(() => {
   requestAnimationFrame(() => {
+    initTitleMasks();
     initReveal();
     initSkillTags();
   });
@@ -553,6 +583,29 @@ requestAnimationFrame(() => {
   });
 });
 
+// ═══ VIDEO PAUSE OFFSCREEN (hero 滚出视口即暂停背景视频) ═══
+// 只在"本来就在播"时恢复,不抢 VideoBg 自身的启停逻辑(省流模式/reduced-motion 不受影响)
+function initVideoPause() {
+  const hero = document.querySelector('.hero');
+  if (!hero || hero.dataset.videoPauseInit || !('IntersectionObserver' in window)) return;
+  hero.dataset.videoPauseInit = '1';
+  const layers = () => document.querySelectorAll('.bg-video-layer');
+  let wasPlaying = false;
+  new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (wasPlaying) {
+          const active = document.querySelector('.bg-video-layer.active') || layers()[0];
+          if (active) active.play().catch(() => {});
+        }
+      } else {
+        wasPlaying = Array.from(layers()).some(v => !v.paused && !v.ended);
+        if (wasPlaying) layers().forEach(v => v.pause());
+      }
+    });
+  }, { threshold: 0.05 }).observe(hero);
+}
+
 // ═══ SMOOTH SCROLL ═══
 document.querySelectorAll('a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
@@ -684,6 +737,8 @@ if (document.fonts && document.fonts.ready) {
 
 // ═══ 路由页面切换安全重新绑定 (SPA 无缝流体路由) ═══
 document.addEventListener('astro:page-load', () => {
+  initTitleMasks();
+  initVideoPause();
   bindCardFx(document, { skipWithin: '.projects-stack' });
   bindGlowFocus(document);
   initMobileProjectTabs();

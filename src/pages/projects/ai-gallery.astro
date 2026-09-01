@@ -9,7 +9,7 @@ const slug = 'ai-gallery';
 <ProjectLayout title={title} description={description} slug={slug} wide={true}>
   <section class="page-hero">
     <div class="page-hero-icon">🎨</div>
-    <h1>AI 图片作品集</h1>
+    <h1 transition:name="pt-ai-gallery">AI 图片作品集</h1>
     <p>使用 AI 模型生成的艺术作品集合<br>包含文生图、风格迁移等创作</p>
   </section>
 
@@ -136,8 +136,13 @@ const slug = 'ai-gallery';
   position: fixed; inset: 0; z-index: 300; background: oklch(0% 0 0 / 0.93);
   backdrop-filter: blur(12px); display: none; align-items: center; justify-content: center;
   flex-direction: column;
+  /* @starting-style + allow-discrete:开合动画全部交给 CSS 原生能力,
+     关闭时 display 在过渡结束后才真正消失 */
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out-expo), display 0.35s allow-discrete, overlay 0.35s allow-discrete;
 }
-.lightbox.open { display: flex; }
+.lightbox.open { display: flex; opacity: 1; }
+@starting-style { .lightbox.open { opacity: 0; } }
 .lightbox-img {
   max-width: 90vw; max-height: 70vh; border-radius: 12px;
   box-shadow: 0 24px 80px oklch(0% 0 0 / 0.5);
