@@ -278,11 +278,15 @@ initProjectLayout();
       // 展现等待动效
       const loadingBubble = appendMessage('assistant', '<div class="typing-dots"><span></span><span></span><span></span></div>', true);
 
+      // 35s 超时兜底(后端公开路径已限 30s):避免打点动画一直转到两分钟
+      const controller = new AbortController();
+      const abortTimer = setTimeout(() => controller.abort(), 35000);
       try {
         const res = await fetch('/api/chat/assistant', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: text.trim().slice(0, 150) })
+          body: JSON.stringify({ prompt: text.trim().slice(0, 150) }),
+          signal: controller.signal
         });
 
         const data = await res.json();
@@ -297,8 +301,13 @@ initProjectLayout();
         }
       } catch (err) {
         loadingBubble.remove();
-        appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+        if (err && err.name === 'AbortError') {
+          appendMessage('assistant', 'AI 助手响应超时了，请稍后再试一次！');
+        } else {
+          appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+        }
       } finally {
+        clearTimeout(abortTimer);
         isSending = false;
         if (sendBtn) sendBtn.disabled = false;
         input.focus();
@@ -310,12 +319,13 @@ initProjectLayout();
       sendMessage(input.value);
     };
 
-    // ESC 键关闭
-    window.addEventListener('keydown', (e) => {
+    // ESC 键关闭:用 onkeydown 赋值而非 addEventListener——
+    // setup 每次 SPA 导航都会重跑,addEventListener 会累积出越叠越多的监听器
+    window.onkeydown = (e) => {
       if (e.key === 'Escape' && isOpen) {
         closePanel();
       }
-    });
+    };
   }
 
   // 挂载到 astro:page-load 生命周期（Astro 5 ClientRouter）
