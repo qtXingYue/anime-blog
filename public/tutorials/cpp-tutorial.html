@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ 零基础入门教程 — 从零到实战</title>
+<meta name="description" content="写给完全新手的 C++ 教程：20 章循序渐进，图解 + 可运行代码 + 练习 + 2 个实战项目。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:#f1f5f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.85;font-size:16px}
+a{color:#2563eb;text-decoration:none}
+a:hover{text-decoration:underline}
+
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#2563eb,#8b5cf6);z-index:1001;transition:width .1s}
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;z-index:1000;display:flex;align-items:center}
+.topbar-inner{max-width:1440px;margin:0 auto;width:100%;display:flex;align-items:center;gap:14px;padding:0 22px}
+.logo{font-weight:800;font-size:16.5px;color:#0f172a;display:flex;align-items:center;gap:10px;line-height:1.25}
+.logo .lg-ic{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;flex-shrink:0}
+.logo .sub{font-size:12px;color:#64748b;font-weight:500}
+.topbar-right{margin-left:auto}
+.btn-mini{background:#eff6ff;color:#1d4ed8;padding:7px 14px;border-radius:9px;font-size:13.5px;font-weight:600}
+.btn-mini:hover{background:#dbeafe;text-decoration:none}
+.toc-toggle{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:9px;width:36px;height:36px;font-size:17px;cursor:pointer;color:#334155}
+
+.layout{max-width:1440px;margin:0 auto;padding-top:60px;display:flex;align-items:flex-start}
+aside.toc{width:274px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:18px 12px 40px;border-right:1px solid #e2e8f0;background:#fff}
+.toc .grp{font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:.5px;margin:18px 10px 6px}
+.toc a{display:flex;gap:9px;align-items:center;padding:7px 12px;margin:2px 0;border-radius:9px;color:#475569;font-size:14px}
+.toc a:hover{background:#f1f5f9;text-decoration:none}
+.toc a.active{background:#eff6ff;color:#1d4ed8;font-weight:600}
+.toc a .no{font-family:Consolas,monospace;font-size:12px;color:#94a3b8;min-width:22px}
+
+main{flex:1;min-width:0;padding:28px 34px 90px}
+.content{max-width:880px;margin:0 auto}
+
+.hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 55%,#7c3aed 100%);border-radius:20px;color:#fff;padding:52px 48px;margin-bottom:30px;margin-left:auto;margin-right:auto;max-width:1160px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero h1{margin:0 0 14px;font-size:37px;line-height:1.35;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:4px 14px;border-radius:999px;font-size:13px;margin-bottom:18px;position:relative;z-index:1}
+.hero p.lead{font-size:17px;color:#dbeafe;max-width:620px;margin:0 0 22px;position:relative;z-index:1}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;position:relative;z-index:1}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:999px;font-size:13.5px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:1}
+.btn{padding:11px 24px;border-radius:11px;font-size:15px;font-weight:600;cursor:pointer;border:none}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-light{background:#fff;color:#1d4ed8}
+.btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.4)}
+.hero-code{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:310px;background:#0f172a;border:1px solid rgba(255,255,255,.18);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35);z-index:1}
+.hc-head{display:flex;gap:6px;padding:10px 14px;background:#1e293b;align-items:center}
+.hc-head .dot{width:10px;height:10px;border-radius:50%}
+.hc-head .dot:nth-child(1){background:#f87171}
+.hc-head .dot:nth-child(2){background:#fbbf24}
+.hc-head .dot:nth-child(3){background:#34d399}
+.hc-name{margin-left:8px;color:#94a3b8;font-size:12px;font-family:Consolas,monospace}
+.hero-code pre{margin:0}
+.hero-code pre code{padding:14px 16px;font-size:12.5px;line-height:1.75}
+
+section.chapter{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:34px 40px;margin-bottom:26px;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.ch-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.ch-num{flex-shrink:0;width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.ch-kicker{font-size:12px;color:#94a3b8;font-weight:600;letter-spacing:.5px}
+h2{font-size:25px;margin:0;line-height:1.4}
+h3{font-size:19px;margin:34px 0 12px;padding-left:12px;border-left:4px solid #2563eb;line-height:1.4}
+h4{font-size:16px;margin:24px 0 8px;color:#1e40af}
+p{margin:10px 0}
+ul,ol{padding-left:24px;margin:10px 0}
+li{margin:4px 0}
+.goals{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:11px 18px;font-size:14.5px;color:#475569;margin:16px 0 6px}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff}
+th{background:#eff6ff;color:#1e40af;font-weight:700}
+th,td{border:1px solid #dbe4ef;padding:9px 13px;text-align:left;vertical-align:top}
+tbody tr:nth-child(even){background:#f8fafc}
+:not(pre)>code{background:#eef2ff;color:#4338ca;padding:2px 7px;border-radius:6px;font-size:.88em;font-family:Consolas,"Cascadia Code",monospace}
+.code{background:#0f172a;border-radius:14px;overflow:hidden;margin:18px 0;box-shadow:0 8px 24px rgba(15,23,42,.18)}
+.code-head{display:flex;justify-content:space-between;align-items:center;background:#1e293b;padding:8px 16px;font-size:12.5px;color:#94a3b8;font-family:Consolas,monospace}
+.copy-btn{background:transparent;border:1px solid #334155;color:#94a3b8;border-radius:7px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.copy-btn:hover{color:#e2e8f0;border-color:#64748b}
+pre{margin:0}
+pre code{display:block;padding:16px 20px;overflow-x:auto;color:#e2e8f0;font-family:Consolas,"Cascadia Code",monospace;font-size:13.8px;line-height:1.75;tab-size:4}
+.tk-k{color:#c084fc}.tk-t{color:#38bdf8}.tk-s{color:#86efac}.tk-n{color:#f59e0b}
+.tk-c{color:#7d8ba1;font-style:italic}.tk-p{color:#f472b6}.tk-f{color:#fde047}
+.term{background:#0c1222;border:1px solid #1e293b;border-radius:14px;overflow:hidden;margin:18px 0}
+.term-head{background:#111a30;color:#4ade80;padding:8px 16px;font-size:12.5px;font-family:Consolas,monospace;border-bottom:1px solid #1e293b}
+.term pre code{color:#bbf7d0;font-size:13.5px}
+.box{border-radius:13px;padding:15px 20px;margin:20px 0;border:1px solid;font-size:15px}
+.box .bt{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.box>:last-child{margin-bottom:0}
+.tip{background:#f0fdf4;border-color:#bbf7d0}.tip .bt{color:#15803d}
+.warn{background:#fffbeb;border-color:#fde68a}.warn .bt{color:#b45309}
+.note{background:#eff6ff;border-color:#bfdbfe}.note .bt{color:#1d4ed8}
+.practice{background:#faf5ff;border-color:#e9d5ff}.practice .bt{color:#7e22ce}
+details{margin:12px 0 4px}
+details>summary{cursor:pointer;font-weight:600;padding:6px 0;user-select:none}
+details.ans>summary{color:#7e22ce}
+details.extra{border:1px solid #e2e8f0;border-radius:12px;padding:10px 18px;background:#f8fafc}
+details.extra>summary{color:#475569}
+.diagram{background:#fbfdff;border:1px solid #e2e8f0;border-radius:14px;padding:22px 18px 12px;margin:22px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.diagram .cap{font-size:13px;color:#64748b;margin-top:8px}
+svg .db{fill:#eff6ff;stroke:#3b82f6;stroke-width:1.6}
+svg .dterm{fill:#dcfce7;stroke:#22c55e;stroke-width:1.6}
+svg .ddia{fill:#fef3c7;stroke:#f59e0b;stroke-width:1.6}
+svg .dm{fill:#fff;stroke:#334155;stroke-width:1.6}
+svg .dstair{fill:#dbeafe;stroke:#2563eb;stroke-width:1.5}
+svg .da{stroke:#64748b;stroke-width:1.7;fill:none}
+svg .dt{font-size:14px;font-weight:600;fill:#1e293b;text-anchor:middle}
+svg .ds{font-size:12px;fill:#64748b;text-anchor:middle}
+svg .dl{font-size:12.5px;fill:#475569;text-anchor:middle;font-weight:600}
+svg .dcode{font-size:13px;fill:#334155;font-family:Consolas,monospace}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.card{border:1px solid #e2e8f0;border-radius:13px;padding:16px;background:#fff}
+.card .ic{font-size:26px}
+.card b{display:block;margin:6px 0 4px}
+.card span.desc{font-size:13.5px;color:#64748b;line-height:1.6;display:block}
+ol.steps{list-style:none;counter-reset:st;padding-left:0}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 18px 52px;margin:0}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:#2563eb;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps>li::after{content:"";position:absolute;left:14px;top:38px;bottom:4px;width:2px;background:#e2e8f0}
+ol.steps>li:last-child::after{display:none}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-size:.85em;font-family:Consolas,monospace}
+.end-card{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border-radius:18px;padding:42px 44px;text-align:center;margin-top:30px}
+.end-card h2{color:#fff;margin-bottom:12px}
+.end-card p{color:#dbeafe;max-width:640px;margin:8px auto}
+.footer-note{max-width:880px;margin:0 auto 44px;color:#94a3b8;font-size:13.5px;text-align:center}
+#backTop{position:fixed;right:26px;bottom:30px;width:46px;height:46px;border-radius:50%;background:#2563eb;color:#fff;border:none;font-size:19px;cursor:pointer;display:none;box-shadow:0 8px 20px rgba(37,99,235,.4);z-index:1000}
+/* 窄屏直接隐藏终端窗，避免与封面文字重叠；宽屏时文字让出右侧空间 */
+@media(max-width:1360px){.hero-code{display:none}}
+@media(min-width:1361px){
+ .hero h1,.hero p.lead,.chips,.hero-actions{max-width:calc(100% - 400px)}
+}
+@media(max-width:1080px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:860px){
+ .toc-toggle{display:inline-flex}
+ aside.toc{position:fixed;left:0;top:60px;z-index:999;transform:translateX(-105%);transition:transform .25s;box-shadow:0 10px 40px rgba(15,23,42,.2)}
+ body.nav-open aside.toc{transform:none}
+ main{padding:18px 15px 70px}
+ section.chapter{padding:24px 20px}
+ .hero{padding:34px 24px}
+ .hero h1{font-size:27px}
+ .cards{grid-template-columns:1fr}
+ .end-card{padding:32px 22px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="toc-toggle" id="tocToggle" aria-label="打开目录">☰</button>
+    <div class="logo"><span class="lg-ic">C++</span><span>C++ 零基础入门教程<br><span class="sub">从零到实战 · 全 20 章</span></span></div>
+    <a class="btn-mini" href="/" style="margin-right:8px">← 返回作品集</a><div class="topbar-right"><a class="btn-mini" href="#ch17">🚀 直达实战</a></div>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="toc" id="toc">
+  <div class="grp">入门准备</div>
+  <a href="#ch1"><span class="no">01</span>认识 C++</a>
+  <a href="#ch2"><span class="no">02</span>搭建开发环境</a>
+  <a href="#ch3"><span class="no">03</span>第一个程序</a>
+  <div class="grp">基础语法</div>
+  <a href="#ch4"><span class="no">04</span>变量与数据类型</a>
+  <a href="#ch5"><span class="no">05</span>输入与输出</a>
+  <a href="#ch6"><span class="no">06</span>运算符</a>
+  <a href="#ch7"><span class="no">07</span>分支结构</a>
+  <a href="#ch8"><span class="no">08</span>循环结构</a>
+  <div class="grp">核心进阶</div>
+  <a href="#ch9"><span class="no">09</span>函数</a>
+  <a href="#ch10"><span class="no">10</span>数组</a>
+  <a href="#ch11"><span class="no">11</span>字符串</a>
+  <a href="#ch12"><span class="no">12</span>指针与引用</a>
+  <a href="#ch13"><span class="no">13</span>结构体</a>
+  <div class="grp">面向对象与标准库</div>
+  <a href="#ch14"><span class="no">14</span>类与对象</a>
+  <a href="#ch15"><span class="no">15</span>STL 常用容器</a>
+  <a href="#ch16"><span class="no">16</span>文件读写</a>
+  <div class="grp">实战项目</div>
+  <a href="#ch17"><span class="no">17</span>实战：猜数字游戏</a>
+  <a href="#ch18"><span class="no">18</span>实战：成绩管理系统</a>
+  <div class="grp">走得更远</div>
+  <a href="#ch19"><span class="no">19</span>常见错误避坑</a>
+  <a href="#ch20"><span class="no">20</span>学习路线与资源</a>
+</aside>
+<main>
+
+<section class="hero">
+  <span class="hero-badge">🎉 专为零基础设计 · 无需任何编程经验</span>
+  <h1>从零开始学 C++<br>直到写出你的第一个完整项目</h1>
+  <p class="lead">这是一篇写给完全新手的 C++ 教程：每一章都配图解、可运行的代码和动手练习。跟着一章一章敲下来，你就能真正走进编程的世界。</p>
+  <div class="chips">
+    <span class="chip">📖 20 章 · 循序渐进</span>
+    <span class="chip">🖼️ 10+ 幅图解</span>
+    <span class="chip">💻 40+ 段可运行代码</span>
+    <span class="chip">✏️ 每章配套练习</span>
+    <span class="chip">🎯 2 个实战项目</span>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-light" href="#ch1">开始学习 →</a>
+    <a class="btn btn-ghost" href="#ch17">直达实战项目</a>
+  </div>
+  <div class="hero-code">
+    <div class="hc-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="hc-name">hello.cpp</span></div>
+    <pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "Hello, C++!" &lt;&lt; endl;
+    return 0;
+}</code></pre>
+  </div>
+</section>
+
+<div class="content">
+
+<section class="chapter" id="ch1">
+  <div class="ch-head"><span class="ch-num">01</span><div><div class="ch-kicker">CHAPTER 01 · 入门准备</div><h2>认识 C++：为什么值得学？</h2></div></div>
+  <div class="goals">📌 本章目标：搞清楚 C++ 是什么、能做什么，并理解「源代码 → 编译 → 运行」的基本流程。</div>
+
+  <h3>C++ 是什么？</h3>
+  <p>C++ 是一门 1979 年诞生于贝尔实验室的编程语言，作者是 <strong>Bjarne Stroustrup（本贾尼·斯特劳斯特卢普）</strong>。它最初叫「C with Classes」（带类的 C），1983 年正式改名为 C++ —— <code>++</code> 正是 C 语言里的「自增」运算符，寓意「C 的增强版」。</p>
+  <p>一句话概括它的性格：<strong>跑得快、管得细、本事大</strong>。它既像 C 语言一样贴近硬件、性能极高，又提供了「面向对象」等现代化的武器，四十多年长盛不衰，至今仍是全球最流行的编程语言之一。</p>
+
+  <h3>C++ 都用在哪里？</h3>
+  <p>你每天用到的软件，很多核心部分都是 C++ 写的：</p>
+  <div class="cards">
+    <div class="card"><span class="ic">🎮</span><b>游戏引擎</b><span class="desc">虚幻引擎、Unity 的底层都是 C++，王者荣耀、原神都离不开它</span></div>
+    <div class="card"><span class="ic">🖥️</span><b>操作系统</b><span class="desc">Windows、macOS 的大量核心组件由 C++ 编写</span></div>
+    <div class="card"><span class="ic">🗄️</span><b>数据库</b><span class="desc">MySQL、MongoDB、Redis 的核心是 C/C++</span></div>
+    <div class="card"><span class="ic">🤖</span><b>AI 框架</b><span class="desc">PyTorch、TensorFlow 的底层计算引擎是 C++</span></div>
+    <div class="card"><span class="ic">💰</span><b>金融系统</b><span class="desc">高频交易系统用它追求微秒级的速度</span></div>
+    <div class="card"><span class="ic">🚗</span><b>嵌入式</b><span class="desc">汽车、家电、机器人等智能设备的程序</span></div>
+  </div>
+
+  <h3>程序是怎么跑起来的？</h3>
+  <p>电脑的 CPU 只认识 0 和 1，并不认识 C++。所以你写好的代码（叫<strong>源代码</strong>）需要一位「翻译官」——<strong>编译器</strong>——把它翻译成电脑能直接执行的文件，然后运行才能看到结果：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 820 165" role="img" aria-label="编译流程图">
+      <defs><marker id="ar1" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="8" y="30" width="170" height="64" rx="10"/>
+      <text class="dt" x="93" y="58">hello.cpp</text>
+      <text class="ds" x="93" y="80">源代码（你写的）</text>
+      <path class="da" d="M182,62 L222,62" marker-end="url(#ar1)"/>
+      <rect class="db" x="228" y="30" width="150" height="64" rx="10"/>
+      <text class="dt" x="303" y="58">编译器 g++</text>
+      <text class="ds" x="303" y="80">负责翻译</text>
+      <path class="da" d="M382,62 L422,62" marker-end="url(#ar1)"/>
+      <rect class="db" x="428" y="30" width="170" height="64" rx="10"/>
+      <text class="dt" x="513" y="58">hello.exe</text>
+      <text class="ds" x="513" y="80">可执行文件</text>
+      <path class="da" d="M602,62 L642,62" marker-end="url(#ar1)"/>
+      <rect class="db" x="648" y="30" width="164" height="64" rx="10"/>
+      <text class="dt" x="730" y="58">屏幕输出</text>
+      <text class="ds" x="730" y="80">看到结果</text>
+      <text class="ds" x="93" y="140">人看得懂</text>
+      <text class="ds" x="303" y="140">翻译这一步</text>
+      <text class="ds" x="513" y="140">电脑能执行</text>
+      <text class="ds" x="730" y="140">程序运行</text>
+    </svg>
+    <div class="cap">图 1-1 从源代码到运行结果：编译器是人和机器之间的「翻译官」</div>
+  </div>
+  <div class="box note"><div class="bt">📝 小词典</div>
+    <p><strong>源代码</strong>：你用文字写的程序文件（如 <code>hello.cpp</code>）；<strong>编译</strong>：把源代码翻译成机器能执行的文件；<strong>可执行文件</strong>：翻译后的成品（Windows 上是 <code>.exe</code>）；<strong>控制台</strong>：那个黑乎乎的窗口，程序在里面和你「对话」。</p>
+  </div>
+
+  <h3>C++ 难吗？和其他语言比一比</h3>
+  <table>
+    <thead><tr><th>语言</th><th>上手难度</th><th>运行速度</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td>Python</td><td>⭐ 最容易</td><td>较慢</td><td>数据分析、人工智能、脚本</td></tr>
+      <tr><td>Java</td><td>⭐⭐ 较容易</td><td>较快</td><td>企业后端、安卓 App</td></tr>
+      <tr><td><strong>C++</strong></td><td>⭐⭐⭐ 有一定深度</td><td><strong>极快</strong></td><td>游戏、系统软件、高性能程序</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 新手建议</div>
+    <p>C++ 的概念确实比 Python 多一些，但这恰恰能让你真正理解「程序是怎么在电脑里跑的」，学完再学其他语言会非常轻松。本教程基于 <strong>C++11 及以上标准</strong>，跟着一章一章敲代码，零基础完全可以学会。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch2">
+  <div class="ch-head"><span class="ch-num">02</span><div><div class="ch-kicker">CHAPTER 02 · 入门准备</div><h2>搭建开发环境：准备好你的「厨房」</h2></div></div>
+  <div class="goals">📌 本章目标：装好一个能写 C++ 的工具，并知道「编译」和「运行」命令是怎么回事。</div>
+
+  <h3>三条路，选一条就行</h3>
+  <p>写 C++ 需要两样东西：<strong>编译器</strong>（翻译官）和<strong>编辑器</strong>（写代码的地方）。把它们打包在一起的软件叫 <strong>IDE（集成开发环境）</strong>。下面三条路任选其一即可：</p>
+  <table>
+    <thead><tr><th>方式</th><th>适合谁</th><th>特点</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Dev-C++</strong></td><td>完全新手（推荐）</td><td>一个安装包全搞定，国内学校机房常用，界面简单</td></tr>
+      <tr><td>VS Code + MinGW</td><td>想用现代编辑器长期学习</td><td>界面漂亮、插件多，但安装配置步骤多一点</td></tr>
+      <tr><td>在线编译器</td><td>装不了软件 / 先试试水</td><td>打开网页就能写，零安装</td></tr>
+    </tbody>
+  </table>
+
+  <h3>方式一：Dev-C++（新手推荐）</h3>
+  <ol class="steps">
+    <li><strong>下载安装</strong>：搜索「小熊猫 Dev-C++」（Red Panda Dev-C++，是维护更活跃的升级版）或经典 Dev-C++，一路「下一步」装完。</li>
+    <li><strong>新建文件</strong>：打开软件，按 <kbd>Ctrl</kbd> + <kbd>N</kbd> 新建一个源代码。</li>
+    <li><strong>保存</strong>：按 <kbd>Ctrl</kbd> + <kbd>S</kbd> 保存为 <code>hello.cpp</code>。建议先在桌面建一个 <code>cpp-learn</code> 文件夹统一存放，文件名不要用中文。</li>
+    <li><strong>运行</strong>：写下第 3 章的第一个程序，按 <kbd>F11</kbd>（编译并运行）。弹出黑色窗口显示结果，就说明环境搭好了！</li>
+  </ol>
+
+  <h3>方式二：VS Code + MinGW</h3>
+  <ol class="steps">
+    <li><strong>安装编译器</strong>：从 winlibs.com 下载 MinGW-w64 解压版（或用 MSYS2 安装），记住解压路径，例如 <code>C:\mingw64</code>。</li>
+    <li><strong>配置环境变量</strong>：把 <code>C:\mingw64\bin</code> 加入系统 PATH（设置 → 搜索「环境变量」 → 编辑 Path → 新建）。</li>
+    <li><strong>验证</strong>：<kbd>Win</kbd> + <kbd>R</kbd> 输入 <code>cmd</code> 打开一个<strong>新的</strong>命令行窗口，输入 <code>g++ --version</code>，能看到版本号就成功了。</li>
+    <li><strong>安装 VS Code</strong> 与官方「C/C++」扩展，新建 <code>.cpp</code> 文件后点右上角 ▶ 按钮运行。</li>
+  </ol>
+  <div class="box tip"><div class="bt">💡 macOS 用户看这里</div>
+    <p>苹果电脑自带 clang 编译器：打开「终端」，输入 <code>xcode-select --install</code> 安装命令行工具，之后 <code>g++ hello.cpp -o hello</code> 的命令同样可用（此时 g++ 实际指向 clang）。</p>
+  </div>
+
+  <h3>方式三：在线编译器（零安装）</h3>
+  <p>打开「菜鸟教程在线工具」或 OnlineGDB 等网站，语言选择 C++，就能直接写代码点「运行」。适合快速试代码，但正式学习建议还是装一个本地环境。</p>
+
+  <h3>认识命令行编译（理解原理）</h3>
+  <p>无论用哪个 IDE，背后都是下面这条命令在工作。IDE 只不过是帮你自动执行了它而已：</p>
+  <div class="term"><div class="term-head">⌨️ 命令行</div><pre><code>g++ --version           （检查编译器是否装好）
+g++ hello.cpp -o hello  （把 hello.cpp 编译成可执行文件）
+hello                   （运行程序，Windows 下）
+./hello                 （运行程序，macOS / Linux 下）</code></pre></div>
+  <table>
+    <thead><tr><th>命令片段</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>g++</code></td><td>编译器程序的名字（GNU C++ 编译器）</td></tr>
+      <tr><td><code>hello.cpp</code></td><td>要被编译的源文件</td></tr>
+      <tr><td><code>-o hello</code></td><td>「-o」是输出选项，指定生成的可执行文件叫 <code>hello</code></td></tr>
+    </tbody>
+  </table>
+  <div class="box warn"><div class="bt">⚠️ 环境搭建常见坑</div>
+    <p>① 装完编译器后<strong>必须重新打开</strong>命令行窗口，新配置才会生效；② PATH 配错是最常见的问题，请逐字符对照检查路径；③ 源文件的后缀必须是 <code>.cpp</code>，别不小心保存成了 <code>.txt</code>。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p>选好你的工具并完成安装，新建一个 <code>hello.cpp</code> 文件（内容可以先随便打一行字）。能在屏幕上看到编译窗口弹出，本章就过关了。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch3">
+  <div class="ch-head"><span class="ch-num">03</span><div><div class="ch-kicker">CHAPTER 03 · 入门准备</div><h2>第一个程序：Hello, World!</h2></div></div>
+  <div class="goals">📌 本章目标：写出第一个程序，并逐行理解它的结构——这是后面所有章节的地基。</div>
+
+  <h3>输入这段代码并运行</h3>
+  <p>按照编程界 50 年的传统，你的第一个程序要在屏幕上打出「Hello, World!」。把下面的代码敲进编辑器（<strong>建议手敲，不要复制</strong>——肌肉记忆很重要），然后按 <kbd>F11</kbd> 运行：</p>
+  <div class="code"><div class="code-head"><span>📄 hello.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;   // 1. 把「输入输出工具箱」搬进来
+using namespace std;  // 2. 使用标准命名空间
+
+int main() {          // 3. main 函数：程序从这里开始执行
+    cout &lt;&lt; "Hello, World!" &lt;&lt; endl;  // 4. 输出一行文字
+    return 0;         // 5. 程序正常结束
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>Hello, World!</code></pre></div>
+
+  <h3>逐行解剖：每一行在干什么</h3>
+  <table>
+    <thead><tr><th>行</th><th>代码</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><code>#include &lt;iostream&gt;</code></td><td>把标准库里的「输入输出」功能包含进来，没有它就不能用 <code>cout</code></td></tr>
+      <tr><td>2</td><td><code>using namespace std;</code></td><td>标准库的东西都放在叫 <code>std</code> 的「抽屉」里，这句声明后就能直接写 <code>cout</code>，不必写 <code>std::cout</code></td></tr>
+      <tr><td>3</td><td><code>int main() {</code></td><td><strong>主函数，整个程序的入口</strong>。每个 C++ 程序有且只有一个 main，系统从它开始执行</td></tr>
+      <tr><td>4</td><td><code>cout &lt;&lt; "..." &lt;&lt; endl;</code></td><td>把文字「流」到屏幕上；<code>endl</code> 表示换行。每条语句以 <strong>分号</strong> 结尾</td></tr>
+      <tr><td>5</td><td><code>return 0;</code></td><td>main 函数结束，返回 0 告诉系统「程序正常退出」</td></tr>
+    </tbody>
+  </table>
+
+  <h3>一个 C++ 程序的标准骨架</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 560 300" role="img" aria-label="程序结构图">
+      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="120" y="10" width="320" height="52" rx="10"/>
+      <text class="dt" x="280" y="32">① 头文件区</text>
+      <text class="ds" x="280" y="51">#include &lt;iostream&gt;</text>
+      <path class="da" d="M280,62 L280,82" marker-end="url(#ar3)"/>
+      <rect class="db" x="120" y="86" width="320" height="52" rx="10"/>
+      <text class="dt" x="280" y="108">② main() 主函数 —— 程序入口</text>
+      <text class="ds" x="280" y="127">有且只有一个</text>
+      <path class="da" d="M280,138 L280,158" marker-end="url(#ar3)"/>
+      <rect class="db" x="120" y="162" width="320" height="52" rx="10"/>
+      <text class="dt" x="280" y="184">③ 函数体 { 一条条语句 }</text>
+      <text class="ds" x="280" y="203">每条语句以分号 ; 结尾</text>
+      <path class="da" d="M280,214 L280,234" marker-end="url(#ar3)"/>
+      <rect class="db" x="120" y="238" width="320" height="52" rx="10"/>
+      <text class="dt" x="280" y="260">④ return 0;</text>
+      <text class="ds" x="280" y="279">向系统报告：程序正常结束</text>
+    </svg>
+    <div class="cap">图 3-1 C++ 程序的标准结构：从头文件开始，main 是入口，语句按顺序执行</div>
+  </div>
+
+  <h3>两个立刻要养成的好习惯</h3>
+  <p><strong>① 写注释</strong>。注释是写给人看的说明，编译器会忽略它。重要的想法随手注释，一周后你会感谢自己：</p>
+  <div class="code"><div class="code-head"><span>两种注释写法</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">// 这是单行注释：只能写一行
+
+/*
+   这是多行注释：
+   可以写很多行说明
+*/</code></pre></div>
+  <p><strong>② 注意符号</strong>。C++ 的所有符号（分号、引号、括号）都必须是<strong>英文半角</strong>。初学者 80% 的报错都来自中文标点（如「；」「"」）。</p>
+  <div class="box warn"><div class="bt">⚠️ 新手最容易犯的三个错</div>
+    <p>① 语句结尾忘写分号；② 用了中文标点；③ <code>main</code> 拼成了 <code>Main</code>——C++ <strong>严格区分大小写</strong>。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>3-1</strong>：让程序输出三行：你的名字、你的爱好、一句想对自己说的话。</p>
+    <p><strong>3-2</strong>（挑战）：只用 <code>cout</code>，打印出下面这个图案。</p>
+    <div class="term"><div class="term-head">▶ 目标输出</div><pre><code>*
+**
+***</code></pre></div>
+    <details class="ans"><summary>👀 查看参考答案（3-2）</summary>
+      <div class="code"><div class="code-head"><span>star.cpp</span></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "*" &lt;&lt; endl;
+    cout &lt;&lt; "**" &lt;&lt; endl;
+    cout &lt;&lt; "***" &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch4">
+  <div class="ch-head"><span class="ch-num">04</span><div><div class="ch-kicker">CHAPTER 04 · 基础语法</div><h2>变量与数据类型：给数据安个家</h2></div></div>
+  <div class="goals">📌 本章目标：理解变量是「内存里的储物格」，掌握 5 种常用类型，学会给变量起好名字，避开整数除法的坑。</div>
+
+  <h3>变量是什么？</h3>
+  <p>程序要处理数据，数据需要放在内存里。<strong>变量就是内存里的一格储物空间</strong>：它有名字（方便你找到它）、有类型（决定格子多大、能放什么）、有值（里面放的东西，可以随时更换）。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 820 145" role="img" aria-label="变量内存图">
+      <rect class="dm" x="20" y="15" width="170" height="90" rx="8"/>
+      <text class="dt" x="105" y="38">int age</text>
+      <text class="dt" x="105" y="72" style="font-size:20px;fill:#2563eb">18</text>
+      <text class="ds" x="105" y="96">地址 0x1000</text>
+      <rect class="dm" x="220" y="15" width="170" height="90" rx="8"/>
+      <text class="dt" x="305" y="38">double height</text>
+      <text class="dt" x="305" y="72" style="font-size:20px;fill:#2563eb">1.75</text>
+      <text class="ds" x="305" y="96">地址 0x1010</text>
+      <rect class="dm" x="420" y="15" width="170" height="90" rx="8"/>
+      <text class="dt" x="505" y="38">char grade</text>
+      <text class="dt" x="505" y="72" style="font-size:20px;fill:#2563eb">'A'</text>
+      <text class="ds" x="505" y="96">地址 0x1020</text>
+      <rect class="dm" x="620" y="15" width="170" height="90" rx="8"/>
+      <text class="dt" x="705" y="38">bool isBoy</text>
+      <text class="dt" x="705" y="72" style="font-size:20px;fill:#2563eb">true</text>
+      <text class="ds" x="705" y="96">地址 0x1030</text>
+    </svg>
+    <div class="cap">图 4-1 每个变量都是内存里的一格：有类型、有名字、有值，还有个地址</div>
+  </div>
+
+  <h3>五种最常用的类型</h3>
+  <div class="code"><div class="code-head"><span>📄 types.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;      // 使用 string 要额外包含它
+using namespace std;
+
+int main() {
+    int    age    = 18;      // 整数
+    double height = 1.75;    // 小数（浮点数）
+    char   grade  = 'A';     // 单个字符，用单引号
+    bool   isBoy  = true;    // 布尔值：true / false
+    string name   = "小明";   // 字符串（一串字符），用双引号
+
+    cout &lt;&lt; "姓名：" &lt;&lt; name   &lt;&lt; endl;
+    cout &lt;&lt; "年龄：" &lt;&lt; age    &lt;&lt; endl;
+    cout &lt;&lt; "身高：" &lt;&lt; height &lt;&lt; endl;
+    cout &lt;&lt; "等级：" &lt;&lt; grade  &lt;&lt; endl;
+    cout &lt;&lt; "是男生吗：" &lt;&lt; isBoy &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>姓名：小明
+年龄：18
+身高：1.75
+等级：A
+是男生吗：1</code></pre></div>
+  <div class="box note"><div class="bt">💡 为什么 bool 输出的是 1？</div>
+    <p>C++ 里 <code>true</code> 本质上就是 1、<code>false</code> 是 0。想让它显示 true/false，在输出前加一句 <code>cout &lt;&lt; boolalpha;</code> 即可。</p>
+  </div>
+  <table>
+    <thead><tr><th>类型</th><th>存什么</th><th>大小</th><th>例子</th></tr></thead>
+    <tbody>
+      <tr><td><code>int</code></td><td>整数</td><td>4 字节（约 ±21 亿）</td><td><code>int age = 18;</code></td></tr>
+      <tr><td><code>double</code></td><td>小数</td><td>8 字节（15~16 位有效数字）</td><td><code>double pi = 3.14159;</code></td></tr>
+      <tr><td><code>char</code></td><td>单个字符</td><td>1 字节</td><td><code>char c = 'A';</code></td></tr>
+      <tr><td><code>bool</code></td><td>真 / 假</td><td>1 字节</td><td><code>bool ok = true;</code></td></tr>
+      <tr><td><code>string</code></td><td>一串文字</td><td>不固定</td><td><code>string s = "hello";</code></td></tr>
+    </tbody>
+  </table>
+  <p>想亲眼看看每种类型占多大？<code>sizeof</code> 可以测量（单位是字节）：</p>
+  <div class="code"><div class="code-head"><span>sizeof.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">cout &lt;&lt; "int 占 " &lt;&lt; sizeof(int) &lt;&lt; " 字节" &lt;&lt; endl;      // 4
+cout &lt;&lt; "double 占 " &lt;&lt; sizeof(double) &lt;&lt; " 字节" &lt;&lt; endl;  // 8
+cout &lt;&lt; "char 占 " &lt;&lt; sizeof(char) &lt;&lt; " 字节" &lt;&lt; endl;      // 1</code></pre></div>
+
+  <h3>变量的命名规则</h3>
+  <ul>
+    <li>只能由<strong>字母、数字、下划线</strong>组成，且<strong>不能以数字开头</strong>（<code>2name</code> ❌，<code>name2</code> ✔）。</li>
+    <li><strong>区分大小写</strong>：<code>Age</code> 和 <code>age</code> 是两个不同的变量。</li>
+    <li>不能用关键字（如 <code>int</code>、<code>return</code>）作名字。</li>
+    <li>起名要有意义：<code>score</code> 好，<code>a</code>、<code>x1</code> 差。多个单词推荐「驼峰式」：<code>maxScore</code>、<code>userName</code>。</li>
+  </ul>
+
+  <h3>常量：不许改动的值</h3>
+  <p>有些值从头到尾不该变，比如圆周率。加上 <code>const</code>，谁改它就报错：</p>
+  <div class="code"><div class="code-head"><span>const.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">const double PI = 3.14159;   // 常量：初始化后不能再改
+PI = 3.14;                   // ❌ 编译报错！不许修改常量</code></pre></div>
+
+  <h3>一定要避开的坑：整数除法</h3>
+  <p>两个<strong>整数</strong>相除，结果还是整数——小数部分直接被砍掉（不是四舍五入）：</p>
+  <div class="code"><div class="code-head"><span>divide.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int a = 5, b = 2;
+cout &lt;&lt; a / b &lt;&lt; endl;     // 2   ← 整数除法，0.5 被丢掉了！
+cout &lt;&lt; a % b &lt;&lt; endl;     // 1   ← % 取余数（只对整数有效）
+cout &lt;&lt; 5.0 / 2 &lt;&lt; endl;   // 2.5 ← 只要有一个是小数，就按小数除
+
+double x = 3.9;
+int y = (int)x;            // 强制类型转换：得到 3（直接砍掉小数）
+cout &lt;&lt; y &lt;&lt; endl;</code></pre></div>
+  <div class="box tip"><div class="bt">💡 想要 2.5 怎么办？</div>
+    <p>让参与除法的数至少有一个是小数：<code>5.0 / 2</code>，或者先转换 <code>(double)a / b</code>。这个坑以后写「求平均分」时几乎人人会踩一次。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>4-1</strong>：定义变量保存一本书的书名、价格、页数，用 <code>cout</code> 整齐地输出它们。</p>
+    <p><strong>4-2</strong>：小明买了 3 支笔共花 10 元，用程序算出<strong>平均每支多少钱</strong>（提示：注意整数除法！答案是 3.33333）。</p>
+    <details class="ans"><summary>👀 查看参考答案（4-2）</summary>
+      <div class="code"><div class="code-head"><span>price.cpp</span></div>
+<pre><code class="language-cpp">int total = 10, count = 3;
+double avg = (double)total / count;   // 先转成 double 再除
+cout &lt;&lt; "平均每支 " &lt;&lt; avg &lt;&lt; " 元" &lt;&lt; endl;   // 3.33333</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch5">
+  <div class="ch-head"><span class="ch-num">05</span><div><div class="ch-kicker">CHAPTER 05 · 基础语法</div><h2>输入与输出：程序和用户对话</h2></div></div>
+  <div class="goals">📌 本章目标：熟练使用 <code>cout</code> 输出、<code>cin</code> 读入用户输入，学会保留小数位数的格式化输出。</div>
+
+  <h3>数据流动的方向</h3>
+  <p><code>cin</code>（读作 see-in）把用户敲的字<strong>读进</strong>变量；<code>cout</code>（see-out）把内容<strong>输出</strong>到屏幕。箭头方向就是数据流动的方向，非常好记：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 780 115" role="img" aria-label="输入输出流向图">
+      <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="15" y="30" width="150" height="55" rx="10"/>
+      <text class="dt" x="90" y="53">⌨️ 键盘</text>
+      <text class="ds" x="90" y="74">用户输入</text>
+      <path class="da" d="M170,57 L275,57" marker-end="url(#ar5)"/>
+      <text class="dl" x="222" y="45">cin &gt;&gt;</text>
+      <rect class="dm" x="281" y="30" width="180" height="55" rx="10"/>
+      <text class="dt" x="371" y="53">变量（内存）</text>
+      <text class="ds" x="371" y="74">数据在这里</text>
+      <path class="da" d="M466,57 L571,57" marker-end="url(#ar5)"/>
+      <text class="dl" x="518" y="45">cout &lt;&lt;</text>
+      <rect class="db" x="577" y="30" width="150" height="55" rx="10"/>
+      <text class="dt" x="652" y="53">🖥️ 屏幕</text>
+      <text class="ds" x="652" y="74">显示结果</text>
+    </svg>
+    <div class="cap">图 5-1 cin 和 cout：箭头永远指向数据流去的方向</div>
+  </div>
+
+  <h3>cin：把输入装进变量</h3>
+  <div class="code"><div class="code-head"><span>📄 input.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int age;
+    cout &lt;&lt; "请输入你的年龄：";
+    cin &gt;&gt; age;                          // 读入一个整数，存进 age
+    cout &lt;&lt; "明年你就 " &lt;&lt; age + 1 &lt;&lt; " 岁啦" &lt;&lt; endl;
+
+    double x, y;
+    cout &lt;&lt; "请输入两个数（空格分隔）：";
+    cin &gt;&gt; x &gt;&gt; y;                       // 一次读两个，用空格或回车分隔
+    cout &lt;&lt; x &lt;&lt; " + " &lt;&lt; y &lt;&lt; " = " &lt;&lt; x + y &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>请输入你的年龄：17
+明年你就 18 岁啦
+请输入两个数（空格分隔）：3.5 2
+3.5 + 2 = 5.5</code></pre></div>
+
+  <h3>读一句话：getline</h3>
+  <p><code>cin &gt;&gt;</code> 遇到空格就停止，读不了「New York」这样带空格的句子。想读一整行，用 <code>getline</code>：</p>
+  <div class="code"><div class="code-head"><span>getline.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">string city;
+cout &lt;&lt; "你想去哪个城市？";
+getline(cin, city);              // 读入一整行，包括空格
+cout &lt;&lt; city &lt;&lt; " 是个好地方！" &lt;&lt; endl;</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ cin 和 getline 混用的小坑</div>
+    <p>先用 <code>cin &gt;&gt;</code> 再用 <code>getline</code> 时，cin 会把残留的「回车」留给 getline，导致它读到空内容。新手阶段可以先避免混用；解决办法是在 getline 前加一句 <code>cin.ignore();</code> 把残留的回车吃掉。</p>
+  </div>
+
+  <h3>格式化输出：控制小数位数</h3>
+  <p>算出 12.56636 这种一长串小数很难看。用 <code>&lt;iomanip&gt;</code> 里的 <code>fixed</code> 和 <code>setprecision</code> 控制保留几位：</p>
+  <div class="code"><div class="code-head"><span>format.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;    // setprecision 住在这里
+using namespace std;
+
+int main() {
+    double r = 2.0;
+    double area = 3.14159 * r * r;
+    cout &lt;&lt; area &lt;&lt; endl;                        // 12.5664（默认保留到有效位）
+    cout &lt;&lt; fixed &lt;&lt; setprecision(2) &lt;&lt; area &lt;&lt; endl;  // 12.57（固定 2 位小数）
+    return 0;
+}</code></pre></div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>5-1</strong>：让用户输入体重（公斤）和身高（米），输出 BMI 指数（BMI = 体重 ÷ 身高²），保留 1 位小数。</p>
+    <details class="ans"><summary>👀 查看参考答案（5-1）</summary>
+      <div class="code"><div class="code-head"><span>bmi.cpp</span></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+int main() {
+    double w, h;
+    cout &lt;&lt; "请输入体重(公斤)和身高(米)：";
+    cin &gt;&gt; w &gt;&gt; h;
+    cout &lt;&lt; "你的 BMI 是 " &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; w / (h * h) &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch6">
+  <div class="ch-head"><span class="ch-num">06</span><div><div class="ch-kicker">CHAPTER 06 · 基础语法</div><h2>运算符：数据的加工术</h2></div></div>
+  <div class="goals">📌 本章目标：掌握算术、关系、逻辑三类运算符，记住「= 与 == 不一样」和运算符优先级口诀。</div>
+
+  <h3>算术运算符</h3>
+  <table>
+    <thead><tr><th>运算符</th><th>含义</th><th>例子</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td><code>+ - *</code></td><td>加、减、乘</td><td><code>7 * 3</code></td><td>21</td></tr>
+      <tr><td><code>/</code></td><td>除（整数除法会丢小数！见第 4 章）</td><td><code>7 / 2</code></td><td>3</td></tr>
+      <tr><td><code>%</code></td><td>取余数（只对整数有效）</td><td><code>7 % 2</code></td><td>1</td></tr>
+      <tr><td><code>++</code></td><td>自增 1</td><td><code>i++</code></td><td>i 变成 i+1</td></tr>
+      <tr><td><code>--</code></td><td>自减 1</td><td><code>i--</code></td><td>i 变成 i-1</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 % 很有用</div>
+    <p>判断奇偶：<code>n % 2 == 0</code> 是偶数；判断倍数：<code>n % 3 == 0</code> 能被 3 整除；取个位数：<code>n % 10</code>。</p>
+  </div>
+
+  <h3>赋值运算符的简便写法</h3>
+  <div class="code"><div class="code-head"><span>assign.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int score = 60;
+score += 10;    // 等价于 score = score + 10;  → 70
+score -= 5;     // 等价于 score = score - 5;   → 65
+score *= 2;     // 等价于 score = score * 2;   → 130
+score /= 13;    // 等价于 score = score / 13;  → 10</code></pre></div>
+
+  <h3>关系运算符：比较大小</h3>
+  <p>比较的结果是 <code>bool</code> 值（真 true / 假 false），它是第 7 章 if 判断的原料：</p>
+  <div class="code"><div class="code-head"><span>compare.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int a = 5, b = 3;
+cout &lt;&lt; (a &gt; b) &lt;&lt; endl;    // 1（真）
+cout &lt;&lt; (a == b) &lt;&lt; endl;   // 0（假）  == 是「等于吗？」
+cout &lt;&lt; (a != b) &lt;&lt; endl;   // 1（真）  != 是「不等于吗？」</code></pre></div>
+
+  <h3>逻辑运算符：把多个条件串起来</h3>
+  <table>
+    <thead><tr><th>运算符</th><th>含义</th><th>真</th><th>记忆</th></tr></thead>
+    <tbody>
+      <tr><td><code>&amp;&amp;</code></td><td>与（并且）</td><td>两边<strong>都</strong>真才真</td><td>「既要…又要…」</td></tr>
+      <tr><td><code>||</code></td><td>或（或者）</td><td>一边真就真</td><td>「有一样就行」</td></tr>
+      <tr><td><code>!</code></td><td>非（取反）</td><td>真假互换</td><td>「唱反调」</td></tr>
+    </tbody>
+  </table>
+  <div class="code"><div class="code-head"><span>logic.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int age = 20;
+bool hasTicket = true;
+
+// 年满 18 并且有票，才能进场
+cout &lt;&lt; (age &gt;= 18 &amp;&amp; hasTicket) &lt;&lt; endl;   // 1
+
+// 周六或周日放假（假设 day = 6 表示周六）
+int day = 6;
+cout &lt;&lt; (day == 6 || day == 7) &lt;&lt; endl;     // 1
+
+// 逻辑与还有「短路」特性：左边能定结论，右边就不算了
+int x = 0;
+bool r = (x != 0) &amp;&amp; (10 / x &gt; 1);   // 左边为假 → 右边 10/x 根本不执行，避免了除零！</code></pre></div>
+
+  <h3>优先级：谁先算？</h3>
+  <p>完整优先级表有几十条，新手只需记住这条<strong>简化口诀</strong>：</p>
+  <div class="box note"><div class="bt">📌 优先级口诀（从高到低）</div>
+    <p>括号 <code>()</code> → 自增自减 → 乘除取余 <code>* / %</code> → 加减 <code>+ -</code> → 比较 <code>&gt; &lt; == !=</code> → 逻辑 <code>&amp;&amp;</code> → 逻辑 <code>||</code> → 赋值 <code>=</code></p>
+    <p style="margin-top:6px"><strong>拿不准就加括号</strong>——加括号永远不会错，还能让代码更好读。</p>
+  </div>
+
+  <h3>年度第一大坑：= 和 ==</h3>
+  <div class="box warn"><div class="bt">⚠️ 全世界新手都踩过的坑</div>
+    <div class="code"><div class="code-head"><span>错误示范 vs 正确示范</span></div>
+<pre><code class="language-cpp">int a = 10;
+if (a = 5)   // ❌ 错！这是「把 5 赋值给 a」，赋值结果是 5（真），条件永远成立
+if (a == 5)  // ✅ 对！这是「a 等于 5 吗？」的比较</code></pre></div>
+    <p>记住：<strong>一个等号是「赋值」，两个等号是「判断相等」</strong>。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>6-1</strong>：写一个表达式，判断年份 <code>year</code> 是否为闰年（能被 4 整除但不能被 100 整除，或者能被 400 整除），输出 1 或 0。</p>
+    <details class="ans"><summary>👀 查看参考答案（6-1）</summary>
+      <div class="code"><div class="code-head"><span>leap.cpp</span></div>
+<pre><code class="language-cpp">int year = 2024;
+bool isLeap = (year % 4 == 0 &amp;&amp; year % 100 != 0) || (year % 400 == 0);
+cout &lt;&lt; year &lt;&lt; (isLeap ? " 是闰年" : " 不是闰年") &lt;&lt; endl;   // 2024 是闰年</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch7">
+  <div class="ch-head"><span class="ch-num">07</span><div><div class="ch-kicker">CHAPTER 07 · 基础语法</div><h2>分支结构：让程序学会做选择</h2></div></div>
+  <div class="goals">📌 本章目标：掌握 if / else if / else 和 switch 两种分支写法，能画出程序判断的流程图。</div>
+
+  <h3>if / else：如果…否则…</h3>
+  <p>程序真正的「智能」从这里开始：根据条件不同，走不同的路。先看流程图，再对代码：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 760 445" role="img" aria-label="if-else 流程图">
+      <defs><marker id="ar7" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="dterm" x="280" y="10" width="140" height="44" rx="22"/>
+      <text class="dt" x="350" y="38">开始</text>
+      <path class="da" d="M350,54 L350,78" marker-end="url(#ar7)"/>
+      <rect class="db" x="270" y="82" width="160" height="46" rx="8"/>
+      <text class="dt" x="350" y="111">输入成绩 score</text>
+      <path class="da" d="M350,128 L350,155" marker-end="url(#ar7)"/>
+      <polygon class="ddia" points="350,158 475,227 350,296 225,227"/>
+      <text class="dt" x="350" y="233">score &gt;= 60 ?</text>
+      <path class="da" d="M475,227 L553,227" marker-end="url(#ar7)"/>
+      <text class="dl" x="510" y="215">是</text>
+      <rect class="db" x="557" y="203" width="150" height="48" rx="8"/>
+      <text class="dt" x="632" y="233">输出「及格」</text>
+      <path class="da" d="M632,251 L632,400 L428,400" marker-end="url(#ar7)"/>
+      <path class="da" d="M350,296 L350,308" marker-end="url(#ar7)"/>
+      <text class="dl" x="374" y="312">否</text>
+      <rect class="db" x="270" y="312" width="160" height="48" rx="8"/>
+      <text class="dt" x="350" y="342">输出「不及格」</text>
+      <path class="da" d="M350,360 L350,376" marker-end="url(#ar7)"/>
+      <rect class="dterm" x="280" y="380" width="140" height="44" rx="22"/>
+      <text class="dt" x="350" y="408">结束</text>
+    </svg>
+    <div class="cap">图 7-1 if-else 的执行流程：菱形是判断，两条路最终汇合到结束</div>
+  </div>
+  <div class="code"><div class="code-head"><span>📄 grade.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int score;
+    cout &lt;&lt; "请输入成绩：";
+    cin &gt;&gt; score;
+
+    if (score &gt;= 90) {
+        cout &lt;&lt; "优秀" &lt;&lt; endl;
+    } else if (score &gt;= 80) {
+        cout &lt;&lt; "良好" &lt;&lt; endl;
+    } else if (score &gt;= 60) {
+        cout &lt;&lt; "及格" &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "不及格" &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre></div>
+  <ul>
+    <li><code>else if</code> 可以写多个，<strong>从上往下依次检查</strong>，命中一个就不再看后面的。</li>
+    <li><code>else</code> 兜底，前面全不成立时执行。</li>
+    <li>条件成立要执行<strong>多条语句</strong>时，必须用大括号 <code>{ }</code> 包起来；只有一条语句时大括号可省略，但新手建议永远写上，避免出错。</li>
+  </ul>
+
+  <h3>switch：按具体的值分派任务</h3>
+  <p>当判断的是<strong>某个具体的值</strong>（等级、菜单选项、星期几）而不是范围时，switch 更清爽：</p>
+  <div class="code"><div class="code-head"><span>switch.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">char level;
+cin &gt;&gt; level;
+
+switch (level) {
+    case 'A':
+        cout &lt;&lt; "优秀" &lt;&lt; endl;
+        break;                 // break 表示「办完就走」，千万别忘！
+    case 'B':
+        cout &lt;&lt; "良好" &lt;&lt; endl;
+        break;
+    case 'C':
+        cout &lt;&lt; "加油" &lt;&lt; endl;
+        break;
+    default:                   // 相当于 else，前面都不匹配时执行
+        cout &lt;&lt; "无效等级" &lt;&lt; endl;
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 忘写 break 会怎样？</div>
+    <div class="code"><div class="code-head"><span>错误示范</span></div>
+<pre><code class="language-cpp">case 'A':
+    cout &lt;&lt; "优秀" &lt;&lt; endl;   // 没有 break！
+case 'B':
+    cout &lt;&lt; "良好" &lt;&lt; endl;   // 输入 A 会一路「掉」到这里继续执行</code></pre></div>
+    <p>没有 break，程序会从匹配的 case 一路执行到下一个 break 才停，这叫「击穿」。</p>
+  </div>
+
+  <h3>三目运算符：一行版 if-else</h3>
+  <div class="code"><div class="code-head"><span>ternary.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int a = 7, b = 4;
+int maxVal = (a &gt; b) ? a : b;   // 读作：a 大吗？大就取 a，否则取 b
+cout &lt;&lt; maxVal &lt;&lt; endl;         // 7</code></pre></div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>7-1</strong>：输入一个整数，输出它是奇数还是偶数。</p>
+    <p><strong>7-2</strong>：输入三个整数，输出其中最大的那个（试试只用 if 完成一次，再用三目运算符完成一次）。</p>
+    <details class="ans"><summary>👀 查看参考答案（7-2）</summary>
+      <div class="code"><div class="code-head"><span>max3.cpp</span></div>
+<pre><code class="language-cpp">int a, b, c;
+cin &gt;&gt; a &gt;&gt; b &gt;&gt; c;
+int maxVal = a;
+if (b &gt; maxVal) maxVal = b;
+if (c &gt; maxVal) maxVal = c;
+cout &lt;&lt; "最大值是 " &lt;&lt; maxVal &lt;&lt; endl;</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch8">
+  <div class="ch-head"><span class="ch-num">08</span><div><div class="ch-kicker">CHAPTER 08 · 基础语法</div><h2>循环结构：让电脑替你重复劳动</h2></div></div>
+  <div class="goals">📌 本章目标：掌握 for、while、do-while 三种循环，理解 break / continue，会用嵌套循环打印九九乘法表。</div>
+
+  <h3>为什么需要循环？</h3>
+  <p>打印 1 到 5 难道要写 5 行 cout？10000 次呢？<strong>循环就是让电脑重复做一件事</strong>，你只要告诉它：从哪开始、重复到什么时候、每次做什么。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 700 425" role="img" aria-label="for 循环流程图">
+      <defs><marker id="ar8" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="200" y="10" width="200" height="48" rx="8"/>
+      <text class="dt" x="300" y="40">i = 1（初始化，只做一次）</text>
+      <path class="da" d="M300,58 L300,85" marker-end="url(#ar8)"/>
+      <polygon class="ddia" points="300,88 430,157 300,226 170,157"/>
+      <text class="dt" x="300" y="163">i &lt;= 5 ?</text>
+      <path class="da" d="M300,226 L300,250" marker-end="url(#ar8)"/>
+      <text class="dl" x="324" y="244">是</text>
+      <rect class="db" x="195" y="254" width="210" height="48" rx="8"/>
+      <text class="dt" x="300" y="284">执行循环体（打印 i）</text>
+      <path class="da" d="M300,302 L300,326" marker-end="url(#ar8)"/>
+      <rect class="db" x="195" y="330" width="210" height="48" rx="8"/>
+      <text class="dt" x="300" y="360">i++（更新）</text>
+      <path class="da" d="M195,354 L120,354 L120,157 L162,157" marker-end="url(#ar8)"/>
+      <text class="dl" x="88" y="260">继续循环</text>
+      <path class="da" d="M430,157 L560,157 L560,330" marker-end="url(#ar8)"/>
+      <text class="dl" x="470" y="145">否</text>
+      <rect class="dterm" x="480" y="334" width="160" height="48" rx="24"/>
+      <text class="dt" x="560" y="364">结束</text>
+    </svg>
+    <div class="cap">图 8-1 for 循环的执行流程：初始化只做一次，条件成立就一直循环，否则结束</div>
+  </div>
+
+  <h3>for：知道要重复几次时用</h3>
+  <div class="code"><div class="code-head"><span>for.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    //           ↓ 初始化    ↓ 条件      ↓ 更新
+    for (int i = 1; i &lt;= 5; i++) {
+        cout &lt;&lt; "第 " &lt;&lt; i &lt;&lt; " 次循环" &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>第 1 次循环
+第 2 次循环
+第 3 次循环
+第 4 次循环
+第 5 次循环</code></pre></div>
+
+  <h3>while：只知道「什么时候停」时用</h3>
+  <p>经典任务：求 1+2+…+100。用一个变量当「累加器」：</p>
+  <div class="code"><div class="code-head"><span>while.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int i = 1, sum = 0;
+while (i &lt;= 100) {
+    sum += i;   // 累加进 sum
+    i++;        // ⚠️ 千万别忘了更新 i，否则 i 永远是 1，死循环！
+}
+cout &lt;&lt; "1+2+...+100 = " &lt;&lt; sum &lt;&lt; endl;   // 5050</code></pre></div>
+  <div class="box tip"><div class="bt">💡 for 和 while 可以互相替换</div>
+    <p>语法不同，能力相同。经验法则：<strong>次数固定用 for，条件触发用 while</strong>（比如「一直读输入直到遇到 0」）。</p>
+  </div>
+
+  <h3>do-while：至少执行一次</h3>
+  <p>先干活、后判断——最适合「菜单：先显示菜单，再问用户要不要继续」：</p>
+  <div class="code"><div class="code-head"><span>menu.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int choice;
+do {
+    cout &lt;&lt; "===== 菜单 =====" &lt;&lt; endl;
+    cout &lt;&lt; "1. 存款  2. 取款  0. 退出" &lt;&lt; endl;
+    cout &lt;&lt; "请选择：";
+    cin &gt;&gt; choice;
+} while (choice != 0);   // 只要用户没选 0，就一直显示菜单</code></pre></div>
+
+  <h3>break 与 continue：循环的两个遥控器</h3>
+  <div class="code"><div class="code-head"><span>bc.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">// break：立刻跳出整个循环
+for (int i = 1; i &lt;= 10; i++) {
+    if (i == 5) break;      // 到 5 就收工
+    cout &lt;&lt; i &lt;&lt; " ";       // 输出：1 2 3 4
+}
+cout &lt;&lt; endl;
+
+// continue：跳过本轮，直接进入下一轮
+for (int i = 1; i &lt;= 10; i++) {
+    if (i % 2 == 0) continue;   // 偶数跳过
+    cout &lt;&lt; i &lt;&lt; " ";           // 输出：1 3 5 7 9
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 死循环了怎么办？</div>
+    <p>如果循环条件永远成立（如 <code>while(true)</code> 忘了 break），程序会卡住。在控制台按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 强制结束，然后检查循环变量有没有被更新。</p>
+  </div>
+
+  <h3>嵌套循环：九九乘法表</h3>
+  <p>循环里套循环：外层管「第几行」，内层管「这一行打印几列」：</p>
+  <div class="code"><div class="code-head"><span>📄 table99.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    for (int i = 1; i &lt;= 9; i++) {          // 外层：第 i 行
+        for (int j = 1; j &lt;= i; j++) {      // 内层：第 i 行有 i 列
+            cout &lt;&lt; j &lt;&lt; "×" &lt;&lt; i &lt;&lt; "=" &lt;&lt; i * j &lt;&lt; "\t";
+        }
+        cout &lt;&lt; endl;                       // 打完一行换行
+    }
+    return 0;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>1×1=1
+1×2=2	2×2=4
+1×3=3	2×3=6	3×3=9
+1×4=4	2×4=8	3×4=12	4×4=16
+1×5=5	2×5=10	3×5=15	4×5=20	5×5=25
+...（后面还有 4 行）</code></pre></div>
+  <p><code>\t</code> 是制表符，让每列对齐——它属于「转义字符」，常用的还有 <code>\n</code> 换行、<code>\\</code> 反斜杠、<code>\"</code> 双引号。</p>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>8-1</strong>：输入 n，计算 n!（阶乘）= 1×2×3×…×n。</p>
+    <p><strong>8-2</strong>：打印一个 5 行的直角三角形（每行星号数 = 行号）。</p>
+    <p><strong>8-3</strong>（挑战）：找出 100~999 中所有的「水仙花数」（各位数字立方和等于它本身，如 153 = 1³+5³+3³）。</p>
+    <details class="ans"><summary>👀 查看参考答案（8-1 和 8-2）</summary>
+      <div class="code"><div class="code-head"><span>practice8.cpp</span></div>
+<pre><code class="language-cpp">// 8-1 阶乘
+int n, fact = 1;
+cin &gt;&gt; n;
+for (int i = 1; i &lt;= n; i++) fact *= i;
+cout &lt;&lt; n &lt;&lt; "! = " &lt;&lt; fact &lt;&lt; endl;
+
+// 8-2 直角三角形
+for (int i = 1; i &lt;= 5; i++) {
+    for (int j = 1; j &lt;= i; j++) cout &lt;&lt; "*";
+    cout &lt;&lt; endl;
+}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch9">
+  <div class="ch-head"><span class="ch-num">09</span><div><div class="ch-kicker">CHAPTER 09 · 核心进阶</div><h2>函数：把代码打包复用</h2></div></div>
+  <div class="goals">📌 本章目标：会定义、调用函数，理解参数传递和返回值，了解默认参数与函数重载。</div>
+
+  <h3>为什么需要函数？</h3>
+  <p>同一段「求和」代码如果要在 10 个地方用，复制粘贴 10 遍太蠢了。<strong>函数就像一台洗衣机</strong>：把脏衣服（参数）放进去，按开始（调用），拿回干净衣服（返回值）。写一次，到处用。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 760 285" role="img" aria-label="函数调用示意图">
+      <defs><marker id="ar9" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="30" y="55" width="280" height="185" rx="12"/>
+      <text class="dt" x="170" y="85">main() 主函数</text>
+      <text class="dcode" x="60" y="125">int s = add(3, 5);</text>
+      <text class="dcode" x="60" y="155">cout &lt;&lt; s;</text>
+      <text class="dcode" x="60" y="185">return 0;</text>
+      <rect class="db" x="450" y="55" width="280" height="185" rx="12"/>
+      <text class="dt" x="590" y="85">add() 函数</text>
+      <text class="dcode" x="480" y="125">int add(int a, int b) {</text>
+      <text class="dcode" x="495" y="155">return a + b;</text>
+      <text class="dcode" x="480" y="185">}</text>
+      <path class="da" d="M310,110 L444,110" marker-end="url(#ar9)"/>
+      <text class="dl" x="377" y="98">① 调用：把 3 和 5 传过去</text>
+      <path class="da" d="M450,195 L316,195" marker-end="url(#ar9)"/>
+      <text class="dl" x="383" y="220">② 返回：带回结果 8</text>
+    </svg>
+    <div class="cap">图 9-1 函数调用：main 把参数传给函数，函数把结果还给 main</div>
+  </div>
+
+  <h3>定义与调用</h3>
+  <div class="code"><div class="code-head"><span>📄 add.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+// 返回类型  函数名(参数列表)
+int add(int a, int b) {
+    return a + b;        // 把计算结果还给调用者
+}
+
+int main() {
+    int s = add(3, 5);           // 调用函数，s 得到 8
+    cout &lt;&lt; "3 + 5 = " &lt;&lt; s &lt;&lt; endl;
+    cout &lt;&lt; add(10, 20) &lt;&lt; endl; // 返回值也可以直接输出
+    return 0;
+}</code></pre></div>
+  <ul>
+    <li><strong>形参</strong>（<code>a</code>、<code>b</code>）是函数的「收件地址」，<strong>实参</strong>（<code>3</code>、<code>5</code>）是真正寄出的值。</li>
+    <li>不需要返回值时，返回类型写 <code>void</code>，函数里可以不写 return（或只写 <code>return;</code>）。</li>
+    <li>如果函数定义在 main <strong>之后</strong>，需要在 main 前先写一行声明：<code>int add(int a, int b);</code>——新手最简单的做法是<strong>把所有函数写在 main 上面</strong>。</li>
+  </ul>
+
+  <h3>值传递 vs 引用传递（重要！）</h3>
+  <p>默认情况下，函数拿到的是实参的<strong>复印件</strong>（值传递），改复印件不影响原件。参数前加 <code>&amp;</code> 就变成拿<strong>原件</strong>（引用传递）：</p>
+  <div class="code"><div class="code-head"><span>swap.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+void swapWrong(int a, int b) {    // 值传递：只交换了复印件
+    int t = a; a = b; b = t;
+}
+
+void swapRight(int &amp;a, int &amp;b) { // 引用传递：直接操作原件
+    int t = a; a = b; b = t;
+}
+
+int main() {
+    int x = 1, y = 2;
+    swapWrong(x, y);
+    cout &lt;&lt; x &lt;&lt; " " &lt;&lt; y &lt;&lt; endl;   // 1 2 （没换成功）
+    swapRight(x, y);
+    cout &lt;&lt; x &lt;&lt; " " &lt;&lt; y &lt;&lt; endl;   // 2 1 （换成功了！）
+    return 0;
+}</code></pre></div>
+
+  <h3>默认参数与函数重载</h3>
+  <div class="code"><div class="code-head"><span>features.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">// 默认参数：不传就用默认值
+void greet(string name, string msg = "你好") {
+    cout &lt;&lt; msg &lt;&lt; "，" &lt;&lt; name &lt;&lt; endl;
+}
+// greet("小明");            → 你好，小明
+// greet("小明", "早上好");   → 早上好，小明
+
+// 重载：同名函数，参数不同（个数或类型），各干各的
+int    add(int a, int b)        { return a + b; }
+double add(double a, double b)  { return a + b; }
+int    add(int a, int b, int c) { return a + b + c; }</code></pre></div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>9-1</strong>：写函数 <code>bool isPrime(int n)</code> 判断 n 是否为质数，然后在 main 里输出 2~50 的所有质数。</p>
+    <p><strong>9-2</strong>：写函数 <code>void printRect(int w, int h)</code>，打印 w×h 的星号矩形。</p>
+    <details class="ans"><summary>👀 查看参考答案（9-1）</summary>
+      <div class="code"><div class="code-head"><span>prime.cpp</span></div>
+<pre><code class="language-cpp">bool isPrime(int n) {
+    if (n &lt; 2) return false;
+    for (int i = 2; i * i &lt;= n; i++)   // 只需试到 √n
+        if (n % i == 0) return false;
+    return true;
+}
+
+int main() {
+    for (int i = 2; i &lt;= 50; i++)
+        if (isPrime(i)) cout &lt;&lt; i &lt;&lt; " ";
+    return 0;
+}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch10">
+  <div class="ch-head"><span class="ch-num">10</span><div><div class="ch-kicker">CHAPTER 10 · 核心进阶</div><h2>数组：一排相同类型的储物格</h2></div></div>
+  <div class="goals">📌 本章目标：掌握一维、二维数组的声明与遍历，实现求和、找最大值等经典操作，牢记「下标从 0 开始」。</div>
+
+  <h3>数组长什么样？</h3>
+  <p>要存全班 50 个人的成绩，总不能定义 50 个变量吧？<strong>数组是「同类型变量的连续排列」</strong>，一个名字管一排：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 820 195" role="img" aria-label="数组内存布局图">
+      <text class="ds" x="410" y="20" style="font-size:13px">int scores[5] —— 5 个连续的储物格，共用一个名字</text>
+      <rect class="dm" x="55"  y="40" width="130" height="66" rx="6"/>
+      <rect class="dm" x="200" y="40" width="130" height="66" rx="6"/>
+      <rect class="dm" x="345" y="40" width="130" height="66" rx="6"/>
+      <rect class="dm" x="490" y="40" width="130" height="66" rx="6"/>
+      <rect class="dm" x="635" y="40" width="130" height="66" rx="6"/>
+      <text class="dt" x="120" y="81" style="font-size:19px;fill:#2563eb">90</text>
+      <text class="dt" x="265" y="81" style="font-size:19px;fill:#2563eb">85</text>
+      <text class="dt" x="410" y="81" style="font-size:19px;fill:#2563eb">77</text>
+      <text class="dt" x="555" y="81" style="font-size:19px;fill:#2563eb">92</text>
+      <text class="dt" x="700" y="81" style="font-size:19px;fill:#2563eb">68</text>
+      <text class="dl" x="120" y="130">scores[0]</text>
+      <text class="dl" x="265" y="130">scores[1]</text>
+      <text class="dl" x="410" y="130">scores[2]</text>
+      <text class="dl" x="555" y="130">scores[3]</text>
+      <text class="dl" x="700" y="130">scores[4]</text>
+      <text class="ds" x="120" y="155">0x1000</text>
+      <text class="ds" x="265" y="155">0x1004</text>
+      <text class="ds" x="410" y="155">0x1008</text>
+      <text class="ds" x="555" y="155">0x100C</text>
+      <text class="ds" x="700" y="155">0x1010</text>
+      <text class="ds" x="410" y="185">↑ 下标从 0 开始，最后一个元素的下标是 长度-1</text>
+    </svg>
+    <div class="cap">图 10-1 数组在内存中连续存放，用「数组名[下标]」访问每个元素</div>
+  </div>
+  <div class="code"><div class="code-head"><span>basic.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int scores[5] = {90, 85, 77, 92, 68};   // 声明并初始化
+
+cout &lt;&lt; scores[0] &lt;&lt; endl;   // 90 ← 第 1 个元素，下标是 0！
+cout &lt;&lt; scores[4] &lt;&lt; endl;   // 68 ← 最后一个元素
+
+scores[2] = 80;              // 修改第 3 个元素
+
+int part[5];                 // 只声明不初始化（里面是随机值，用前必须赋值）
+int zeros[5] = {};           // 全部初始化为 0</code></pre></div>
+
+  <h3>遍历：for 循环是数组的最佳拍档</h3>
+  <div class="code"><div class="code-head"><span>📄 traverse.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int scores[5] = {90, 85, 77, 92, 68};
+    int n = 5;
+
+    int sum = 0;
+    int maxScore = scores[0];            // 先假设第 0 个最大
+
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; "第 " &lt;&lt; i + 1 &lt;&lt; " 个成绩：" &lt;&lt; scores[i] &lt;&lt; endl;
+        sum += scores[i];
+        if (scores[i] &gt; maxScore) maxScore = scores[i];
+    }
+
+    cout &lt;&lt; "总分：" &lt;&lt; sum &lt;&lt; endl;
+    cout &lt;&lt; "平均分：" &lt;&lt; (double)sum / n &lt;&lt; endl;   // 转成 double 再除！
+    cout &lt;&lt; "最高分：" &lt;&lt; maxScore &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <p>C++11 还有更简洁的「范围 for」——不用管下标，直接挨个拿元素：</p>
+  <div class="code"><div class="code-head"><span>range-for.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">for (int s : scores) {   // 依次取出每个元素，存到 s
+    cout &lt;&lt; s &lt;&lt; " ";
+}</code></pre></div>
+
+  <h3>二维数组：给数据加个表格结构</h3>
+  <p><code>grid[行][列]</code>，像 Excel 表格一样存数据：</p>
+  <div class="code"><div class="code-head"><span>grid2d.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int grid[2][3] = {        // 2 行 3 列
+    {1, 2, 3},
+    {4, 5, 6}
+};
+
+for (int i = 0; i &lt; 2; i++) {         // 外层：每一行
+    for (int j = 0; j &lt; 3; j++) {     // 内层：这一行的每一列
+        cout &lt;&lt; grid[i][j] &lt;&lt; " ";
+    }
+    cout &lt;&lt; endl;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>1 2 3
+4 5 6</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 越界：数组头号杀手</div>
+    <p>长度为 5 的数组，合法下标是 0~4。<code>scores[5]</code> <strong>不存在</strong>，但编译器往往不报错——程序会去读写别人的内存，结果不可预测。写循环时反复确认：<code>i &lt; n</code> 而不是 <code>i &lt;= n</code>。</p>
+  </div>
+  <details class="extra"><summary>📦 进阶了解：数组作为函数参数</summary>
+    <p>数组传给函数时，传的是首元素的地址（不是整组拷贝），所以函数里能直接修改原数组；但也因为丢了长度信息，习惯上要额外传一个长度参数：</p>
+    <div class="code"><div class="code-head"><span>func-arr.cpp</span></div>
+<pre><code class="language-cpp">int sumArray(int arr[], int n) {   // arr[] 实际是指向首元素的地址
+    int s = 0;
+    for (int i = 0; i &lt; n; i++) s += arr[i];
+    return s;
+}
+// 调用：sumArray(scores, 5)</code></pre></div>
+  </details>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>10-1</strong>：让用户输入 10 个整数存进数组，输出它们的平均值、最大值及其下标。</p>
+    <p><strong>10-2</strong>（挑战）：把数组「倒过来」——第一个元素和最后一个交换、第二个和倒数第二个交换……原地完成。</p>
+    <details class="ans"><summary>👀 查看参考答案（10-2）</summary>
+      <div class="code"><div class="code-head"><span>reverse.cpp</span></div>
+<pre><code class="language-cpp">int a[6] = {1, 2, 3, 4, 5, 6};
+int n = 6;
+for (int i = 0; i &lt; n / 2; i++) {   // 只需走一半
+    int t = a[i];
+    a[i] = a[n - 1 - i];            // 与「镜像位置」交换
+    a[n - 1 - i] = t;
+}
+for (int x : a) cout &lt;&lt; x &lt;&lt; " ";   // 6 5 4 3 2 1</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch11">
+  <div class="ch-head"><span class="ch-num">11</span><div><div class="ch-kicker">CHAPTER 11 · 核心进阶</div><h2>字符串 string：文字处理利器</h2></div></div>
+  <div class="goals">📌 本章目标：熟练使用 string 的常用操作——求长度、下标访问、拼接、截取、查找，并学会遍历每个字符。</div>
+
+  <h3>string 的常用操作一表通</h3>
+  <table>
+    <thead><tr><th>操作</th><th>写法</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>求长度</td><td><code>s.length()</code> 或 <code>s.size()</code></td><td>字符个数</td></tr>
+      <tr><td>下标访问</td><td><code>s[0]</code></td><td>第 1 个字符（从 0 开始，和数组一样）</td></tr>
+      <tr><td>拼接</td><td><code>s1 + s2</code>、<code>s1 += s2</code></td><td>直接用加号</td></tr>
+      <tr><td>比较</td><td><code>s1 == s2</code>、<code>s1 &lt; s2</code></td><td>按内容比较 / 字典序比较</td></tr>
+      <tr><td>截取</td><td><code>s.substr(起始下标, 长度)</code></td><td>取子串</td></tr>
+      <tr><td>查找</td><td><code>s.find("xx")</code></td><td>返回第一次出现的下标；找不到返回 <code>string::npos</code></td></tr>
+      <tr><td>判空</td><td><code>s.empty()</code></td><td>是否为空字符串</td></tr>
+    </tbody>
+  </table>
+  <div class="code"><div class="code-head"><span>📄 string.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    string s = "Hello, C++";
+
+    cout &lt;&lt; s.length() &lt;&lt; endl;     // 10（长度）
+    cout &lt;&lt; s[0] &lt;&lt; endl;           // H（第一个字符）
+    cout &lt;&lt; s.substr(7, 3) &lt;&lt; endl; // C++（从下标 7 取 3 个字符）
+    cout &lt;&lt; s.find("C++") &lt;&lt; endl;  // 7（C++ 从下标 7 开始）
+
+    s[0] = 'h';                     // 修改单个字符
+    string t = s + " !";            // 拼接
+    cout &lt;&lt; t &lt;&lt; endl;              // hello, C++ !
+    return 0;
+}</code></pre></div>
+
+  <h3>遍历每个字符</h3>
+  <div class="code"><div class="code-head"><span>loop.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;cctype&gt;    // isupper / tolower 等字符工具在这里
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    string str = "Hello World";
+    int upper = 0;
+
+    for (char c : str) {         // 逐个取出字符
+        if (isupper(c)) upper++; // 是大写字母就计数
+    }
+    cout &lt;&lt; "大写字母有 " &lt;&lt; upper &lt;&lt; " 个" &lt;&lt; endl;   // 2
+
+    // 全部转成大写
+    for (char &amp;c : str) {        // 注意加 &amp; 才能修改原字符
+        c = toupper(c);
+    }
+    cout &lt;&lt; str &lt;&lt; endl;         // HELLO WORLD
+    return 0;
+}</code></pre></div>
+  <div class="box tip"><div class="bt">💡 一个易混点</div>
+    <p><code>'A'</code> 是 char（单个字符，单引号），<code>"A"</code> 是 string（字符串，双引号）——它们是两种不同的类型。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>11-1</strong>：输入一个单词，判断它是不是「回文」（正着读反着读一样，如 level）。</p>
+    <p><strong>11-2</strong>：统计一句话里某个字母出现了几次。</p>
+    <details class="ans"><summary>👀 查看参考答案（11-1）</summary>
+      <div class="code"><div class="code-head"><span>palin.cpp</span></div>
+<pre><code class="language-cpp">bool isPalin(string s) {
+    int i = 0, j = s.length() - 1;   // 一个从头走，一个从尾走
+    while (i &lt; j) {
+        if (s[i] != s[j]) return false;
+        i++; j--;
+    }
+    return true;
+}
+// isPalin("level") → true；isPalin("hello") → false</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch12">
+  <div class="ch-head"><span class="ch-num">12</span><div><div class="ch-kicker">CHAPTER 12 · 核心进阶</div><h2>指针与引用：直捣内存深处</h2></div></div>
+  <div class="goals">📌 本章目标：理解「地址」概念，会使用指针（取地址 &amp;、解引用 *）和引用，分清两者的适用场景。</div>
+
+  <h3>先建立直觉：内存像一家酒店</h3>
+  <p>变量住进内存这家酒店：<strong>值</strong>是房间里的客人，<strong>地址</strong>是房间号。<code>&amp;a</code> 查房间号，指针 <code>p</code> 是一张「写着房间号的纸条」，拿着纸条（<code>*p</code>）就能找到那个房间、进出里面的人。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 760 215" role="img" aria-label="指针示意图">
+      <rect class="dm" x="60" y="55" width="210" height="105" rx="10"/>
+      <text class="dt" x="165" y="85">指针变量 p</text>
+      <text class="dt" x="165" y="118" style="font-size:19px;fill:#2563eb">0x1000</text>
+      <text class="ds" x="165" y="143">p 里存的是一个地址</text>
+      <path class="da" d="M270,107 L434,107" marker-end="url(#ar12)"/>
+      <defs><marker id="ar12" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <text class="dl" x="352" y="95">*p 顺着地址找过去</text>
+      <rect class="dm" x="440" y="55" width="210" height="105" rx="10"/>
+      <text class="dt" x="545" y="85">变量 a</text>
+      <text class="dt" x="545" y="118" style="font-size:19px;fill:#2563eb">10</text>
+      <text class="ds" x="545" y="143">a 的地址是 0x1000</text>
+      <text class="ds" x="380" y="196">指针 = 存「地址」的变量；通过 *p 可以读写 a 的值</text>
+    </svg>
+    <div class="cap">图 12-1 p 存着 a 的地址，*p 就是「a 的值」的另一种访问方式</div>
+  </div>
+
+  <h3>指针三板斧：&amp;、*、nullptr</h3>
+  <div class="code"><div class="code-head"><span>📄 pointer.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int a = 10;
+    int* p = &amp;a;         // p 存了 a 的地址（&amp; 读作「取地址」）
+
+    cout &lt;&lt; &amp;a &lt;&lt; endl;  // 0x6ffe14 之类的地址（每次运行可能不同）
+    cout &lt;&lt; p  &lt;&lt; endl;  // 同上：p 里存的就是这个地址
+    cout &lt;&lt; *p &lt;&lt; endl;  // 10（* 读作「取内容」，顺着地址找到 a）
+
+    *p = 20;             // 通过指针修改 a
+    cout &lt;&lt; a &lt;&lt; endl;   // 20
+
+    int* q = nullptr;    // 空指针：暂时不指向任何地方
+    if (q != nullptr) {  // 先判空再用，安全第一！
+        cout &lt;&lt; *q &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 野指针：程序崩溃的头号元凶</div>
+    <p>刚声明的指针里是随机垃圾值，直接 <code>*p</code> 去用它，程序轻则输出乱码、重则崩溃。规矩是：<strong>指针要么指向有效变量，要么置为 nullptr</strong>，解引用前先判空。</p>
+  </div>
+
+  <h3>引用：变量的「别名」</h3>
+  <p>引用比指针简单：<code>int&amp; r = a;</code> 之后 r 就是 a 的另一个名字，操作 r 就是操作 a：</p>
+  <div class="code"><div class="code-head"><span>ref.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int a = 10;
+int&amp; r = a;      // r 是 a 的别名，从此不分你我
+r = 30;          // 改 r 就是改 a
+cout &lt;&lt; a &lt;&lt; endl;   // 30
+cout &lt;&lt; &amp;r &lt;&lt; " " &lt;&lt; &amp;a &lt;&lt; endl;   // 地址完全相同</code></pre></div>
+
+  <h3>指针 vs 引用，用哪个？</h3>
+  <table>
+    <thead><tr><th>对比</th><th>指针 <code>int* p</code></th><th>引用 <code>int&amp; r</code></th></tr></thead>
+    <tbody>
+      <tr><td>本质</td><td>存地址的变量</td><td>别名</td></tr>
+      <tr><td>可以为空</td><td>可以（nullptr）</td><td>不行，必须绑定一个变量</td></tr>
+      <tr><td>能换目标吗</td><td>能，<code>p = &amp;b;</code></td><td>不能，绑定终身不变</td></tr>
+      <tr><td>使用方式</td><td>要写 <code>*p</code> 解引用</td><td>和普通变量一样直接用</td></tr>
+      <tr><td>典型场景</td><td>遍历、可选目标、底层数据结构</td><td>函数传参（第 9 章的 swap）</td></tr>
+    </tbody>
+  </table>
+  <div class="box note"><div class="bt">💡 为什么先学这个？</div>
+    <p>指针是 C++ 区别于其他语言的看家本领，也是后面「链表」「动态内存」的地基。本教程只在传参和遍历时轻度使用它，先建立概念即可，不必恐惧。</p>
+  </div>
+  <details class="extra"><summary>📦 进阶了解：指针和数组的关系</summary>
+    <p>数组名在多数场合会「退化」为首元素地址，所以 <code>a[i]</code> 本质上等价于 <code>*(a + i)</code>——C++ 用「地址 + 偏移」实现下标访问，这也解释了为什么数组下标从 0 开始（偏移量为 0 就是第一个）。</p>
+  </details>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>12-1</strong>：定义两个变量，用指针（不是引用）交换它们的值，并输出交换前后各自的地址验证。</p>
+    <details class="ans"><summary>👀 查看参考答案（12-1）</summary>
+      <div class="code"><div class="code-head"><span>ptr-swap.cpp</span></div>
+<pre><code class="language-cpp">int a = 1, b = 2;
+int* pa = &amp;a, * pb = &amp;b;
+int t = *pa;      // 借助 *pa / *pb 读写
+*pa = *pb;
+*pb = t;
+cout &lt;&lt; a &lt;&lt; " " &lt;&lt; b &lt;&lt; endl;   // 2 1</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch13">
+  <div class="ch-head"><span class="ch-num">13</span><div><div class="ch-kicker">CHAPTER 13 · 核心进阶</div><h2>结构体 struct：把相关数据打包</h2></div></div>
+  <div class="goals">📌 本章目标：会用 struct 定义自己的数据类型，会创建、访问、批量管理结构体变量——为实战项目做准备。</div>
+
+  <h3>为什么需要结构体？</h3>
+  <p>描述一个学生，需要姓名、年龄、成绩……散装变量管起来太乱。<strong>结构体把一组相关的数据装进一个「档案袋」</strong>，从此一个变量代表一个完整的学生：</p>
+  <div class="code"><div class="code-head"><span>📄 student.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+struct Student {       // 定义一种新类型：学生
+    string name;       // 姓名
+    int    age;        // 年龄
+    double score;      // 成绩
+};  // ← 这个分号不能忘！
+
+int main() {
+    Student s1 = {"小明", 18, 92.5};   // 创建并初始化
+    Student s2;
+    s2.name  = "小红";                  // 用 . 访问每个成员
+    s2.age   = 17;
+    s2.score = 95.0;
+
+    cout &lt;&lt; s1.name &lt;&lt; " " &lt;&lt; s1.score &lt;&lt; endl;
+    cout &lt;&lt; s2.name &lt;&lt; " " &lt;&lt; s2.score &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>小明 92.5
+小红 95</code></pre></div>
+
+  <h3>结构体数组：一个班的学生</h3>
+  <div class="code"><div class="code-head"><span>class.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">Student cls[3] = {
+    {"小明", 18, 92.5},
+    {"小红", 17, 95.0},
+    {"小刚", 18, 88.0}
+};
+
+for (int i = 0; i &lt; 3; i++) {
+    cout &lt;&lt; cls[i].name &lt;&lt; "：" &lt;&lt; cls[i].score &lt;&lt; " 分" &lt;&lt; endl;
+}</code></pre></div>
+
+  <h3>结构体套结构体</h3>
+  <p>成员本身也可以是结构体，层层打包：</p>
+  <div class="code"><div class="code-head"><span>nested.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">struct Date { int year, month, day; };
+
+struct Person {
+    string name;
+    Date birthday;          // 生日又是一个结构体
+};
+
+Person p = {"小明", {2010, 5, 20}};
+cout &lt;&lt; p.birthday.year &lt;&lt; " 年" &lt;&lt; endl;   // 2010 年</code></pre></div>
+  <div class="box note"><div class="bt">💡 struct 和 class 的关系预告</div>
+    <p>结构体是「纯数据打包」，下一章的 class 会在此基础上加入「函数」和「访问控制」。可以说：<strong>class = struct + 行为 + 权限管理</strong>。把这一章学扎实，面向对象就成功了一半。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>13-1</strong>：定义 <code>struct Book</code>（书名、作者、价格），创建 3 本书存进数组，找出最贵的那本并输出。</p>
+    <details class="ans"><summary>👀 查看参考答案（13-1）</summary>
+      <div class="code"><div class="code-head"><span>book.cpp</span></div>
+<pre><code class="language-cpp">struct Book { string title; string author; double price; };
+
+Book books[3] = {
+    {"西游记", "吴承恩", 45.0},
+    {"三体",   "刘慈欣", 23.0},
+    {"红楼梦", "曹雪芹", 59.8}
+};
+int best = 0;
+for (int i = 1; i &lt; 3; i++)
+    if (books[i].price &gt; books[best].price) best = i;
+cout &lt;&lt; "最贵：" &lt;&lt; books[best].title &lt;&lt; " " &lt;&lt; books[best].price &lt;&lt; " 元" &lt;&lt; endl;</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch14">
+  <div class="ch-head"><span class="ch-num">14</span><div><div class="ch-kicker">CHAPTER 14 · 面向对象与标准库</div><h2>类与对象：面向对象编程入门</h2></div></div>
+  <div class="goals">📌 本章目标：理解类与对象、封装、构造函数，会写继承与多态的基本代码，理解「三大特性」。</div>
+
+  <h3>从 struct 到 class：数据 + 行为</h3>
+  <p>第 13 章的 Student 只有数据。现实里的学生还会「自我介绍」「修改成绩」——把这些<strong>行为</strong>也装进类型里，就是<strong>类（class）</strong>。类是图纸，对象（object）是按图纸造出的一个个具体实例：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 820 250" role="img" aria-label="类与对象示意图">
+      <defs><marker id="ar14" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="30" y="35" width="260" height="180" rx="12"/>
+      <text class="dt" x="160" y="65">class Student（类 = 图纸）</text>
+      <text class="dcode" x="58" y="100">数据成员：</text>
+      <text class="dcode" x="75" y="126">- name   姓名</text>
+      <text class="dcode" x="75" y="150">- score  成绩</text>
+      <text class="dcode" x="58" y="180">成员函数：</text>
+      <text class="dcode" x="75" y="204">- show() 自我介绍</text>
+      <path class="da" d="M290,95 L414,115" marker-end="url(#ar14)"/>
+      <path class="da" d="M290,125 L414,125" marker-end="url(#ar14)"/>
+      <path class="da" d="M290,155 L414,145" marker-end="url(#ar14)"/>
+      <text class="dl" x="352" y="80">实例化</text>
+      <rect class="dm" x="420" y="75" width="120" height="100" rx="10"/>
+      <text class="dt" x="480" y="105">小明</text>
+      <text class="ds" x="480" y="130">age 18</text>
+      <text class="ds" x="480" y="150">score 92.5</text>
+      <rect class="dm" x="555" y="75" width="120" height="100" rx="10"/>
+      <text class="dt" x="615" y="105">小红</text>
+      <text class="ds" x="615" y="130">age 17</text>
+      <text class="ds" x="615" y="150">score 95</text>
+      <rect class="dm" x="690" y="75" width="120" height="100" rx="10"/>
+      <text class="dt" x="750" y="105">小刚</text>
+      <text class="ds" x="750" y="130">age 18</text>
+      <text class="ds" x="750" y="150">score 88</text>
+      <text class="ds" x="640" y="215">同一个类，可以造出无数个数据不同的对象</text>
+    </svg>
+    <div class="cap">图 14-1 类是模具，对象是产品：图纸只有一份，房子可以盖无数套</div>
+  </div>
+
+  <h3>封装：把「不许碰」的数据保护起来</h3>
+  <p><code>private</code> 的成员外面摸不到，只能通过 <code>public</code> 的函数访问——这样数据就只能被「受控地」修改，比如成绩不允许设成 120 分：</p>
+  <div class="code"><div class="code-head"><span>📄 student-class.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+class Student {
+private:                       // 私有区：外面不能直接碰
+    string name;
+    double score;
+
+public:                        // 公开区：外界通过这些函数使用类
+    // 构造函数：与类同名、无返回类型，创建对象时自动调用
+    Student(string n, double s) {
+        name  = n;
+        score = s;
+    }
+
+    void show() {              // 成员函数：行为
+        cout &lt;&lt; name &lt;&lt; " 的成绩是 " &lt;&lt; score &lt;&lt; endl;
+    }
+
+    void setScore(double s) {  // 受控的修改入口，可以加校验
+        if (s &gt;= 0 &amp;&amp; s &lt;= 100)
+            score = s;
+        else
+            cout &lt;&lt; "成绩必须在 0~100 之间！" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Student stu("小明", 92.5);   // 创建对象（自动调用构造函数）
+    stu.show();                  // 小明 的成绩是 92.5
+
+    stu.setScore(120);           // 成绩必须在 0~100 之间！
+    stu.setScore(88);
+    stu.show();                  // 小明 的成绩是 88
+    return 0;
+}</code></pre></div>
+  <div class="box tip"><div class="bt">💡 构造函数的常见简写</div>
+    <div class="code"><div class="code-head"><span>初始化列表写法</span></div>
+<pre><code class="language-cpp">Student(string n, double s) : name(n), score(s) {}</code></pre></div>
+    <p>冒号后面这叫「初始化列表」，效果和函数体里赋值一样，实际工程更常用。</p>
+  </div>
+
+  <h3>继承：站在父类的肩膀上</h3>
+  <p>猫和狗都有「吃」「睡」等共同点，把这些放进父类 Animal，子类只补充自己的特色——<strong>代码不用重复写</strong>：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 700 255" role="img" aria-label="继承关系图">
+      <defs><marker id="ar14b" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="db" x="250" y="15" width="200" height="78" rx="10"/>
+      <text class="dt" x="350" y="45">Animal 动物类（父类）</text>
+      <text class="ds" x="350" y="72">eat()  /  speak()</text>
+      <path class="da" d="M350,93 L350,120 L150,120 L150,148" marker-end="url(#ar14b)"/>
+      <path class="da" d="M350,93 L350,148" marker-end="url(#ar14b)"/>
+      <path class="da" d="M350,93 L350,120 L550,120 L550,148" marker-end="url(#ar14b)"/>
+      <rect class="dm" x="60"  y="152" width="180" height="70" rx="10"/>
+      <text class="dt" x="150" y="180">Dog</text>
+      <text class="ds" x="150" y="205">speak(): 汪汪！</text>
+      <rect class="dm" x="260" y="152" width="180" height="70" rx="10"/>
+      <text class="dt" x="350" y="180">Cat</text>
+      <text class="ds" x="350" y="205">speak(): 喵~</text>
+      <rect class="dm" x="460" y="152" width="180" height="70" rx="10"/>
+      <text class="dt" x="550" y="180">Bird</text>
+      <text class="ds" x="550" y="205">speak(): 叽叽</text>
+    </svg>
+    <div class="cap">图 14-2 继承：子类自动拥有父类的能力，并可以重写自己的版本</div>
+  </div>
+  <div class="code"><div class="code-head"><span>inherit.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+using namespace std;
+
+class Animal {
+public:
+    void eat() { cout &lt;&lt; "吃东西" &lt;&lt; endl; }
+    virtual void speak() { cout &lt;&lt; "..." &lt;&lt; endl; }
+    // virtual：允许子类重写这个函数
+};
+
+class Dog : public Animal {      // 读作：Dog 是一种 Animal
+public:
+    void speak() override {      // 重写父类的 speak
+        cout &lt;&lt; "汪汪！" &lt;&lt; endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void speak() override {
+        cout &lt;&lt; "喵~" &lt;&lt; endl;
+    }
+};
+
+int main() {
+    Dog d; Cat c;
+    d.eat();   d.speak();    // 汪汪！（eat 是继承来的，speak 是重写的）
+    c.eat();   c.speak();    // 喵~
+
+    Animal* a = &amp;d;          // 用父类指针指向子类对象
+    a-&gt;speak();              // 汪汪！ ← 多态：同一句话，不同对象有不同反应
+    a = &amp;c;
+    a-&gt;speak();              // 喵~
+    return 0;
+}</code></pre></div>
+  <p><strong>多态（polymorphism）</strong>正是上面的名场面：同样是 <code>a-&gt;speak()</code>，指向狗就叫「汪汪」，指向猫就叫「喵」。调用哪个版本由<strong>对象的实际类型</strong>在运行时决定。父类指针访问成员用 <code>-&gt;</code>（而不是 <code>.</code>）。</p>
+
+  <h3>面向对象三大特性小结</h3>
+  <div class="cards">
+    <div class="card"><span class="ic">🛡️</span><b>封装</b><span class="desc">private 藏数据，public 留接口，数据只能被受控地修改</span></div>
+    <div class="card"><span class="ic">🧬</span><b>继承</b><span class="desc">子类复用父类的代码，建立「is-a」的层次关系</span></div>
+    <div class="card"><span class="ic">🎭</span><b>多态</b><span class="desc">同一个接口，不同对象有不同实现，程序更灵活</span></div>
+  </div>
+  <details class="extra"><summary>📦 进阶了解：new / delete 动态创建对象</summary>
+    <div class="code"><div class="code-head"><span>heap.cpp</span></div>
+<pre><code class="language-cpp">Student* p = new Student("小明", 90);   // 在堆上创建对象，返回指针
+p-&gt;show();                              // 指针访问成员用 -&gt;
+delete p;                               // 用完必须释放，否则内存泄漏</code></pre></div>
+    <p>现代 C++ 更推荐用智能指针（<code>unique_ptr</code> / <code>shared_ptr</code>）自动管理，等你进阶后再学。</p>
+  </details>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>14-1</strong>：设计一个 <code>BankAccount</code> 类：私有成员是余额 <code>balance</code>；公有函数有 <code>deposit(存款)</code>、<code>withdraw(取款，余额不足要拒绝)</code>、<code>show()</code>。</p>
+    <p><strong>14-2</strong>（挑战）：以 <code>Shape</code> 为父类（有 <code>area()</code>），派生 <code>Rect</code>（长宽）和 <code>Circle</code>（半径），各自重写 <code>area()</code>。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch15">
+  <div class="ch-head"><span class="ch-num">15</span><div><div class="ch-kicker">CHAPTER 15 · 面向对象与标准库</div><h2>STL 标准库：官方造好的轮子</h2></div></div>
+  <div class="goals">📌 本章目标：会用 vector 动态数组、map 字典、set 集合和 sort 排序——写程序从此事半功倍。</div>
+
+  <h3>STL 是什么？</h3>
+  <p>STL（Standard Template Library，标准模板库）是 C++ 自带的「工具仓库」：<strong>常用数据结构 + 常用算法，全都写好、测试好、优化好了</strong>。以后遇到「要排序」「要去重」「要查频率」，先想想 STL 里有没有现成的。</p>
+  <table>
+    <thead><tr><th>工具</th><th>一句话理解</th><th>典型用途</th></tr></thead>
+    <tbody>
+      <tr><td><code>vector</code></td><td>会自动变长的数组</td><td>存数量不确定的一堆数据</td></tr>
+      <tr><td><code>map</code></td><td>键值对字典</td><td>名字→电话、单词→出现次数</td></tr>
+      <tr><td><code>set</code></td><td>自动去重的集合</td><td>判断「出现过没有」</td></tr>
+      <tr><td><code>sort</code></td><td>万能排序函数</td><td>从小到大 / 自定义规则</td></tr>
+    </tbody>
+  </table>
+
+  <h3>vector：最常用的动态数组</h3>
+  <div class="code"><div class="code-head"><span>📄 vector.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;    // sort 住在这里
+using namespace std;
+
+int main() {
+    vector&lt;int&gt; v;        // 不用预先指定长度！
+    v.push_back(3);       // 尾部添加元素
+    v.push_back(1);
+    v.push_back(2);
+
+    cout &lt;&lt; v.size() &lt;&lt; endl;    // 3（当前元素个数）
+    cout &lt;&lt; v[0] &lt;&lt; endl;        // 3（下标访问和数组一样）
+
+    sort(v.begin(), v.end());    // 排序：默认从小到大
+    for (int x : v) cout &lt;&lt; x &lt;&lt; " ";   // 1 2 3
+    cout &lt;&lt; endl;
+
+    sort(v.begin(), v.end(), greater&lt;int&gt;());   // 传 greater 就是从大到小
+    for (int x : v) cout &lt;&lt; x &lt;&lt; " ";   // 3 2 1
+    return 0;
+}</code></pre></div>
+  <div class="box tip"><div class="bt">💡 常用成员函数</div>
+    <p><code>push_back(x)</code> 尾部添加；<code>pop_back()</code> 删除末尾；<code>size()</code> 个数；<code>empty()</code> 是否为空；<code>clear()</code> 清空。初始化也可以偷懒：<code>vector&lt;int&gt; v = {3, 1, 2};</code></p>
+  </div>
+
+  <h3>map：字典，一键查值</h3>
+  <div class="code"><div class="code-head"><span>map.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;map&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main() {
+    map&lt;string, int&gt; age;     // 键类型 → 值类型
+    age["小明"] = 18;
+    age["小红"] = 17;
+
+    cout &lt;&lt; age["小明"] &lt;&lt; endl;          // 18
+    if (age.count("小刚")) {              // 判断键是否存在（0 或 1）
+        cout &lt;&lt; "有小刚" &lt;&lt; endl;
+    } else {
+        cout &lt;&lt; "查无此人" &lt;&lt; endl;
+    }
+
+    for (auto&amp; p : age) {                 // 遍历：按键名自动排序
+        cout &lt;&lt; p.first &lt;&lt; " " &lt;&lt; p.second &lt;&lt; endl;
+        // p.first 是键，p.second 是值；auto 让编译器自动推断类型
+    }
+    return 0;
+}</code></pre></div>
+
+  <h3>set：自动去重的集合</h3>
+  <div class="code"><div class="code-head"><span>set.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;set&gt;
+set&lt;int&gt; s;
+s.insert(3);
+s.insert(1);
+s.insert(3);                     // 插入重复的会被自动忽略
+
+cout &lt;&lt; s.size() &lt;&lt; endl;        // 2（自动去重）
+if (s.count(1)) cout &lt;&lt; "1 在集合里" &lt;&lt; endl;
+for (int x : s) cout &lt;&lt; x &lt;&lt; " ";    // 1 3（自动从小到大）</code></pre></div>
+
+  <h3>自定义排序规则（为实战项目做铺垫）</h3>
+  <p><code>sort</code> 的第三个参数可以传一个「比较规则」——写法是 lambda（匿名小函数）：</p>
+  <div class="code"><div class="code-head"><span>sortby.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">vector&lt;int&gt; v = {3, 1, 2};
+sort(v.begin(), v.end(), [](int a, int b) {
+    return a &gt; b;    // 告诉 sort：a 排在 b 前面的条件（降序）
+});</code></pre></div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>15-1</strong>：读入 5 个单词，用 map 统计每个单词出现的次数。</p>
+    <details class="ans"><summary>👀 查看参考答案（15-1）</summary>
+      <div class="code"><div class="code-head"><span>wordcount.cpp</span></div>
+<pre><code class="language-cpp">map&lt;string, int&gt; cnt;
+string w;
+for (int i = 0; i &lt; 5; i++) {
+    cin &gt;&gt; w;
+    cnt[w]++;        // 键不存在时自动创建并初始化为 0，再 +1
+}
+for (auto&amp; p : cnt)
+    cout &lt;&lt; p.first &lt;&lt; " 出现 " &lt;&lt; p.second &lt;&lt; " 次" &lt;&lt; endl;</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch16">
+  <div class="ch-head"><span class="ch-num">16</span><div><div class="ch-kicker">CHAPTER 16 · 面向对象与标准库</div><h2>文件读写：让数据留下来</h2></div></div>
+  <div class="goals">📌 本章目标：会用 ofstream 写文件、ifstream 读文件，理解「程序退出数据就没了，所以要用文件持久化」。</div>
+
+  <h3>为什么要操作文件？</h3>
+  <p>到目前为止，你程序里的变量在程序一关闭就烟消云散。想让数据留下来（比如成绩单、日记），就要写进<strong>文件</strong>。好消息是：文件操作和 cin/cout 用法几乎一样——写文件用 <code>&lt;&lt;</code>，读文件用 <code>&gt;&gt;</code>。</p>
+
+  <h3>写文件：ofstream</h3>
+  <div class="code"><div class="code-head"><span>📄 write.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;fstream&gt;     // 文件操作都在这里
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    ofstream out("scores.txt");    // 打开文件用于写（没有会自动创建）
+    if (!out) {                    // 打不开（如路径不对）要检查
+        cout &lt;&lt; "文件打开失败" &lt;&lt; endl;
+        return 1;
+    }
+    out &lt;&lt; "小明 92.5" &lt;&lt; endl;     // 用法和 cout 一模一样！
+    out &lt;&lt; "小红 95" &lt;&lt; endl;
+    out.close();                   // 用完关闭
+    cout &lt;&lt; "已写入 scores.txt" &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <p>运行后到<strong>程序的同一个文件夹</strong>里找 <code>scores.txt</code>，用记事本打开就能看到两行成绩。</p>
+
+  <h3>读文件：ifstream</h3>
+  <div class="code"><div class="code-head"><span>read.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">ifstream in("scores.txt");
+if (!in) {
+    cout &lt;&lt; "文件不存在" &lt;&lt; endl;
+    return 1;
+}
+
+string name;
+double score;
+while (in &gt;&gt; name &gt;&gt; score) {      // 一条条读，读到文件尾自动停
+    cout &lt;&lt; name &lt;&lt; " 考了 " &lt;&lt; score &lt;&lt; " 分" &lt;&lt; endl;
+}
+in.close();</code></pre></div>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>小明 考了 92.5 分
+小红 考了 95 分</code></pre></div>
+  <p>想按<strong>行</strong>读（保留原始格式），用 <code>getline</code>：</p>
+  <div class="code"><div class="code-head"><span>readline.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">ifstream in("scores.txt");
+string line;
+while (getline(in, line)) {    // 一次读一整行
+    cout &lt;&lt; line &lt;&lt; endl;
+}</code></pre></div>
+
+  <h3>追加模式：不覆盖旧内容</h3>
+  <div class="code"><div class="code-head"><span>append.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">ofstream out("scores.txt", ios::app);   // app = append 追加
+out &lt;&lt; "小刚 88" &lt;&lt; endl;                // 加在文件末尾，原来的不丢</code></pre></div>
+  <table>
+    <thead><tr><th>打开模式</th><th>含义</th></tr></thead>
+    <tbody>
+      <tr><td><code>ios::out</code></td><td>写（默认，会清空原内容）</td></tr>
+      <tr><td><code>ios::in</code></td><td>读</td></tr>
+      <tr><td><code>ios::app</code></td><td>追加，保留原内容</td></tr>
+      <tr><td><code>ios::binary</code></td><td>按二进制方式读写</td></tr>
+    </tbody>
+  </table>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>16-1</strong>：写一个「电子日记」程序：启动后让用户输入一句话，把「日期 + 这句话」追加到 <code>diary.txt</code> 里，可以反复运行积累内容。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch17">
+  <div class="ch-head"><span class="ch-num">17</span><div><div class="ch-kicker">CHAPTER 17 · 实战项目</div><h2>实战项目一：猜数字游戏 🎲</h2></div></div>
+  <div class="goals">📌 项目目标：综合运用 do-while、if-else、随机数，写出一个完整可玩的小游戏。预计 30 分钟。</div>
+
+  <h3>第一步：想清楚游戏规则</h3>
+  <ul>
+    <li>程序在 1~100 之间随机「想」一个数，玩家看不到。</li>
+    <li>玩家反复输入猜测，程序提示「大了」或「小了」。</li>
+    <li>猜中后公布答案和总次数。</li>
+  </ul>
+  <p>翻译成程序结构：<strong>准备随机数 → do-while 循环（读猜测 → 比较提示）→ 直到猜中退出</strong>。这就是「先干活再判断」的典型场景，正好用上第 8 章的 do-while。</p>
+
+  <h3>第二步：随机数怎么来？</h3>
+  <div class="code"><div class="code-head"><span>随机数三板斧</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;cstdlib&gt;   // rand / srand
+#include &lt;ctime&gt;     // time
+
+srand(time(0));          // 播种：以当前时间为种子，每次运行结果不同
+int answer = rand() % 100 + 1;   // rand()%100 得到 0~99，+1 变成 1~100</code></pre></div>
+  <div class="box note"><div class="bt">💡 两个为什么</div>
+    <p>① 为什么播种？不播种的话，rand() 每次运行程序都给出同一串数。② 公式 <code>rand() % N + 1</code> 可以生成 1~N 的随机整数，记下来很有用。</p>
+  </div>
+
+  <h3>第三步：完整代码</h3>
+  <div class="code"><div class="code-head"><span>📄 guess.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;   // rand、srand
+#include &lt;ctime&gt;     // time
+using namespace std;
+
+int main() {
+    srand(time(0));                    // 用当前时间做随机种子
+    int answer = rand() % 100 + 1;     // 1~100 的随机数
+    int guess, count = 0;
+
+    cout &lt;&lt; "我已经想好了一个 1~100 之间的数，来猜猜看！" &lt;&lt; endl;
+
+    do {
+        cout &lt;&lt; "请输入你的猜测：";
+        cin &gt;&gt; guess;
+        count++;
+
+        if (guess &gt; answer) {
+            cout &lt;&lt; "大了，往小猜一点 ⬇" &lt;&lt; endl;
+        } else if (guess &lt; answer) {
+            cout &lt;&lt; "小了，往大猜一点 ⬆" &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; "🎉 恭喜猜对！答案就是 " &lt;&lt; answer
+                 &lt;&lt; "，你一共猜了 " &lt;&lt; count &lt;&lt; " 次" &lt;&lt; endl;
+        }
+    } while (guess != answer);         // 没猜中就继续
+
+    return 0;
+}</code></pre></div>
+
+  <h3>运行效果</h3>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>我已经想好了一个 1~100 之间的数，来猜猜看！
+请输入你的猜测：50
+大了，往小猜一点 ⬇
+请输入你的猜测：25
+小了，往大猜一点 ⬆
+请输入你的猜测：37
+🎉 恭喜猜对！答案就是 37，你一共猜了 3 次</code></pre></div>
+
+  <h3>项目复盘</h3>
+  <table>
+    <thead><tr><th>需求</th><th>用到的知识</th><th>出自</th></tr></thead>
+    <tbody>
+      <tr><td>随机答案</td><td>rand / srand / 取余公式</td><td>本章</td></tr>
+      <tr><td>反复猜</td><td>do-while 循环</td><td>第 8 章</td></tr>
+      <tr><td>大小提示</td><td>if-else 分支</td><td>第 7 章</td></tr>
+      <tr><td>计数</td><td>累加器变量 count</td><td>第 8 章</td></tr>
+    </tbody>
+  </table>
+  <div class="box practice"><div class="bt">🚀 改进挑战（自己加功能）</div>
+    <p>① 限制最多猜 7 次，超过就失败并公布答案；② 每轮结束后问「再来一局吗？(y/n)」；③ 把它改造成「人脑猜、电脑来提示范围」的逆向版。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch18">
+  <div class="ch-head"><span class="ch-num">18</span><div><div class="ch-kicker">CHAPTER 18 · 实战项目</div><h2>实战项目二：学生成绩管理系统 📚</h2></div></div>
+  <div class="goals">📌 项目目标：综合全书知识（结构体、vector、函数、循环、switch、排序、格式化输出），写出一个真正「像软件」的菜单式管理系统。</div>
+
+  <h3>第一步：需求与设计</h3>
+  <p>先想清楚这个软件要做什么、每个功能用到什么知识——写程序前先设计，是工程师的核心习惯：</p>
+  <table>
+    <thead><tr><th>功能</th><th>用到知识</th><th>出自</th></tr></thead>
+    <tbody>
+      <tr><td>存学生（姓名+成绩）</td><td>struct 结构体</td><td>第 13 章</td></tr>
+      <tr><td>人数自动增长</td><td>vector 动态数组</td><td>第 15 章</td></tr>
+      <tr><td>菜单循环</td><td>while + switch</td><td>第 7、8 章</td></tr>
+      <tr><td>各功能拆成函数</td><td>函数</td><td>第 9 章</td></tr>
+      <tr><td>按成绩排序</td><td>sort + lambda</td><td>第 15 章</td></tr>
+      <tr><td>表格对齐 / 平均分</td><td>iomanip 格式化</td><td>第 5 章</td></tr>
+    </tbody>
+  </table>
+  <p>程序骨架一句话：<strong>一个 while(true) 主循环显示菜单，switch 把每个选项分派给一个专门的函数</strong>——分而治之，每个函数只干一件事。</p>
+
+  <h3>第二步：完整代码</h3>
+  <div class="code"><div class="code-head"><span>📄 manager.cpp（约 90 行，建议分块敲）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;algorithm&gt;
+#include &lt;iomanip&gt;
+using namespace std;
+
+// ---------- 数据设计 ----------
+struct Student {
+    string name;    // 姓名
+    double score;   // 成绩
+};
+
+vector&lt;Student&gt; students;   // 全班数据（动态增长）
+
+// ---------- 功能函数 ----------
+void addStudent() {
+    Student s;
+    cout &lt;&lt; "请输入姓名：";
+    cin &gt;&gt; s.name;
+    cout &lt;&lt; "请输入成绩：";
+    cin &gt;&gt; s.score;
+    students.push_back(s);
+    cout &lt;&lt; "✔ 添加成功！当前共 " &lt;&lt; students.size() &lt;&lt; " 名学生" &lt;&lt; endl;
+}
+
+void showAll() {
+    if (students.empty()) {
+        cout &lt;&lt; "（还没有任何学生记录）" &lt;&lt; endl;
+        return;
+    }
+    cout &lt;&lt; "--------------------" &lt;&lt; endl;
+    double sum = 0;
+    for (auto&amp; s : students) {              // 逐行打印
+        cout &lt;&lt; "  " &lt;&lt; s.name &lt;&lt; "  " &lt;&lt; s.score &lt;&lt; endl;
+        sum += s.score;
+    }
+    cout &lt;&lt; "--------------------" &lt;&lt; endl;
+    cout &lt;&lt; "  共 " &lt;&lt; students.size() &lt;&lt; " 人，平均分 "
+         &lt;&lt; fixed &lt;&lt; setprecision(1) &lt;&lt; sum / students.size() &lt;&lt; endl;
+}
+
+void findMax() {
+    if (students.empty()) {
+        cout &lt;&lt; "（还没有任何学生记录）" &lt;&lt; endl;
+        return;
+    }
+    auto best = &amp;students[0];               // 用指针指向当前最高分
+    for (auto&amp; s : students)
+        if (s.score &gt; best-&gt;score) best = &amp;s;
+    cout &lt;&lt; "🏆 最高分：" &lt;&lt; best-&gt;name &lt;&lt; " " &lt;&lt; best-&gt;score &lt;&lt; " 分" &lt;&lt; endl;
+}
+
+void sortByScore() {
+    if (students.empty()) return;
+    sort(students.begin(), students.end(), [](const Student&amp; a, const Student&amp; b) {
+        return a.score &gt; b.score;           // 成绩从高到低
+    });
+    cout &lt;&lt; "已按成绩从高到低排序：" &lt;&lt; endl;
+    showAll();
+}
+
+// ---------- 主程序 ----------
+int main() {
+    cout &lt;&lt; "====== 学生成绩管理系统 ======" &lt;&lt; endl;
+
+    while (true) {
+        cout &lt;&lt; "\n1.添加学生  2.显示全部  3.查找最高分  4.按成绩排序  0.退出"
+             &lt;&lt; endl;
+        cout &lt;&lt; "请选择：";
+        int choice;
+        cin &gt;&gt; choice;
+        if (choice == 0) break;
+
+        switch (choice) {
+            case 1: addStudent();  break;
+            case 2: showAll();     break;
+            case 3: findMax();     break;
+            case 4: sortByScore(); break;
+            default: cout &lt;&lt; "无效选项，请重新输入" &lt;&lt; endl;
+        }
+    }
+    cout &lt;&lt; "已退出，再见！" &lt;&lt; endl;
+    return 0;
+}</code></pre></div>
+  <div class="box note"><div class="bt">💡 两处新面孔</div>
+    <p>① <code>auto</code>：让编译器根据右边自动推断类型，<code>auto&amp; s : students</code> 就是「挨个引用每个学生」，比写全名省事；② lambda <code>[](...){...}</code> 是匿名小函数，这里只用来告诉 sort 排序规则，第 15 章讲过。</p>
+  </div>
+
+  <h3>运行效果</h3>
+  <div class="term"><div class="term-head">▶ 运行结果</div><pre><code>====== 学生成绩管理系统 ======
+
+1.添加学生  2.显示全部  3.查找最高分  4.按成绩排序  0.退出
+请选择：1
+请输入姓名：小明
+请输入成绩：92.5
+✔ 添加成功！当前共 1 名学生
+
+1.添加学生  2.显示全部  3.查找最高分  4.按成绩排序  0.退出
+请选择：1
+请输入姓名：小红
+请输入成绩：95
+✔ 添加成功！当前共 2 名学生
+
+1.添加学生  2.显示全部  3.查找最高分  4.按成绩排序  0.退出
+请选择：3
+🏆 最高分：小红 95 分
+
+1.添加学生  2.显示全部  3.查找最高分  4.按成绩排序  0.退出
+请选择：0
+已退出，再见！</code></pre></div>
+
+  <h3>项目复盘：这段代码教会了你什么</h3>
+  <ul>
+    <li><strong>数据与功能分离</strong>：数据放在 struct + vector 里，每个功能是一个独立函数——这就是「模块化」，大程序无非是更多这样的积木。</li>
+    <li><strong>防御式检查</strong>：每个函数开头都判断了「空列表」的情况，好的程序要替用户的「意外操作」着想。</li>
+    <li><strong>菜单 = 无限循环 + 分派</strong>：几乎所有命令行软件都是这个骨架，你已经掌握了它的套路。</li>
+  </ul>
+  <div class="box practice"><div class="bt">🚀 进阶改造（检验你出师没有）</div>
+    <p>① 增加「按姓名查找」功能；② 增加「删除指定学生」功能（提示：遍历找到下标，再用 <code>erase</code>）；③ 结合第 16 章，退出时把学生数据保存到 <code>students.txt</code>、启动时自动读入——这就成了一个能记住数据的完整软件！</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch19">
+  <div class="ch-head"><span class="ch-num">19</span><div><div class="ch-kicker">CHAPTER 19 · 走得更远</div><h2>常见错误对照表与调试心法</h2></div></div>
+  <div class="goals">📌 本章目标：看懂最常见的报错信息，掌握 5 个通用调试方法——以后遇到报错不再慌。</div>
+
+  <h3>报错速查表：对号入座</h3>
+  <table>
+    <thead><tr><th>报错 / 现象</th><th>原因</th><th>解决</th></tr></thead>
+    <tbody>
+      <tr><td><code>expected ';' ...</code></td><td>上一行忘写分号</td><td>看报错行<strong>和它的上一行</strong></td></tr>
+      <tr><td><code>'cout' was not declared</code></td><td>没写 <code>using namespace std;</code> 或没 include 头文件</td><td>补上第 1、2 行</td></tr>
+      <tr><td><code>'xxx' was not declared</code></td><td>变量名拼错 / 用了没声明的变量</td><td>C++ 区分大小写，逐字符核对拼写</td></tr>
+      <tr><td>满屏红色报错却都是英文标点错</td><td>输入法打出了中文的「；」「（」「"」</td><td>写代码时切英文输入法</td></tr>
+      <tr><td>程序一闪而过</td><td>跑完窗口立即关闭</td><td>return 前加 <code>cin.get();</code>，或在终端里手动运行</td></tr>
+      <tr><td>结果不对但没报错</td><td><code>=</code> 写成 <code>==</code> 反了 / 整数除法丢小数 / 变量没初始化</td><td>逐行检查逻辑，打印中间变量</td></tr>
+      <tr><td>数组读出乱码</td><td>越界（下标 ≤ 长度-1 才合法）</td><td>检查循环条件是 <code>&lt;</code> 不是 <code>&lt;=</code></td></tr>
+      <tr><td>程序卡死</td><td>死循环（忘了更新循环变量）</td><td><kbd>Ctrl</kbd>+<kbd>C</kbd> 结束，检查 i++ 那一行</td></tr>
+      <tr><td>cin 读到的数是 0</td><td>输入了字母，读取失败</td><td>按提示输入正确类型</td></tr>
+      <tr><td>中文输出乱码（Windows）</td><td>源文件编码和控制台编码不一致</td><td>Dev-C++ / VS Code 中统一编码设置，或在控制台执行 <code>chcp 65001</code> 切 UTF-8</td></tr>
+      <tr><td><code>undefined reference to 'main'</code></td><td>工程里没有 main 函数或有多个 main</td><td>一个程序有且只有一个 main</td></tr>
+      <tr><td>大括号对不上</td><td>{ } 没有成对出现</td><td>利用编辑器的括号高亮逐层检查</td></tr>
+    </tbody>
+  </table>
+
+  <h3>调试五板斧（顺序使用，百试不爽）</h3>
+  <ol class="steps">
+    <li><strong>只看第一条报错</strong>：编译器一次只可靠地报告一个问题，后面的报错常常是它引起的连锁反应。修复第一条，再重新编译。</li>
+    <li><strong>读懂 / 搜索报错</strong>：报错行号会告诉你位置；看不懂就把报错原文复制去搜索引擎，99% 的新手报错都已有现成答案。</li>
+    <li><strong>print 大法</strong>：在可疑位置插入 <code>cout &lt;&lt; "到这里了, x=" &lt;&lt; x &lt;&lt; endl;</code>，观察变量到底变成多少——最朴素也最强大。</li>
+    <li><strong>注释二分法</strong>：注释掉一半代码再跑，问题还在吗？在 → 问题在被注释的那半；不在 → 在剩下的半。几次就能锁定出错的行。</li>
+    <li><strong>小黄鸭调试法 🦆</strong>：把代码逐行大声讲给桌上的小黄鸭（或任何人）听——解释的过程常常让你自己发现 bug。</li>
+  </ol>
+  <div class="box tip"><div class="bt">💡 心态建议</div>
+    <p>报错不是失败，而是编译器在免费帮你查错。专业程序员每天也在和报错打交道——<strong>会读报错，是新手蜕变的标志性技能</strong>。</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch20">
+  <div class="ch-head"><span class="ch-num">20</span><div><div class="ch-kicker">CHAPTER 20 · 走得更远</div><h2>学习路线图与推荐资源</h2></div></div>
+  <div class="goals">📌 本章目标：明确下一步往哪走，收藏一份可持续使用的资源清单。</div>
+
+  <h3>你已经走到哪了？</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 820 330" role="img" aria-label="学习路线图">
+      <defs><marker id="ar20" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#2563eb"/></marker></defs>
+      <rect class="dstair" x="20"  y="270" width="150" height="40" rx="8"/>
+      <text class="dt" x="95"  y="296" style="font-size:13px">① 基础语法 ✔</text>
+      <rect class="dstair" x="185" y="225" width="150" height="85" rx="8"/>
+      <text class="dt" x="260" y="262" style="font-size:13px">② C++ 进阶</text>
+      <text class="ds" x="260" y="284">模板/智能指针</text>
+      <rect class="dstair" x="350" y="180" width="150" height="130" rx="8"/>
+      <text class="dt" x="425" y="217" style="font-size:13px">③ 数据结构算法</text>
+      <text class="ds" x="425" y="239">刷题强化</text>
+      <rect class="dstair" x="515" y="135" width="150" height="175" rx="8"/>
+      <text class="dt" x="590" y="172" style="font-size:13px">④ 做项目</text>
+      <text class="ds" x="590" y="194">游戏/工具软件</text>
+      <rect class="dstair" x="680" y="90" width="130" height="220" rx="8"/>
+      <text class="dt" x="745" y="127" style="font-size:13px">⑤ 选方向深耕</text>
+      <text class="ds" x="745" y="149">游戏/AI/后端</text>
+      <text class="dt" x="745" y="75" style="font-size:20px">🚀</text>
+    </svg>
+    <div class="cap">图 20-1 学习路线：本教程带你完成了第 ① 阶段，下一站是进阶语法与数据结构</div>
+  </div>
+  <div class="box note"><div class="bt">✅ 学完本教程你应该已经会</div>
+    <p>变量与类型 · 输入输出 · 分支循环 · 函数 · 数组与字符串 · 指针与引用 · 结构体 · 类与对象（封装/继承/多态） · vector/map/set/sort · 文件读写 · 两个完整程序。对照自查，薄弱的章节回去再敲一遍代码。</p>
+  </div>
+
+  <h3>下一站学什么？</h3>
+  <ol>
+    <li><strong>数据结构与算法</strong>（最重要）：链表、栈、队列、二叉树、排序查找——配着刷题平台练，编程能力会有质的飞跃。</li>
+    <li><strong>C++ 进阶特性</strong>：模板、STL 源码原理、智能指针、lambda 深入、多线程。</li>
+    <li><strong>选一个方向做项目</strong>：游戏开发（Unreal / 自研引擎）、后端开发（网络编程、Linux）、嵌入式、量化金融、桌面应用（Qt）。</li>
+  </ol>
+
+  <h3>推荐资源清单</h3>
+  <table>
+    <thead><tr><th>资源</th><th>类型</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td>《C++ Primer Plus》</td><td>📖 书</td><td>入门经典，厚但极细致</td></tr>
+      <tr><td>《C++ Primer》（第 5 版）</td><td>📖 书</td><td>进阶必读，覆盖 C++11</td></tr>
+      <tr><td>cppreference.com</td><td>🌐 网站</td><td>最权威的标准库手册（工具书，遇到就查）</td></tr>
+      <tr><td>learncpp.com</td><td>🌐 网站</td><td>英文但极适合自学的免费系统教程</td></tr>
+      <tr><td>菜鸟教程（runoob）</td><td>🌐 网站</td><td>中文快速查阅语法</td></tr>
+      <tr><td>洛谷（luogu.com.cn）</td><td>⌨️ 刷题</td><td>中文题库，从入门题开始闯关</td></tr>
+      <tr><td>力扣（LeetCode）</td><td>⌨️ 刷题</td><td>算法练习与面试标配</td></tr>
+      <tr><td>B 站系统课</td><td>🎬 视频</td><td>搜「C++ 入门」跟一套完整课程复习巩固</td></tr>
+    </tbody>
+  </table>
+
+  <h3>给未来程序员的 5 条建议</h3>
+  <ol>
+    <li><strong>动手 &gt; 观看</strong>：看懂 ≠ 会写。每个示例都亲手敲一遍、改一遍、弄坏再修好。</li>
+    <li><strong>每天 30 分钟 &gt; 周末狂练 5 小时</strong>：编程是肌肉记忆，贵在持续。</li>
+    <li><strong>给自己找「想要的东西」做</strong>：想做个小游戏？查资料做出来，项目驱动学习最快。</li>
+    <li><strong>把报错当朋友</strong>：参考第 19 章的五板斧，慢慢你会越看越快。</li>
+    <li><strong>学会提问和搜索</strong>：把问题用准确的词描述出来，答案往往就在路上。</li>
+  </ol>
+</section>
+
+<section class="end-card">
+  <h2>🎉 恭喜你学完了全教程！</h2>
+  <p>你从「不知道什么是编程」，到独立写出了猜数字游戏和成绩管理系统——这已经超越了很多只停留在「看视频」阶段的学习者。</p>
+  <p>下一步很简单：把第 18 章的系统改造成<strong>你自己的版本</strong>，加上查找、删除、存文件功能。遇到问题就回到对应章节翻一翻。</p>
+  <p style="margin-top:18px"><a class="btn btn-light" href="#ch1">↺ 回到第一章复习</a></p>
+</section>
+
+</div>
+</main>
+</div>
+
+<button id="backTop" title="回到顶部">↑</button>
+<p class="footer-note">C++ 零基础入门教程 · 全部代码均可复制到编译器直接运行 · 祝你编码愉快 🚀</p>
+
+<script>
+(function () {
+  // ---------- C++ 语法高亮 ----------
+  var KW = ("alignas alignof auto bool break case catch char class const constexpr continue " +
+    "default delete do double else enum false float for friend goto if inline int long " +
+    "mutable namespace new nullptr operator override private protected public return short " +
+    "signed sizeof static struct switch template this throw true try typedef typename union " +
+    "unsigned using virtual void volatile while").split(" ");
+  var TY = ("string vector map set pair queue stack deque list array size_t ifstream ofstream " +
+    "fstream ostream istream greater").split(" ");
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function hl(code) {
+    var out = "", last = 0, m;
+    var re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^[ \t]*#[^\n]*)|(\b\d[\w.]*)|([A-Za-z_]\w*)/gm;
+    while ((m = re.exec(code))) {
+      out += esc(code.slice(last, m.index));
+      if (m[1]) out += '<span class="tk-c">' + esc(m[1]) + '</span>';
+      else if (m[2]) out += '<span class="tk-s">' + esc(m[2]) + '</span>';
+      else if (m[3]) out += '<span class="tk-p">' + esc(m[3]) + '</span>';
+      else if (m[4]) out += '<span class="tk-n">' + esc(m[4]) + '</span>';
+      else {
+        var w = m[5];
+        var isFn = /^\s*[(]/.test(code.slice(re.lastIndex));
+        if (KW.indexOf(w) >= 0) out += '<span class="tk-k">' + w + '</span>';
+        else if (TY.indexOf(w) >= 0) out += '<span class="tk-t">' + w + '</span>';
+        else if (isFn) out += '<span class="tk-f">' + w + '</span>';
+        else out += esc(w);
+      }
+      last = re.lastIndex;
+    }
+    out += esc(code.slice(last));
+    return out;
+  }
+  var blocks = document.querySelectorAll("pre code.language-cpp");
+  for (var i = 0; i < blocks.length; i++) {
+    blocks[i].innerHTML = hl(blocks[i].textContent);
+  }
+
+  // ---------- 复制按钮 ----------
+  var codes = document.querySelectorAll(".code");
+  for (var j = 0; j < codes.length; j++) {
+    (function (box) {
+      var btn = box.querySelector(".copy-btn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var text = box.querySelector("code").textContent;
+        function done() {
+          btn.textContent = "已复制 ✓";
+          setTimeout(function () { btn.textContent = "复制"; }, 1600);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = text; document.body.appendChild(ta);
+          ta.select(); document.execCommand("copy");
+          document.body.removeChild(ta); done();
+        }
+      });
+    })(codes[j]);
+  }
+
+  // ---------- 阅读进度条 + 返回顶部 ----------
+  var bar = document.getElementById("progress");
+  var back = document.getElementById("backTop");
+  window.addEventListener("scroll", function () {
+    var h = document.documentElement;
+    var p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+    bar.style.width = (p * 100) + "%";
+    back.style.display = h.scrollTop > 600 ? "block" : "none";
+  });
+  back.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // ---------- 侧边目录滚动高亮 ----------
+  var links = document.querySelectorAll(".toc a");
+  var map = {};
+  for (var k = 0; k < links.length; k++) map[links[k].getAttribute("href").slice(1)] = links[k];
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && map[e.target.id]) {
+          for (var n = 0; n < links.length; n++) links[n].classList.remove("active");
+          var a = map[e.target.id];
+          a.classList.add("active");
+          a.scrollIntoView({ block: "nearest" });
+        }
+      });
+    }, { rootMargin: "-70px 0px -65% 0px", threshold: 0 });
+    var secs = document.querySelectorAll("section.chapter");
+    for (var s = 0; s < secs.length; s++) obs.observe(secs[s]);
+  }
+
+  // ---------- 移动端目录抽屉 ----------
+  var toggle = document.getElementById("tocToggle");
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      document.body.classList.toggle("nav-open");
+    });
+    var tocLinks = document.querySelectorAll(".toc a");
+    for (var t = 0; t < tocLinks.length; t++) {
+      tocLinks[t].addEventListener("click", function () {
+        document.body.classList.remove("nav-open");
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html>
