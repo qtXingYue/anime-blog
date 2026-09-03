@@ -616,6 +616,19 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
+// ═══ BRAND CLICK (在首页点击 Logo 时平滑滚回顶部，避免地址栏残留 # 或触发硬刷新) ═══
+document.querySelectorAll('a.brand').forEach(brand => {
+  brand.addEventListener('click', e => {
+    if (window.location.pathname === '/' || window.location.pathname === '') {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (window.location.hash) {
+        history.pushState('', document.title, window.location.pathname + window.location.search);
+      }
+    }
+  });
+});
+
 // ═══ BACK TO TOP ═══
 const btt = document.getElementById('backToTop');
 if (btt) {
