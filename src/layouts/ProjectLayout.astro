@@ -1,6 +1,7 @@
 ---
 import { projectNav } from '../data/projects';
 import { ClientRouter } from 'astro:transitions';
+import AiAssistant from '../components/AiAssistant.astro';
 
 interface Props {
   title: string;           // 页面标题
@@ -461,7 +462,7 @@ a:hover { color: var(--gold); }
 
 /* ═══ Back to Top Button ═══ */
 .back-to-top {
-  position: fixed; bottom: 2rem; right: 2rem;
+  position: fixed; bottom: 5.2rem; right: 2.1rem;
   width: 44px; height: 44px;
   background: var(--bg-raised); border: 1px solid var(--border);
   border-radius: 50%; cursor: pointer;
@@ -728,5 +729,6 @@ document.addEventListener('astro:page-load', initProjectLayout);
 initProjectLayout();
 </script>
 
+<AiAssistant />
 </body>
 </html>
