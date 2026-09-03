@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python 爬虫系统实战教程 · 2026 完整版</title>
+<style>
+:root{
+  --bg:#0d1017; --bg2:#141824; --bg3:#1b2130; --card:#151b28;
+  --line:#28303f; --line2:#39435a;
+  --txt:#e9ecf2; --txt2:#a3adbf; --txt3:#6d7688;
+  --blue:#4d9de0; --teal:#3ecf8e; --amber:#f2b544; --coral:#f2765e; --purple:#a78bfa; --red:#f2564e; --cyan:#37c2d6;
+  --mono:"Cascadia Code","JetBrains Mono",Consolas,"Courier New",monospace;
+  --sans:"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);line-height:1.78;font-size:15px}
+.container{max-width:980px;margin:0 auto;padding:0 26px}
+
+/* hero */
+.hero{background:radial-gradient(1200px 400px at 70% -10%,rgba(62,207,142,.12),transparent 60%),radial-gradient(900px 400px at 10% 0%,rgba(77,157,224,.12),transparent 60%),#0d1017;border-bottom:1px solid var(--line);padding:72px 0 56px}
+.hero .tag{display:inline-block;font-size:12px;color:var(--teal);border:1px solid rgba(62,207,142,.4);border-radius:999px;padding:3px 14px;margin-bottom:18px;letter-spacing:2px}
+.hero h1{font-size:38px;font-weight:800;letter-spacing:1px;line-height:1.25}
+.hero h1 span{background:linear-gradient(90deg,var(--teal),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--txt2);margin-top:16px;max-width:680px;font-size:16px}
+.hero .meta{margin-top:24px;font-size:13px;color:var(--txt3);display:flex;gap:18px;flex-wrap:wrap}
+.hero .meta b{color:var(--txt2);font-weight:600}
+
+/* toc */
+.toc{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px 30px;margin:40px 0}
+.toc h2{font-size:13px;color:var(--txt3);margin-bottom:16px;letter-spacing:3px}
+.toc ol{list-style:none;counter-reset:toc;column-count:2;column-gap:36px}
+.toc li{counter-increment:toc;padding:7px 0;border-bottom:1px dashed var(--line);break-inside:avoid}
+.toc a{color:var(--txt2);text-decoration:none;display:flex;gap:10px;align-items:baseline;font-size:14px}
+.toc a:hover{color:var(--teal)}
+.toc a::before{content:counter(toc,decimal-leading-zero);color:var(--teal);font-family:var(--mono);font-size:12px;flex-shrink:0}
+@media(max-width:680px){.toc ol{column-count:1}}
+
+/* part banner */
+.part{margin:64px 0 8px;padding:14px 20px;border-left:4px solid var(--purple);background:linear-gradient(90deg,rgba(167,139,250,.1),transparent);border-radius:0 10px 10px 0}
+.part b{color:var(--purple);font-size:13px;letter-spacing:2px}
+.part div{font-size:18px;font-weight:700;margin-top:2px}
+
+/* sections */
+section{padding:52px 0;border-bottom:1px solid var(--line)}
+section h2{font-size:26px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+section h2 .num{color:var(--teal);font-family:var(--mono);font-size:16px;background:rgba(62,207,142,.12);padding:2px 10px;border-radius:8px}
+section h2 .lvl{font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;letter-spacing:1px}
+.lvl.b{color:var(--teal);border:1px solid rgba(62,207,142,.4)}
+.lvl.i{color:var(--amber);border:1px solid rgba(242,181,68,.4)}
+.lvl.a{color:var(--coral);border:1px solid rgba(242,118,94,.4)}
+section h3{font-size:19px;margin:34px 0 10px;color:var(--txt);display:flex;align-items:center;gap:10px}
+section h3::before{content:"";width:4px;height:18px;background:var(--blue);border-radius:2px}
+section h4{font-size:15.5px;margin:20px 0 8px;color:var(--cyan)}
+section p{margin:10px 0;color:var(--txt2)}
+section ul,section ol{margin:10px 0 10px 22px;color:var(--txt2)}
+section li{margin:6px 0}
+strong{color:var(--txt)}
+em{color:var(--txt3);font-style:normal}
+
+/* figure */
+figure{margin:24px 0;background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:20px;overflow-x:auto}
+figure figcaption{font-size:13px;color:var(--txt3);text-align:center;margin-top:14px;letter-spacing:.5px}
+
+/* code */
+pre{background:#0a0d13;border:1px solid var(--line);border-radius:12px;padding:18px 20px;overflow-x:auto;margin:16px 0;font-family:var(--mono);font-size:13px;line-height:1.7;position:relative}
+pre .fn{font-size:11px;color:var(--txt3);position:absolute;top:8px;right:14px;font-family:var(--mono)}
+code{font-family:var(--mono);font-size:.9em;background:rgba(77,157,224,.13);color:#9cc9f2;padding:1px 6px;border-radius:5px}
+pre code{background:none;color:#d6deeb;padding:0}
+.c-kw{color:#c586c0}.c-st{color:#ce9178}.c-fn{color:#dcdcaa}.c-cm{color:#5f6c7d;font-style:italic}.c-nu{color:#b5cea8}.c-cl{color:#9cdcfe}.c-op{color:#d4d4d4}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px}
+th,td{border:1px solid var(--line);padding:11px 14px;text-align:left;vertical-align:top}
+th{background:var(--bg3);color:var(--txt);font-weight:600;white-space:nowrap}
+td{color:var(--txt2)}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+
+/* callout */
+.callout{border-left:3px solid var(--blue);background:var(--bg2);padding:16px 20px;border-radius:0 12px 12px 0;margin:20px 0;font-size:14px}
+.callout.warn{border-color:var(--amber)}
+.callout.danger{border-color:var(--red)}
+.callout.ok{border-color:var(--teal)}
+.callout.info{border-color:var(--purple)}
+.callout b{color:var(--txt)}
+.callout ul,.callout ol{margin-top:8px}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:20px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;transition:border-color .2s}
+.card:hover{border-color:var(--line2)}
+.card h4{margin:0 0 8px;color:var(--teal);font-size:15px}
+.card h4.bl{color:var(--blue)}.card h4.am{color:var(--amber)}.card h4.co{color:var(--coral)}.card h4.pu{color:var(--purple)}
+.card p{font-size:13.5px;margin:0;color:var(--txt2)}
+
+/* steps */
+.steps{margin:20px 0}
+.step{display:flex;gap:16px;padding:12px 0}
+.step .n{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--bg3);border:1px solid var(--line2);color:var(--teal);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;font-weight:700}
+.step .c{flex:1;padding-top:2px}
+.step .c b{color:var(--txt)}
+.step .c p{margin:4px 0 0;font-size:14px}
+
+/* misc */
+.chip{display:inline-block;background:var(--bg3);border:1px solid var(--line2);border-radius:999px;padding:2px 12px;font-size:12px;color:var(--txt2);margin:3px 4px}
+.kbd{font-family:var(--mono);font-size:.85em;background:var(--bg3);border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 7px;color:var(--txt)}
+hr.div{border:none;border-top:1px dashed var(--line);margin:28px 0}
+footer{padding:56px 0 72px;color:var(--txt3);font-size:13px;text-align:center;line-height:2}
+.backtop{position:fixed;right:26px;bottom:26px;width:44px;height:44px;border-radius:50%;background:var(--bg3);border:1px solid var(--line2);color:var(--teal);display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:18px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+</style>
+</head>
+<body id="top">
+
+<div class="hero">
+  <div class="container">
+    <a href="/" style="display:inline-block;margin-bottom:16px;padding:7px 14px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#a3adbf;font-size:13px;font-weight:600;text-decoration:none">← 返回作品集</a>
+    <span class="tag">2026 · COMPLETE EDITION</span>
+    <h1>Python 爬虫<br><span>系统实战教程</span></h1>
+    <p>一套覆盖 14 章的完整学习体系：从环境搭建与 HTTP 原理，到请求库、解析库、并发、动态渲染、反爬对抗、Scrapy 框架、接口逆向，再到工程化与多个完整实战项目。图文结合，代码全部可直接运行。</p>
+    <div class="meta">
+      <span><b>适合：</b>有 Python 基础的开发者</span>
+      <span><b>环境：</b>Python 3.11+</span>
+      <span><b>章节：</b>14 章 + 附录</span>
+      <span><b>更新：</b>2026-08</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+<div class="toc">
+  <h2>课程目录</h2>
+  <ol>
+    <li><a href="#s1">爬虫基础认知与合规边界</a></li>
+    <li><a href="#s2">开发环境搭建</a></li>
+    <li><a href="#s3">HTTP 协议深度解析</a></li>
+    <li><a href="#s4">HTML 与选择器</a></li>
+    <li><a href="#s5">请求库详解</a></li>
+    <li><a href="#s6">解析库详解</a></li>
+    <li><a href="#s7">数据存储方案</a></li>
+    <li><a href="#s8">并发与异步提速</a></li>
+    <li><a href="#s9">动态页面渲染</a></li>
+    <li><a href="#s10">反爬对抗体系</a></li>
+    <li><a href="#s11">Scrapy 框架</a></li>
+    <li><a href="#s12">接口抓取与逆向</a></li>
+    <li><a href="#s13">工程化与部署</a></li>
+    <li><a href="#s14">实战项目集</a></li>
+  </ol>
+</div>
+
+<!-- ===================== PART 1 ===================== -->
+<div class="part"><b>PART 1 · 基础篇</b><div>认知 · 环境 · 协议 · 选择器</div></div>
+
+<!-- ===================== S1 ===================== -->
+<section id="s1">
+  <h2><span class="num">01</span>爬虫基础认知与合规边界 <span class="lvl b">入门</span></h2>
+  <p>爬虫（Web Crawler / Spider）的本质只有一句话：<strong>用代码模拟浏览器发出 HTTP 请求，把服务器返回的数据结构化地保存下来。</strong>搜索引擎、价格监控、舆情分析、数据日报，背后都是爬虫。它不神秘，本身也不违法——关键在于<strong>爬什么、怎么爬、用来做什么</strong>。</p>
+
+  <h3>1.1 爬虫的四个基本环节</h3>
+  <figure>
+    <svg viewBox="0 0 680 180" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>爬虫基本流程</title><desc>请求、响应、解析、存储四环节</desc>
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <rect x="16" y="66" width="142" height="56" rx="10" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="87" y="90" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="14" font-weight="500">① 发送请求</text>
+      <text x="87" y="108" text-anchor="middle" fill="#5b7d9c" font-family="sans-serif" font-size="12">GET /anime/3373</text>
+      <line x1="160" y1="94" x2="186" y2="94" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="188" y="66" width="142" height="56" rx="10" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="259" y="90" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="14" font-weight="500">② 获取响应</text>
+      <text x="259" y="108" text-anchor="middle" fill="#5b8a74" font-family="sans-serif" font-size="12">HTML / JSON</text>
+      <line x1="332" y1="94" x2="358" y2="94" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="360" y="66" width="142" height="56" rx="10" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="431" y="90" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="14" font-weight="500">③ 解析提取</text>
+      <text x="431" y="108" text-anchor="middle" fill="#8a7a4e" font-family="sans-serif" font-size="12">CSS / XPath / 正则</text>
+      <line x1="504" y1="94" x2="530" y2="94" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="532" y="66" width="132" height="56" rx="10" fill="#221a35" stroke="#a78bfa" stroke-width="0.5"/>
+      <text x="598" y="90" text-anchor="middle" fill="#d5c6f8" font-family="sans-serif" font-size="14" font-weight="500">④ 存储分析</text>
+      <text x="598" y="108" text-anchor="middle" fill="#7d6b9e" font-family="sans-serif" font-size="12">CSV / SQLite</text>
+    </svg>
+    <figcaption>图 1-1　爬虫的标准工作流</figcaption>
+  </figure>
+  <p>这四个环节循环往复。一个成熟的爬虫，就是在每个环节上不断加固：请求要能突破拦截，解析要能从脏 HTML 里精准提取，存储要能扛住数据量和中断。</p>
+
+  <h3>1.2 爬虫的分类</h3>
+  <table>
+    <tr><th>类型</th><th>目标</th><th>典型场景</th><th>技术重点</th></tr>
+    <tr><td>通用爬虫</td><td>全网抓取</td><td>搜索引擎</td><td>调度、去重、分布式</td></tr>
+    <tr><td>聚焦爬虫</td><td>特定站点/主题</td><td>竞品监控、数据日报</td><td>解析规则、字段抽取</td></tr>
+    <tr><td>增量爬虫</td><td>只抓新增/变更</td><td>新闻订阅、价格变动</td><td>去重、断点、时间戳</td></tr>
+    <tr><td>深层爬虫</td><td>登录后/动态内容</td><td>后台数据、SPA 应用</td><td>会话、渲染、逆向</td></tr>
+  </table>
+  <p>本教程聚焦<strong>聚焦爬虫</strong>与<strong>深层爬虫</strong>——这是个人和中小团队最常用的两类，也是投入产出比最高的方向。</p>
+
+  <h3>1.3 合规边界（务必先读）</h3>
+  <div class="callout danger"><b>三条红线，违反即可能违法：</b>
+    <ol style="margin:8px 0 0 20px">
+      <li><b>robots.txt</b>：网站声明禁止爬取的部分不碰。虽然不是法律强制，但越过了容易惹麻烦。</li>
+      <li><b>控制频率</b>：别把对方服务器打爆。礼貌限速（每秒 1–2 次起）是职业底线，也是防止被封的关键。</li>
+      <li><b>不越权、不传播</b>：不爬登录后的私密数据，不抓取受版权保护的内容（影视、音乐、付费课程）用于二次分发。</li>
+    </ol>
+  </div>
+  <p>合法场景非常宽广：公开数据采集、学术研究、市场分析、自用工具、SEO 监测。个人学习、数据分析、抓取公开信息都是正当用途。请始终把本教程的技术用在合法用途上。</p>
+
+  <div class="callout info"><b>爬虫工程师能力模型</b>——学习这条线：理解 HTTP → 会用请求库 → 精通选择器 → 会存数据 → 会提速 → 能对付反爬 → 能工程化部署。本教程的章节顺序正是按这条成长路径设计的。</div>
+</section>
+
+<!-- ===================== S2 ===================== -->
+<section id="s2">
+  <h2><span class="num">02</span>开发环境搭建 <span class="lvl b">入门</span></h2>
+  <p>工欲善其事，必先利其器。本章搭建一套可长期使用的爬虫开发环境。</p>
+
+  <h3>2.1 Python 与包管理</h3>
+  <p>推荐使用 <strong>Python 3.11+</strong>。包管理用 conda 或 venv 均可，关键是把爬虫依赖装进隔离环境，避免污染系统 Python。</p>
+<pre><code><span class="c-cm"># 查看 Python 版本（建议 3.11+）</span>
+python --version
+
+<span class="c-cm"># 创建隔离环境（conda 示例）</span>
+conda create -n crawl python=3.11 -y
+conda activate crawl</code></pre>
+
+  <h3>2.2 安装核心库</h3>
+<pre><code><span class="c-cm"># 一站式安装（按需求选择）</span>
+pip install scrapling           <span class="c-cm"># 一体化抓取框架（本教程主力）</span>
+pip install requests            <span class="c-cm"># 经典请求库</span>
+pip install httpx               <span class="c-cm"># 现代请求库（HTTP/2 + 异步）</span>
+pip install beautifulsoup4 lxml <span class="c-cm"># 解析库</span>
+pip install parsel              <span class="c-cm"># Scrapy 同款选择器库</span>
+pip install playwright          <span class="c-cm"># 浏览器渲染</span>
+pip install scrapy              <span class="c-cm"># 爬虫框架（进阶）</span></code></pre>
+  <div class="callout warn"><b>浏览器二进制：</b>Playwright / patchright 需要单独下载浏览器，首次使用前执行：
+  <pre style="margin-top:10px"><code>python -m playwright install chromium
+python -m patchright install chromium</code></pre>
+  scrapling 的 <code>DynamicFetcher</code> 走 playwright，<code>StealthyFetcher</code> 走 patchright，两套浏览器是分开的，建议都装上。</div>
+
+  <h3>2.3 开发工具清单</h3>
+  <div class="cards">
+    <div class="card"><h4>代码编辑器</h4><p>VS Code / PyCharm。装 Python 扩展，开启类型提示，写爬虫效率高很多。</p></div>
+    <div class="card"><h4 class="bl">浏览器 + DevTools</h4><p>Chrome/Edge。F12 打开开发者工具：Elements 看结构、Network 看请求、Console 调试 JS。</p></div>
+    <div class="card"><h4 class="am">抓包工具</h4><p>进阶用 mitmproxy / Charles / Fiddler 抓 App 或复杂网页请求。</p></div>
+    <div class="card"><h4 class="pu">数据库工具</h4><p>DB Browser for SQLite（看 .db 文件）、Navicat（看 MySQL）。</p></div>
+  </div>
+
+  <h3>2.4 验证环境</h3>
+  <p>跑通下面这段最小示例，环境就算就绪：</p>
+<pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+page = Fetcher.get(<span class="c-st">'https://example.com'</span>)
+print(<span class="c-st">'状态码:'</span>, page.status)          <span class="c-cm"># 200</span>
+print(<span class="c-st">'标题:'</span>, page.css(<span class="c-st">'h1::text'</span>).get())  <span class="c-cm"># Example Domain</span></code></pre>
+  <div class="callout ok"><b>成功标志：</b>输出 <code>200</code> 和 <code>Example Domain</code>。如果报 <code>AttributeError: ... no attribute 'fetch'</code>，说明你用了 <code>Fetcher.fetch()</code>——静态抓取请用 <code>.get()</code>（详见第 5 章）。</div>
+</section>
+
+<!-- ===================== S3 ===================== -->
+<section id="s3">
+  <h2><span class="num">03</span>HTTP 协议深度解析 <span class="lvl b">入门</span></h2>
+  <p>爬虫工程师 90% 的时间不是在写代码，而是在理解"数据是怎么从服务器到页面的"。HTTP 是这一切的底层，必须吃透。</p>
+
+  <h3>3.1 一次请求的生命周期</h3>
+  <figure>
+    <svg viewBox="0 0 680 240" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>HTTP 请求生命周期</title><desc>客户端与服务器之间的请求响应往返</desc>
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <rect x="40" y="30" width="150" height="180" rx="12" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="115" y="52" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="14" font-weight="600">客户端</text>
+      <text x="115" y="70" text-anchor="middle" fill="#5b7d9c" font-family="sans-serif" font-size="12">浏览器 / 爬虫</text>
+      <rect x="490" y="30" width="150" height="180" rx="12" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="565" y="52" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="14" font-weight="600">服务器</text>
+      <text x="565" y="70" text-anchor="middle" fill="#5b8a74" font-family="sans-serif" font-size="12">Web 服务</text>
+      <line x1="190" y1="110" x2="486" y2="110" stroke="#4d9de0" stroke-width="1.5" marker-end="url(#a3)"/>
+      <text x="338" y="100" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="12.5">① 请求：方法 + 路径 + 头 + 体</text>
+      <text x="338" y="126" text-anchor="middle" fill="#5b7d9c" font-family="mono" font-size="11.5">GET /anime/3373 HTTP/2 · UA · Cookie</text>
+      <line x1="490" y1="170" x2="194" y2="170" stroke="#3ecf8e" stroke-width="1.5" marker-end="url(#a3)"/>
+      <text x="338" y="158" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="12.5">② 响应：状态码 + 头 + 体</text>
+      <text x="338" y="186" text-anchor="middle" fill="#5b8a74" font-family="mono" font-size="11.5">200 OK · Content-Type · HTML/JSON</text>
+    </svg>
+    <figcaption>图 3-1　HTTP 请求-响应往返</figcaption>
+  </figure>
+
+  <h3>3.2 URL 的结构</h3>
+  <p>一个 URL 拆解后，每一段对爬虫都有意义：</p>
+<pre><code>https://demo-site.com:443/browse?finished=1&amp;sort=release_date#page2
+└─┬─┘   └──────┬──────┘└┬┘└─┬──┘└──────────┬──────────┘└─┬──┘
+ 协议        域名      端口  路径        查询参数         锚点</code></pre>
+  <table>
+    <tr><th>部分</th><th>含义</th><th>爬虫视角</th></tr>
+    <tr><td>协议</td><td>http / https</td><td>https 需注意证书与 TLS 指纹</td></tr>
+    <tr><td>域名</td><td>目标主机</td><td>子域名常有独立数据接口</td></tr>
+    <tr><td>路径</td><td>资源位置</td><td><code>/anime/{id}</code> 这类可遍历</td></tr>
+    <tr><td>查询参数</td><td><code>?key=val&amp;key=val</code></td><td>分页、筛选、排序都藏在参数里，改参数=改数据</td></tr>
+    <tr><td>锚点</td><td><code>#xxx</code></td><td>只在前端生效，服务器收不到，抓取时可忽略</td></tr>
+  </table>
+  <div class="callout ok"><b>实战技巧：</b>翻页、筛选、排序，绝大多数是通过修改 URL 查询参数实现的。看到 <code>?page=2</code>、<code>?sort=price</code>、<code>?category=tech</code> 这类参数，直接改它们就能批量抓不同数据。</div>
+
+  <h3>3.3 请求方法</h3>
+  <table>
+    <tr><th>方法</th><th>用途</th><th>是否带请求体</th><th>爬虫常见度</th></tr>
+    <tr><td>GET</td><td>获取资源</td><td>否（参数在 URL）</td><td>★★★★★</td></tr>
+    <tr><td>POST</td><td>提交数据</td><td>是</td><td>★★★（登录、表单、接口）</td></tr>
+    <tr><td>PUT / PATCH</td><td>更新资源</td><td>是</td><td>★（多见于 API）</td></tr>
+    <tr><td>DELETE</td><td>删除资源</td><td>视情况</td><td>★（少见）</td></tr>
+  </table>
+  <p>爬虫主要用 <strong>GET</strong>。遇到登录、搜索、复杂查询时才会用 <strong>POST</strong>（数据放在请求体里，常见 JSON 或表单格式）。</p>
+
+  <h3>3.4 请求头详解</h3>
+  <p>请求头是反爬攻防的第一战场。关键字段逐个说：</p>
+  <table>
+    <tr><th>请求头</th><th>作用</th><th>反爬相关性</th></tr>
+    <tr><td><code>User-Agent</code></td><td>声明客户端身份</td><td><b>最高</b>——裸 requests 的 UA 一眼被识破</td></tr>
+    <tr><td><code>Referer</code></td><td>从哪个页面跳转来</td><td><b>高</b>——防盗链、图片、视频常校验</td></tr>
+    <tr><td><code>Cookie</code></td><td>登录态/会话标识</td><td><b>高</b>——登录后数据全靠它</td></tr>
+    <tr><td><code>Accept</code></td><td>期望的响应格式</td><td>中——<code>application/json</code> vs <code>text/html</code></td></tr>
+    <tr><td><code>Accept-Language</code></td><td>语言偏好</td><td>低——部分站点据此返回中英文</td></tr>
+    <tr><td><code>Content-Type</code></td><td>请求体格式（POST）</td><td>中——POST 时后端会校验</td></tr>
+    <tr><td><code>X-Requested-With</code></td><td>标识 AJAX 请求</td><td>中——<code>XMLHttpRequest</code> 常见于接口</td></tr>
+  </table>
+<pre><code><span class="c-kw">import</span> requests
+
+headers = {
+    <span class="c-st">'User-Agent'</span>: <span class="c-st">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'</span>,
+    <span class="c-st">'Referer'</span>: <span class="c-st">'https://www.google.com/'</span>,
+    <span class="c-st">'Accept'</span>: <span class="c-st">'text/html,application/xhtml+xml'</span>,
+    <span class="c-st">'Accept-Language'</span>: <span class="c-st">'zh-CN,zh;q=0.9'</span>,
+}
+r = requests.get(<span class="c-st">'https://example.com'</span>, headers=headers, timeout=<span class="c-nu">10</span>)
+print(r.status_code)</code></pre>
+  <div class="callout"><b>最实用的伪装法：</b>在浏览器里 F12 → Network → 右键真实请求 → Copy as cURL，再用工具（如 curlconverter）转成 Python 代码，请求头一字不差，伪装度最高。</div>
+
+  <h3>3.5 状态码大全</h3>
+  <table>
+    <tr><th>状态码</th><th>含义</th><th>爬虫应对策略</th></tr>
+    <tr><td>200</td><td>成功</td><td>正常解析响应体</td></tr>
+    <tr><td>301 / 302</td><td>永久 / 临时重定向</td><td>requests 默认跟随；注意最终 URL</td></tr>
+    <tr><td>304</td><td>未修改（缓存）</td><td>配合 If-Modified-Since 做增量</td></tr>
+    <tr><td>400</td><td>请求参数错误</td><td>检查 URL 参数、请求体格式</td></tr>
+    <tr><td>401</td><td>未授权</td><td>需要登录/Token</td></tr>
+    <tr><td>403</td><td>禁止访问</td><td><b>被反爬拦了</b>：查 UA、加 Referer、换代理</td></tr>
+    <tr><td>404</td><td>资源不存在</td><td>链接失效，记录跳过</td></tr>
+    <tr><td>429</td><td>请求过于频繁</td><td><b>立即限速</b>：加长随机延时、退避重试</td></tr>
+    <tr><td>500 / 502 / 503</td><td>服务器错误</td><td>稍后重试；503 常是 WAF 拦截</td></tr>
+  </table>
+
+  <h3>3.6 Cookie 与 Session 原理</h3>
+  <p>HTTP 本身无状态，服务器靠 <strong>Cookie</strong> 记住"你是谁"。理解这个机制，才能处理登录态。</p>
+  <figure>
+    <svg viewBox="0 0 680 200" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>Cookie 会话机制</title><desc>服务器种 Cookie，客户端后续请求自动携带</desc>
+      <defs><marker id="a36" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <rect x="30" y="30" width="140" height="140" rx="12" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="100" y="52" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="14" font-weight="600">浏览器</text>
+      <rect x="510" y="30" width="140" height="140" rx="12" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="580" y="52" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="14" font-weight="600">服务器</text>
+      <line x1="170" y1="85" x2="506" y2="85" stroke="#4d9de0" stroke-width="1.5" marker-end="url(#a36)"/>
+      <text x="338" y="75" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="12">① 首次请求（无 Cookie）</text>
+      <line x1="510" y1="120" x2="174" y2="120" stroke="#3ecf8e" stroke-width="1.5" marker-end="url(#a36)"/>
+      <text x="338" y="110" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="12">② 响应头 Set-Cookie: session_id=abc123</text>
+      <line x1="170" y1="158" x2="506" y2="158" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#a36)"/>
+      <text x="338" y="148" text-anchor="middle" fill="#d5c6f8" font-family="sans-serif" font-size="12">③ 后续请求自动带 Cookie: session_id=abc123</text>
+    </svg>
+    <figcaption>图 3-2　Cookie 维持会话的原理</figcaption>
+  </figure>
+  <p>对应到爬虫：登录一次拿到 Cookie 后，用<strong>会话对象</strong>保持它，后续请求就都是"已登录"状态。requests 的 <code>Session</code>、scrapling 的会话都自动处理了 Cookie 的存取。</p>
+
+  <h3>3.7 HTTPS 与 TLS 指纹</h3>
+  <p>现在的网站基本都是 HTTPS。加密握手时，客户端会暴露一组特征（支持的加密套件、扩展、顺序等），即 <strong>TLS 指纹</strong>。普通 Python 请求的 TLS 指纹和真实浏览器完全不同——这就是为什么有些站点 <code>requests</code> 一请求就 403，而浏览器正常。</p>
+  <div class="callout warn"><b>对策：</b>用 <code>curl_cffi</code> 或 <code>scrapling</code> 这类能模拟浏览器 TLS 指纹的库。这是 2024 年后反爬对抗的关键技术点，也是本教程推荐 scrapling 的重要原因之一。</div>
+
+  <h3>3.8 实战：看清一个请求的完整面貌</h3>
+<pre><code><span class="c-kw">import</span> requests
+
+r = requests.get(<span class="c-st">'https://httpbin.org/headers'</span>, headers={<span class="c-st">'User-Agent'</span>: <span class="c-st">'MyBot/1.0'</span>})
+print(<span class="c-st">'请求头回显:'</span>)
+print(r.json())                      <span class="c-cm"># 服务器收到的所有请求头</span>
+print(<span class="c-st">'响应状态:'</span>, r.status_code)
+print(<span class="c-st">'响应头:'</span>, dict(r.headers))
+print(<span class="c-st">'编码:'</span>, r.encoding)</code></pre>
+  <p><code>httpbin.org</code> 是一个专门用于测试 HTTP 的公开服务，会把你的请求头原样返回——用它练习观察请求头是绝佳方式。</p>
+</section>
+
+<!-- ===================== S4 ===================== -->
+<section id="s4">
+  <h2><span class="num">04</span>HTML 与选择器 <span class="lvl b">入门</span></h2>
+  <p>拿到 HTML 后，怎么精准定位到想要的那一小块数据？靠选择器。这是爬虫的"手术刀"。</p>
+
+  <h3>4.1 HTML 是一棵树（DOM）</h3>
+  <p>HTML 本质是嵌套的标签树。浏览器 F12 → Elements 面板看到的就是这棵树的实时渲染。爬虫要做的就是：<strong>从根节点出发，用选择器定位到目标节点，取出它的文本或属性。</strong></p>
+
+  <h3>4.2 CSS 选择器完全指南</h3>
+  <table>
+    <tr><th>需求</th><th>写法</th><th>说明</th></tr>
+    <tr><td>按标签名</td><td><code>a</code></td><td>所有 a 标签</td></tr>
+    <tr><td>按 class</td><td><code>.title</code></td><td>class 含 title</td></tr>
+    <tr><td>按 id</td><td><code>#main</code></td><td>id 为 main（唯一）</td></tr>
+    <tr><td>按属性</td><td><code>a[href]</code>、<code>img[data-src]</code></td><td>有某属性即可</td></tr>
+    <tr><td>属性值</td><td><code>a[href="/login"]</code></td><td>属性等于某值</td></tr>
+    <tr><td>属性开头</td><td><code>a[href^="/anime/"]</code></td><td>href 以 /anime/ 开头</td></tr>
+    <tr><td>属性结尾</td><td><code>img[src$=".jpg"]</code></td><td>src 以 .jpg 结尾</td></tr>
+    <tr><td>属性包含</td><td><code>div[class*="list"]</code></td><td>class 包含 list</td></tr>
+    <tr><td>后代</td><td><code>div p</code></td><td>div 内所有 p（任意层级）</td></tr>
+    <tr><td>直接子级</td><td><code>div &gt; p</code></td><td>div 的直接子 p</td></tr>
+    <tr><td>第 n 个</td><td><code>li:nth-child(2)</code></td><td>父级下第 2 个 li</td></tr>
+    <tr><td>取文本</td><td><code>h1::text</code></td><td>伪选择器，取文本</td></tr>
+    <tr><td>取属性</td><td><code>img::attr(src)</code></td><td>伪选择器，取属性值</td></tr>
+  </table>
+  <div class="callout"><b>注意：</b><code>::text</code>、<code>::attr(x)</code> 是 parsel / scrapling 的扩展伪选择器，不是标准 CSS。在 BeautifulSoup 里要用 <code>.get_text()</code> 和 <code>['src']</code> 取。</div>
+
+  <h3>4.3 XPath 完全指南</h3>
+  <p>XPath 是另一种定位语言，在处理<strong>按文本内容匹配、向上查找父节点、复杂条件</strong>时比 CSS 更强大。</p>
+  <table>
+    <tr><th>需求</th><th>XPath</th><th>说明</th></tr>
+    <tr><td>所有 a</td><td><code>//a</code></td><td>双斜杠=任意层级</td></tr>
+    <tr><td>按 class</td><td><code>//*[@class="title"]</code></td><td>@取属性</td></tr>
+    <tr><td>按 id</td><td><code>//*[@id="main"]</code></td><td></td></tr>
+    <tr><td>按文本</td><td><code>//a[text()="登录"]</code></td><td>CSS 做不到</td></tr>
+    <tr><td>文本包含</td><td><code>//a[contains(text(),"下载")]</code></td><td>模糊匹配</td></tr>
+    <tr><td>取属性</td><td><code>//img/@src</code></td><td>@前缀</td></tr>
+    <tr><td>取文本</td><td><code>//h1/text()</code></td><td></td></tr>
+    <tr><td>父节点</td><td><code>//a/..</code></td><td>向上回溯</td></tr>
+    <tr><td>兄弟节点</td><td><code>//h2/following-sibling::p</code></td><td>同级之后</td></tr>
+    <tr><td>多条件</td><td><code>//div[@class="a" and @data-x="1"]</code></td><td>and/or 组合</td></tr>
+  </table>
+
+  <h3>4.4 CSS vs XPath 怎么选</h3>
+  <div class="cards">
+    <div class="card"><h4>用 CSS 当主力</h4><p>短、快、可读性好。80% 的场景 CSS 就够了。</p></div>
+    <div class="card"><h4 class="am">这些场景换 XPath</h4><p>按文本内容定位（如"找文字含'价格'的标签"）、需要向上找父节点、复杂多条件。</p></div>
+  </div>
+
+  <h3>4.5 正则表达式（兜底方案）</h3>
+  <p>当数据混在 JS 代码里、或 HTML 结构极不规则时，正则是最后的兜底手段。</p>
+<pre><code><span class="c-kw">import</span> re
+
+html = <span class="c-st">'价格：￥1299 元，库存：42 件'</span>
+price = re.search(<span class="c-st">r'￥(\d+)'</span>, html).group(<span class="c-nu">1</span>)     <span class="c-cm"># 1299</span>
+stock = re.search(<span class="c-st">r'库存：(\d+)'</span>, html).group(<span class="c-nu">1</span>)   <span class="c-cm"># 42</span>
+
+<span class="c-cm"># 常用正则片段</span>
+<span class="c-cm"># \d+ 数字   \w+ 字母数字   .* 任意   \s+ 空白   [^&quot;]+ 非引号</span></code></pre>
+  <div class="callout warn"><b>建议：</b>能不用正则就不用——正则解析 HTML 脆弱易错。优先 CSS/XPath，正则只用于"提取节点内的局部文本"或"从 JS 里抠数据"。</div>
+
+  <h3>4.6 DevTools 实战技巧</h3>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div class="c"><b>定位元素</b><p>F12 → 左上角箭头图标 → 点击页面上的目标，自动跳到对应 HTML 节点。</p></div></div>
+    <div class="step"><div class="n">2</div><div class="c"><b>验证选择器</b><p>Elements 面板按 <span class="kbd">Ctrl</span>+<span class="kbd">F</span>，输入选择器表达式，实时高亮匹配结果，确认选对再写进代码。</p></div></div>
+    <div class="step"><div class="n">3</div><div class="c"><b>复制选择器</b><p>右键节点 → Copy → Copy selector / Copy XPath，直接得到可用表达式（但常偏长，需精简）。</p></div></div>
+    <div class="step"><div class="n">4</div><div class="c"><b>判断静态/动态</b><p>右键 → View page source 看源码。目标数据在源码里=静态可直抓；不在=JS 渲染，转第 9 章。</p></div></div>
+  </div>
+</section>
+
+<!-- ===================== PART 2 ===================== -->
+<div class="part"><b>PART 2 · 核心抓取</b><div>请求 · 解析 · 存储 · 提速</div></div>
+
+<!-- ===================== S5 ===================== -->
+<section id="s5">
+  <h2><span class="num">05</span>请求库详解 <span class="lvl i">核心</span></h2>
+  <p>请求库负责"发出请求、拿回响应"。选对库、用对方法，能省掉一大半反爬的麻烦。</p>
+
+  <h3>5.1 四大请求库怎么选</h3>
+  <table>
+    <tr><th>库</th><th>定位</th><th>优势</th><th>短板</th><th>何时用</th></tr>
+    <tr><td>urllib</td><td>标准库</td><td>无需安装</td><td>API 繁琐</td><td>基本不用，了解即可</td></tr>
+    <tr><td>requests</td><td>经典同步</td><td>简单直观、生态最好</td><td>TLS 指纹易被识别</td><td>学习原理、简单静态站</td></tr>
+    <tr><td>httpx</td><td>现代同步/异步</td><td>HTTP/2、异步、API 像 requests</td><td>同样有指纹问题</td><td>要 HTTP/2 或异步时</td></tr>
+    <tr><td>curl_cffi</td><td>指纹伪装</td><td>完美模拟浏览器 TLS 指纹</td><td>稍重</td><td>反爬严格的静态站</td></tr>
+    <tr><td>scrapling</td><td>一体化框架</td><td>请求+解析+动态+反爬一体</td><td>较新</td><td><b>本教程主力</b></td></tr>
+  </table>
+
+  <h3>5.2 requests 全面用法</h3>
+<pre><code><span class="c-kw">import</span> requests
+
+<span class="c-cm"># GET 带参数（自动拼到 URL）</span>
+r = requests.get(<span class="c-st">'https://httpbin.org/get'</span>,
+                 params={<span class="c-st">'page'</span>: <span class="c-nu">2</span>, <span class="c-st">'sort'</span>: <span class="c-st">'date'</span>},
+                 headers={<span class="c-st">'User-Agent'</span>: <span class="c-st">'Mozilla/5.0'</span>},
+                 timeout=<span class="c-nu">10</span>)
+print(r.url)          <span class="c-cm"># https://httpbin.org/get?page=2&amp;sort=date</span>
+print(r.status_code)  <span class="c-cm"># 200</span>
+print(r.text[:<span class="c-nu">100</span>])   <span class="c-cm"># 文本内容</span>
+print(r.json())       <span class="c-cm"># 若响应是 JSON 直接转字典</span>
+
+<span class="c-cm"># POST 提交表单 / JSON</span>
+requests.post(url, data={<span class="c-st">'user'</span>: <span class="c-st">'a'</span>})        <span class="c-cm"># 表单格式</span>
+requests.post(url, json={<span class="c-st">'user'</span>: <span class="c-st">'a'</span>})        <span class="c-cm"># JSON 格式</span></code></pre>
+
+  <h3>5.3 会话保持（Session）—— 处理登录态</h3>
+  <p>用 <code>Session</code> 对象，它会自动在多次请求间保持 Cookie：</p>
+<pre><code>s = requests.Session()
+
+<span class="c-cm"># 第一步：登录（Cookie 自动存入 Session）</span>
+s.post(<span class="c-st">'https://site.com/login'</span>, data={<span class="c-st">'user'</span>: <span class="c-st">'a'</span>, <span class="c-st">'pwd'</span>: <span class="c-st">'b'</span>})
+
+<span class="c-cm"># 第二步：之后的请求都带着登录态</span>
+r = s.get(<span class="c-st">'https://site.com/profile'</span>)   <span class="c-cm"># 已登录，能看到私密数据</span></code></pre>
+
+  <h3>5.4 超时与重试</h3>
+<pre><code><span class="c-kw">from</span> requests.adapters <span class="c-kw">import</span> HTTPAdapter
+<span class="c-kw">from</span> urllib3.util.retry <span class="c-kw">import</span> Retry
+
+s = requests.Session()
+retries = Retry(total=<span class="c-nu">3</span>, backoff_factor=<span class="c-nu">1</span>,
+                status_forcelist=[<span class="c-nu">429</span>, <span class="c-nu">500</span>, <span class="c-nu">502</span>, <span class="c-nu">503</span>])
+s.mount(<span class="c-st">'https://'</span>, HTTPAdapter(max_retries=retries))
+r = s.get(url, timeout=<span class="c-nu">10</span>)   <span class="c-cm"># 超 10 秒自动放弃，遇 5xx/429 自动重试 3 次</span></code></pre>
+
+  <h3>5.5 代理配置</h3>
+<pre><code>proxies = {
+    <span class="c-st">'http'</span>:  <span class="c-st">'http://127.0.0.1:7890'</span>,
+    <span class="c-st">'https'</span>: <span class="c-st">'http://127.0.0.1:7890'</span>,
+}
+r = requests.get(url, proxies=proxies, timeout=<span class="c-nu">10</span>)</code></pre>
+  <div class="callout warn"><b>真实踩坑：</b>如果系统开了全局代理（Clash、VPN 等，监听 <code>127.0.0.1</code>），requests / curl_cffi 会<b>自动走系统代理</b>，可能导致部分站点连不上或走弯路。遇到诡异的 <code>over proxy 127.0.0.1</code> 连接错误，先检查系统代理，必要时显式传 <code>proxies={}</code> 禁用，或换用浏览器模式。</div>
+
+  <h3>5.6 scrapling 请求（本教程推荐）</h3>
+  <p>scrapling 把请求和解析合在一起，且自动处理 TLS 指纹。三种 Fetcher 对应三种场景：</p>
+  <table>
+    <tr><th>Fetcher</th><th>方法</th><th>底层</th><th>适用</th></tr>
+    <tr><td><code>Fetcher</code></td><td><code>.get() / .post()</code></td><td>curl_cffi</td><td>静态页面，最快</td></tr>
+    <tr><td><code>DynamicFetcher</code></td><td><code>.fetch()</code></td><td>Playwright</td><td>JS 渲染页</td></tr>
+    <tr><td><code>StealthyFetcher</code></td><td><code>.fetch()</code></td><td>patchright</td><td>强反爬（Cloudflare）</td></tr>
+  </table>
+<pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher, DynamicFetcher, StealthyFetcher
+
+<span class="c-cm"># ① 静态：用 get，不是 fetch！</span>
+page = Fetcher.get(<span class="c-st">'https://example.com'</span>)
+
+<span class="c-cm"># ② 动态渲染</span>
+page = DynamicFetcher.fetch(<span class="c-st">'https://spa-site.com'</span>, headless=<span class="c-kw">True</span>)
+
+<span class="c-cm"># ③ 强反爬</span>
+page = StealthyFetcher.fetch(<span class="c-st">'https://protected.com'</span>, headless=<span class="c-kw">True</span>,
+                             network_idle=<span class="c-kw">True</span>)</code></pre>
+  <div class="callout danger"><b>最常见的入门坑：</b><code>Fetcher</code>（静态）只有 <code>.get()/.post()</code>，<b>没有 <code>.fetch()</code></b>；两个浏览器 Fetcher 才有 <code>.fetch()</code>。写错就报 <code>AttributeError: type object 'Fetcher' has no attribute 'fetch'</code>。记住：<b>静态用 get，浏览器用 fetch</b>。</div>
+
+  <h3>5.7 curl_cffi 指纹伪装</h3>
+<pre><code><span class="c-kw">from</span> curl_cffi <span class="c-kw">import</span> requests <span class="c-kw">as</span> creq
+
+<span class="c-cm"># impersonate 指定模拟哪个浏览器的 TLS 指纹</span>
+r = creq.get(<span class="c-st">'https://example.com'</span>, impersonate=<span class="c-st">'chrome'</span>)
+print(r.status_code)</code></pre>
+</section>
+
+<!-- ===================== S6 ===================== -->
+<section id="s6">
+  <h2><span class="num">06</span>解析库详解 <span class="lvl i">核心</span></h2>
+  <p>拿到 HTML 后，用解析库把数据"抠"出来。主流四个：BeautifulSoup、lxml、parsel、正则。</p>
+
+  <h3>6.1 BeautifulSoup（最易上手）</h3>
+<pre><code><span class="c-kw">from</span> bs4 <span class="c-kw">import</span> BeautifulSoup
+
+soup = BeautifulSoup(html, <span class="c-st">'lxml'</span>)
+title = soup.find(<span class="c-st">'h1'</span>).get_text()                 <span class="c-cm"># 按标签找</span>
+items = soup.select(<span class="c-st">'.item a'</span>)                     <span class="c-cm"># CSS 选择器</span>
+<span class="c-kw">for</span> a <span class="c-kw">in</span> items:
+    print(a.get_text(), a[<span class="c-st">'href'</span>])               <span class="c-cm"># 文本 + 属性</span>
+
+<span class="c-cm"># 按文本找（BeautifulSoup 也支持）</span>
+tag = soup.find(<span class="c-st">'a'</span>, string=<span class="c-st">'登录'</span>)</code></pre>
+
+  <h3>6.2 lxml（速度最快）</h3>
+<pre><code><span class="c-kw">from</span> lxml <span class="c-kw">import</span> etree
+
+tree = etree.HTML(html)
+titles = tree.xpath(<span class="c-st">'//h1/text()'</span>)                <span class="c-cm"># XPath</span>
+links = tree.xpath(<span class="c-st">'//a[@class="item"]/@href'</span>)    <span class="c-cm"># 取属性</span></code></pre>
+
+  <h3>6.3 parsel（Scrapy 同款，功能最全）</h3>
+<pre><code><span class="c-kw">from</span> parsel <span class="c-kw">import</span> Selector
+
+sel = Selector(html)
+sel.css(<span class="c-st">'h1::text'</span>).get()                        <span class="c-cm"># CSS 取文本</span>
+sel.xpath(<span class="c-st">'//a/@href'</span>).getall()                  <span class="c-cm"># XPath 取属性</span>
+sel.css(<span class="c-st">'a'</span>).re(<span class="c-st">r'href="(.*?)"'</span>)                <span class="c-cm"># 甚至能套正则</span></code></pre>
+
+  <h3>6.4 JSON 解析（接口数据）</h3>
+<pre><code><span class="c-kw">import</span> json
+
+data = r.json()                    <span class="c-cm"># requests 直接转</span>
+<span class="c-cm"># 或</span>
+data = json.loads(text)            <span class="c-cm"># 字符串转字典</span>
+title = data[<span class="c-st">'data'</span>][<span class="c-st">'list'</span>][<span class="c-nu">0</span>][<span class="c-st">'title'</span>]   <span class="c-cm"># 按层级取值</span>
+
+<span class="c-cm"># 嵌套深时用 jmespath 更优雅</span>
+<span class="c-kw">import</span> jmespath
+titles = jmespath.search(<span class="c-st">'data.list[*].title'</span>, data)</code></pre>
+
+  <h3>6.5 四大解析方式对比</h3>
+  <table>
+    <tr><th>方式</th><th>上手难度</th><th>速度</th><th>功能</th><th>推荐场景</th></tr>
+    <tr><td>BeautifulSoup</td><td>★ 最简单</td><td>中</td><td>CSS + 部分文本查找</td><td>入门、快速验证</td></tr>
+    <tr><td>lxml</td><td>★★</td><td><b>最快</b></td><td>纯 XPath</td><td>追求性能</td></tr>
+    <tr><td>parsel</td><td>★★</td><td>快</td><td>CSS+XPath+正则</td><td>Scrapy 生态</td></tr>
+    <tr><td>正则</td><td>★★★</td><td>快</td><td>任意文本</td><td>JS 抠数据、兜底</td></tr>
+  </table>
+  <div class="callout ok"><b>推荐路径：</b>入门用 BeautifulSoup 找感觉，主力用 parsel（或 scrapling 自带的解析，本质就是 parsel）——它 CSS/XPath/正则三合一，一个库走天下。</div>
+
+  <h3>6.6 实战：解析一个列表页</h3>
+<pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+page = Fetcher.get(<span class="c-st">'https://demo-site.com/'</span>)
+<span class="c-cm"># 一次抓取多个字段，组合成结构化数据</span>
+<span class="c-kw">for</span> card <span class="c-kw">in</span> page.css(<span class="c-st">'a[href^="/anime/"]'</span>):
+    href = card.attrib.get(<span class="c-st">'href'</span>)
+    name = card.css(<span class="c-st">'img::attr(alt)'</span>).get()
+    <span class="c-kw">if</span> name:
+        print(name, href)</code></pre>
+</section>
+
+<!-- ===================== S7 ===================== -->
+<section id="s7">
+  <h2><span class="num">07</span>数据存储方案 <span class="lvl i">核心</span></h2>
+  <p>数据抓下来要落地。按数据量和查询需求选存储方式。</p>
+
+  <h3>7.1 文件类（轻量数据）</h3>
+<pre><code><span class="c-kw">import</span> csv, json
+
+<span class="c-cm"># CSV：表格数据，Excel 直接打开（utf-8-sig 防乱码）</span>
+<span class="c-kw">with</span> open(<span class="c-st">'data.csv'</span>, <span class="c-st">'w'</span>, newline=<span class="c-st">''</span>, encoding=<span class="c-st">'utf-8-sig'</span>) <span class="c-kw">as</span> f:
+    w = csv.DictWriter(f, fieldnames=[<span class="c-st">'title'</span>, <span class="c-st">'price'</span>])
+    w.writeheader()
+    w.writerows(rows)
+
+<span class="c-cm"># JSON：结构化、嵌套数据</span>
+json.dump(data, open(<span class="c-st">'data.json'</span>, <span class="c-st">'w'</span>, encoding=<span class="c-st">'utf-8'</span>),
+          ensure_ascii=<span class="c-kw">False</span>, indent=<span class="c-nu">2</span>)
+
+<span class="c-cm"># JSONL：一行一条，适合大数据量逐条追加</span>
+<span class="c-kw">with</span> open(<span class="c-st">'data.jsonl'</span>, <span class="c-st">'a'</span>, encoding=<span class="c-st">'utf-8'</span>) <span class="c-kw">as</span> f:
+    f.write(json.dumps(item, ensure_ascii=<span class="c-kw">False</span>) + <span class="c-st">'\n'</span>)</code></pre>
+
+  <h3>7.2 SQLite（单机爬虫最佳归宿）</h3>
+  <p>零配置、单文件、支持 SQL，个人爬虫首选。</p>
+<pre><code><span class="c-kw">import</span> sqlite3
+
+conn = sqlite3.connect(<span class="c-st">'data.db'</span>)
+conn.execute(<span class="c-st">'''CREATE TABLE IF NOT EXISTS anime(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT, url TEXT UNIQUE, meta TEXT)'''</span>)
+
+<span class="c-cm"># 插入（UNIQUE 约束 + INSERT OR IGNORE 自动去重）</span>
+conn.execute(<span class="c-st">'INSERT OR IGNORE INTO anime(title,url,meta) VALUES (?,?,?)'</span>,
+             (title, url, meta))
+conn.commit()
+
+<span class="c-cm"># 查询</span>
+<span class="c-kw">for</span> row <span class="c-kw">in</span> conn.execute(<span class="c-st">'SELECT title, url FROM anime LIMIT 5'</span>):
+    print(row)</code></pre>
+
+  <h3>7.3 其他数据库对比</h3>
+  <table>
+    <tr><th>存储</th><th>适用规模</th><th>特点</th><th>何时用</th></tr>
+    <tr><td>CSV / JSON</td><td>&lt; 10 万条</td><td>最简单、可读</td><td>一次性小任务</td></tr>
+    <tr><td>SQLite</td><td>&lt; 百万条</td><td>零配置、单文件</td><td>个人项目首选</td></tr>
+    <tr><td>MySQL</td><td>百万+</td><td>关系型、多表关联</td><td>结构化、需复杂查询</td></tr>
+    <tr><td>MongoDB</td><td>百万+</td><td>文档型、灵活</td><td>字段不固定、JSON 类数据</td></tr>
+    <tr><td>Redis</td><td>内存级</td><td>极快、支持队列/集合</td><td>去重集合、任务队列</td></tr>
+  </table>
+  <div class="callout"><b>建议：</b>90% 的个人爬虫，SQLite 就够了。只有数据量大到单机扛不住，或需要多进程共享任务队列时，才上 MySQL / Redis。</div>
+
+  <h3>7.4 Redis 做去重与队列（进阶）</h3>
+<pre><code><span class="c-kw">import</span> redis
+
+r = redis.Redis(host=<span class="c-st">'localhost'</span>, port=<span class="c-nu">6379</span>, db=<span class="c-nu">0</span>)
+
+<span class="c-cm"># 集合去重：sadd 返回 1=新增，0=已存在</span>
+<span class="c-kw">if</span> r.sadd(<span class="c-st">'crawled'</span>, url):
+    <span class="c-cm"># 新 URL，加入待抓队列</span>
+    r.lpush(<span class="c-st">'todo'</span>, url)
+
+<span class="c-cm"># 从队列取任务</span>
+task = r.rpop(<span class="c-st">'todo'</span>)</code></pre>
+</section>
+
+<!-- ===================== S8 ===================== -->
+<section id="s8">
+  <h2><span class="num">08</span>并发与异步提速 <span class="lvl a">进阶</span></h2>
+  <p>串行抓 1 万条可能要几小时，并发能压到几分钟。但并发是把双刃剑——提速的同时也更容易被封。</p>
+
+  <h3>8.1 并发模型总览</h3>
+  <figure>
+    <svg viewBox="0 0 680 210" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>并发模型对比</title><desc>串行、多线程、协程三种模式</desc>
+      <rect x="20" y="24" width="200" height="52" rx="10" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="120" y="46" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="14" font-weight="600">串行</text>
+      <text x="120" y="64" text-anchor="middle" fill="#5b7d9c" font-family="sans-serif" font-size="11.5">一个一个抓，慢但稳</text>
+      <rect x="240" y="24" width="200" height="52" rx="10" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="340" y="46" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="14" font-weight="600">多线程</text>
+      <text x="340" y="64" text-anchor="middle" fill="#5b8a74" font-family="sans-serif" font-size="11.5">ThreadPool，I/O 密集适用</text>
+      <rect x="460" y="24" width="200" height="52" rx="10" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="560" y="46" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="14" font-weight="600">协程异步</text>
+      <text x="560" y="64" text-anchor="middle" fill="#8a7a4e" font-family="sans-serif" font-size="11.5">asyncio，单线程高并发</text>
+      <text x="120" y="120" text-anchor="middle" fill="#7d8ba0" font-family="sans-serif" font-size="12">简单可控 · 适合入门与小任务</text>
+      <text x="340" y="120" text-anchor="middle" fill="#7d8ba0" font-family="sans-serif" font-size="12">提速明显 · 代码改动小</text>
+      <text x="560" y="120" text-anchor="middle" fill="#7d8ba0" font-family="sans-serif" font-size="12">性能最强 · 学习曲线陡</text>
+      <text x="340" y="168" text-anchor="middle" fill="#f2765e" font-family="sans-serif" font-size="12.5">共同前提：控制并发数，别把对方服务器打爆（详见第 10 章频率控制）</text>
+    </svg>
+    <figcaption>图 8-1　三种并发模型对比</figcaption>
+  </figure>
+
+  <h3>8.2 多线程（ThreadPoolExecutor，最常用）</h3>
+  <p>网络请求是 I/O 密集型，多线程提速明显、代码改动最小：</p>
+<pre><code><span class="c-kw">from</span> concurrent.futures <span class="c-kw">import</span> ThreadPoolExecutor
+<span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+urls = [<span class="c-st">f'https://site.com/anime/{i}'</span> <span class="c-kw">for</span> i <span class="c-kw">in</span> range(<span class="c-nu">100</span>, <span class="c-nu">130</span>)]
+
+<span class="c-kw">def</span> <span class="c-fn">fetch</span>(url):
+    <span class="c-kw">try</span>:
+        <span class="c-kw">return</span> url, Fetcher.get(url).css(<span class="c-st">'title::text'</span>).get()
+    <span class="c-kw">except</span> Exception <span class="c-kw">as</span> e:
+        <span class="c-kw">return</span> url, <span class="c-st">f'ERR: {e}'</span>
+
+<span class="c-kw">with</span> ThreadPoolExecutor(max_workers=<span class="c-nu">5</span>) <span class="c-kw">as</span> ex:   <span class="c-cm"># 5 并发，别贪多</span>
+    results = list(ex.map(fetch, urls))
+
+<span class="c-kw">for</span> url, title <span class="c-kw">in</span> results:
+    print(title)</code></pre>
+
+  <h3>8.3 协程异步（asyncio + aiohttp，性能最强）</h3>
+<pre><code><span class="c-kw">import</span> asyncio, aiohttp
+
+<span class="c-kw">async</span> <span class="c-kw">def</span> <span class="c-fn">fetch</span>(session, url):
+    <span class="c-kw">async</span> <span class="c-kw">with</span> session.get(url) <span class="c-kw">as</span> resp:
+        <span class="c-kw">return</span> url, <span class="c-kw">await</span> resp.text()
+
+<span class="c-kw">async</span> <span class="c-kw">def</span> <span class="c-fn">main</span>():
+    <span class="c-kw">async</span> <span class="c-kw">with</span> aiohttp.ClientSession() <span class="c-kw">as</span> s:
+        tasks = [fetch(s, u) <span class="c-kw">for</span> u <span class="c-kw">in</span> urls]
+        <span class="c-kw">return</span> <span class="c-kw">await</span> asyncio.gather(*tasks)
+
+results = asyncio.run(main())</code></pre>
+
+  <h3>8.4 并发控制：信号量限速</h3>
+<pre><code><span class="c-cm"># 限制同时只有 5 个请求在飞，避免瞬间打满</span>
+sem = asyncio.Semaphore(<span class="c-nu">5</span>)
+
+<span class="c-kw">async</span> <span class="c-kw">def</span> <span class="c-fn">fetch</span>(session, url):
+    <span class="c-kw">async</span> <span class="c-kw">with</span> sem:                      <span class="c-cm"># 拿到令牌才执行</span>
+        <span class="c-kw">async</span> <span class="c-kw">with</span> session.get(url) <span class="c-kw">as</span> resp:
+            <span class="c-kw">return</span> <span class="c-kw">await</span> resp.text()</code></pre>
+
+  <h3>8.5 选型建议</h3>
+  <table>
+    <tr><th>场景</th><th>推荐</th><th>理由</th></tr>
+    <tr><td>入门 / 小任务（&lt; 1 千）</td><td>串行</td><td>简单、不易被封、好调试</td></tr>
+    <tr><td>中等（1 千–10 万）</td><td>多线程</td><td>提速明显、代码改动小</td></tr>
+    <tr><td>大规模（10 万+）</td><td>协程 / Scrapy</td><td>性能与可维护性</td></tr>
+  </table>
+  <div class="callout warn"><b>黄金法则：</b>先把串行逻辑写对、写稳，再加并发。并发数从小（3–5）开始试，观察是否触发 429/封 IP，再逐步上调。<b>绝大多数封禁都是并发太猛导致的，不是反爬多强。</b></div>
+</section>
+
+<!-- ===================== PART 3 ===================== -->
+<div class="part"><b>PART 3 · 进阶对抗</b><div>动态渲染 · 反爬 · 框架 · 逆向</div></div>
+
+<!-- ===================== S9 ===================== -->
+<section id="s9">
+  <h2><span class="num">09</span>动态页面渲染 <span class="lvl a">进阶</span></h2>
+  <p>当数据由 JavaScript 动态生成（源码里看不到、Network 里有 XHR），就进入动态渲染的领域。</p>
+
+  <h3>9.1 第一原则：先找接口，别急着开浏览器</h3>
+  <p>很多"动态站"其实是<strong>前端渲染 + 后端 JSON 接口</strong>。直接请求 JSON 接口，比开浏览器快一个数量级、省资源、还稳定。</p>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div class="c"><b>判断静态/动态</b><p>右键 → View page source，搜目标数据。源码里有=静态直抓；没有=动态。</p></div></div>
+    <div class="step"><div class="n">2</div><div class="c"><b>找接口</b><p>F12 → Network → 刷新 → 筛选 Fetch/XHR，逐个看响应，找到返回目标数据的那个请求。</p></div></div>
+    <div class="step"><div class="n">3</div><div class="c"><b>复制接口</b><p>右键该请求 → Copy as cURL → 转 Python。直接请求这个接口拿 JSON，绕过渲染。</p></div></div>
+    <div class="step"><div class="n">4</div><div class="c"><b>实在没有/接口加密</b><p>才用浏览器渲染（Playwright / DynamicFetcher）。</p></div></div>
+  </div>
+  <figure>
+    <svg viewBox="0 0 680 170" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>动态页面决策树</title><desc>优先接口，其次浏览器渲染</desc>
+      <defs><marker id="a9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <rect x="18" y="56" width="150" height="56" rx="10" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="93" y="82" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="13" font-weight="600">页面数据哪来的？</text>
+      <line x1="170" y1="84" x2="198" y2="84" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a9)"/>
+      <rect x="200" y="28" width="212" height="52" rx="10" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="306" y="50" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="13" font-weight="600">有 JSON 接口</text>
+      <text x="306" y="68" text-anchor="middle" fill="#5b8a74" font-family="sans-serif" font-size="12">requests 直连（最快）</text>
+      <rect x="200" y="106" width="212" height="52" rx="10" fill="#2b1a10" stroke="#f2765e" stroke-width="0.5"/>
+      <text x="306" y="128" text-anchor="middle" fill="#f6c0b4" font-family="sans-serif" font-size="13" font-weight="600">无接口 / 接口加密</text>
+      <text x="306" y="146" text-anchor="middle" fill="#9e6254" font-family="sans-serif" font-size="12">浏览器渲染</text>
+      <line x1="414" y1="54" x2="440" y2="54" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a9)"/>
+      <rect x="442" y="28" width="220" height="52" rx="10" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="552" y="50" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="13" font-weight="600">JSON 响应</text>
+      <text x="552" y="68" text-anchor="middle" fill="#5b7d9c" font-family="sans-serif" font-size="12">json() 直接解析</text>
+      <line x1="414" y1="132" x2="440" y2="132" stroke="#5b6472" stroke-width="1.5" marker-end="url(#a9)"/>
+      <rect x="442" y="106" width="220" height="52" rx="10" fill="#221a35" stroke="#a78bfa" stroke-width="0.5"/>
+      <text x="552" y="128" text-anchor="middle" fill="#d5c6f8" font-family="sans-serif" font-size="13" font-weight="600">渲染后 HTML</text>
+      <text x="552" y="146" text-anchor="middle" fill="#7d6b9e" font-family="sans-serif" font-size="12">再走 CSS / XPath</text>
+    </svg>
+    <figcaption>图 9-1　动态页面处理决策树</figcaption>
+  </figure>
+
+  <h3>9.2 Playwright 详解</h3>
+<pre><code><span class="c-kw">from</span> playwright.sync_api <span class="c-kw">import</span> sync_playwright
+
+<span class="c-kw">with</span> sync_playwright() <span class="c-kw">as</span> p:
+    browser = p.chromium.launch(headless=<span class="c-kw">True</span>)
+    page = browser.new_page()
+    page.goto(<span class="c-st">'https://spa-site.com'</span>)
+
+    <span class="c-cm"># 等待关键元素加载完成（动态页必须）</span>
+    page.wait_for_selector(<span class="c-st">'.product-list'</span>, timeout=<span class="c-nu">10000</span>)
+
+    <span class="c-cm"># 滚动加载更多（无限滚动页面）</span>
+    page.mouse.wheel(<span class="c-nu">0</span>, <span class="c-nu">3000</span>)
+    page.wait_for_timeout(<span class="c-nu">2000</span>)
+
+    html = page.content()              <span class="c-cm"># 拿渲染后的完整 HTML</span>
+    page.screenshot(path=<span class="c-st">'shot.png'</span>)    <span class="c-cm"># 截图调试用</span>
+    browser.close()</code></pre>
+
+  <h3>9.3 scrapling 动态抓取（更简洁）</h3>
+<pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> DynamicFetcher, StealthyFetcher
+
+<span class="c-cm"># Dynamic：JS 渲染后拿页面</span>
+page = DynamicFetcher.fetch(
+    <span class="c-st">'https://spa-site.com'</span>,
+    headless=<span class="c-kw">True</span>,
+    network_idle=<span class="c-kw">True</span>,          <span class="c-cm"># 等网络空闲，确保 JS 加载完</span>
+    wait_selector=<span class="c-st">'.product'</span>,   <span class="c-cm"># 等特定元素出现</span>
+)
+print(page.css(<span class="c-st">'h1::text'</span>).get())
+
+<span class="c-cm"># Stealthy：强反爬（Cloudflare 盾等），真实浏览器指纹</span>
+page = StealthyFetcher.fetch(
+    <span class="c-st">'https://protected.com'</span>,
+    headless=<span class="c-kw">True</span>,
+    solve_cloudflare=<span class="c-kw">True</span>,     <span class="c-cm"># 自动过 Turnstile 盾</span>
+)</code></pre>
+
+  <h3>9.4 截获 XHR：绕过渲染直拿数据</h3>
+  <p>scrapling 的 <code>capture_xhr</code> 能拦截页面发出的接口请求——<strong>既不用解析渲染后 HTML，也不用自己逆向接口</strong>：</p>
+<pre><code>page = DynamicFetcher.fetch(
+    <span class="c-st">'https://spa-site.com/products'</span>,
+    capture_xhr=<span class="c-st">'/api/products'</span>,    <span class="c-cm"># 拦截含此关键字的请求</span>
+)
+<span class="c-kw">for</span> req <span class="c-kw">in</span> page.captured_xhr:
+    data = req.json()               <span class="c-cm"># 直接拿到接口返回的 JSON</span>
+    print(data)</code></pre>
+  <div class="callout warn"><b>注意：</b><code>capture_xhr</code> 是"路径关键字匹配拦截"，不是"强制抓取"。只有页面<b>真实发出</b>了含该关键字的请求才会被拦下。匹配不到就返回空（结果里不会出现该字段）——纯 SSR 站点（无 XHR）传这个参数没用。</div>
+
+  <h3>9.5 Selenium（老方案，了解即可）</h3>
+  <p>Selenium 是浏览器自动化的老前辈，语法啰嗦、速度慢，现在基本被 Playwright 取代。除非维护老项目，否则直接学 Playwright。</p>
+</section>
+
+<!-- ===================== S10 ===================== -->
+<section id="s10">
+  <h2><span class="num">10</span>反爬对抗体系 <span class="lvl a">进阶</span></h2>
+  <p>反爬是猫鼠游戏。理解对方的检测手段，才知道怎么应对。本章按"从轻到重"梳理完整对抗体系。</p>
+
+  <h3>10.1 反爬对抗金字塔</h3>
+  <figure>
+    <svg viewBox="0 0 680 260" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>反爬对抗金字塔</title><desc>从请求头到验证码的六层对抗</desc>
+      <polygon points="340,20 200,90 480,90" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="340" y="72" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="12.5" font-weight="600">6 滑块/验证码/强风控</text>
+      <polygon points="200,90 480,90 460,140 220,140" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="340" y="120" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="12.5" font-weight="600">5 TLS 指纹 / 浏览器指纹</text>
+      <polygon points="220,140 460,140 440,190 240,190" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="340" y="170" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="12.5" font-weight="600">4 Cookie 登录态 / IP 代理池</text>
+      <polygon points="240,190 440,190 420,240 260,240" fill="#2b1a10" stroke="#f2765e" stroke-width="0.5"/>
+      <text x="340" y="220" text-anchor="middle" fill="#f6c0b4" font-family="sans-serif" font-size="12.5" font-weight="600">1-3 请求头 / 频率 / Referer</text>
+    </svg>
+    <figcaption>图 10-1　反爬对抗层级（越往上越难、成本越高）</figcaption>
+  </figure>
+
+  <h3>10.2 各层对抗手段</h3>
+  <table>
+    <tr><th>层级</th><th>反爬手段</th><th>你的应对</th></tr>
+    <tr><td>1</td><td>检查 User-Agent</td><td>设置真实浏览器 UA</td></tr>
+    <tr><td>2</td><td>校验 Referer（防盗链）</td><td>补全 Referer，模拟站内跳转</td></tr>
+    <tr><td>3</td><td>频率限制 / IP 封禁</td><td>随机延时、指数退避、限速</td></tr>
+    <tr><td>4</td><td>需要 Cookie / 登录</td><td>Session 保持登录态</td></tr>
+    <tr><td>5</td><td>TLS / 浏览器指纹检测</td><td>curl_cffi / StealthyFetcher 模拟指纹</td></tr>
+    <tr><td>6</td><td>滑块、验证码、人机验证</td><td>成本极高，建议换数据源</td></tr>
+  </table>
+
+  <h3>10.3 频率控制（最重要的自律）</h3>
+<pre><code><span class="c-kw">import</span> time, random
+
+<span class="c-kw">for</span> url <span class="c-kw">in</span> urls:
+    fetch(url)
+    time.sleep(random.uniform(<span class="c-nu">1</span>, <span class="c-nu">3</span>))   <span class="c-cm"># 随机 1-3 秒，模拟人类</span></code></pre>
+  <div class="callout danger"><b>再强调一次：</b>绝大多数被封 IP 是<b>自己抓太快</b>，不是对方反爬多强。先限速，再谈对抗。</div>
+
+  <h3>10.4 IP 代理池</h3>
+<pre><code>proxy_list = [
+    <span class="c-st">'http://1.2.3.4:8080'</span>,
+    <span class="c-st">'http://5.6.7.8:8080'</span>,
+]
+proxy = random.choice(proxy_list)
+r = requests.get(url, proxies={<span class="c-st">'http'</span>: proxy, <span class="c-st">'https'</span>: proxy})</code></pre>
+  <p>自建代理池需维护可用性检测（定期测速、剔除失效 IP），也可用付费代理服务。小规模抓取用本地代理（如 Clash）即可。</p>
+
+  <h3>10.5 JS 混淆与字体反爬</h3>
+  <ul>
+    <li><b>JS 混淆</b>：接口参数被 JS 加密。对策：抓包看真实请求，或用 LLM 辅助阅读混淆代码找规律。</li>
+    <li><b>字体反爬</b>：数字用自定义字体显示（源码里是乱码，页面显示正常）。对策：下载字体文件做映射表，或截图 OCR。</li>
+  </ul>
+
+  <h3>10.6 AI 辅助反爬分析（2026 新趋势）</h3>
+  <p>把抓包结果、混淆 JS、异常响应喂给大模型，让它帮你分析"参数怎么生成的""哪里被拦了"。这是近两年爬虫工作流的重大变化——<strong>逆向分析的效率被 AI 大幅拉高</strong>。</p>
+
+  <div class="callout warn"><b>务实忠告：</b>第 5 层以下 90% 能自己解决；第 6 层（滑块、人机验证、强风控）投入产出比极低。专业场景用打码平台，学习场景<b>换一个数据源</b>远比硬刚划算。爬虫的精髓是"找到能拿到的数据"，不是"攻破最难的站"。</div>
+</section>
+
+<!-- ===================== S11 ===================== -->
+<section id="s11">
+  <h2><span class="num">11</span>Scrapy 框架 <span class="lvl a">进阶</span></h2>
+  <p>当爬虫需要规模化、规范化、长期维护时，用 Scrapy 框架。它把"请求调度、解析、存储、去重、中间件"都标准化了。</p>
+
+  <h3>11.1 Scrapy 架构</h3>
+  <figure>
+    <svg viewBox="0 0 680 250" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>Scrapy 架构</title><desc>Engine 居中调度，Spider、Scheduler、Downloader、Pipeline 协作</desc>
+      <defs><marker id="a11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#5b6472" stroke-width="1.5" stroke-linecap="round"/></marker></defs>
+      <rect x="280" y="100" width="120" height="50" rx="10" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="340" y="122" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="14" font-weight="700">Engine</text>
+      <text x="340" y="140" text-anchor="middle" fill="#8a7a4e" font-family="sans-serif" font-size="11">引擎·总调度</text>
+      <rect x="40" y="30" width="140" height="48" rx="10" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="110" y="50" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="13" font-weight="600">Scheduler</text>
+      <text x="110" y="68" text-anchor="middle" fill="#5b7d9c" font-family="sans-serif" font-size="11">调度器·去重队列</text>
+      <rect x="40" y="172" width="140" height="48" rx="10" fill="#221a35" stroke="#a78bfa" stroke-width="0.5"/>
+      <text x="110" y="192" text-anchor="middle" fill="#d5c6f8" font-family="sans-serif" font-size="13" font-weight="600">Spider</text>
+      <text x="110" y="210" text-anchor="middle" fill="#7d6b9e" font-family="sans-serif" font-size="11">爬虫·解析规则</text>
+      <rect x="500" y="30" width="140" height="48" rx="10" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="570" y="50" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="13" font-weight="600">Downloader</text>
+      <text x="570" y="68" text-anchor="middle" fill="#5b8a74" font-family="sans-serif" font-size="11">下载器·发请求</text>
+      <rect x="500" y="172" width="140" height="48" rx="10" fill="#2b1a10" stroke="#f2765e" stroke-width="0.5"/>
+      <text x="570" y="192" text-anchor="middle" fill="#f6c0b4" font-family="sans-serif" font-size="13" font-weight="600">Pipeline</text>
+      <text x="570" y="210" text-anchor="middle" fill="#9e6254" font-family="sans-serif" font-size="11">管道·存数据</text>
+      <line x1="180" y1="60" x2="280" y2="110" stroke="#5b6472" stroke-width="1.2" marker-end="url(#a11)"/>
+      <line x1="400" y1="110" x2="500" y2="60" stroke="#5b6472" stroke-width="1.2" marker-end="url(#a11)"/>
+      <line x1="180" y1="196" x2="280" y2="140" stroke="#5b6472" stroke-width="1.2" marker-end="url(#a11)"/>
+      <line x1="400" y1="140" x2="500" y2="196" stroke="#5b6472" stroke-width="1.2" marker-end="url(#a11)"/>
+    </svg>
+    <figcaption>图 11-1　Scrapy 五大组件协作</figcaption>
+  </figure>
+
+  <h3>11.2 创建项目与 Spider</h3>
+<pre><code><span class="c-cm"># 命令行创建项目</span>
+scrapy startproject myspider
+cd myspider
+scrapy genspider anime demo-site.com   <span class="c-cm"># 生成一个 spider</span>
+scrapy crawl anime                          <span class="c-cm"># 运行</span></code></pre>
+
+  <h3>11.3 Spider 核心代码</h3>
+<pre><code><span class="c-kw">import</span> scrapy
+
+<span class="c-kw">class</span> <span class="c-cl">AnimeSpider</span>(scrapy.Spider):
+    name = <span class="c-st">'anime'</span>
+    start_urls = [<span class="c-st">'https://demo-site.com/'</span>]
+
+    <span class="c-kw">def</span> <span class="c-fn">parse</span>(<span class="c-cl">self</span>, response):
+        <span class="c-cm"># 解析列表页，提取详情链接并跟进</span>
+        <span class="c-kw">for</span> href <span class="c-kw">in</span> response.css(<span class="c-st">'a[href^="/anime/"]::attr(href)'</span>).getall():
+            <span class="c-kw">yield</span> response.follow(href, <span class="c-cl">self</span>.parse_detail)
+
+    <span class="c-kw">def</span> <span class="c-fn">parse_detail</span>(<span class="c-cl">self</span>, response):
+        <span class="c-kw">yield</span> {
+            <span class="c-st">'title'</span>: response.css(<span class="c-st">'h1::text'</span>).get(),
+            <span class="c-st">'url'</span>: response.url,
+            <span class="c-st">'meta'</span>: response.css(<span class="c-st">'meta[name="description"]::attr(content)'</span>).get(),
+        }</code></pre>
+
+  <h3>11.4 Item 与 Pipeline（存数据）</h3>
+<pre><code><span class="c-cm"># pipelines.py · 存入 SQLite</span>
+<span class="c-kw">import</span> sqlite3
+
+<span class="c-kw">class</span> <span class="c-cl">SQLitePipeline</span>:
+    <span class="c-kw">def</span> <span class="c-fn">open_spider</span>(<span class="c-cl">self</span>, spider):
+        <span class="c-cl">self</span>.conn = sqlite3.connect(<span class="c-st">'anime.db'</span>)
+        <span class="c-cl">self</span>.conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS anime(title TEXT,url TEXT,meta TEXT)'</span>)
+
+    <span class="c-kw">def</span> <span class="c-fn">process_item</span>(<span class="c-cl">self</span>, item, spider):
+        <span class="c-cl">self</span>.conn.execute(<span class="c-st">'INSERT INTO anime VALUES (?,?,?)'</span>,
+                          (item[<span class="c-st">'title'</span>], item[<span class="c-st">'url'</span>], item[<span class="c-st">'meta'</span>]))
+        <span class="c-cl">self</span>.conn.commit()
+        <span class="c-kw">return</span> item</code></pre>
+
+  <h3>11.5 常用配置（settings.py）</h3>
+<pre><code>USER_AGENT = <span class="c-st">'Mozilla/5.0 ...'</span>
+DOWNLOAD_DELAY = <span class="c-nu">1</span>                <span class="c-cm"># 请求间隔（秒），礼貌限速</span>
+CONCURRENT_REQUESTS = <span class="c-nu">8</span>           <span class="c-cm"># 全局并发数</span>
+ROBOTSTXT_OBEY = <span class="c-kw">True</span>             <span class="c-cm"># 遵守 robots.txt</span>
+ITEM_PIPELINES = {<span class="c-st">'myspider.pipelines.SQLitePipeline'</span>: <span class="c-nu">300</span>}</code></pre>
+
+  <div class="callout info"><b>何时上 Scrapy：</b>数据量 &gt; 10 万、多站点长期维护、需要定时和告警。小规模一次性任务，用 scrapling / requests 更快——<b>别为了用框架而用框架</b>。</div>
+</section>
+
+<!-- ===================== S12 ===================== -->
+<section id="s12">
+  <h2><span class="num">12</span>接口抓取与逆向 <span class="lvl a">进阶</span></h2>
+  <p>很多高价值数据藏在接口里。学会抓包分析接口，是爬虫进阶的分水岭。</p>
+
+  <h3>12.1 抓包工具</h3>
+  <table>
+    <tr><th>工具</th><th>特点</th><th>适用</th></tr>
+    <tr><td>浏览器 DevTools</td><td>内置、零安装</td><td>网页接口分析（首选）</td></tr>
+    <tr><td>mitmproxy</td><td>开源、可脚本化</td><td>App / 复杂网页抓包</td></tr>
+    <tr><td>Charles / Fiddler</td><td>GUI 友好</td><td>桌面端抓包</td></tr>
+  </table>
+
+  <h3>12.2 接口分析四步法</h3>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><div class="c"><b>定位接口</b><p>Network → Fetch/XHR，逐个看响应，找到返回目标数据的请求。</p></div></div>
+    <div class="step"><div class="n">2</div><div class="c"><b>分析参数</b><p>看 Query 参数和请求体：哪些是固定的（如页码），哪些是动态生成的（如 sign、token、timestamp）。</p></div></div>
+    <div class="step"><div class="n">3</div><div class="c"><b>处理签名</b><p>固定参数直接复制；动态签名看 JS 怎么生成（可用 LLM 辅助读混淆代码）。</p></div></div>
+    <div class="step"><div class="n">4</div><div class="c"><b>代码复现</b><p>Copy as cURL → 转 Python → 替换动态参数 → 循环调用。</p></div></div>
+  </div>
+
+  <h3>12.3 接口签名（sign）的常见套路</h3>
+<pre><code><span class="c-cm"># 常见签名 = md5(参数拼接 + 密钥 + 时间戳)</span>
+<span class="c-kw">import</span> hashlib, time
+
+<span class="c-kw">def</span> <span class="c-fn">make_sign</span>(params, secret):
+    s = <span class="c-st">''</span>.join(<span class="c-st">f'{k}={v}'</span> <span class="c-kw">for</span> k, v <span class="c-kw">in</span> sorted(params.items()))
+    s += secret + str(int(time.time()))
+    <span class="c-kw">return</span> hashlib.md5(s.encode()).hexdigest()
+
+params = {<span class="c-st">'page'</span>: <span class="c-nu">1</span>, <span class="c-st">'size'</span>: <span class="c-nu">20</span>}
+params[<span class="c-st">'sign'</span>] = make_sign(params, <span class="c-st">'网站JS里抠出来的密钥'</span>)
+r = requests.get(<span class="c-st">'https://api.site.com/list'</span>, params=params)</code></pre>
+  <div class="callout warn"><b>提示：</b>密钥和盐值通常藏在网站的 JS 文件里。搜 <code>sign</code>、<code>md5</code>、<code>encrypt</code> 等关键词定位生成逻辑，或直接把 JS 片段交给 LLM 分析。</div>
+
+  <h3>12.4 移动端抓取</h3>
+  <p>App 的数据接口往往比网页更干净。用 mitmproxy 抓手机流量（手机设代理指向电脑），分析 App 的接口。注意：现代 App 多有证书绑定（SSL Pinning），需额外手段绕过，门槛较高，学习阶段建议先用网页版练手。</p>
+</section>
+
+<!-- ===================== PART 4 ===================== -->
+<div class="part"><b>PART 4 · 工程化与实战</b><div>断点 · 部署 · 完整项目</div></div>
+
+<!-- ===================== S13 ===================== -->
+<section id="s13">
+  <h2><span class="num">13</span>工程化与部署 <span class="lvl a">进阶</span></h2>
+  <p>抓几十条不需要工程化；抓几万条还要长期稳定跑，就需要下面这些"基础设施"。</p>
+
+  <h3>13.1 断点续爬</h3>
+  <p>核心思想：<strong>已抓的 URL 存进数据库</strong>，启动时先读出来跳过。配合异常捕获，就能跑几天几夜不中断、崩了也不白干。</p>
+<pre><code><span class="c-kw">import</span> sqlite3, time, random
+
+conn = sqlite3.connect(<span class="c-st">'crawl.db'</span>)
+conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS done(url TEXT PRIMARY KEY)'</span>)
+conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS anime(url TEXT, title TEXT)'</span>)
+
+done = {r[<span class="c-nu">0</span>] <span class="c-kw">for</span> r <span class="c-kw">in</span> conn.execute(<span class="c-st">'SELECT url FROM done'</span>)}
+
+<span class="c-kw">for</span> url <span class="c-kw">in</span> urls:
+    <span class="c-kw">if</span> url <span class="c-kw">in</span> done: <span class="c-kw">continue</span>            <span class="c-cm"># 断点跳过</span>
+    <span class="c-kw">try</span>:
+        title = Fetcher.get(url).css(<span class="c-st">'title::text'</span>).get()
+        conn.execute(<span class="c-st">'INSERT INTO anime VALUES (?,?)'</span>, (url, title))
+        conn.execute(<span class="c-st">'INSERT INTO done VALUES (?)'</span>, (url,))
+        conn.commit()                        <span class="c-cm"># 每成功一条立即落库</span>
+    <span class="c-kw">except</span> Exception <span class="c-kw">as</span> e:
+        print(<span class="c-st">'失败跳过:'</span>, url, e)
+    time.sleep(random.uniform(<span class="c-nu">0.5</span>, <span class="c-nu">1.5</span>))</code></pre>
+
+  <h3>13.2 增量爬取</h3>
+  <p>只抓新增/变更数据，不重复抓全量。常用两种策略：</p>
+  <ul>
+    <li><b>按时间戳</b>：记录上次抓到的最大时间/ID，下次只抓比它新的。</li>
+    <li><b>按 URL 去重</b>：已抓 URL 存库，新出现的才抓（断点续爬的延伸）。</li>
+  </ul>
+
+  <h3>13.3 日志与监控</h3>
+<pre><code><span class="c-kw">import</span> logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format=<span class="c-st">'[%(asctime)s] %(levelname)s: %(message)s'</span>,
+    handlers=[logging.FileHandler(<span class="c-st">'crawl.log'</span>, encoding=<span class="c-st">'utf-8'</span>),
+              logging.StreamHandler()]
+)
+log = logging.getLogger(<span class="c-st">'crawl'</span>)
+log.info(<span class="c-st">'抓取成功 %s'</span>, url)
+log.warning(<span class="c-st">'第 %d 次重试'</span>, attempt)
+log.error(<span class="c-st">'失败 %s: %s'</span>, url, e)</code></pre>
+
+  <h3>13.4 定时调度</h3>
+  <table>
+    <tr><th>方式</th><th>命令/配置</th><th>适用</th></tr>
+    <tr><td>Windows 任务计划</td><td>taskschd.msc 新建任务</td><td>Windows 本机定时</td></tr>
+    <tr><td>Linux cron</td><td><code>0 8 * * * python crawl.py</code></td><td>服务器定时</td></tr>
+    <tr><td>云函数</td><td>腾讯云函数等定时触发</td><td>免维护、按需付费</td></tr>
+    <tr><td>APScheduler</td><td>代码内定时</td><td>需常驻进程</td></tr>
+  </table>
+<pre><code><span class="c-cm"># APScheduler 示例（常驻进程内定时）</span>
+<span class="c-kw">from</span> apscheduler.schedulers.blocking <span class="c-kw">import</span> BlockingScheduler
+
+sched = BlockingScheduler()
+sched.add_job(crawl_task, <span class="c-st">'cron'</span>, hour=<span class="c-nu">8</span>)   <span class="c-cm"># 每天 8 点跑</span>
+sched.start()</code></pre>
+
+  <h3>13.5 爬虫系统总体架构</h3>
+  <figure>
+    <svg viewBox="0 0 680 230" width="100%" role="img" xmlns="http://www.w3.org/2000/svg">
+      <title>爬虫系统架构</title><desc>调度、抓取、解析、存储、监控五层</desc>
+      <rect x="40" y="26" width="600" height="34" rx="8" fill="#2b2113" stroke="#f2b544" stroke-width="0.5"/>
+      <text x="340" y="48" text-anchor="middle" fill="#f6d798" font-family="sans-serif" font-size="13" font-weight="600">调度层 · 定时触发 / 任务队列 / 断点恢复</text>
+      <rect x="40" y="72" width="600" height="34" rx="8" fill="#12253a" stroke="#4d9de0" stroke-width="0.5"/>
+      <text x="340" y="94" text-anchor="middle" fill="#9cc9f0" font-family="sans-serif" font-size="13" font-weight="600">抓取层 · 请求库 / 浏览器渲染 / 代理池 / 限速重试</text>
+      <rect x="40" y="118" width="600" height="34" rx="8" fill="#0e2b1f" stroke="#3ecf8e" stroke-width="0.5"/>
+      <text x="340" y="140" text-anchor="middle" fill="#a5e8c8" font-family="sans-serif" font-size="13" font-weight="600">解析层 · CSS / XPath / JSON / 正则 · 字段抽取与清洗</text>
+      <rect x="40" y="164" width="600" height="34" rx="8" fill="#221a35" stroke="#a78bfa" stroke-width="0.5"/>
+      <text x="340" y="186" text-anchor="middle" fill="#d5c6f8" font-family="sans-serif" font-size="13" font-weight="600">存储层 · SQLite / MySQL / Redis · 去重与持久化</text>
+      <rect x="40" y="204" width="600" height="0" fill="none" stroke="none"/>
+      <text x="340" y="216" text-anchor="middle" fill="#f2765e" font-family="sans-serif" font-size="12" opacity="0.9">横向贯穿：日志 · 监控 · 告警（每一层都要可观测）</text>
+    </svg>
+    <figcaption>图 13-1　一个可长期运行的爬虫系统</figcaption>
+  </figure>
+</section>
+
+<!-- ===================== S14 ===================== -->
+<section id="s14">
+  <h2><span class="num">14</span>实战项目集 <span class="lvl i">实战</span></h2>
+  <p>四个由浅入深的完整项目，覆盖本教程所有核心技能。</p>
+
+  <h3>项目一：动漫站全目录抓取（静态 + 存储 + 断点）</h3>
+  <p>目标：稀饭动漫 Next，抓首页番剧链接 → 详情页 → 存 SQLite。用到：静态抓取、列表解析、翻页、断点续爬、限速。</p>
+<pre><code><span class="c-cm"># crawl_anime.py</span>
+<span class="c-kw">import</span> sqlite3, time, random
+<span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+BASE = <span class="c-st">'https://demo-site.com'</span>
+conn = sqlite3.connect(<span class="c-st">'anime.db'</span>)
+conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS anime(id INTEGER PRIMARY KEY,title TEXT,url TEXT,meta TEXT)'</span>)
+conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS done(url TEXT PRIMARY KEY)'</span>)
+
+<span class="c-kw">def</span> <span class="c-fn">links_of</span>(page):
+    <span class="c-kw">return</span> set(page.css(<span class="c-st">'a[href^="/anime/"]::attr(href)'</span>).getall())
+
+<span class="c-kw">def</span> <span class="c-fn">save</span>(href):
+    <span class="c-kw">if</span> conn.execute(<span class="c-st">'SELECT 1 FROM done WHERE url=?'</span>,(href,)).fetchone(): <span class="c-kw">return</span>
+    p = Fetcher.get(BASE+href)
+    conn.execute(<span class="c-st">'INSERT INTO anime(title,url,meta) VALUES (?,?,?)'</span>,
+        (p.css(<span class="c-st">'h1::text'</span>).get(), href,
+         p.css(<span class="c-st">'meta[name="description"]::attr(content)'</span>).get()))
+    conn.execute(<span class="c-st">'INSERT INTO done VALUES (?)'</span>,(href,)); conn.commit()
+
+links = set()
+<span class="c-kw">for</span> i <span class="c-kw">in</span> range(<span class="c-nu">1</span>,<span class="c-nu">4</span>):
+    links |= links_of(Fetcher.get(<span class="c-st">f'{BASE}/browse?page={i}'</span>))
+    time.sleep(random.uniform(<span class="c-nu">1</span>,<span class="c-nu">2</span>))
+<span class="c-kw">for</span> h <span class="c-kw">in</span> sorted(links):
+    <span class="c-kw">try</span>: save(h)
+    <span class="c-kw">except</span> Exception <span class="c-kw">as</span> e: print(<span class="c-st">'跳过'</span>, h, e)
+print(<span class="c-st">'入库:'</span>, conn.execute(<span class="c-st">'SELECT COUNT(*) FROM anime'</span>).fetchone()[<span class="c-nu">0</span>])</code></pre>
+  <div class="callout danger"><b>使用提醒：</b>本脚本仅用于学习抓取流程。<b>请勿</b>用于批量下载或传播动漫内容（版权风险）。抓取时保持低频、遵守站点规则。</div>
+
+  <h3>项目二：电商商品价格监控（并发 + 定时）</h3>
+  <p>目标：定时抓商品页价格，入库对比涨跌。用到：多线程、SQLite、定时调度、增量。</p>
+<pre><code><span class="c-kw">import</span> sqlite3, time
+<span class="c-kw">from</span> concurrent.futures <span class="c-kw">import</span> ThreadPoolExecutor
+<span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+URLS = [<span class="c-st">'https://shop.com/item/1'</span>, <span class="c-st">'https://shop.com/item/2'</span>]
+conn = sqlite3.connect(<span class="c-st">'price.db'</span>)
+conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS price(ts REAL,item TEXT,price REAL)'</span>)
+
+<span class="c-kw">def</span> <span class="c-fn">grab</span>(u):
+    p = Fetcher.get(u)
+    price = p.css(<span class="c-st">'.price::text'</span>).get()
+    conn.execute(<span class="c-st">'INSERT INTO price VALUES (?,?,?)'</span>,(time.time(),u,price)); conn.commit()
+    <span class="c-kw">return</span> u, price
+
+<span class="c-kw">with</span> ThreadPoolExecutor(<span class="c-nu">3</span>) <span class="c-kw">as</span> ex:
+    <span class="c-kw">for</span> u, price <span class="c-kw">in</span> ex.map(grab, URLS): print(u, price)</code></pre>
+
+  <h3>项目三：图片批量下载（接口 + 文件流）</h3>
+  <p>目标：抓页面所有图片地址并下载。用到：属性提取、文件流写入、并发下载。</p>
+<pre><code><span class="c-kw">import</span> os, requests
+<span class="c-kw">from</span> concurrent.futures <span class="c-kw">import</span> ThreadPoolExecutor
+<span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
+
+os.makedirs(<span class="c-st">'imgs'</span>, exist_ok=<span class="c-kw">True</span>)
+page = Fetcher.get(<span class="c-st">'https://site.com'</span>)
+imgs = page.css(<span class="c-st">'img::attr(src)'</span>).getall()
+
+<span class="c-kw">def</span> <span class="c-fn">dl</span>(src):
+    <span class="c-kw">if</span> <span class="c-kw">not</span> src.startswith(<span class="c-st">'http'</span>): <span class="c-kw">return</span>
+    name = src.split(<span class="c-st">'/'</span>)[-<span class="c-nu">1</span>]
+    r = requests.get(src, timeout=<span class="c-nu">15</span>)
+    open(<span class="c-st">f'imgs/{name}'</span>, <span class="c-st">'wb'</span>).write(r.content)
+
+<span class="c-kw">with</span> ThreadPoolExecutor(<span class="c-nu">8</span>) <span class="c-kw">as</span> ex:
+    ex.map(dl, imgs)</code></pre>
+
+  <h3>项目四：动态 SPA 数据抓取（渲染 + XHR 截获）</h3>
+  <p>目标：抓一个前端渲染的列表页，直接截获其接口 JSON。用到：DynamicFetcher、capture_xhr。</p>
+<pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> DynamicFetcher
+
+page = DynamicFetcher.fetch(<span class="c-st">'https://spa-site.com/list'</span>,
+    headless=<span class="c-kw">True</span>, capture_xhr=<span class="c-st">'/api/list'</span>)
+<span class="c-kw">for</span> req <span class="c-kw">in</span> page.captured_xhr:
+    <span class="c-kw">for</span> item <span class="c-kw">in</span> req.json().get(<span class="c-st">'data'</span>, []):
+        print(item)</code></pre>
+
+  <h3>四个项目的技能覆盖</h3>
+  <table>
+    <tr><th>项目</th><th>请求</th><th>解析</th><th>存储</th><th>并发</th><th>进阶点</th></tr>
+    <tr><td>动漫目录</td><td>静态</td><td>CSS</td><td>SQLite</td><td>—</td><td>断点续爬</td></tr>
+    <tr><td>价格监控</td><td>静态</td><td>CSS</td><td>SQLite</td><td>多线程</td><td>定时增量</td></tr>
+    <tr><td>图片下载</td><td>静态</td><td>属性</td><td>文件</td><td>多线程</td><td>文件流</td></tr>
+    <tr><td>SPA 数据</td><td>渲染</td><td>JSON</td><td>—</td><td>—</td><td>XHR 截获</td></tr>
+  </table>
+</section>
+
+<!-- ===================== 附录 ===================== -->
+<section id="appendix">
+  <h2><span class="num">附录</span>常见问题与资源</h2>
+
+  <h3>A. 常见问题排查</h3>
+  <table>
+    <tr><th>问题</th><th>原因</th><th>解决</th></tr>
+    <tr><td><code>AttributeError: no attribute 'fetch'</code></td><td>静态 Fetcher 用了 fetch</td><td>改用 <code>.get()</code></td></tr>
+    <tr><td><code>over proxy 127.0.0.1</code> 连接失败</td><td>系统代理拦截</td><td>显式 <code>proxies={}</code> 或换浏览器模式</td></tr>
+    <tr><td>抓到的数据是空的</td><td>JS 渲染，源码无数据</td><td>转第 9 章动态渲染</td></tr>
+    <tr><td>突然 403 / 429</td><td>触发频率限制</td><td>加长延时、降并发、换 IP</td></tr>
+    <tr><td>中文乱码</td><td>编码问题</td><td>设 <code>r.encoding</code> 或用 utf-8-sig 存 CSV</td></tr>
+    <tr><td>capture_xhr 为空</td><td>站点无 XHR（纯 SSR）</td><td>该站静态抓即可</td></tr>
+  </table>
+
+  <h3>B. 学习资源</h3>
+  <div class="cards">
+    <div class="card"><h4>入门书</h4><p>《Python 3 网络爬虫开发实战（第2版）》——覆盖全流程，中文经典。</p></div>
+    <div class="card"><h4 class="bl">官方文档</h4><p>Playwright Docs、Scrapy 教程、parsel、curl_cffi、scrapling README。</p></div>
+    <div class="card"><h4 class="am">练手素材</h4><p>httpbin.org（测请求）、公开 API 列表、GitHub 高星爬虫项目。</p></div>
+    <div class="card"><h4 class="pu">工具</h4><p>curlconverter（cURL 转代码）、DB Browser for SQLite、mitmproxy。</p></div>
+  </div>
+
+  <h3>C. 工具速查</h3>
+  <p>
+    <span class="chip">scrapling</span><span class="chip">requests</span><span class="chip">httpx</span><span class="chip">curl_cffi</span>
+    <span class="chip">parsel</span><span class="chip">BeautifulSoup</span><span class="chip">lxml</span><span class="chip">jmespath</span>
+    <span class="chip">playwright</span><span class="chip">scrapy</span><span class="chip">aiohttp</span><span class="chip">sqlite3</span>
+    <span class="chip">redis</span><span class="chip">apscheduler</span><span class="chip">mitmproxy</span>
+  </p>
+
+  <div class="callout ok"><b>结语：</b>爬虫是"项目驱动"的技能。找一个真实目标，从抓 10 条到抓 1 万条，每个环节踩坑再补课，比读十本书都快。记住三个词：<b>合法、节制、可持续</b>——做到这三点，就是好爬虫工程师。</div>
+</section>
+
+</div>
+
+<a href="#top" class="backtop">↑</a>
+<footer>
+  Python 爬虫系统实战教程 · 2026 完整版<br>
+  14 章 + 附录 ｜ 配合 scrapling / Playwright / Scrapy 生态编写 ｜ 图表与代码均可直接使用<br>
+  请遵守 robots.txt 与相关法律法规，合理使用爬虫技术
+</footer>
+</body>
+</html>

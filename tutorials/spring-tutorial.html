@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spring 全家桶零基础图文教程 · 从零到实战</title>
+<style>
+:root{
+  --bg:#f4f6f9; --card:#ffffff; --ink:#1f2937; --muted:#5b6472;
+  --primary:#3e8e41; --primary-soft:#e8f5e9; --accent:#2c7be5;
+  --border:#e3e8ef; --code-bg:#101726; --code-ink:#dbe4f3;
+  --tip-bg:#ecfdf5; --tip-bd:#34d399; --warn-bg:#fffbeb; --warn-bd:#f59e0b;
+  --info-bg:#eff6ff; --info-bd:#60a5fa; --quiz-bg:#f5f3ff; --quiz-bd:#a78bfa;
+  --shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);
+}
+[data-theme="dark"]{
+  --bg:#0b1220; --card:#111a2c; --ink:#dbe4f3; --muted:#8b97ab;
+  --primary:#66bb6a; --primary-soft:#12271a; --accent:#5b9cf5;
+  --border:#22304a; --tip-bg:#0c2418; --tip-bd:#2f9e63; --warn-bg:#241c07; --warn-bd:#b57e12;
+  --info-bg:#0c1b33; --info-bd:#3d7bd9; --quiz-bg:#1a1530; --quiz-bd:#7c5fd0;
+  --shadow:0 1px 3px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.85 -apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+  transition:background .3s,color .3s}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ── 顶部阅读进度条 ── */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:99;
+  background:linear-gradient(90deg,#66bb6a,#42a5f5);transition:width .1s}
+
+/* ── 侧边栏 ── */
+#sidebar{position:fixed;top:0;left:0;bottom:0;width:264px;background:var(--card);
+  border-right:1px solid var(--border);padding:20px 14px;overflow-y:auto;z-index:50}
+#sidebar .logo{font-weight:800;font-size:17px;color:var(--primary);padding:2px 8px 14px;
+  display:flex;align-items:center;gap:8px}
+#sidebar .logo svg{flex:none}
+#sidebar nav a{display:block;padding:7px 10px;margin:2px 0;border-radius:8px;
+  color:var(--muted);font-size:14px;line-height:1.5}
+#sidebar nav a:hover{background:var(--primary-soft);color:var(--primary);text-decoration:none}
+#sidebar nav a.active{background:var(--primary);color:#fff;font-weight:600}
+#sidebar .nav-group{font-size:12px;color:var(--muted);padding:14px 10px 4px;letter-spacing:1px}
+#theme-btn{margin:14px 8px 0;padding:7px 12px;border:1px solid var(--border);border-radius:8px;
+  background:transparent;color:var(--muted);cursor:pointer;font-size:13px;width:calc(100% - 16px)}
+#theme-btn:hover{border-color:var(--primary);color:var(--primary)}
+#menu-btn{display:none;position:fixed;top:12px;left:12px;z-index:60;padding:8px 12px;
+  border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer}
+#mask{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:40}
+
+/* ── 正文 ── */
+main{margin-left:264px;padding:0 28px 80px}
+.doc{max-width:880px;margin:0 auto}
+.hero{background:linear-gradient(135deg,#1b5e20,#2e7d32 55%,#43a047);color:#fff;
+  border-radius:18px;padding:46px 40px;margin:26px 0 34px;box-shadow:var(--shadow)}
+.hero h1{margin:0 0 10px;font-size:32px;line-height:1.35}
+.hero p.sub{margin:0 0 20px;font-size:16px;opacity:.92}
+.hero .chips{display:flex;flex-wrap:wrap;gap:10px}
+.hero .chip{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+  border-radius:999px;padding:4px 14px;font-size:13px}
+section{background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:34px 38px;margin:26px 0;box-shadow:var(--shadow)}
+h2{font-size:25px;margin:0 0 6px;padding-bottom:12px;border-bottom:2px solid var(--primary-soft)}
+h2 .no{display:inline-block;background:var(--primary);color:#fff;border-radius:8px;
+  font-size:15px;padding:2px 10px;margin-right:10px;vertical-align:3px}
+h3{font-size:19px;margin:34px 0 10px;color:var(--ink)}
+h3::before{content:"§";color:var(--primary);margin-right:8px;font-weight:700}
+h4{font-size:16px;margin:24px 0 8px}
+p{margin:10px 0}
+.lead{color:var(--muted);margin-bottom:22px}
+strong{color:var(--ink)}
+mark{background:#fff59d;color:#5d4037;padding:0 4px;border-radius:3px}
+ul,ol{padding-left:26px}
+li{margin:6px 0}
+hr{border:none;border-top:1px dashed var(--border);margin:30px 0}
+
+/* 内联代码 */
+code{background:rgba(135,131,120,.15);color:#c7254e;padding:2px 6px;border-radius:5px;
+  font:13.5px/1.6 Consolas,"JetBrains Mono",monospace}
+[data-theme="dark"] code{color:#f48fb1}
+/* 代码块 */
+pre{position:relative;background:var(--code-bg);color:var(--code-ink);border-radius:12px;
+  padding:16px 18px;overflow-x:auto;font:13.5px/1.7 Consolas,"JetBrains Mono","Cascadia Code",monospace}
+pre code{background:none;color:inherit;padding:0;font-size:inherit}
+pre[data-lang]::before{content:attr(data-lang);position:absolute;top:6px;right:12px;
+  color:#5b6b8c;font-size:11px;letter-spacing:1px;text-transform:uppercase}
+.copy-btn{position:absolute;top:4px;right:60px;background:#1e293b;border:1px solid #334155;
+  color:#94a3b8;border-radius:6px;font-size:11px;padding:3px 8px;cursor:pointer;opacity:0;transition:.2s}
+pre:hover .copy-btn{opacity:1}
+.copy-btn:hover{color:#e2e8f0;border-color:#64748b}
+/* 高亮配色 */
+.kw{color:#c792ea}.str{color:#8fd48a}.com{color:#5f6f8f;font-style:italic}
+.ann{color:#ffd54f}.num{color:#f78c6c}.tag{color:#7ec699}.attr{color:#82aaff}
+
+/* 图解 */
+.dsvg{width:100%;height:auto;display:block;background:var(--card);border:1px solid var(--border);
+  border-radius:12px;margin:14px 0}
+.fig-cap{text-align:center;color:var(--muted);font-size:13px;margin:-6px 0 20px}
+.svg-wrap{overflow-x:auto}
+
+/* 提示框 */
+.box{border-radius:10px;padding:14px 18px;margin:16px 0;border-left:4px solid;font-size:15px}
+.box b.t{display:block;margin-bottom:4px}
+.tip{background:var(--tip-bg);border-color:var(--tip-bd)}
+.warn{background:var(--warn-bg);border-color:var(--warn-bd)}
+.info{background:var(--info-bg);border-color:var(--info-bd)}
+.quiz{background:var(--quiz-bg);border-color:var(--quiz-bd)}
+details{margin:14px 0}
+details.quiz{background:var(--quiz-bg);border:1px solid var(--quiz-bd);border-radius:10px;padding:12px 18px}
+details summary{cursor:pointer;font-weight:600;color:var(--ink)}
+details[open] summary{margin-bottom:8px}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+th{background:var(--primary);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
+[data-theme="dark"] th{color:#0b1220}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
+tr:nth-child(even) td{background:rgba(128,128,128,.04)}
+
+/* 目录树 / 树形 */
+.tree{font-family:Consolas,monospace;font-size:13.5px;background:rgba(128,128,128,.07);
+  border-radius:10px;padding:14px 18px;white-space:pre;overflow-x:auto;line-height:1.75}
+
+/* 返回顶部 */
+#top-btn{position:fixed;right:26px;bottom:30px;width:44px;height:44px;border-radius:50%;
+  background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;
+  box-shadow:var(--shadow);display:none;z-index:60}
+#top-btn:hover{filter:brightness(1.1)}
+
+@media (max-width:1024px){
+  #sidebar{transform:translateX(-100%);transition:.25s}
+  body.sidebar-open #sidebar{transform:none}
+  body.sidebar-open #mask{display:block}
+  #menu-btn{display:block}
+  main{margin-left:0;padding-top:60px}
+  section{padding:24px 20px}
+  .hero{padding:32px 24px}
+  .hero h1{font-size:24px}
+}
+@media print{#sidebar,#menu-btn,#top-btn,#progress{display:none}main{margin:0}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="menu-btn">☰ 目录</button>
+<div id="mask"></div>
+
+<aside id="sidebar">
+  <div class="logo">
+    <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#6db33f" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/><circle cx="12" cy="12" r="4" fill="#6db33f"/></svg>
+    Spring 全家桶教程
+  </div>
+<a href="/" style="display:block;margin:0 0 10px;padding:9px 12px;border-radius:9px;background:rgba(15,23,42,.06);color:inherit;font-weight:700;font-size:13px;text-decoration:none">← 返回作品集</a>
+      <nav>
+    <a href="#top">🏠 课程首页</a>
+    <div class="nav-group">入门篇</div>
+    <a href="#ch0">第 0 章 · 课程导学</a>
+    <a href="#ch1">第 1 章 · Java 基础回顾</a>
+    <a href="#ch2">第 2 章 · 为什么需要框架</a>
+    <a href="#ch3">第 3 章 · Spring 对象管家</a>
+    <div class="nav-group">三大件篇</div>
+    <a href="#ch4">第 4 章 · Spring MVC</a>
+    <a href="#ch5">第 5 章 · MyBatis</a>
+    <a href="#ch6">第 6 章 · Spring Boot</a>
+    <div class="nav-group">实战篇</div>
+    <a href="#ch7">第 7 章 · 实战项目</a>
+    <a href="#ch8">第 8 章 · 常见坑速查</a>
+    <a href="#ch9">第 9 章 · 进阶路线</a>
+    <div class="nav-group">附录</div>
+    <a href="#appendix">速查卡合集</a>
+  </nav>
+  <button id="theme-btn">🌙 切换深色模式</button>
+</aside>
+
+<main><div class="doc">
+
+<!-- ═══════════ 封面 ═══════════ -->
+<section id="top" style="background:transparent;border:none;box-shadow:none;padding:0">
+<div class="hero">
+  <h1>Spring 全家桶零基础图文教程</h1>
+  <p class="sub">从「这是什么」到「亲手跑通一个完整项目」—— Spring · Spring MVC · MyBatis · Spring Boot 一次学透</p>
+  <div class="chips">
+    <span class="chip">📖 10 个章节</span>
+    <span class="chip">🖼️ 11 幅原创图解</span>
+    <span class="chip">💻 50+ 可运行代码</span>
+    <span class="chip">🚀 1 个完整实战</span>
+    <span class="chip">⏱️ 预计 8~10 小时学完</span>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ 第 0 章 ═══════════ -->
+<section id="ch0">
+<h2><span class="no">第 0 章</span>课程导学：认识四件套</h2>
+<p class="lead">先搞清楚四个名词的关系，再搭好环境。磨刀不误砍柴工。</p>
+
+<h3>0.1 这门课适合谁？</h3>
+<p>你只需要具备两个前提：</p>
+<ul>
+  <li>✅ <strong>Java 基础</strong>：最好见过类、方法、对象这几个词（不需要熟练——忘得大半没关系，<strong>第 1 章就是专门为你准备的快速回顾</strong>）；</li>
+  <li>✅ <strong>SQL 基础</strong>：见过 <code>SELECT / INSERT / UPDATE / DELETE</code> 这几个词。</li>
+</ul>
+<p>不需要会的：反射、设计模式、任何框架——用到时我会解释；注解会在第 1 章提前混个眼熟。</p>
+<p>学完你将能够：<strong>独立搭建并开发一个提供 REST 接口、读写 MySQL 数据库的完整 Java 后端项目</strong>——这正是企业里「Spring 技术栈开发岗」的基本功。</p>
+
+<h3>0.2 一张图看懂四个技术的关系</h3>
+<p>初学者最懵的就是：Spring、Spring MVC、MyBatis、Spring Boot 到底什么关系？记住一句话：</p>
+<blockquote>
+  <p><strong>Spring</strong> 是地基（管对象）；<strong>Spring MVC</strong> 是前厅（管请求）；<strong>MyBatis</strong> 是仓库通道（管数据库）；<strong>Spring Boot</strong> 是总装车间（把所有东西自动装好，让你拎包入住）。</p>
+</blockquote>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="技术分层图">
+  <defs><marker id="arr0" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#64748b"/></marker></defs>
+  <text x="380" y="26" text-anchor="middle" font-size="14" fill="#5b6472">一个 Spring 技术栈项目的分层结构</text>
+  <rect x="210" y="44" width="340" height="50" rx="10" fill="#78909c"/>
+  <text x="380" y="75" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">浏览器 / 前端页面</text>
+  <rect x="210" y="112" width="340" height="50" rx="10" fill="#43a047"/>
+  <text x="380" y="137" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">Spring Boot</text>
+  <text x="380" y="155" text-anchor="middle" fill="#e8f5e9" font-size="12">自动配置 · starter 依赖 · 内嵌 Tomcat</text>
+  <rect x="210" y="180" width="340" height="50" rx="10" fill="#1e88e5"/>
+  <text x="380" y="205" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">Spring MVC（Controller 层）</text>
+  <text x="380" y="223" text-anchor="middle" fill="#e3f2fd" font-size="12">接收 HTTP 请求 · 返回 JSON</text>
+  <rect x="210" y="248" width="340" height="50" rx="10" fill="#eceff1" stroke="#b0bec5"/>
+  <text x="380" y="273" text-anchor="middle" fill="#37474f" font-size="16" font-weight="bold">Service 层</text>
+  <text x="380" y="291" text-anchor="middle" fill="#78909c" font-size="12">写业务逻辑的地方</text>
+  <rect x="210" y="316" width="340" height="50" rx="10" fill="#ef6c00"/>
+  <text x="380" y="341" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">MyBatis（Mapper 层）</text>
+  <text x="380" y="359" text-anchor="middle" fill="#fff3e0" font-size="12">执行 SQL · 对象与记录互相转换</text>
+  <rect x="210" y="384" width="340" height="50" rx="10" fill="#37474f"/>
+  <text x="380" y="409" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">MySQL 数据库</text>
+  <text x="380" y="427" text-anchor="middle" fill="#cfd8dc" font-size="12">数据真正存放的地方</text>
+  <line x1="380" y1="96" x2="380" y2="110" stroke="#64748b" stroke-width="2" marker-end="url(#arr0)"/>
+  <line x1="380" y1="164" x2="380" y2="178" stroke="#64748b" stroke-width="2" marker-end="url(#arr0)"/>
+  <line x1="380" y1="232" x2="380" y2="246" stroke="#64748b" stroke-width="2" marker-end="url(#arr0)"/>
+  <line x1="380" y1="300" x2="380" y2="314" stroke="#64748b" stroke-width="2" marker-end="url(#arr0)"/>
+  <line x1="380" y1="368" x2="380" y2="382" stroke="#64748b" stroke-width="2" marker-end="url(#arr0)"/>
+  <path d="M186 196 L160 196 Q150 196 150 206 L150 350 Q150 360 160 360 L186 360" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-dasharray="6 4"/>
+  <text x="132" y="285" text-anchor="middle" fill="#2e7d32" font-size="13" font-weight="bold" transform="rotate(-90 132 285)">Spring 容器统一管理这里的所有对象（Bean）</text>
+</svg>
+</div>
+<p class="fig-cap">图 0-1 · 四件套在项目中的位置：Spring 横贯中三层，Boot 包裹全局，MVC 与 MyBatis 各守一头</p>
+
+<p>也可以用「餐厅」来打比方：</p>
+<table>
+  <tr><th>技术</th><th>餐厅里的角色</th><th>干的活</th></tr>
+  <tr><td><b>Spring</b></td><td>店长</td><td>统一招聘、管理员工（对象），谁缺人手就找店长要</td></tr>
+  <tr><td><b>Spring MVC</b></td><td>前台服务员</td><td>接待客人（浏览器请求），把点单递给后厨</td></tr>
+  <tr><td><b>MyBatis</b></td><td>采购员</td><td>往返仓库（数据库）取食材、存食材</td></tr>
+  <tr><td><b>Spring Boot</b></td><td>加盟总部</td><td>装修、设备、流程提前配好，老板直接开业</td></tr>
+</table>
+
+<h3>0.3 术语速查表（先混个眼熟）</h3>
+<table>
+  <tr><th style="width:150px">名词</th><th>人话解释</th></tr>
+  <tr><td><b>框架</b>（Framework）</td><td>别人写好的「半成品程序」，把重复劳动都做完，你只填业务逻辑。用了框架 = 站在巨人肩膀上</td></tr>
+  <tr><td><b>注解</b>（@Xxx）</td><td>贴在类/方法上的「标签」，框架看到标签就知道该干什么。如 <code>@Service</code> 表示「这是个业务类，请管理它」</td></tr>
+  <tr><td><b>依赖</b>（Dependency）</td><td>你项目用到的别人写的库（jar 包）。比如连 MySQL 需要 MySQL 驱动</td></tr>
+  <tr><td><b>Maven / pom.xml</b></td><td>Java 的「依赖管家」：在 pom.xml 写一行坐标，自动下载并管理所有 jar 包及版本</td></tr>
+  <tr><td><b>Bean</b></td><td>被 Spring 容器创建并保管的对象。你可以理解为「有编制的员工」</td></tr>
+  <tr><td><b>IoC 容器</b></td><td>Spring 内部存放、管理 Bean 的「大仓库」</td></tr>
+  <tr><td><b>ORM</b></td><td>对象关系映射：Java 对象 ↔ 数据库表记录的自动转换技术。MyBatis 属于半自动 ORM</td></tr>
+  <tr><td><b>RESTful</b></td><td>一种接口设计风格：URL 用名词、HTTP 动词表操作（GET 查、POST 增、PUT 改、DELETE 删）</td></tr>
+  <tr><td><b>JSON</b></td><td>前后端之间传数据的主流文本格式，形如 <code>{"name":"tom","age":18}</code></td></tr>
+  <tr><td><b>YAML / yml</b></td><td>用缩进表示层级的配置文件格式，Spring Boot 的标配（application.yml）</td></tr>
+</table>
+
+<h3>0.4 环境搭建（一次性工作，约 30 分钟）</h3>
+<table>
+  <tr><th>工具</th><th>版本</th><th>获取方式</th></tr>
+  <tr><td><b>JDK</b></td><td>17（LTS）或更高</td><td>Adoptium 官网下载 Temurin 17，安装时勾选「添加到 PATH」</td></tr>
+  <tr><td><b>IntelliJ IDEA</b></td><td>Community 免费版即可</td><td>jetbrains.com 下载，开发 Java 的主流编辑器</td></tr>
+  <tr><td><b>MySQL</b></td><td>8.x</td><td>官网或 phpstudy 等集成包；安装时<strong>牢记 root 密码</strong></td></tr>
+  <tr><td><b>Maven</b></td><td>IDEA 自带</td><td>不用单独安装（国内建议在 IDEA 设置里把镜像换成阿里云，下载依赖飞快）</td></tr>
+  <tr><td><b>Postman / curl</b></td><td>任意</td><td>测试接口用；浏览器只能发 GET 请求，学 POST/PUT/DELETE 需要它</td></tr>
+</table>
+<div class="box warn"><b class="t">⚠️ 版本红线</b>Spring Boot 3.x 强制要求 <b>JDK 17+</b>。网上老教程常见的 JDK 8 + Spring Boot 2.x 组合语法 95% 相同，但请勿混用版本——报错了先查版本匹配。</div>
+<p>装好后打开终端（Windows 用 PowerShell / CMD）验证：</p>
+<pre data-lang="bash"><code class="lang-bash">java -version    # 期望输出: openjdk version "17.x.x" 或更高
+mysql --version  # 期望输出: mysql Ver 8.0.xx</code></pre>
+<p>两条命令都能出版本号，环境就绪。以后每次写完代码，都是「IDEA 里点运行」+「Postman 里发请求」的循环，不再碰命令行也没关系。</p>
+
+<details class="quiz"><summary>✍️ 自测：Spring Boot 和 Spring MVC 是什么关系？</summary>
+<p><b>答：</b>Spring MVC 是 Spring 官方家族里的 <b>Web 模块</b>（负责 HTTP 请求处理），Spring Boot 是搭建在 Spring 之上的<b>快速开发脚手架</b>。用 Spring Boot 时默认就集成了 Spring MVC——所以第 4 章学的注解，在第 7 章的 Boot 项目里直接就能用。</p>
+</details>
+</section>
+<!-- ═══════════ 第 1 章（Java 基础） ═══════════ -->
+<section id="ch1">
+<h2><span class="no">第 1 章</span>Java 基础快速回顾（衔接章）</h2>
+<p class="lead">Java 忘了大半？没关系——本章只回顾<strong>本课程会用到的部分</strong>，半小时捡回来。每个知识点都标注了「它会在后续哪一章再次出现」，学起来有目标。Java 还热乎的读者可直接跳去第 2 章。</p>
+
+<h3>1.1 类与 main 方法：一切代码的起点</h3>
+<p>Java 的所有代码都住在「类」里，程序从 <code>main</code> 方法开始执行：</p>
+<pre data-lang="java"><code class="lang-java">public class Hello {
+    public static void main(String[] args) {     // 程序入口（固定写法，先背下来）
+        System.out.println("Hello, Java!");       // 向控制台打印一行
+    }
+}</code></pre>
+<p>三件事记住：① 每个源文件叫 <code>类名.java</code>；② 语句以分号 <code>;</code> 结尾；③ 代码块用大括号 <code>{ }</code> 包住。在 IDEA 新建 Java 项目、粘贴、点绿色三角就能运行。</p>
+<div class="box info"><b class="t">📌 伏笔</b>第 6 章的 Spring Boot 项目也有一个一模一样的 <code>main</code> 方法——只不过那里面写的是「启动整个 Web 网站」。</div>
+
+<h3>1.2 变量与常用类型</h3>
+<pre data-lang="java"><code class="lang-java">int age = 18;                    // 整数
+long id = 100000000L;            // 长整数（数据库主键常用，结尾加 L）
+double price = 9.9;              // 小数
+boolean vip = true;              // 真 / 假
+String name = "tom";             // 字符串（注意大写 S，它是个对象）
+
+var message = "你好";            // var：让编译器自己推断类型（JDK 10+）</code></pre>
+<p>字符串的常用操作：拼接用 <code>+</code>；取长度 <code>name.length()</code>；判空 <code>name.isBlank()</code>。<strong>比较字符串内容必须用 <code>name.equals("tom")</code>，不要用 <code>==</code></strong>（<code>==</code> 比较的是「是否同一个对象」而不是「内容是否相同」，这是新手经典错误）。</p>
+
+<h3>1.3 方法：把逻辑装进可复用的盒子</h3>
+<pre data-lang="java"><code class="lang-java">public class MathUtil {
+    // 访问修饰符  返回值类型  方法名(参数类型 参数名)
+    public static int add(int a, int b) {
+        return a + b;              // return：交回结果，方法结束
+    }
+
+    public static void greet(String name) {   // void：不返回任何东西
+        System.out.println("你好, " + name);
+    }
+}
+
+int sum = MathUtil.add(1, 2);      // 调用：类名.方法名(参数)</code></pre>
+<p>第 7 章实战里 Service 层的每个方法，都是这个套路，只是「盒子」里装的是业务逻辑。</p>
+
+<h3>1.4 类与对象：图纸与房子</h3>
+<p><strong>类（class）是图纸，对象（object）是按图纸造出来的房子。</strong>类定义「有哪些字段（属性）和哪些行为（方法）」，<code>new</code> 一次就造出一个对象：</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 760 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="类与对象">
+  <defs><marker id="arr1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="40" y="55" width="220" height="130" rx="12" fill="#e8f5e9" stroke="#43a047" stroke-width="2"/>
+  <text x="150" y="88" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">类：User（图纸）</text>
+  <text x="150" y="120" text-anchor="middle" font-size="13" fill="#33691e">字段：id · username</text>
+  <text x="150" y="148" text-anchor="middle" font-size="13" fill="#33691e">方法：getId() · getUsername()</text>
+  <text x="150" y="172" text-anchor="middle" font-size="12" fill="#5b6472">只定义"长什么样"，不存具体数据</text>
+  <rect x="420" y="30" width="270" height="80" rx="12" fill="#fff3e0" stroke="#ffb74d"/>
+  <text x="555" y="62" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">对象 u1（new User(1,"tom")）</text>
+  <text x="555" y="90" text-anchor="middle" font-size="13" fill="#795548">id=1, username="tom"</text>
+  <rect x="420" y="140" width="270" height="80" rx="12" fill="#fff3e0" stroke="#ffb74d"/>
+  <text x="555" y="172" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">对象 u2（new User(2,"jerry")）</text>
+  <text x="555" y="200" text-anchor="middle" font-size="13" fill="#795548">id=2, username="jerry"</text>
+  <line x1="262" y1="95" x2="412" y2="68" stroke="#546e7a" stroke-width="2" marker-end="url(#arr1)"/>
+  <line x1="262" y1="145" x2="412" y2="178" stroke="#546e7a" stroke-width="2" marker-end="url(#arr1)"/>
+  <text x="330" y="58" font-size="12.5" fill="#5b6472">new 一次造一个</text>
+  <text x="330" y="180" font-size="12.5" fill="#5b6472">数据各存各的</text>
+</svg>
+</div>
+<p class="fig-cap">图 1-1 · 类是图纸，对象是房子：一张图纸可以造无数房子，每栋房子的数据各自独立</p>
+<pre data-lang="java"><code class="lang-java">public class User {
+    private Long id;                  // 字段（private：只有本类能直接访问）
+    private String username;
+
+    // 构造方法：方法名 = 类名，new 的时候执行
+    public User(Long id, String username) {
+        this.id = id;                 // this.id 是字段，id 是参数
+        this.username = username;
+    }
+
+    // getter/setter：外界读取/修改私有字段的入口
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+}
+
+User u = new User(1L, "tom");    // 创建对象
+String name = u.getUsername();   // 调用对象的方法</code></pre>
+<div class="box info"><b class="t">📌 伏笔</b>第 7 章的实体类 User 就是「字段 + 构造器 + getter/setter」三件套，和数据库表一一对应。</div>
+
+<h3>1.5 包（package）：代码的文件夹</h3>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.entity;    // 必须是文件第一行：声明"我住在哪个包"
+
+import java.util.List;              // 用别的包里的类，需要 import 引入</code></pre>
+<p>包和文件夹<strong>一一对应</strong>：<code>com.example.demo.entity.User</code> 对应 <code>com/example/demo/entity/User.java</code>。行业惯例用「域名倒写」开头（如 <code>com.example</code>），保证全球唯一。</p>
+<div class="box warn"><b class="t">⚠️ 重要伏笔</b>Spring Boot 只扫描「启动类所在包及其子包」。启动类住在 <code>com.example.demo</code>，你的代码就必须住在它的子包里（<code>...demo.controller</code> 等）——第 3 章和第 6 章会反复撞见这条规则。</div>
+
+<h3>1.6 接口与实现类：只认约定，不认品牌</h3>
+<p><strong>接口（interface）只声明「能做什么」，实现类（implements）回答「具体怎么做」。</strong>这是 Spring 全部魔法的地基：</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 760 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="接口与实现">
+  <defs><marker id="arr1b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="240" y="24" width="280" height="70" rx="12" fill="#e3f2fd" stroke="#1e88e5" stroke-width="2"/>
+  <text x="380" y="54" text-anchor="middle" font-size="15" font-weight="bold" fill="#1565c0">接口：Notifier</text>
+  <text x="380" y="80" text-anchor="middle" font-size="13" fill="#1565c0">void send(String message)　← 只说"能做什么"</text>
+  <rect x="60" y="160" width="280" height="76" rx="12" fill="#e8f5e9" stroke="#43a047" stroke-width="2"/>
+  <text x="200" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">实现类：PhoneNotifier</text>
+  <text x="200" y="216" text-anchor="middle" font-size="13" fill="#33691e">发短信的实现</text>
+  <rect x="420" y="160" width="280" height="76" rx="12" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+  <text x="560" y="190" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">实现类：EmailNotifier</text>
+  <text x="560" y="216" text-anchor="middle" font-size="13" fill="#e65100">发邮件的实现</text>
+  <line x1="330" y1="96" x2="230" y2="154" stroke="#546e7a" stroke-width="2" marker-end="url(#arr1b)"/>
+  <line x1="430" y1="96" x2="530" y2="154" stroke="#546e7a" stroke-width="2" marker-end="url(#arr1b)"/>
+  <text x="245" y="130" font-size="12.5" fill="#5b6472">implements 实现</text>
+  <text x="508" y="130" font-size="12.5" fill="#5b6472">implements 实现</text>
+</svg>
+</div>
+<p class="fig-cap">图 1-2 · 接口是「插座面板」（约定），实现类是「不同品牌的插头」（做法）——用插座的人不关心插头是谁造的</p>
+<pre data-lang="java"><code class="lang-java">public interface Notifier {
+    void send(String message);          // 接口方法没有方法体，分号结尾
+}
+
+public class PhoneNotifier implements Notifier {
+    @Override                           // 标记"我在实现/重写"，写错方法名编译器会报错
+    public void send(String message) {
+        System.out.println("发送短信: " + message);
+    }
+}
+
+Notifier n = new PhoneNotifier();       // 关键！用接口类型接收实现对象
+n.send("订单已创建");                    // 调的是 PhoneNotifier 的实现</code></pre>
+<div class="box info"><b class="t">📌 伏笔</b>第 3 章的依赖注入——「你声明要一个 Notifier，Spring 自动塞给你一个实现」——就是这 4 行代码的工程化放大。</div>
+
+<h3>1.7 继承与多态（了解即可）</h3>
+<pre data-lang="java"><code class="lang-java">public class Animal {
+    public void eat() { System.out.println("吃东西"); }
+}
+
+public class Dog extends Animal {           // Dog 是一种 Animal（is-a 关系）
+    @Override
+    public void eat() { System.out.println("狗啃骨头"); }   // 重写父类方法
+}
+
+Animal a = new Dog();
+a.eat();    // 打印"狗啃骨头"——看实际类型，不看变量类型，这就是多态</code></pre>
+<p>Spring 里「声明接口、运行时换实现」本质上就是多态在框架层面的应用。</p>
+
+<h3>1.8 集合：List 与 Map</h3>
+<pre data-lang="java"><code class="lang-java">List&lt;String&gt; names = new ArrayList&lt;&gt;();   // 列表：按顺序存放
+names.add("tom");                          // 添加
+names.add("jerry");
+names.get(0);                              // 按下标取（从 0 开始）
+names.size();                              // 元素个数
+
+for (String name : names) {                // 增强 for 遍历
+    System.out.println(name);
+}
+
+Map&lt;Long, String&gt; userNames = new HashMap&lt;&gt;();   // 键值对：按"键"存取
+userNames.put(1L, "tom");
+userNames.get(1L);                         // "tom"</code></pre>
+<div class="box info"><b class="t">📌 伏笔</b>第 5 章查数据库一次查一批，返回的就是 <code>List&lt;User&gt;</code>。</div>
+
+<h3>1.9 泛型：尖括号里的类型约束</h3>
+<p><code>&lt;User&gt;</code> 的意思是「这个列表只装 User」，装错类型<strong>编译期直接报错</strong>，把错误拦在运行之前：</p>
+<pre data-lang="java"><code class="lang-java">List&lt;User&gt; users = new ArrayList&lt;&gt;();
+users.add("tom");        // ❌ 编译报错：只能装 User
+
+// 泛型参数 T 是"占位符"，用的时候才确定：
+Result&lt;User&gt; r1 = Result.ok(user);            // data 是单个用户
+Result&lt;List&lt;User&gt;&gt; r2 = Result.ok(users);     // data 是用户列表</code></pre>
+<div class="box info"><b class="t">📌 伏笔</b>第 7 章统一返回格式 <code>Result&lt;T&gt;</code> 的尖括号就是泛型——同一个 Result 类，既能包 User 也能包 List。</div>
+
+<h3>1.10 注解：贴给框架看的标签</h3>
+<p>你已经见过两次 <code>@Override</code> 了。<strong>注解（@Xxx）本身不执行任何逻辑，它是贴在类/方法/字段上的标签</strong>——框架在运行期读取标签，然后替你干活：</p>
+<pre data-lang="java"><code class="lang-java">@Override                    // 内置注解：帮编译器检查"确实重写了父类方法"
+public String toString() { return "User"; }
+
+@Service                     // Spring 的注解（第 3 章起）：贴上它，Spring 就接管这个类
+public class UserService { }</code></pre>
+<div class="box tip"><b class="t">💡 心法</b>以后看到任何 @ 开头的东西，就问一句：「<b>这个标签是谁在读？读完它会替我做什么？</b>」——这是理解所有框架注解的万能钥匙。</div>
+
+<h3>1.11 异常：出错的正确姿势</h3>
+<pre data-lang="java"><code class="lang-java">try {
+    int n = Integer.parseInt("abc");       // 这行会出错
+} catch (NumberFormatException e) {        // 捕获并处理
+    System.out.println("不是合法数字: " + e.getMessage());
+} finally {
+    System.out.println("无论成败都执行");     // 常用于关闭资源
+}
+
+public User getById(Long id) {
+    if (id == null) {
+        throw new RuntimeException("id 不能为空");   // 主动抛出异常
+    }
+    // ...
+}</code></pre>
+<p>两类异常记住一句话就够：<strong>RuntimeException（运行时异常）可以不强制处理，一路往上抛</strong>——第 4 章的全局异常处理就是「在最高处统一接住它们，转成友好提示」。</p>
+
+<h3>1.12 Lambda 与 Stream（能看懂即可）</h3>
+<pre data-lang="java"><code class="lang-java">// Lambda：一句话的匿名方法，常作为参数传递
+names.forEach(name -&gt; System.out.println(name));
+
+// Stream：链式数据处理（过滤 + 收集）
+List&lt;User&gt; adults = users.stream()
+        .filter(u -&gt; u.getAge() &gt;= 18)     // 只留成年用户
+        .collect(Collectors.toList());</code></pre>
+<p>现代 Java 代码和面试都常见这套写法，看懂即可，本教程代码刻意没用它。</p>
+
+<h3>1.13 Java 知识 → 后续章节 对照表</h3>
+<table>
+  <tr><th>Java 知识</th><th>在哪里再次出现</th></tr>
+  <tr><td>类与对象</td><td>第 7 章实体类 User（与数据库表一一对应）</td></tr>
+  <tr><td>方法</td><td>第 7 章 Service 层（一个方法一段业务）</td></tr>
+  <tr><td>包与 import</td><td>第 3、6 章 包扫描规则（启动类必须在上层）</td></tr>
+  <tr><td>接口与多态</td><td>第 3 章 依赖注入（声明接口，容器塞实现）</td></tr>
+  <tr><td>List 与泛型</td><td>第 5 章查询返回 List&lt;User&gt;；第 7 章 Result&lt;T&gt;</td></tr>
+  <tr><td>注解</td><td>第 3 章起无处不在（@Service、@Mapper、@GetMapping…）</td></tr>
+  <tr><td>异常</td><td>第 4 章全局异常处理（统一接住 RuntimeException）</td></tr>
+  <tr><td>Lambda / Stream</td><td>阅读他人代码、面试必备</td></tr>
+</table>
+<div class="box warn"><b class="t">⚠️ 本章是「够用就好」的回顾</b>如果读起来仍然很吃力（比如不清楚什么是变量），建议先去完整过一遍 Java 入门（B 站搜「Java 基础」任选口碑好的，学完类/对象/接口/集合即可，约 1~2 周），再回来继续——磨刀不误砍柴工。</div>
+
+<details class="quiz"><summary>✍️ 自测：接口和实现类是什么关系？为什么「用接口类型接收实现对象」很有用？</summary>
+<p><b>答：</b>接口声明能力（做什么），实现类提供具体做法（怎么做）。用接口类型接收实现对象后，代码依赖的是「约定」而非「具体品牌」——以后换实现（短信换邮件），调用代码一行不用改。这正是第 3 章 Spring 依赖注入的解耦原理。</p>
+</details>
+<details class="quiz"><summary>✍️ 自测：为什么字符串比较必须用 equals，不能用 ==？</summary>
+<p><b>答：</b>== 比较的是两个变量是否指向同一个对象（内存地址），equals 比较的是内容。两个内容相同的字符串可能是不同对象，用 == 会误判为「不相等」。</p>
+</details>
+<details class="quiz"><summary>✍️ 自测：package 声明和磁盘上的文件夹是什么关系？</summary>
+<p><b>答：</b>一一对应。<code>package com.example.demo.entity</code> 意味着这个文件必须放在 <code>com/example/demo/entity/</code> 目录下。所以「Spring 只扫描启动类所在包及子包」这条规则，落到磁盘上就是「必须放在启动类所在文件夹及其子文件夹里」。</p>
+</details>
+</section>
+
+<!-- ═══════════ 第 2 章 ═══════════ -->
+<section id="ch2">
+<h2><span class="no">第 2 章</span>为什么需要框架？</h2>
+<p class="lead">理解框架最好的方式：先看看没有框架时，Java 程序员是怎么「受苦」的。</p>
+
+<h3>2.1 痛苦一：对象靠手 new，改一处动全身</h3>
+<p>写一个电商下单功能，最直觉的写法是「要用谁就 new 谁」：</p>
+<pre data-lang="java"><code class="lang-java">public class OrderService {
+    private UserService userService = new UserService();   // 自己 new
+
+    public void createOrder() {
+        userService.checkUser();
+    }
+}
+
+public class UserService {
+    private UserDao userDao = new UserDao();               // 又自己 new
+}
+
+public class UserDao {
+    private DbUtil dbUtil = new DbUtil();                  // 还是自己 new
+}</code></pre>
+<p>小项目没问题，项目一大就会撞上三堵墙：</p>
+<ol>
+  <li><strong>牵一发动全身</strong>——<code>UserDao</code> 的构造方法加个参数，全项目所有 <code>new UserDao()</code> 的地方都得改；</li>
+  <li><strong>资源浪费</strong>——每个对象都是新的，无法复用。数据库连接池这种「全局只要一份」的东西，自己写单例模式非常费劲；</li>
+  <li><strong>没法测试</strong>——想测 <code>OrderService</code>，它内部写死了 <code>new UserService()</code>，想换成假对象（Mock）都插不进手。</li>
+</ol>
+<p>根源在于：<strong>每个类都亲手创建自己的依赖</strong>，类和类焊死在一起，这叫「强耦合」。</p>
+
+<h3>2.2 痛苦二：手写 Servlet，接个表单能写到怀疑人生</h3>
+<p>Java 最原始的 Web 开发方式叫 Servlet。接收一个注册表单：</p>
+<pre data-lang="java"><code class="lang-java">public class UserServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // 1. 手动一个个取参数
+        String username = req.getParameter("username");
+        String ageStr   = req.getParameter("age");
+        // 2. 手动转类型
+        int age = Integer.parseInt(ageStr);
+        // 3. 手动组装对象
+        User user = new User(username, age);
+        // 4. 手动把对象变 JSON 写回响应（还要引库、拼字符串）
+        resp.setContentType("application/json;charset=utf-8");
+        resp.getWriter().write("{\"username\":\"" + user.getUsername() + "\"}");
+    }
+}</code></pre>
+<p>这还没完——还要去 <code>web.xml</code> 里注册这个 Servlet、配置 URL 映射。表单一大（注册 20 个字段很常见），上面的「取参数 → 转类型 → 组对象」循环要复制粘贴 20 遍。而你真正想写的业务逻辑，可能就一行。</p>
+
+<h3>2.3 痛苦三：手写 JDBC，查一张表 10 行起步</h3>
+<p>Java 原生操作数据库的 API 叫 JDBC：</p>
+<pre data-lang="java"><code class="lang-java">public User findById(Long id) throws SQLException {
+    Connection conn = null; PreparedStatement ps = null; ResultSet rs = null;
+    try {
+        // 1. 获取连接  2. 写 SQL  3. 填参数
+        conn = DriverManager.getConnection(url, user, password);
+        ps = conn.prepareStatement("SELECT id, username FROM users WHERE id = ?");
+        ps.setLong(1, id);
+        rs = ps.executeQuery();
+        // 4. 手动把每列数据取出来塞进对象
+        User u = null;
+        if (rs.next()) {
+            u = new User();
+            u.setId(rs.getLong("id"));
+            u.setUsername(rs.getString("username"));
+        }
+        return u;
+    } finally {
+        // 5. 手动关闭资源（顺序还不能错，忘了关就泄漏连接）
+        rs.close(); ps.close(); conn.close();
+    }
+}</code></pre>
+<p>真正有信息量的只有那一句 SQL，其余全是模板代码。表有 20 个字段，就得写 20 行 <code>rs.getXxx</code> + <code>setXxx</code>。SQL 写错只能等运行时爆错。</p>
+
+<h3>2.4 四个框架 = 四副解药</h3>
+<table>
+  <tr><th>痛点</th><th>解药</th><th>一句话原理</th></tr>
+  <tr><td>对象乱 new、强耦合</td><td><b>Spring</b></td><td>对象交给容器统一创建、保管、复用，谁需要谁伸手</td></tr>
+  <tr><td>Servlet 取参/转类型/拼 JSON 啰嗦</td><td><b>Spring MVC</b></td><td>方法参数直接接收请求数据，返回对象自动变 JSON</td></tr>
+  <tr><td>JDBC 样板代码堆成山</td><td><b>MyBatis</b></td><td>你只写 SQL，连接/参数/结果映射/关资源全自动</td></tr>
+  <tr><td>三者整合要写几十个 XML 配置</td><td><b>Spring Boot</b></td><td>自动配置 + 内嵌服务器，一个 main 方法启动全项目</td></tr>
+</table>
+<div class="box info"><b class="t">📌 学习建议</b>这一章的「痛苦」不需要你会写，只需要<b>记住疼在哪</b>。后面每学一个框架，回头对照一次——「原来它是来解这个疼的」，理解会深刻得多。</div>
+
+<details class="quiz"><summary>✍️ 自测：Spring 解决的是下面哪个问题？A. 界面好看 B. 对象管理 C. SQL 优化 D. 网速快</summary>
+<p><b>答：B。</b>Spring 的核心是 IoC 容器——统一创建和管理对象。SQL 由 MyBatis 负责，Web 请求由 Spring MVC 负责。</p>
+</details>
+</section>
+
+<!-- ═══════════ 第 3 章 ═══════════ -->
+<section id="ch3">
+<h2><span class="no">第 3 章</span>Spring：对象管家（IoC 与 DI）</h2>
+<p class="lead">Spring 的全部核心就两个词：IoC（控制反转）与 DI（依赖注入）。唬人的名词，朴素的道理。</p>
+
+<h3>3.1 IoC：把「new 对象」的权力交出去</h3>
+<p><strong>IoC（Inversion of Control，控制反转）</strong>：对象的创建权从「你手里」反转到「Spring 手里」。</p>
+<ul>
+  <li><b>以前</b>：<code>UserService userService = new UserService();</code> —— 你自己造人；</li>
+  <li><b>现在</b>：Spring 启动时把对象创建好，放进一个「大仓库」（<b>IoC 容器</b>），你要用就伸手要。</li>
+</ul>
+<p>容器里这些被管理的对象有个专有名词：<strong>Bean</strong>。</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 800 370" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IoC 前后对比">
+  <defs><marker id="arr2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#c62828"/></marker></defs>
+  <text x="195" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#c62828">传统方式：对象自己 new</text>
+  <rect x="110" y="52" width="170" height="46" rx="9" fill="#fff3e0" stroke="#ffb74d"/>
+  <text x="195" y="80" text-anchor="middle" font-size="14" fill="#5d4037">OrderService</text>
+  <line x1="195" y1="100" x2="195" y2="140" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="228" y="126" font-size="12" fill="#c62828" font-weight="bold">new</text>
+  <rect x="110" y="144" width="170" height="46" rx="9" fill="#fff3e0" stroke="#ffb74d"/>
+  <text x="195" y="172" text-anchor="middle" font-size="14" fill="#5d4037">UserService</text>
+  <line x1="195" y1="192" x2="195" y2="232" stroke="#c62828" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="228" y="218" font-size="12" fill="#c62828" font-weight="bold">new</text>
+  <rect x="110" y="236" width="170" height="46" rx="9" fill="#fff3e0" stroke="#ffb74d"/>
+  <text x="195" y="264" text-anchor="middle" font-size="14" fill="#5d4037">UserDao</text>
+  <text x="195" y="320" text-anchor="middle" font-size="12.5" fill="#5b6472">类和类焊死：改一处，处处改</text>
+  <line x1="392" y1="185" x2="418" y2="185" stroke="#9e9e9e" stroke-width="2"/>
+  <polygon points="418,179 428,185 418,191" fill="#9e9e9e"/>
+  <text x="406" y="172" text-anchor="middle" font-size="20" fill="#2e7d32" font-weight="bold">IoC</text>
+  <text x="595" y="30" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">Spring 方式：容器统一管理</text>
+  <rect x="425" y="52" width="345" height="252" rx="14" fill="#e8f5e9" stroke="#66bb6a" stroke-dasharray="7 5" stroke-width="2"/>
+  <text x="597" y="80" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Spring IoC 容器（大仓库）</text>
+  <rect x="475" y="98" width="245" height="46" rx="9" fill="#fff" stroke="#66bb6a"/>
+  <text x="597" y="126" text-anchor="middle" font-size="14" fill="#2e7d32">OrderService ✔</text>
+  <rect x="475" y="156" width="245" height="46" rx="9" fill="#fff" stroke="#66bb6a"/>
+  <text x="597" y="184" text-anchor="middle" font-size="14" fill="#2e7d32">UserService ✔</text>
+  <rect x="475" y="214" width="245" height="46" rx="9" fill="#fff" stroke="#66bb6a"/>
+  <text x="597" y="242" text-anchor="middle" font-size="14" fill="#2e7d32">UserDao ✔</text>
+  <text x="597" y="290" text-anchor="middle" font-size="12.5" fill="#33691e">由容器创建、装配、复用（默认单例）</text>
+  <text x="597" y="332" text-anchor="middle" font-size="12.5" fill="#5b6472">谁需要什么，容器「注入」给谁</text>
+</svg>
+</div>
+<p class="fig-cap">图 3-1 · 控制反转前后对比：创建权从各个类手里「反转」到容器手里</p>
+
+<h3>3.2 把类登记进容器：四个「身份注解」</h3>
+<p>怎么告诉 Spring「这个类请帮我管理」？在类上贴注解即可：</p>
+<pre data-lang="java"><code class="lang-java">@Component            // 通用组件：凡是想被管理的类都可以贴它
+public class PhoneNotifier { /* ... */ }
+
+@Service              // 业务层专用（语义更清晰，效果同 Component）
+public class OrderService { /* ... */ }
+
+@Repository           // 数据层专用
+public class UserDao { /* ... */ }
+
+@Controller           // Web 层专用（下一章的主角）
+public class UserController { /* ... */ }</code></pre>
+<table>
+  <tr><th>注解</th><th>用在哪个层</th><th>说明</th></tr>
+  <tr><td><code>@Component</code></td><td>任意</td><td>通用「零件」，不属于下面三层的工具类用它</td></tr>
+  <tr><td><code>@Service</code></td><td>业务层</td><td>本质就是 @Component 的别名，团队一看注解就知道类的作用</td></tr>
+  <tr><td><code>@Repository</code></td><td>数据层</td><td>额外会把数据库异常转换为统一异常</td></tr>
+  <tr><td><code>@Controller</code></td><td>Web 层</td><td>配合 @ResponseBody 使用（第 3 章）</td></tr>
+</table>
+<div class="box warn"><b class="t">⚠️ 新手第一大坑：包扫描范围</b>Spring 只会扫描「<b>启动类所在包及其子包</b>」下的注解。如果启动类在 <code>com.example.demo</code>，而你的类写在 <code>com.myapp</code> 下，Spring 看都看不见。所以启动类永远放在所有代码的<b>最上层包</b>。</div>
+
+<h3>3.3 DI：需要什么，Spring 自动塞给你</h3>
+<p><strong>DI（Dependency Injection，依赖注入）</strong>是 IoC 的具体实现方式：类只「声明」自己需要什么，对象由容器塞（注入）进来。</p>
+<pre data-lang="java"><code class="lang-java">@Service
+public class OrderService {
+
+    private final PhoneNotifier notifier;   // final：注入后不许换
+
+    // 构造器注入（推荐写法！）：Spring 自动把容器里的 PhoneNotifier 传进来
+    public OrderService(PhoneNotifier notifier) {
+        this.notifier = notifier;
+    }
+
+    public void createOrder() {
+        notifier.send("订单已创建");
+    }
+}</code></pre>
+<p>注意你<b>没有写任何 new</b>——OrderService 被 Spring 创建时，Spring 发现构造器需要一个 <code>PhoneNotifier</code>，就先去容器找（没有就先创建一个），然后传进来。整条链路全自动。</p>
+<p>DI 一共有三种写法：</p>
+<table>
+  <tr><th>方式</th><th>写法</th><th>评价</th></tr>
+  <tr><td><b>构造器注入</b></td><td>构造方法参数</td><td>✅ 推荐：字段可 final、依赖一目了然、方便单元测试</td></tr>
+  <tr><td>Setter 注入</td><td>setXxx 方法 + @Autowired</td><td>用于「可选依赖」，少见</td></tr>
+  <tr><td>字段注入</td><td><code>@Autowired private PhoneNotifier notifier;</code></td><td>写法最短但缺陷多：不能 final、藏起依赖、难测试。新项目别用</td></tr>
+</table>
+
+<h3>3.4 解耦的威力：面向接口编程</h3>
+<p>依赖注入真正的威力，要配合「接口」才能发挥：</p>
+<pre data-lang="java"><code class="lang-java">public interface Notifier {                    // 1. 先定义"通知"这个能力
+    void send(String message);
+}
+
+@Component
+public class PhoneNotifier implements Notifier {   // 2. 手机短信实现
+    public void send(String message) { /* 调短信接口 */ }
+}
+
+@Service
+public class OrderService {
+    private final Notifier notifier;           // 3. 依赖的是接口，不是具体类！
+    public OrderService(Notifier notifier) {
+        this.notifier = notifier;
+    }
+}</code></pre>
+<p>哪天产品要求改成「邮件通知」，你只需新写一个 <code>EmailNotifier implements Notifier</code> 并让它成为首选 Bean（加 <code>@Primary</code> 注解），<strong>OrderService 一行代码都不用动</strong>——因为它依赖的是「通知」这个抽象能力，而不是某个具体实现。这就是传说中的<strong>解耦</strong>：组件像乐高积木，可插拔。</p>
+<div class="box tip"><b class="t">💡 记忆口诀</b><b>「你声明，我注入」</b>——你只声明需要什么（构造器参数），Spring 负责创建和传递。接口是「声明」的最佳载体。</div>
+
+<h3>3.5 再进阶一步（了解即可）</h3>
+<ul>
+  <li><b>配置类与 @Bean</b>：第三方库的类你改不了源码、贴不了注解，可以在配置类里用方法造 Bean：<code>@Bean public RestTemplate restTemplate(){ return new RestTemplate(); }</code>；</li>
+  <li><b>作用域</b>：默认所有 Bean 是<b>单例</b>（全容器一份，大家共用）。加 <code>@Scope("prototype")</code> 可改成每次要新的。日常开发用默认即可；</li>
+  <li><b>生命周期</b>：Bean 从「实例化 → 注入依赖 → 初始化 → 使用 → 销毁」全程由容器照管，可用 <code>@PostConstruct</code> 在初始化后插一段自己的逻辑（比如启动时加载缓存）。</li>
+</ul>
+
+<details class="quiz"><summary>✍️ 自测：@Service 和 @Component 有什么区别？</summary>
+<p><b>答：</b>功能上<b>没有区别</b>（@Service 本质就是 @Component 的语义化别名），区别在「语义」：@Service 告诉团队成员「这是业务逻辑类」，让代码结构一眼可读。同理还有 @Repository（数据层）、@Controller（Web 层）。</p>
+</details>
+<details class="quiz"><summary>✍️ 自测：为什么构造器注入优于字段注入？</summary>
+<p><b>答：</b>三个理由：① 字段可以声明成 <code>final</code>，保证依赖不被篡改；② 依赖关系在构造器签名里一目了然（一眼看出这个类需要什么）；③ 单元测试时可以直接 <code>new OrderService(假Notifier)</code>，不需要启动 Spring 容器。</p>
+</details>
+</section>
+<!-- ═══════════ 第 4 章 ═══════════ -->
+<section id="ch4">
+<h2><span class="no">第 4 章</span>Spring MVC：Web 前台</h2>
+<p class="lead">用户在浏览器敲下一个网址，请求是怎么「精准送达」你写的某段代码的？本章揭晓。</p>
+
+<h3>4.1 一次 HTTP 请求的完整旅程</h3>
+<p>Spring MVC 的核心是一个叫 <strong>DispatcherServlet</strong>（前端控制器）的组件——所有请求先到它这里报到，它像前台总机一样查表分发。下面的图值得反复看，它就是整个 Java Web 的骨架：</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 740 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="请求旅程">
+  <defs><marker id="arr3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="250" y="12" width="220" height="42" rx="9" fill="#78909c"/>
+  <text x="360" y="39" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">浏览器</text>
+  <rect x="250" y="86" width="220" height="42" rx="9" fill="#43a047"/>
+  <text x="360" y="113" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">Tomcat（Boot 内嵌）</text>
+  <rect x="250" y="160" width="220" height="42" rx="9" fill="#1e88e5"/>
+  <text x="360" y="187" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">DispatcherServlet 总调度</text>
+  <rect x="250" y="234" width="220" height="42" rx="9" fill="#1e88e5"/>
+  <text x="360" y="261" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">UserController</text>
+  <rect x="250" y="308" width="220" height="42" rx="9" fill="#eceff1" stroke="#b0bec5"/>
+  <text x="360" y="335" text-anchor="middle" fill="#37474f" font-size="14" font-weight="bold">UserService</text>
+  <rect x="250" y="382" width="220" height="42" rx="9" fill="#ef6c00"/>
+  <text x="360" y="409" text-anchor="middle" fill="#fff" font-size="14" font-weight="bold">UserMapper（MyBatis）→ MySQL</text>
+  <line x1="360" y1="54" x2="360" y2="84" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="360" y1="128" x2="360" y2="158" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="360" y1="202" x2="360" y2="232" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="360" y1="276" x2="360" y2="306" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="360" y1="350" x2="360" y2="380" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="490" y="39" font-size="12.5" fill="#5b6472">① 发起 GET /users/1</text>
+  <text x="490" y="113" font-size="12.5" fill="#5b6472">② HTTP 请求进入服务器</text>
+  <text x="490" y="187" font-size="12.5" fill="#5b6472">③ 查路由表：该交给谁？</text>
+  <text x="490" y="261" font-size="12.5" fill="#5b6472">④ 执行你写的方法</text>
+  <text x="490" y="335" font-size="12.5" fill="#5b6472">⑤ 处理业务逻辑</text>
+  <text x="490" y="409" font-size="12.5" fill="#5b6472">⑥ 生成并执行 SQL</text>
+  <path d="M180 403 L100 403 Q88 403 88 390 L88 40 Q88 28 100 28 L244 28" fill="none" stroke="#43a047" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arr3)"/>
+  <text x="70" y="230" text-anchor="middle" fill="#2e7d32" font-size="12.5" font-weight="bold" transform="rotate(-90 70 230)">⑦ 查询结果沿原路返回 → 拼成 JSON → 浏览器</text>
+</svg>
+</div>
+<p class="fig-cap">图 4-1 · 一个请求的往返全程：去时逐层下钻，回时原路逆袭</p>
+<div class="box info"><b class="t">📌 你要写 vs 框架替你写</b>整条链路里，<b>你只需要写 Controller、Service、Mapper 三层自己的代码</b>。Tomcat、DispatcherServlet、JSON 转换、SQL 执行——全部由框架自动完成。</div>
+
+<h3>4.2 写出第一个接口</h3>
+<pre data-lang="java"><code class="lang-java">@RestController                    // 声明：这是接口类，返回值自动转 JSON
+public class HelloController {
+
+    @GetMapping("/hello")          // 处理 GET 请求，路径 /hello
+    public String hello() {
+        return "Hello, Spring MVC!";
+    }
+}</code></pre>
+<p>项目运行后，浏览器访问 <code>http://localhost:8080/hello</code>，页面显示那句话。对比第 2 章的 Servlet 写法：<b>十几行配置和样板代码，浓缩成了两个注解</b>。</p>
+<ul>
+  <li><code>@RestController</code> = <code>@Controller</code>（我是 Web 层）+ <code>@ResponseBody</code>（我的返回值不是网页，直接写进响应体，转成 JSON）；</li>
+  <li><code>@GetMapping("/hello")</code> = 把「GET 请求 + /hello 路径」绑定到下面这个方法。DispatcherServlet 就是靠这些登记信息建「路由表」的。</li>
+</ul>
+
+<h3>4.3 RESTful：一套通用的接口设计规范</h3>
+<p>企业开发普遍遵循 RESTful 风格——<strong>URL 只用名词表示资源，用 HTTP 动词表示操作</strong>。以「用户」资源为例：</p>
+<table>
+  <tr><th>操作</th><th>请求方式</th><th>URL</th><th>说明</th></tr>
+  <tr><td>查列表</td><td>GET</td><td><code>/users</code></td><td>分页参数放问号后：<code>/users?page=1&amp;size=10</code></td></tr>
+  <tr><td>查单个</td><td>GET</td><td><code>/users/1</code></td><td>1 是路径参数</td></tr>
+  <tr><td>新增</td><td>POST</td><td><code>/users</code></td><td>数据放请求体（JSON）</td></tr>
+  <tr><td>整体修改</td><td>PUT</td><td><code>/users/1</code></td><td>数据放请求体</td></tr>
+  <tr><td>删除</td><td>DELETE</td><td><code>/users/1</code></td><td>一般只带 id</td></tr>
+</table>
+<p>对应的 Controller 长这样（这是你会写一辈子的模板）：</p>
+<pre data-lang="java"><code class="lang-java">@RestController
+@RequestMapping("/users")              // 类级前缀：下面所有接口都以 /users 开头
+public class UserController {
+
+    private final UserService userService;
+    public UserController(UserService userService) {   // 构造器注入（第 2 章）
+        this.userService = userService;
+    }
+
+    @GetMapping                        // GET /users
+    public List&lt;User&gt; list() { return userService.list(); }
+
+    @GetMapping("/{id}")               // GET /users/1
+    public User getById(@PathVariable Long id) { return userService.getById(id); }
+
+    @PostMapping                       // POST /users
+    public User create(@RequestBody User user) { return userService.create(user); }
+
+    @PutMapping("/{id}")               // PUT /users/1
+    public User update(@PathVariable Long id, @RequestBody User user) {
+        return userService.update(id, user);
+    }
+
+    @DeleteMapping("/{id}")            // DELETE /users/1
+    public void delete(@PathVariable Long id) { userService.delete(id); }
+}</code></pre>
+
+<h3>4.4 取参数三件套（重点！）</h3>
+<p>HTTP 请求里的数据藏在三个地方，各有对应的注解：</p>
+<table>
+  <tr><th>数据位置</th><th>例子</th><th>注解</th></tr>
+  <tr><td>URL 路径里</td><td><code>/users/1</code></td><td><code>@PathVariable</code></td></tr>
+  <tr><td>问号后查询串</td><td><code>/users/search?keyword=tom&amp;page=2</code></td><td><code>@RequestParam</code></td></tr>
+  <tr><td>请求体（JSON）</td><td>POST/PUT 的 body</td><td><code>@RequestBody</code></td></tr>
+  <tr><td>请求头</td><td><code>Authorization: xxx</code></td><td><code>@RequestHeader</code>（登录令牌常用）</td></tr>
+</table>
+<pre data-lang="java"><code class="lang-java">@GetMapping("/search")
+public List&lt;User&gt; search(
+        @RequestParam String keyword,                          // 必填
+        @RequestParam(defaultValue = "1") Integer page) {      // 可选，给默认值
+    return userService.search(keyword, page);
+}
+
+@PostMapping("/register")
+public Result register(@RequestBody RegisterForm form) {
+    // 前端发的 {"username":"tom","age":18} 自动变成 form 对象
+    return userService.register(form);
+}</code></pre>
+<div class="box tip"><b class="t">💡 魔法在哪？</b>Servlet 时代要 <code>req.getParameter</code> + 手动转类型 + 手动 new 对象；现在 Spring MVC 自动完成「类型转换 + 对象组装」。字段类型不匹配或 JSON 格式错误时，框架还会自动返回 400 响应。</div>
+
+<h3>4.5 返回 JSON 与统一返回格式</h3>
+<p>方法返回对象时，Spring MVC 自动用 <strong>Jackson</strong> 库把它序列化成 JSON。企业项目通常再包一层「统一返回格式」，让前端永远拿到同样的结构：</p>
+<pre data-lang="java"><code class="lang-java">public class Result&lt;T&gt; {          // T 表示"泛型"：data 里装什么类型，用的时候再定
+    private int code;             // 200=成功，400=客户端错，500=服务器错
+    private String message;       // 提示信息
+    private T data;               // 真正的数据
+
+    public static &lt;T&gt; Result&lt;T&gt; ok(T data) {
+        Result&lt;T&gt; r = new Result&lt;T&gt;();
+        r.code = 200; r.message = "success"; r.data = data;
+        return r;
+    }
+    public static &lt;T&gt; Result&lt;T&gt; error(int code, String message) {
+        Result&lt;T&gt; r = new Result&lt;T&gt;();
+        r.code = code; r.message = message;
+        return r;
+    }
+    // getter/setter 省略（IDEA 右键 Generate 可自动生成）
+}</code></pre>
+<p>返回给前端的 JSON 长这样：</p>
+<pre data-lang="json"><code class="lang-json">{ "code": 200, "message": "success", "data": { "id": 1, "username": "tom" } }</code></pre>
+
+<h3>4.6 全局异常处理：try-catch 只写一次</h3>
+<p>业务代码里到处 try-catch 很难看。Spring MVC 提供 <code>@RestControllerAdvice</code>：全项目的异常都汇到这里统一处理：</p>
+<pre data-lang="java"><code class="lang-java">@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RuntimeException.class)      // 捕获所有运行时异常
+    public Result&lt;Void&gt; handleBiz(RuntimeException e) {
+        return Result.error(400, e.getMessage());  // 业务错误 → 400 + 原因
+    }
+
+    @ExceptionHandler(Exception.class)             // 兜底：其他所有异常
+    public Result&lt;Void&gt; handleOther(Exception e) {
+        return Result.error(500, "服务器开小差了，请稍后再试");
+    }
+}</code></pre>
+<p>之后 Service 里只管 <code>throw new RuntimeException("用户名已存在")</code>，接口会自动返回 <code>{"code":400,"message":"用户名已存在"}</code>。Controller、Service 层再也不用写 try-catch。</p>
+
+<h3>4.7 拦截器：请求的「安检门」（了解）</h3>
+<p>想在请求到达 Controller 之前统一做检查（比如登录校验）？用拦截器：</p>
+<pre data-lang="java"><code class="lang-java">@Component
+public class LoginInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
+        String token = req.getHeader("Authorization");
+        if (token == null || token.isBlank()) {
+            resp.setStatus(401);       // 未登录
+            return false;              // false = 拦下，请求到此为止
+        }
+        return true;                   // true = 放行
+    }
+}</code></pre>
+<p>注册后，所有被拦截路径的请求都要先过这道安检门。学完第 9 章的 JWT 后，你会把它升级成真正的登录系统。</p>
+
+<h3>4.8 三层架构：项目的标准结构</h3>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 740 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三层架构">
+  <defs><marker id="arr3b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="170" y="24" width="400" height="64" rx="12" fill="#1e88e5"/>
+  <text x="370" y="52" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">Controller 控制层</text>
+  <text x="370" y="74" text-anchor="middle" fill="#e3f2fd" font-size="12.5">接待请求 · 校验参数 · 调用 Service · 返回结果（不写业务！）</text>
+  <rect x="170" y="118" width="400" height="64" rx="12" fill="#43a047"/>
+  <text x="370" y="146" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">Service 业务层</text>
+  <text x="370" y="168" text-anchor="middle" fill="#e8f5e9" font-size="12.5">业务规则都在这：如"下单 = 扣库存 + 生成订单 + 发通知"</text>
+  <rect x="170" y="212" width="400" height="64" rx="12" fill="#ef6c00"/>
+  <text x="370" y="240" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">Mapper / DAO 持久层</text>
+  <text x="370" y="262" text-anchor="middle" fill="#fff3e0" font-size="12.5">只管数据库读写：一条方法对应一条 SQL</text>
+  <line x1="370" y1="88" x2="370" y2="116" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3b)"/>
+  <line x1="370" y1="182" x2="370" y2="210" stroke="#546e7a" stroke-width="2" marker-end="url(#arr3b)"/>
+  <text x="600" y="107" font-size="12" fill="#5b6472">只能调用下一层 ↘</text>
+  <text x="600" y="201" font-size="12" fill="#5b6472">不能跨层跳 ↘</text>
+</svg>
+</div>
+<p class="fig-cap">图 4-2 · 三层架构：职责分离，只能自上而下逐层调用</p>
+<p>为什么分三层？<strong>换前端不用动业务、改业务不用动数据库、每层可单独测试</strong>。第 7 章实战将严格按这个结构写。</p>
+
+<details class="quiz"><summary>✍️ 自测：GET /users/1 里的「1」、?page=2 里的「2」、POST 请求体里的 JSON，分别用哪个注解接收？</summary>
+<p><b>答：</b>路径里的 1 → <code>@PathVariable Long id</code>；查询串里的 2 → <code>@RequestParam Integer page</code>；请求体 JSON → <code>@RequestBody User user</code>。</p>
+</details>
+<details class="quiz"><summary>✍️ 自测：@RestController 和 @Controller 的区别？</summary>
+<p><b>答：</b>@Controller 是传统写法，方法返回值通常被解析成页面路径；@RestController = @Controller + @ResponseBody，每个方法的返回值都直接序列化成 JSON 写进响应体。前后端分离项目一律用 @RestController。</p>
+</details>
+</section>
+<!-- ═══════════ 第 5 章 ═══════════ -->
+<section id="ch5">
+<h2><span class="no">第 5 章</span>MyBatis：数据库工具</h2>
+<p class="lead">会写 SQL 就会用 MyBatis——它把 JDBC 的脏活累活全包了。</p>
+
+<h3>5.1 MyBatis 帮你干了什么</h3>
+<p>回顾第 2 章的 JDBC 代码：获取连接、预编译、填参数、取结果、关资源，五步里四步是模板。MyBatis 的分工是：</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MyBatis 执行流程">
+  <defs><marker id="arr4" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="15" y="70" width="165" height="90" rx="12" fill="#fff8e1" stroke="#ffb300"/>
+  <text x="97" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#5d4037">你调用接口方法</text>
+  <text x="97" y="130" text-anchor="middle" font-size="12" fill="#795548">userMapper.selectById(1)</text>
+  <rect x="225" y="70" width="165" height="90" rx="12" fill="#e8f5e9" stroke="#66bb6a"/>
+  <text x="307" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">MyBatis 拼 SQL</text>
+  <text x="307" y="124" text-anchor="middle" font-size="12" fill="#33691e">找到 SQL 模板，把 1</text>
+  <text x="307" y="142" text-anchor="middle" font-size="12" fill="#33691e">安全替换 #{id}</text>
+  <rect x="435" y="70" width="150" height="90" rx="12" fill="#e3f2fd" stroke="#42a5f5"/>
+  <text x="510" y="105" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">MySQL 执行</text>
+  <text x="510" y="130" text-anchor="middle" font-size="12" fill="#1565c0">返回 ResultSet</text>
+  <rect x="630" y="70" width="155" height="90" rx="12" fill="#fff3e0" stroke="#ef6c00"/>
+  <text x="707" y="100" text-anchor="middle" font-size="14" font-weight="bold" fill="#e65100">自动映射成对象</text>
+  <text x="707" y="124" text-anchor="middle" font-size="12" fill="#e65100">列名 → 字段名</text>
+  <text x="707" y="142" text-anchor="middle" font-size="12" fill="#e65100">逐列填入 User</text>
+  <line x1="182" y1="115" x2="220" y2="115" stroke="#546e7a" stroke-width="2" marker-end="url(#arr4)"/>
+  <line x1="392" y1="115" x2="430" y2="115" stroke="#546e7a" stroke-width="2" marker-end="url(#arr4)"/>
+  <line x1="587" y1="115" x2="625" y2="115" stroke="#546e7a" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="97" y="200" text-anchor="middle" font-size="12" fill="#5b6472">你写的（1 行）</text>
+  <text x="480" y="200" text-anchor="middle" font-size="12" fill="#5b6472">MyBatis 自动完成（连接、参数、映射、关资源全包）</text>
+</svg>
+</div>
+<p class="fig-cap">图 5-1 · MyBatis 执行流程：你只负责「调用方法」，其余全自动</p>
+<p>MyBatis 被称为「<strong>半自动</strong> ORM 框架」：SQL 由你亲手写（可控、可优化、DBA 能审），执行和「记录 ↔ 对象」的映射由它包办。相比之下 JPA/Hibernate 是「全自动」（连 SQL 都帮你生成）。<strong>国内企业 MyBatis 是绝对主流</strong>。</p>
+
+<h3>5.2 注解版：一个接口搞定一张表的 CRUD</h3>
+<pre data-lang="java"><code class="lang-java">@Mapper                                   // 告诉 MyBatis：为这个接口生成实现类
+public interface UserMapper {
+
+    @Select("SELECT id, username, age, email, create_time FROM users WHERE id = #{id}")
+    User selectById(Long id);             // 结果自动装进 User 对象！
+
+    @Select("SELECT id, username, age, email, create_time FROM users ORDER BY id DESC")
+    List&lt;User&gt; selectAll();
+
+    @Insert("INSERT INTO users(username, age, email) VALUES(#{username}, #{age}, #{email})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")   // 自增 id 回填到 user.id
+    int insert(User user);                // #{username} 自动从 user 对象取同名字段
+
+    @Update("UPDATE users SET username = #{username}, age = #{age} WHERE id = #{id}")
+    int update(User user);
+
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    int deleteById(Long id);
+}</code></pre>
+<p><strong>注意：你没有写实现类！</strong>调用 <code>userMapper.selectById(1L)</code> 时，MyBatis 在运行期动态生成实现：拼 SQL → 执行 → 按列名把值填进 <code>User</code> 对象 → 返回。条件就一个：<strong>实体类字段名和数据库列名能对上</strong>（对不上的见 5.5 节）。</p>
+
+<h3>5.3 #{} 与 ${}：必考的安全题</h3>
+<p>这两个占位符长得像，安全性天差地别：</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SQL 注入对比">
+  <rect x="12" y="18" width="385" height="284" rx="14" fill="#e8f5e9" stroke="#66bb6a" stroke-width="2"/>
+  <text x="204" y="52" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e7d32">#{} —— 预编译，安全 ✅</text>
+  <text x="36" y="92" font-size="13" fill="#33691e">用户输入: tom' OR '1'='1</text>
+  <text x="36" y="130" font-size="13" fill="#33691e">实际 SQL: WHERE username = ?</text>
+  <text x="36" y="158" font-size="13" fill="#33691e">参数单独传输："tom' OR '1'='1"</text>
+  <text x="36" y="186" font-size="13" fill="#33691e">→ 它只是一段<b>普通文字</b>，被当名字去查</text>
+  <text x="204" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">结果：查无此人，攻击失败</text>
+  <text x="204" y="272" text-anchor="middle" font-size="12.5" fill="#5b6472">对应 JDBC 的 PreparedStatement</text>
+  <rect x="423" y="18" width="385" height="284" rx="14" fill="#ffebee" stroke="#e53935" stroke-width="2"/>
+  <text x="615" y="52" text-anchor="middle" font-size="16" font-weight="bold" fill="#c62828">${} —— 字符串拼接，危险 ❌</text>
+  <text x="447" y="92" font-size="13" fill="#b71c1c">用户输入: tom' OR '1'='1</text>
+  <text x="447" y="130" font-size="13" fill="#b71c1c">拼接后: WHERE username = 'tom' OR '1'='1'</text>
+  <text x="447" y="158" font-size="13" fill="#b71c1c">→ OR '1'='1' 恒成立，条件被绕过！</text>
+  <text x="447" y="186" font-size="13" fill="#b71c1c">更狠的: '; DROP TABLE users; --</text>
+  <text x="615" y="240" text-anchor="middle" font-size="14" font-weight="bold" fill="#c62828">结果：数据全泄 / 表被删</text>
+  <text x="615" y="272" text-anchor="middle" font-size="12.5" fill="#5b6472">这就是「SQL 注入攻击」</text>
+</svg>
+</div>
+<p class="fig-cap">图 5-2 · 同样的恶意输入，#{} 挡住攻击，${} 引狼入室</p>
+<div class="box warn"><b class="t">⚠️ 铁律</b><b>99% 的场景用 #{}</b>。只有 <code>ORDER BY</code> 列名等「不能加引号的位置」才用 ${}，且必须用白名单校验（先判断输入是否在允许的列名集合里）。</div>
+
+<h3>5.4 动态 SQL：传了就查，不传就跳过</h3>
+<p>真实需求经常是「多个筛选条件，填哪个查哪个」。这种 SQL 没法用注解优雅表达，改用 <strong>XML 写法</strong>。先在 <code>application.yml</code> 声明 XML 存放位置：</p>
+<pre data-lang="yaml"><code class="lang-yaml">mybatis:
+  mapper-locations: classpath:mapper/*.xml    # 扫描 resources/mapper 下的所有 xml
+  configuration:
+    map-underscore-to-camel-case: true        # 下划线列名 ↔ 驼峰字段名自动互转</code></pre>
+<p>然后在 <code>resources/mapper/UserMapper.xml</code> 写动态 SQL（接口里放对应方法声明，方法名 = 标签 id）：</p>
+<pre data-lang="xml"><code class="lang-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+&lt;mapper namespace="com.example.demo.mapper.UserMapper"&gt;   &lt;!-- 绑定到哪个接口 --&gt;
+
+    &lt;select id="search" resultType="com.example.demo.entity.User"&gt;
+        SELECT id, username, age, email FROM users
+        &lt;where&gt;                                              &lt;!-- 智能处理开头的 AND --&gt;
+            &lt;if test="keyword != null and keyword != ''"&gt;     &lt;!-- 传了才拼这句 --&gt;
+                AND username LIKE CONCAT('%', #{keyword}, '%')
+            &lt;/if&gt;
+            &lt;if test="minAge != null"&gt;
+                AND age &amp;gt;= #{minAge}
+            &lt;/if&gt;
+        &lt;/where&gt;
+        ORDER BY id DESC
+    &lt;/select&gt;
+
+&lt;/mapper&gt;</code></pre>
+<p>常用动态标签一览：</p>
+<table>
+  <tr><th>标签</th><th>用途</th><th>例子</th></tr>
+  <tr><td><code>&lt;if&gt;</code></td><td>条件成立才拼接</td><td>上面的 keyword 判断</td></tr>
+  <tr><td><code>&lt;where&gt;</code></td><td>自动补 WHERE、删掉开头多余的 AND/OR</td><td>配合多个 if</td></tr>
+  <tr><td><code>&lt;set&gt;</code></td><td>智能 UPDATE：自动补 SET、去掉末尾多余逗号</td><td>「只更新传了的字段」</td></tr>
+  <tr><td><code>&lt;foreach&gt;</code></td><td>遍历集合</td><td><code>WHERE id IN (1,2,3)</code>、批量插入</td></tr>
+  <tr><td><code>&lt;choose&gt;/&lt;when&gt;/&lt;otherwise&gt;</code></td><td>多选一（相当于 switch）</td><td>不同角色走不同查询</td></tr>
+</table>
+<div class="box tip"><b class="t">💡 选择建议</b>简单 CRUD 用<b>注解</b>（一眼看到 SQL）；带 <code>&lt;if&gt;</code> 等动态逻辑的用 <b>XML</b>。两者可在同一个 Mapper 里混用。</div>
+
+<h3>5.5 列名与字段名对不上怎么办</h3>
+<p>数据库习惯用下划线命名（<code>create_time</code>），Java 习惯驼峰（<code>createTime</code>）。两种解法：</p>
+<ul>
+  <li><b>推荐</b>：开配置 <code>map-underscore-to-camel-case: true</code>（见 5.4），全局自动互转，一劳永逸；</li>
+  <li><b>手动</b>：复杂映射（如多表联查、字段名完全不同）用 <code>&lt;resultMap&gt;</code> 显式声明「哪列装进哪个字段」。</li>
+</ul>
+<pre data-lang="xml"><code class="lang-xml">&lt;resultMap id="userMap" type="com.example.demo.entity.User"&gt;
+    &lt;id property="id" column="id"/&gt;
+    &lt;result property="createTime" column="create_time"/&gt;
+    &lt;result property="username" column="username"/&gt;
+&lt;/resultMap&gt;
+
+&lt;select id="selectById" resultMap="userMap"&gt;
+    SELECT * FROM users WHERE id = #{id}
+&lt;/select&gt;</code></pre>
+
+<h3>5.6 分页：PageHelper 两行搞定</h3>
+<p>列表页都要分页。引入 PageHelper 插件后，任何查询前加一行代码即自动分页：</p>
+<pre data-lang="xml"><code class="lang-xml">&lt;dependency&gt;
+    &lt;groupId&gt;com.github.pagehelper&lt;/groupId&gt;
+    &lt;artifactId&gt;pagehelper-spring-boot-starter&lt;/artifactId&gt;
+    &lt;version&gt;2.1.0&lt;/version&gt;   &lt;!-- 2.x 适配 Spring Boot 3 --&gt;
+&lt;/dependency&gt;</code></pre>
+<pre data-lang="java"><code class="lang-java">PageHelper.startPage(pageNum, pageSize);          // 紧跟的第一条查询自动被分页
+List&lt;User&gt; users = userMapper.selectAll();
+PageInfo&lt;User&gt; info = new PageInfo&lt;&gt;(users);       // 拿到总数、总页数、当前页…</code></pre>
+
+<details class="quiz"><summary>✍️ 自测：下面哪条有 SQL 注入风险？<br>A. <code>WHERE name = #{name}</code>　B. <code>ORDER BY ${column}</code>（column 来自用户输入且未校验）</summary>
+<p><b>答：B。</b>${} 是纯字符串拼接，用户传入恶意内容会直接改变 SQL 语义。A 是预编译参数，安全。若必须动态排序列，先校验 column 是否在白名单（如 ["id","age","create_time"]）内。</p>
+</details>
+</section>
+
+<!-- ═══════════ 第 6 章 ═══════════ -->
+<section id="ch6">
+<h2><span class="no">第 6 章</span>Spring Boot：总装车间</h2>
+<p class="lead">前三章的三大件各自好用，但拼装起来曾让无数人掉光头发。Spring Boot 一句「我全包了」。</p>
+
+<h3>6.1 没有 Boot 的年代：配置地狱</h3>
+<p>把 Spring + Spring MVC + MyBatis 整合到一起，老一代程序员要手写几十个 XML，感受一下当年的一部分：</p>
+<pre data-lang="xml"><code class="lang-xml">&lt;!-- 这只是当年配置的冰山一角（认识即可，不用学） --&gt;
+&lt;bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close"&gt;
+    &lt;property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/&gt;
+    &lt;property name="url" value="jdbc:mysql://localhost:3306/demo"/&gt;
+    &lt;property name="username" value="root"/&gt;
+    &lt;property name="password" value="123456"/&gt;
+&lt;/bean&gt;
+&lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"&gt;
+    &lt;property name="basePackage" value="com.example.demo.mapper"/&gt;
+&lt;/bean&gt;
+&lt;!-- 还有 DispatcherServlet 注册、组件扫描、事务管理器、视图解析器…… --&gt;</code></pre>
+<p>更要命的是依赖版本：Spring 5.2 要配 MyBatis 3.5.x，log4j 又要排除冲突……新手一半时间耗在「让项目能启动」上。</p>
+
+<h3>6.2 Boot 三板斧</h3>
+<p><strong>① Starter 起步依赖：一个坐标拉一串</strong></p>
+<pre data-lang="xml"><code class="lang-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;   &lt;!-- 这一行 = --&gt;
+&lt;/dependency&gt;
+&lt;!-- spring-mvc + jackson(JSON) + 内嵌tomcat + 日志 + ...，版本全部兼容 --&gt;</code></pre>
+<p>官方把「做某类事需要的依赖组合」打包成 starter：做 Web 用 <code>starter-web</code>，连数据库用 <code>starter-jdbc</code>，测试用 <code>starter-test</code>。从此告别版本冲突地狱。</p>
+<p><strong>② 自动配置：看到什么就配什么</strong></p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="自动配置">
+  <defs><marker id="arr5" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="20" y="40" width="220" height="60" rx="10" fill="#fff8e1" stroke="#ffb300"/>
+  <text x="130" y="66" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#5d4037">① pom 里的 starter</text>
+  <text x="130" y="88" text-anchor="middle" font-size="12" fill="#795548">声明你想做什么</text>
+  <rect x="20" y="120" width="220" height="60" rx="10" fill="#fff8e1" stroke="#ffb300"/>
+  <text x="130" y="146" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#5d4037">② classpath 上有什么</text>
+  <text x="130" y="168" text-anchor="middle" font-size="12" fill="#795548">检测到 mysql 驱动等 jar</text>
+  <rect x="20" y="200" width="220" height="60" rx="10" fill="#fff8e1" stroke="#ffb300"/>
+  <text x="130" y="226" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#5d4037">③ application.yml</text>
+  <text x="130" y="248" text-anchor="middle" font-size="12" fill="#795548">你的账号密码等个性化配置</text>
+  <rect x="330" y="100" width="190" height="100" rx="14" fill="#e8f5e9" stroke="#43a047" stroke-width="2"/>
+  <text x="425" y="140" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">Spring Boot</text>
+  <text x="425" y="164" text-anchor="middle" font-size="13" fill="#33691e">自动配置引擎</text>
+  <text x="425" y="186" text-anchor="middle" font-size="12" fill="#33691e">@EnableAutoConfiguration</text>
+  <rect x="640" y="34" width="165" height="46" rx="9" fill="#e3f2fd" stroke="#42a5f5"/>
+  <text x="722" y="62" text-anchor="middle" font-size="13" fill="#1565c0">内嵌 Tomcat 起来了</text>
+  <rect x="640" y="98" width="165" height="46" rx="9" fill="#e3f2fd" stroke="#42a5f5"/>
+  <text x="722" y="126" text-anchor="middle" font-size="13" fill="#1565c0">数据源连接池就绪</text>
+  <rect x="640" y="162" width="165" height="46" rx="9" fill="#e3f2fd" stroke="#42a5f5"/>
+  <text x="722" y="190" text-anchor="middle" font-size="13" fill="#1565c0">DispatcherServlet 就绪</text>
+  <rect x="640" y="226" width="165" height="46" rx="9" fill="#e3f2fd" stroke="#42a5f5"/>
+  <text x="722" y="254" text-anchor="middle" font-size="13" fill="#1565c0">MyBatis 映射就绪</text>
+  <line x1="242" y1="70" x2="325" y2="130" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="242" y1="150" x2="325" y2="150" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="242" y1="230" x2="325" y2="175" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="522" y1="120" x2="635" y2="65" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="522" y1="150" x2="635" y2="125" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="522" y1="160" x2="635" y2="180" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="522" y1="180" x2="635" y2="240" stroke="#546e7a" stroke-width="2" marker-end="url(#arr5)"/>
+</svg>
+</div>
+<p class="fig-cap">图 6-1 · 自动配置：Boot 侦察你的项目，按需把 Bean 全部配好——这就是「约定大于配置」</p>
+<p><strong>③ 内嵌服务器：main 方法一跑，网站就通了</strong></p>
+<p>以前要单独装 Tomcat、把项目打成 war 扔进去。Boot 把 Tomcat 做成项目的一个依赖，启动类运行即内嵌启动。这也是「为什么你能用 main 方法启动一个网站」的答案。</p>
+
+<h3>6.3 启动类：整个项目只有 7 行</h3>
+<pre data-lang="java"><code class="lang-java">@SpringBootApplication   // 三合一：自动配置 + 组件扫描 + Bean 注册
+public class DemoApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(DemoApplication.class, args);
+    }
+}</code></pre>
+<div class="box warn"><b class="t">⚠️ 再次强调（新手第一坑）</b><code>@SpringBootApplication</code> 只扫描<b>启动类所在包及子包</b>。启动类必须放在最上层，例如：</div>
+<div class="tree">com.example.demo              ← 启动类在这（最上层）
+├── DemoApplication.java
+├── controller/               ← 子包，能被扫到 ✓
+├── service/
+├── mapper/
+└── entity/</div>
+
+<h3>6.4 application.yml：一个文件管所有配置</h3>
+<p>YAML 用「缩进」表达层级（<b>必须空格，禁止 Tab</b>），比 XML 清爽十倍：</p>
+<pre data-lang="yaml"><code class="lang-yaml">server:
+  port: 8080                        # 冒号后必须有一个空格！
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: "123456"              # 密码含特殊字符时加引号
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true</code></pre>
+<p>常用配置速查：</p>
+<table>
+  <tr><th>想干什么</th><th>配置项</th></tr>
+  <tr><td>改端口</td><td><code>server.port: 9090</code></td></tr>
+  <tr><td>连数据库</td><td><code>spring.datasource.url / username / password</code></td></tr>
+  <tr><td>MyBatis XML 位置</td><td><code>mybatis.mapper-locations</code></td></tr>
+  <tr><td>驼峰映射</td><td><code>mybatis.configuration.map-underscore-to-camel-case</code></td></tr>
+  <tr><td>打印 SQL 日志（调试神器）</td><td><code>logging.level.com.example.demo.mapper: debug</code></td></tr>
+  <tr><td>JSON 日期格式</td><td><code>spring.jackson.date-format: yyyy-MM-dd HH:mm:ss</code></td></tr>
+</table>
+
+<h3>6.5 多环境配置（开发/生产一套代码）</h3>
+<p>开发用本地库、上线用服务器库？拆成多个文件，激活哪份用哪份：</p>
+<pre data-lang="yaml"><code class="lang-yaml"># application.yml（公共）
+spring:
+  profiles:
+    active: dev          # 当前激活 dev 环境；上线时改成 prod</code></pre>
+<pre data-lang="yaml"><code class="lang-yaml"># application-dev.yml（开发环境）
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?serverTimezone=Asia/Shanghai
+    username: root
+    password: "123456"</code></pre>
+<pre data-lang="yaml"><code class="lang-yaml"># application-prod.yml（生产环境）
+spring:
+  datasource:
+    url: jdbc:mysql://prod-server:3306/demo?serverTimezone=Asia/Shanghai
+    username: app
+    password: "生产环境的复杂密码"</code></pre>
+
+<h3>6.6 打包部署：一行命令变出一个可执行 jar</h3>
+<pre data-lang="bash"><code class="lang-bash">mvn package -DskipTests          # 打包（跳过测试）
+java -jar target/demo-0.0.1-SNAPSHOT.jar   # 服务器上有 JDK17 即可运行</code></pre>
+<p>把这一个 jar 传到云服务器，<code>java -jar</code> 一跑，网站就上线了——这就是 Spring Boot 项目「一个 jar 走天下」的部署方式。还可以加 <code>spring-boot-starter-actuator</code> 依赖获得健康检查等运维接口（<code>/actuator/health</code>）。</p>
+
+<details class="quiz"><summary>✍️ 自测：为什么 Spring Boot 项目没有 web.xml、没有 Tomcat 安装目录也能跑？</summary>
+<p><b>答：</b>① starter-web 已把 tomcat 作为依赖打进项目（内嵌容器）；② DispatcherServlet 等组件由自动配置机制按约定注册。所以 main 方法一跑，内嵌 Tomcat 随之启动，无需任何外部服务器与 XML。</p>
+</details>
+</section>
+<!-- ═══════════ 第 7 章 ═══════════ -->
+<section id="ch7">
+<h2><span class="no">第 7 章</span>实战：用户管理系统（从零到跑通）</h2>
+<p class="lead">光学不练假把式。本章把前 5 章全部串起来，20 分钟跑通一个完整可用的后端项目。</p>
+
+<h3>7.1 需求与接口设计</h3>
+<p>做一个「用户管理」模块：对 users 表的增删改查，统一返回格式，统一异常处理。接口清单：</p>
+<table>
+  <tr><th>功能</th><th>请求</th><th>路径</th><th>成功返回</th></tr>
+  <tr><td>用户列表</td><td>GET</td><td><code>/users</code></td><td><code>Result&lt;List&lt;User&gt;&gt;</code></td></tr>
+  <tr><td>查单个用户</td><td>GET</td><td><code>/users/{id}</code></td><td><code>Result&lt;User&gt;</code></td></tr>
+  <tr><td>新增用户</td><td>POST</td><td><code>/users</code></td><td><code>Result&lt;User&gt;</code>（含回填的自增 id）</td></tr>
+  <tr><td>修改用户</td><td>PUT</td><td><code>/users/{id}</code></td><td><code>Result&lt;User&gt;</code></td></tr>
+  <tr><td>删除用户</td><td>DELETE</td><td><code>/users/{id}</code></td><td><code>Result&lt;Void&gt;</code></td></tr>
+</table>
+
+<h3>7.2 第一步：建库建表</h3>
+<pre data-lang="sql"><code class="lang-sql">CREATE DATABASE demo DEFAULT CHARACTER SET utf8mb4;
+USE demo;
+
+CREATE TABLE users (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username    VARCHAR(50)  NOT NULL,
+    age         INT          NULL,
+    email       VARCHAR(100) NULL,
+    create_time DATETIME     DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users(username, age, email) VALUES
+('tom',  18, 'tom@example.com'),
+('jerry',22, 'jerry@example.com');</code></pre>
+
+<h3>7.3 第二步：创建项目</h3>
+<p>IDEA → New Project → 选 <b>Spring Initializr</b>（国内慢就用 <code>https://start.aliyun.com</code>）：</p>
+<ol>
+  <li>Language: <b>Java</b> · Type: <b>Maven</b> · JDK: <b>17</b> · Group: <code>com.example</code> · Artifact: <code>demo</code></li>
+  <li>Dependencies 勾选：<b>Spring Web</b>、<b>MySQL Driver</b>、<b>MyBatis Framework</b>（都在列表里，MyBatis 在 SQL 分类下）</li>
+</ol>
+<p>生成的 <code>pom.xml</code> 关键部分（确认这几段在）：</p>
+<pre data-lang="xml"><code class="lang-xml">&lt;parent&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+    &lt;version&gt;3.3.4&lt;/version&gt;
+&lt;/parent&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.0.3&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+
+<h3>7.4 第三步：项目结构（最终目标）</h3>
+<div class="tree">demo
+├── src/main/java/com/example/demo
+│   ├── DemoApplication.java            ← 启动类（Initializr 自动生成）
+│   ├── controller
+│   │   └── UserController.java         ← ④ 接口层
+│   ├── service
+│   │   └── UserService.java            ← ③ 业务层
+│   ├── mapper
+│   │   └── UserMapper.java             ← ② 持久层
+│   ├── entity
+│   │   └── User.java                   ← ① 实体类
+│   └── common
+│       ├── Result.java                 ← 统一返回
+│       └── GlobalExceptionHandler.java ← 全局异常
+└── src/main/resources
+    ├── application.yml                 ← ⑤ 配置文件
+    └── (mapper/*.xml 本次用注解版，暂不需要)</div>
+<p>下面按 ①→⑤ 顺序，把 7 个文件全部写完。</p>
+
+<h3>7.5 第四步：写代码（7 个文件）</h3>
+
+<h4>① entity/User.java —— 实体类，和表一一对应</h4>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+
+public class User {
+    private Long id;
+    private String username;
+    private Integer age;
+    private String email;
+    private LocalDateTime createTime;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
+    public Integer getAge() { return age; }
+    public void setAge(Integer age) { this.age = age; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public LocalDateTime getCreateTime() { return createTime; }
+    public void setCreateTime(LocalDateTime createTime) { this.createTime = createTime; }
+}</code></pre>
+<div class="box tip"><b class="t">💡 偷懒神器 Lombok</b>手写 getter/setter 很啰嗦。实战中大家用 Lombok：加依赖后实体类只需一个 <code>@Data</code> 注解，编译期自动生成全部 getter/setter/toString。新手建议先手写一两次理解它是什么，再引入 Lombok。</div>
+
+<h4>② mapper/UserMapper.java —— 持久层（第 5 章知识）</h4>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.mapper;
+
+import com.example.demo.entity.User;
+import org.apache.ibatis.annotations.*;
+import java.util.List;
+
+@Mapper
+public interface UserMapper {
+
+    @Select("SELECT id, username, age, email, create_time FROM users WHERE id = #{id}")
+    User selectById(Long id);
+
+    @Select("SELECT id, username, age, email, create_time FROM users ORDER BY id DESC")
+    List&lt;User&gt; selectAll();
+
+    @Insert("INSERT INTO users(username, age, email) VALUES(#{username}, #{age}, #{email})")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    int insert(User user);
+
+    @Update("UPDATE users SET username = #{username}, age = #{age}, email = #{email} WHERE id = #{id}")
+    int update(User user);
+
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    int deleteById(Long id);
+}</code></pre>
+
+<h4>③ service/UserService.java —— 业务层（第 2、3 章知识）</h4>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.service;
+
+import com.example.demo.entity.User;
+import com.example.demo.mapper.UserMapper;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
+@Service
+public class UserService {
+
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper) {   // 构造器注入
+        this.userMapper = userMapper;
+    }
+
+    public List&lt;User&gt; list() {
+        return userMapper.selectAll();
+    }
+
+    public User getById(Long id) {
+        User user = userMapper.selectById(id);
+        if (user == null) {
+            throw new RuntimeException("用户不存在: id=" + id);  // 交给全局异常处理
+        }
+        return user;
+    }
+
+    public User create(User user) {
+        if (user.getUsername() == null || user.getUsername().isBlank()) {
+            throw new RuntimeException("用户名不能为空");
+        }
+        userMapper.insert(user);      // 自增 id 已回填到 user.id
+        return user;
+    }
+
+    public User update(Long id, User user) {
+        getById(id);                  // 先确认存在，不存在会抛异常
+        user.setId(id);
+        userMapper.update(user);
+        return userMapper.selectById(id);
+    }
+
+    public void delete(Long id) {
+        getById(id);
+        userMapper.deleteById(id);
+    }
+}</code></pre>
+
+<h4>④ controller/UserController.java —— 接口层（第 4 章知识）</h4>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.controller;
+
+import com.example.demo.common.Result;
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public Result&lt;List&lt;User&gt;&gt; list() {
+        return Result.ok(userService.list());
+    }
+
+    @GetMapping("/{id}")
+    public Result&lt;User&gt; getById(@PathVariable Long id) {
+        return Result.ok(userService.getById(id));
+    }
+
+    @PostMapping
+    public Result&lt;User&gt; create(@RequestBody User user) {
+        return Result.ok(userService.create(user));
+    }
+
+    @PutMapping("/{id}")
+    public Result&lt;User&gt; update(@PathVariable Long id, @RequestBody User user) {
+        return Result.ok(userService.update(id, user));
+    }
+
+    @DeleteMapping("/{id}")
+    public Result&lt;Void&gt; delete(@PathVariable Long id) {
+        userService.delete(id);
+        return Result.ok(null);
+    }
+}</code></pre>
+
+<h4>⑤⑥ common/Result.java 与 GlobalExceptionHandler.java（第 4 章知识）</h4>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.common;
+
+public class Result&lt;T&gt; {
+    private int code;
+    private String message;
+    private T data;
+
+    public static &lt;T&gt; Result&lt;T&gt; ok(T data) {
+        Result&lt;T&gt; r = new Result&lt;T&gt;();
+        r.code = 200; r.message = "success"; r.data = data;
+        return r;
+    }
+    public static &lt;T&gt; Result&lt;T&gt; error(int code, String message) {
+        Result&lt;T&gt; r = new Result&lt;T&gt;();
+        r.code = code; r.message = message;
+        return r;
+    }
+    public int getCode() { return code; }
+    public String getMessage() { return message; }
+    public T getData() { return data; }
+    public void setCode(int code) { this.code = code; }
+    public void setMessage(String message) { this.message = message; }
+    public void setData(T data) { this.data = data; }
+}</code></pre>
+<pre data-lang="java"><code class="lang-java">package com.example.demo.common;
+
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RuntimeException.class)
+    public Result&lt;Void&gt; handleBiz(RuntimeException e) {
+        return Result.error(400, e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public Result&lt;Void&gt; handleOther(Exception e) {
+        return Result.error(500, "服务器开小差了，请稍后再试");
+    }
+}</code></pre>
+
+<h4>⑦ application.yml —— 配置文件（第 6 章知识）</h4>
+<pre data-lang="yaml"><code class="lang-yaml">server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=Asia/Shanghai
+    username: root
+    password: "改成你的密码"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.example.demo.mapper: debug        # 控制台打印 SQL，调试神器</code></pre>
+
+<h3>7.6 第五步：运行与测试</h3>
+<p>运行 <code>DemoApplication</code>，控制台出现这两行即成功：</p>
+<pre data-lang="text"><code>Tomcat started on port 8080 (http) with context path ''
+Started DemoApplication in 2.3 seconds (process running for 2.9)</code></pre>
+<p>用 curl（或 Postman）逐个测试：</p>
+<pre data-lang="bash"><code class="lang-bash"># 1. 查列表
+curl http://localhost:8080/users
+
+# 2. 查单个
+curl http://localhost:8080/users/1
+
+# 3. 新增（注意 Content-Type 请求头！）
+curl -X POST http://localhost:8080/users -H "Content-Type: application/json" -d "{\"username\":\"spike\",\"age\":30,\"email\":\"spike@example.com\"}"
+
+# 4. 修改
+curl -X PUT http://localhost:8080/users/1 -H "Content-Type: application/json" -d "{\"username\":\"tomcat\",\"age\":19,\"email\":\"tom@example.com\"}"
+
+# 5. 删除
+curl -X DELETE http://localhost:8080/users/3
+
+# 6. 查不存在的 id —— 体验全局异常处理
+curl http://localhost:8080/users/999</code></pre>
+<p>期望响应（第 1、6 个）：</p>
+<pre data-lang="json"><code class="lang-json">// GET /users
+{ "code": 200, "message": "success", "data": [
+  { "id": 2, "username": "jerry", "age": 22, "email": "jerry@example.com", "createTime": "2026-09-01T20:15:30" },
+  { "id": 1, "username": "tomcat", "age": 19, "email": "tom@example.com", "createTime": "2026-09-01T20:15:30" }
+] }
+
+// GET /users/999 → 全局异常处理接管
+{ "code": 400, "message": "用户不存在: id=999", "data": null }</code></pre>
+<div class="box tip"><b class="t">💡 恭喜！</b>此时你已经跑通了「浏览器请求 → Spring MVC → Service → MyBatis → MySQL → JSON 返回」的完整闭环。<b>这个项目就是 Java 后端的地基模板</b>——企业里 80% 的接口开发，都是往这个骨架里填不同的表和业务。</div>
+
+<h3>7.7 课后扩展任务（检验学会没有）</h3>
+<ol>
+  <li>给 users 表加一个 <code>nickname</code> 字段，同步修改实体类和所有 SQL（练：全链路加字段）；</li>
+  <li>加一个接口：按用户名模糊搜索（练：@RequestParam + LIKE）；</li>
+  <li>用 PageHelper 给列表加分页参数（练：5.6 节）；</li>
+  <li>把「查列表」改成 XML 动态 SQL：关键词、最小年龄都可传可不传（练：5.4 节）；</li>
+  <li>新增用户时校验 age 必须在 0~150 之间，不满足抛异常（练：业务校验 + 全局异常）。</li>
+</ol>
+</section>
+<!-- ═══════════ 第 8 章 ═══════════ -->
+<section id="ch8">
+<h2><span class="no">第 8 章</span>新手常见坑速查表</h2>
+<p class="lead">遇到报错先来这张表对号入座，能省下大把排错时间。都是真实高频问题。</p>
+<table>
+  <tr><th style="width:34%">现象 / 报错关键词</th><th style="width:28%">原因</th><th>解决</th></tr>
+  <tr><td><code>Field userMapper ... required a bean</code></td><td>Mapper 接口没被扫描注册</td><td>接口加 <code>@Mapper</code>；或启动类加 <code>@MapperScan("com.example.demo.mapper")</code>；检查启动类是否在最上层包</td></tr>
+  <tr><td><code>Port 8080 was already in use</code></td><td>端口被占（上次进程没关）</td><td>改 <code>server.port</code>；或杀掉旧进程（任务管理器找 java.exe）</td></tr>
+  <tr><td><code>Access denied for user 'root'@'localhost'</code></td><td>数据库账号或密码错误</td><td>核对 yml 里的 username/password；密码含特殊字符要用引号包起来</td></tr>
+  <tr><td><code>Unknown database 'demo'</code></td><td>数据库没建</td><td>先执行第 7.2 节的建库 SQL</td></tr>
+  <tr><td>连接报 <code>serverTimezone</code> / 时区错误</td><td>MySQL 8 需要显式时区</td><td>URL 追加 <code>?serverTimezone=Asia/Shanghai</code></td></tr>
+  <tr><td>接口访问 404</td><td>路径写错 / Controller 没被扫描</td><td>核对 URL 与注解路径（含类级前缀）；确认类上有 <code>@RestController</code> 且位于扫描范围内</td></tr>
+  <tr><td>POST 返回 415 Unsupported Media Type</td><td>没声明请求体格式</td><td>请求加请求头 <code>Content-Type: application/json</code></td></tr>
+  <tr><td>POST 返回 400，JSON 没进对象</td><td>JSON 字段名与实体类对不上</td><td>核对字段名大小写；检查是否忘了 <code>@RequestBody</code></td></tr>
+  <tr><td>查询结果某字段是 null</td><td>列名下划线 vs 属性驼峰没对上</td><td>开 <code>map-underscore-to-camel-case: true</code>（见 5.5）</td></tr>
+  <tr><td><code>There is no getter for property ...</code></td><td><code>#{xxx}</code> 里写了对象没有的属性</td><td>核对占位符名称与实体类字段名</td></tr>
+  <tr><td>XML 动态 SQL 不生效</td><td>yml 没配 mapper-locations 或 id 与方法名不一致</td><td>确认扫描路径正确；<code>&lt;select id=""&gt;</code> 必须等于接口方法名</td></tr>
+  <tr><td>改了代码不生效</td><td>IDEA 没重新编译 / 老进程还在跑</td><td>停掉旧进程再运行；必要时 Build → Rebuild Project</td></tr>
+  <tr><td>中文乱码</td><td>连接或表编码不是 utf8mb4</td><td>URL 加 <code>characterEncoding=utf8</code>；建表用 <code>utf8mb4</code></td></tr>
+  <tr><td>Maven 依赖下载极慢/失败</td><td>默认镜像在国外</td><td>IDEA 设置里把 Maven 镜像换成阿里云（settings.xml 配 mirror）</td></tr>
+</table>
+<div class="box info"><b class="t">📌 排错通用套路</b>① 先读报错<b>第一行</b>的 Caused by（根因往往在最后一个 Caused by）；② 看不出就搜报错原文（附上框架+版本号）；③ 还不行就开启 SQL debug 日志，看 SQL 到底执行了什么、参数是什么。</div>
+</section>
+
+<!-- ═══════════ 第 9 章 ═══════════ -->
+<section id="ch9">
+<h2><span class="no">第 9 章</span>进阶路线：接下来学什么</h2>
+<p class="lead">你已经掌握了最核心的主干。下面是真实企业开发者的成长路径。</p>
+<div class="svg-wrap">
+<svg class="dsvg" viewBox="0 0 860 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="学习路线">
+  <defs><marker id="arr8" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="#546e7a"/></marker></defs>
+  <rect x="16" y="40" width="250" height="150" rx="14" fill="#e8f5e9" stroke="#43a047" stroke-width="2"/>
+  <text x="141" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#2e7d32">阶段一 · 打基础</text>
+  <text x="141" y="98" text-anchor="middle" font-size="12.5" fill="#33691e">本教程第 0~3 章</text>
+  <text x="141" y="122" text-anchor="middle" font-size="12.5" fill="#33691e">Java 回顾 · IoC/DI</text>
+  <text x="141" y="146" text-anchor="middle" font-size="12.5" fill="#33691e">理解 Bean 与解耦</text>
+  <text x="141" y="170" text-anchor="middle" font-size="12.5" fill="#33691e">✅ 你现在在这</text>
+  <rect x="306" y="40" width="250" height="150" rx="14" fill="#e3f2fd" stroke="#1e88e5" stroke-width="2"/>
+  <text x="431" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#1565c0">阶段二 · 三大件</text>
+  <text x="431" y="98" text-anchor="middle" font-size="12.5" fill="#1565c0">本教程第 4~6 章</text>
+  <text x="431" y="122" text-anchor="middle" font-size="12.5" fill="#1565c0">Spring MVC 接口开发</text>
+  <text x="431" y="146" text-anchor="middle" font-size="12.5" fill="#1565c0">MyBatis 读写数据库</text>
+  <text x="431" y="170" text-anchor="middle" font-size="12.5" fill="#1565c0">Boot 配置与打包</text>
+  <rect x="596" y="40" width="250" height="150" rx="14" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+  <text x="721" y="70" text-anchor="middle" font-size="15" font-weight="bold" fill="#e65100">阶段三 · 实战与进阶</text>
+  <text x="721" y="98" text-anchor="middle" font-size="12.5" fill="#e65100">本教程第 7 章跑通实战</text>
+  <text x="721" y="122" text-anchor="middle" font-size="12.5" fill="#e65100">参数校验 · 事务 · JWT 登录</text>
+  <text x="721" y="146" text-anchor="middle" font-size="12.5" fill="#e65100">Redis 缓存 · 前后端联调</text>
+  <text x="721" y="170" text-anchor="middle" font-size="12.5" fill="#e65100">部署上线</text>
+  <line x1="268" y1="115" x2="300" y2="115" stroke="#546e7a" stroke-width="2.5" marker-end="url(#arr8)"/>
+  <line x1="558" y1="115" x2="590" y2="115" stroke="#546e7a" stroke-width="2.5" marker-end="url(#arr8)"/>
+  <text x="430" y="230" text-anchor="middle" font-size="12.5" fill="#5b6472">每学完一章 → 把第 7 章的项目扩展一点 → 用实战巩固知识</text>
+</svg>
+</div>
+<p class="fig-cap">图 9-1 · 三阶段成长路线</p>
+
+<h3>9.1 按顺序补齐的技能清单</h3>
+<ol>
+  <li><b>参数校验</b>：<code>@Validated</code> + <code>@NotNull/@Min/@Size</code>，替代手写 if 校验，代码更专业；</li>
+  <li><b>事务</b>：<code>@Transactional</code>——理解「下单扣库存」为什么必须在一个事务里（要么全成功，要么全回滚）；</li>
+  <li><b>登录认证</b>：JWT + 拦截器，实现注册/登录/令牌校验，理解每个网站为什么要登录；</li>
+  <li><b>Redis 缓存</b>：把热点数据放缓存，理解「为什么 12306 首页快」；</li>
+  <li><b>MyBatis-Plus</b>：MyBatis 的增强版（国内很流行），单表 CRUD 连 SQL 都不用写，先懂 MyBatis 再用它事半功倍；</li>
+  <li><b>前端联调</b>：学一点 Vue 或 React，用你写的接口做一个真实页面；</li>
+  <li><b>部署上线</b>：云服务器 + <code>java -jar</code> + Nginx 反向代理，把项目发布到公网。</li>
+</ol>
+
+<h3>9.2 官方资料（遇到问题的第一手答案）</h3>
+<table>
+  <tr><th>资源</th><th>地址</th></tr>
+  <tr><td>Spring 官方文档</td><td>https://spring.io/projects/spring-boot</td></tr>
+  <tr><td>MyBatis 中文文档</td><td>https://mybatis.org/mybatis-3/zh/index.html</td></tr>
+  <tr><td>MyBatis-Spring-Boot</td><td>https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/</td></tr>
+  <tr><td>项目脚手架</td><td>https://start.spring.io（国内：https://start.aliyun.com）</td></tr>
+</table>
+</section>
+
+<!-- ═══════════ 附录 ═══════════ -->
+<section id="appendix">
+<h2><span class="no">附录</span>速查卡合集</h2>
+
+<h3>A. 注解速查（按层分类）</h3>
+<table>
+  <tr><th>层</th><th>注解</th><th>作用</th></tr>
+  <tr><td rowspan="4">Spring</td><td><code>@Component / @Service / @Repository</code></td><td>把类登记为 Bean</td></tr>
+  <tr><td><code>@Autowired / 构造器注入</code></td><td>注入依赖</td></tr>
+  <tr><td><code>@Bean / @Configuration</code></td><td>配置类中手工造 Bean</td></tr>
+  <tr><td><code>@Primary / @Qualifier</code></td><td>多个同类 Bean 时指定用哪个</td></tr>
+  <tr><td rowspan="5">Spring MVC</td><td><code>@RestController</code></td><td>接口类，返回值转 JSON</td></tr>
+  <tr><td><code>@GetMapping / @PostMapping / @PutMapping / @DeleteMapping</code></td><td>路径映射</td></tr>
+  <tr><td><code>@PathVariable / @RequestParam / @RequestBody</code></td><td>取路径/查询/请求体参数</td></tr>
+  <tr><td><code>@RestControllerAdvice + @ExceptionHandler</code></td><td>全局异常处理</td></tr>
+  <tr><td><code>HandlerInterceptor</code></td><td>拦截器（登录校验等）</td></tr>
+  <tr><td rowspan="3">MyBatis</td><td><code>@Mapper / @MapperScan</code></td><td>声明 Mapper 接口 / 批量扫描</td></tr>
+  <tr><td><code>@Select / @Insert / @Update / @Delete</code></td><td>注解版 SQL</td></tr>
+  <tr><td><code>&lt;if&gt; &lt;where&gt; &lt;set&gt; &lt;foreach&gt;</code></td><td>XML 动态 SQL 标签</td></tr>
+  <tr><td rowspan="3">Boot</td><td><code>@SpringBootApplication</code></td><td>启动类三合一注解</td></tr>
+  <tr><td><code>@Transactional</code></td><td>事务（配合 starter-data 或 spring-tx）</td></tr>
+  <tr><td><code>@Value / @ConfigurationProperties</code></td><td>读取 yml 配置</td></tr>
+</table>
+
+<h3>B. HTTP 状态码速查</h3>
+<table>
+  <tr><th>状态码</th><th>含义</th><th>常见触发场景</th></tr>
+  <tr><td><b>200</b></td><td>成功</td><td>一切正常</td></tr>
+  <tr><td><b>400</b></td><td>客户端参数错误</td><td>JSON 格式错、校验失败、业务异常（本教程统一用它）</td></tr>
+  <tr><td><b>401</b></td><td>未认证</td><td>没登录 / token 失效</td></tr>
+  <tr><td><b>403</b></td><td>无权限</td><td>登录了但权限不够</td></tr>
+  <tr><td><b>404</b></td><td>资源不存在</td><td>URL 写错 / 方法没有对应映射</td></tr>
+  <tr><td><b>405</b></td><td>方法不允许</td><td>用 GET 去访问了 POST 接口</td></tr>
+  <tr><td><b>415</b></td><td>不支持的媒体类型</td><td>POST 忘了 <code>Content-Type: application/json</code></td></tr>
+  <tr><td><b>500</b></td><td>服务器内部错误</td><td>代码抛了未处理异常 / 数据库挂了</td></tr>
+</table>
+
+<h3>C. 本教程知识主线（30 秒复盘）</h3>
+<pre data-lang="text"><code>Spring      → IoC 容器管对象；@Service 登记 Bean；构造器注入拿 Bean；接口解耦
+Spring MVC  → @RestController 接请求；@XxxMapping 定路径；
+              @PathVariable / @RequestParam / @RequestBody 取参数；返回值自动转 JSON
+MyBatis     → @Mapper 接口即数据层；#{} 防注入；动态 SQL 用 XML 标签；驼峰映射要开启
+Spring Boot → starter 拉依赖；自动配置免 XML；内嵌 Tomcat；yml 统一配置
+实战套路    → 建表 → 实体类 → Mapper → Service → Controller → yml → 运行测试
+            → 建表 → 实体 → 持久层 → 业务层 → 接口层 → 配置 → 测试</code></pre>
+
+<hr>
+<p style="text-align:center;color:var(--muted);font-size:13.5px">
+📖 <b>Spring 全家桶零基础图文教程</b> · 完<br>
+有报错不可怕——它只是系统在用另一种方式教你。祝学习顺利！🚀
+</p>
+</section>
+
+</div></main>
+
+<button id="top-btn" title="回到顶部">↑</button>
+
+<script>
+/* ═══ 轻量语法高亮引擎 ═══ */
+(function(){
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function compile(rules){return rules.map(function(r){return [new RegExp(r[0].source,r[0].flags.replace(/[gy]/g,'')+'y'),r[1]];});}
+  var KW_JAVA='public|private|protected|abstract|class|interface|enum|record|extends|implements|new|return|void|static|final|if|else|for|while|do|switch|case|break|continue|import|package|this|null|true|false|instanceof|throw|throws|try|catch|finally|default|super|var|int|long|double|float|boolean|char|byte|short';
+  var KW_SQL='SELECT|FROM|WHERE|INSERT|INTO|VALUES|UPDATE|SET|DELETE|CREATE|DATABASE|TABLE|PRIMARY|KEY|AUTO_INCREMENT|DEFAULT|CHARACTER|USE|NOT|NULL|AND|OR|LIKE|ORDER|BY|DESC|ASC|JOIN|LEFT|RIGHT|INNER|GROUP|HAVING|LIMIT|COUNT|BIGINT|INT|VARCHAR|DATETIME|EXISTS|IN|AS|CONCAT|CURRENT_TIMESTAMP|utf8mb4';
+  var RULES={
+    java:[[ /\/\/[^\n]*|\/\*[\s\S]*?\*\//,'com'],[/"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*'/,'str'],[/@[A-Za-z_]\w*/,'ann'],[new RegExp('\\b(?:'+KW_JAVA+')\\b'),'kw'],[/\b\d[\d_]*(?:\.\d+)?[LlFfDd]?\b/,'num']],
+    xml:[[ /<!--[\s\S]*?-->/,'com'],[/<\/?[\w:-]+/,'tag'],[/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/,'str'],[/[\w:-]+(?==)/,'attr'],[/\/?>/,'tag']],
+    yaml:[[ /#[^\n]*/,'com'],[/^\s*[\w.\/-]+(?=\s*:)/m,'attr'],[/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/,'str'],[/\b(?:true|false|null)\b/,'kw'],[/\b\d+(?:\.\d+)?\b/,'num']],
+    sql:[[ /--[^\n]*/,'com'],[/'(?:''|[^'\n])*'/,'str'],[new RegExp('\\b(?:'+KW_SQL+')\\b','i'),'kw'],[/\b\d+\b/,'num']],
+    bash:[[ /#[^\n]*/,'com'],[/"(?:\\.|[^"\\\n])*"|'(?:[^'\\]|\\.)*'/,'str'],[/(?:^|\s)--?[\w-]+/,'attr'],[/\b(?:curl|java|mvn|mysql|cd|ls|git|npm|node)\b/,'kw']],
+    json:[[ /"(?:\\.|[^"\\])*"(?=\s*:)/,'attr'],[/"(?:\\.|[^"\\])*"/,'str'],[/\b(?:true|false|null)\b/,'kw'],[/-?\b\d+(?:\.\d+)?\b/,'num']],
+    text:[]
+  };
+  Object.keys(RULES).forEach(function(k){RULES[k]=compile(RULES[k]);});
+  document.querySelectorAll('pre code[class^="lang-"]').forEach(function(code){
+    var m=code.className.match(/lang-([\w-]+)/),rules=RULES[m?m[1]:'']||[];
+    var src=code.textContent,out='',i=0;
+    while(i<src.length){
+      var best=null;
+      for(var j=0;j<rules.length;j++){
+        var re=rules[j][0];re.lastIndex=i;
+        var mm=re.exec(src);
+        if(mm&&mm.index===i&&mm[0].length>0){best={t:mm[0],c:rules[j][1]};break;}
+      }
+      if(best){out+='<span class="'+best.c+'">'+esc(best.t)+'</span>';i+=best.t.length;}
+      else{out+=esc(src[i]);i++;}
+    }
+    code.innerHTML=out;
+  });
+  /* 复制按钮 */
+  document.querySelectorAll('pre').forEach(function(pre){
+    var btn=document.createElement('button');
+    btn.className='copy-btn';btn.textContent='复制';
+    btn.addEventListener('click',function(){
+      navigator.clipboard.writeText(pre.querySelector('code').textContent).then(function(){
+        btn.textContent='已复制 ✓';setTimeout(function(){btn.textContent='复制';},1500);
+      });
+    });
+    pre.appendChild(btn);
+  });
+})();
+/* ═══ 主题切换 ═══ */
+(function(){
+  var btn=document.getElementById('theme-btn');
+  var saved=localStorage.getItem('st-theme');
+  if(saved)document.documentElement.setAttribute('data-theme',saved);
+  function label(){btn.textContent=document.documentElement.getAttribute('data-theme')==='dark'?'☀️ 切换浅色模式':'🌙 切换深色模式';}
+  label();
+  btn.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme')==='dark'?'':'dark';
+    if(cur)document.documentElement.setAttribute('data-theme',cur);else document.documentElement.removeAttribute('data-theme');
+    localStorage.setItem('st-theme',cur);label();
+  });
+})();
+/* ═══ 目录高亮（滚动监听） ═══ */
+(function(){
+  var links=Array.prototype.slice.call(document.querySelectorAll('#sidebar nav a[href^="#"]'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        links.forEach(function(a){a.classList.remove('active');});
+        var a=map[e.target.id];if(a)a.classList.add('active');
+      }
+    });
+  },{rootMargin:'-30% 0px -60% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(s){io.observe(s);});
+  /* 移动端菜单 */
+  var btn=document.getElementById('menu-btn'),mask=document.getElementById('mask');
+  btn.addEventListener('click',function(){document.body.classList.toggle('sidebar-open');});
+  mask.addEventListener('click',function(){document.body.classList.remove('sidebar-open');});
+  links.forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('sidebar-open');});});
+})();
+/* ═══ 进度条 + 返回顶部 ═══ */
+(function(){
+  var bar=document.getElementById('progress'),top=document.getElementById('top-btn');
+  window.addEventListener('scroll',function(){
+    var h=document.documentElement;
+    var p=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;
+    bar.style.width=p+'%';
+    top.style.display=h.scrollTop>600?'block':'none';
+  });
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>

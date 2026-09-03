@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据结构考研教程 — 408 全考点图解</title>
+<meta name="description" content="考研 408 数据结构全考点教程：图解 + 考场手算模板 + 真题风格代码，衔接《C++ 零基础入门教程》。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:#f1f5f9;color:#0f172a;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;line-height:1.85;font-size:16px}
+a{color:#0f766e;text-decoration:none}
+a:hover{text-decoration:underline}
+
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,#0d9488,#2563eb);z-index:1001;transition:width .1s}
+.topbar{position:fixed;top:0;left:0;right:0;height:60px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;z-index:1000;display:flex;align-items:center}
+.topbar-inner{max-width:1440px;margin:0 auto;width:100%;display:flex;align-items:center;gap:14px;padding:0 22px}
+.logo{font-weight:800;font-size:16.5px;color:#0f172a;display:flex;align-items:center;gap:10px;line-height:1.25}
+.logo .lg-ic{width:34px;height:32px;border-radius:9px;background:linear-gradient(135deg,#0d9488,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.logo .sub{font-size:12px;color:#64748b;font-weight:500}
+.topbar-right{margin-left:auto;display:flex;gap:10px}
+.btn-mini{background:#f0fdfa;color:#0f766e;padding:7px 14px;border-radius:9px;font-size:13.5px;font-weight:600}
+.btn-mini:hover{background:#ccfbf1;text-decoration:none}
+.toc-toggle{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:9px;width:36px;height:36px;font-size:17px;cursor:pointer;color:#334155}
+
+.layout{max-width:1440px;margin:0 auto;padding-top:60px;display:flex;align-items:flex-start}
+aside.toc{width:274px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:18px 12px 40px;border-right:1px solid #e2e8f0;background:#fff}
+.toc .grp{font-size:12px;font-weight:700;color:#94a3b8;letter-spacing:.5px;margin:18px 10px 6px}
+.toc a{display:flex;gap:9px;align-items:center;padding:7px 12px;margin:2px 0;border-radius:9px;color:#475569;font-size:14px}
+.toc a:hover{background:#f1f5f9;text-decoration:none}
+.toc a.active{background:#f0fdfa;color:#0f766e;font-weight:600}
+.toc a .no{font-family:Consolas,monospace;font-size:12px;color:#94a3b8;min-width:22px}
+
+main{flex:1;min-width:0;padding:28px 34px 90px}
+.content{max-width:880px;margin:0 auto}
+
+.hero{background:linear-gradient(135deg,#042f2e 0%,#0f766e 55%,#0369a1 100%);border-radius:20px;color:#fff;padding:52px 48px;margin-bottom:30px;margin-left:auto;margin-right:auto;max-width:1160px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero h1{margin:0 0 14px;font-size:36px;line-height:1.35;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);padding:4px 14px;border-radius:999px;font-size:13px;margin-bottom:18px;position:relative;z-index:1}
+.hero p.lead{font-size:17px;color:#ccfbf1;max-width:640px;margin:0 0 22px;position:relative;z-index:1}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px;position:relative;z-index:1}
+.chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);padding:5px 14px;border-radius:999px;font-size:13.5px}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;position:relative;z-index:1}
+.btn{padding:11px 24px;border-radius:11px;font-size:15px;font-weight:600;cursor:pointer;border:none}
+.btn:hover{text-decoration:none;transform:translateY(-1px)}
+.btn-light{background:#fff;color:#0f766e}
+.btn-ghost{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.4)}
+.hero-code{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:320px;background:#0f172a;border:1px solid rgba(255,255,255,.18);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.35);z-index:1}
+.hc-head{display:flex;gap:6px;padding:10px 14px;background:#1e293b;align-items:center}
+.hc-head .dot{width:10px;height:10px;border-radius:50%}
+.hc-head .dot:nth-child(1){background:#f87171}
+.hc-head .dot:nth-child(2){background:#fbbf24}
+.hc-head .dot:nth-child(3){background:#34d399}
+.hc-name{margin-left:8px;color:#94a3b8;font-size:12px;font-family:Consolas,monospace}
+.hero-code pre{margin:0}
+.hero-code pre code{padding:14px 16px;font-size:12px;line-height:1.75;white-space:pre-wrap;word-break:break-all}
+
+section.chapter{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:34px 40px;margin-bottom:26px;box-shadow:0 1px 3px rgba(15,23,42,.04)}
+.ch-head{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.ch-num{flex-shrink:0;width:44px;height:44px;border-radius:13px;background:linear-gradient(135deg,#0d9488,#2563eb);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+.ch-kicker{font-size:12px;color:#94a3b8;font-weight:600;letter-spacing:.5px}
+h2{font-size:25px;margin:0;line-height:1.4}
+h3{font-size:19px;margin:34px 0 12px;padding-left:12px;border-left:4px solid #0d9488;line-height:1.4}
+h4{font-size:16px;margin:24px 0 8px;color:#0f766e}
+p{margin:10px 0}
+ul,ol{padding-left:24px;margin:10px 0}
+li{margin:4px 0}
+.goals{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:12px;padding:11px 18px;font-size:14.5px;color:#475569;margin:16px 0 6px}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14.5px;background:#fff}
+th{background:#f0fdfa;color:#0f766e;font-weight:700}
+th,td{border:1px solid #dbe4ef;padding:9px 13px;text-align:left;vertical-align:top}
+tbody tr:nth-child(even){background:#f8fafc}
+:not(pre)>code{background:#f0fdfa;color:#0f766e;padding:2px 7px;border-radius:6px;font-size:.88em;font-family:Consolas,"Cascadia Code",monospace}
+.code{background:#0f172a;border-radius:14px;overflow:hidden;margin:18px 0;box-shadow:0 8px 24px rgba(15,23,42,.18)}
+.code-head{display:flex;justify-content:space-between;align-items:center;background:#1e293b;padding:8px 16px;font-size:12.5px;color:#94a3b8;font-family:Consolas,monospace}
+.copy-btn{background:transparent;border:1px solid #334155;color:#94a3b8;border-radius:7px;padding:3px 12px;font-size:12px;cursor:pointer;font-family:inherit}
+.copy-btn:hover{color:#e2e8f0;border-color:#64748b}
+pre{margin:0}
+pre code{display:block;padding:16px 20px;overflow-x:auto;color:#e2e8f0;font-family:Consolas,"Cascadia Code",monospace;font-size:13.8px;line-height:1.75;tab-size:4}
+.tk-k{color:#c084fc}.tk-t{color:#38bdf8}.tk-s{color:#86efac}.tk-n{color:#f59e0b}
+.tk-c{color:#7d8ba1;font-style:italic}.tk-p{color:#f472b6}.tk-f{color:#fde047}
+.term{background:#0c1222;border:1px solid #1e293b;border-radius:14px;overflow:hidden;margin:18px 0}
+.term-head{background:#111a30;color:#4ade80;padding:8px 16px;font-size:12.5px;font-family:Consolas,monospace;border-bottom:1px solid #1e293b}
+.term pre code{color:#bbf7d0;font-size:13.5px}
+.box{border-radius:13px;padding:15px 20px;margin:20px 0;border:1px solid;font-size:15px}
+.box .bt{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.box>:last-child{margin-bottom:0}
+.tip{background:#f0fdf4;border-color:#bbf7d0}.tip .bt{color:#15803d}
+.warn{background:#fffbeb;border-color:#fde68a}.warn .bt{color:#b45309}
+.note{background:#f0fdfa;border-color:#99f6e4}.note .bt{color:#0f766e}
+.practice{background:#faf5ff;border-color:#e9d5ff}.practice .bt{color:#7e22ce}
+details{margin:12px 0 4px}
+details>summary{cursor:pointer;font-weight:600;padding:6px 0;user-select:none}
+details.ans>summary{color:#7e22ce}
+details.extra{border:1px solid #e2e8f0;border-radius:12px;padding:10px 18px;background:#f8fafc}
+details.extra>summary{color:#475569}
+.diagram{background:#fbfdff;border:1px solid #e2e8f0;border-radius:14px;padding:22px 18px 12px;margin:22px 0;text-align:center}
+.diagram svg{max-width:100%;height:auto}
+.diagram .cap{font-size:13px;color:#64748b;margin-top:8px}
+svg .db{fill:#f0fdfa;stroke:#0d9488;stroke-width:1.6}
+svg .dterm{fill:#dcfce7;stroke:#22c55e;stroke-width:1.6}
+svg .ddia{fill:#fef3c7;stroke:#f59e0b;stroke-width:1.6}
+svg .dm{fill:#fff;stroke:#334155;stroke-width:1.6}
+svg .dg{fill:#fff;stroke:#64748b;stroke-width:1.6}
+svg .da{stroke:#64748b;stroke-width:1.7;fill:none}
+svg .dt{font-size:14px;font-weight:600;fill:#1e293b;text-anchor:middle}
+svg .ds{font-size:12px;fill:#64748b;text-anchor:middle}
+svg .dl{font-size:12.5px;fill:#475569;text-anchor:middle;font-weight:600}
+svg .dcode{font-size:13px;fill:#334155;font-family:Consolas,monospace}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.card{border:1px solid #e2e8f0;border-radius:13px;padding:16px;background:#fff}
+.card .ic{font-size:26px}
+.card b{display:block;margin:6px 0 4px}
+.card span.desc{font-size:13.5px;color:#64748b;line-height:1.6;display:block}
+ol.steps{list-style:none;counter-reset:st;padding-left:0}
+ol.steps>li{counter-increment:st;position:relative;padding:0 0 18px 52px;margin:0}
+ol.steps>li::before{content:counter(st);position:absolute;left:0;top:2px;width:30px;height:30px;border-radius:50%;background:#0d9488;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+ol.steps>li::after{content:"";position:absolute;left:14px;top:38px;bottom:4px;width:2px;background:#e2e8f0}
+ol.steps>li:last-child::after{display:none}
+kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-size:.85em;font-family:Consolas,monospace}
+.end-card{background:linear-gradient(135deg,#042f2e,#0f766e);color:#fff;border-radius:18px;padding:42px 44px;text-align:center;margin-top:30px}
+.end-card h2{color:#fff;margin-bottom:12px}
+.end-card p{color:#ccfbf1;max-width:640px;margin:8px auto}
+.footer-note{max-width:880px;margin:0 auto 44px;color:#94a3b8;font-size:13.5px;text-align:center}
+#backTop{position:fixed;right:26px;bottom:30px;width:46px;height:46px;border-radius:50%;background:#0d9488;color:#fff;border:none;font-size:19px;cursor:pointer;display:none;box-shadow:0 8px 20px rgba(13,148,136,.4);z-index:1000}
+/* 窄屏直接隐藏终端窗，避免与封面文字重叠；宽屏时文字让出右侧空间 */
+@media(max-width:1360px){.hero-code{display:none}}
+@media(min-width:1361px){
+ .hero h1,.hero p.lead,.chips,.hero-actions{max-width:calc(100% - 410px)}
+}
+@media(max-width:1080px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:860px){
+ .toc-toggle{display:inline-flex}
+ aside.toc{position:fixed;left:0;top:60px;z-index:999;transform:translateX(-105%);transition:transform .25s;box-shadow:0 10px 40px rgba(15,23,42,.2)}
+ body.nav-open aside.toc{transform:none}
+ main{padding:18px 15px 70px}
+ section.chapter{padding:24px 20px}
+ .hero{padding:34px 24px}
+ .hero h1{font-size:27px}
+ .cards{grid-template-columns:1fr}
+ .end-card{padding:32px 22px}
+}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <button class="toc-toggle" id="tocToggle" aria-label="打开目录">☰</button>
+    <div class="logo"><span class="lg-ic">DS</span><span>数据结构考研教程<br><span class="sub">408 全考点 · 衔接 C++ 入门</span></span></div>
+    <a class="btn-mini" href="/" style="margin-right:8px">← 返回作品集</a><div class="topbar-right">
+      <a class="btn-mini" href="cpp-tutorial.html">📗 上一册：C++ 入门</a>
+      <a class="btn-mini" href="#ch9">🚀 直达大题专项</a>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+<aside class="toc" id="toc">
+  <div class="grp">考情导航</div>
+  <a href="#intro"><span class="no">00</span>开篇 · 考情速览</a>
+  <a href="#ch1"><span class="no">01</span>绪论与复杂度</a>
+  <div class="grp">线性结构</div>
+  <a href="#ch2"><span class="no">02</span>线性表</a>
+  <a href="#ch3"><span class="no">03</span>栈 · 队列 · 数组</a>
+  <a href="#ch4"><span class="no">04</span>串与 KMP</a>
+  <div class="grp">非线性结构</div>
+  <a href="#ch5"><span class="no">05</span>树与二叉树</a>
+  <a href="#ch6"><span class="no">06</span>图</a>
+  <div class="grp">查找与排序</div>
+  <a href="#ch7"><span class="no">07</span>查找</a>
+  <a href="#ch8"><span class="no">08</span>排序</a>
+  <div class="grp">冲刺篇</div>
+  <a href="#ch9"><span class="no">09</span>代码大题专项</a>
+  <a href="#ch10"><span class="no">10</span>复习规划与资源</a>
+</aside>
+<main>
+
+<section class="hero">
+  <span class="hero-badge">📗 第二册 · 衔接《C++ 零基础入门教程》</span>
+  <h1>数据结构考研全攻略<br>408 全考点 · 图解 + 手算 + 代码</h1>
+  <p class="lead">上一册你已经会用 C++ 写程序了，这一册进入考研正题：按照 408 考纲，把数据结构的每一个考点讲透——先看图理解结构，再学考场手算套路，最后落到真题风格的代码上。</p>
+  <div class="chips">
+    <span class="chip">📖 10 章 · 408 全考点</span>
+    <span class="chip">🖼️ 12 幅图解</span>
+    <span class="chip">🧮 考场手算模板</span>
+    <span class="chip">💻 真题风格代码</span>
+    <span class="chip">🎯 数据结构 · 45 分</span>
+  </div>
+  <div class="hero-actions">
+    <a class="btn btn-light" href="#intro">看考情速览 →</a>
+    <a class="btn btn-ghost" href="#ch1">直接开始第一章</a>
+  </div>
+  <div class="hero-code">
+    <div class="hc-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="hc-name">LNode.h</span></div>
+    <pre><code class="language-cpp">typedef struct LNode {
+    int data;              // 数据域
+    struct LNode *next;    // 指针域：指向后继
+} LNode, *LinkList;</code></pre>
+  </div>
+</section>
+
+<div class="content">
+
+<section class="chapter" id="intro">
+  <div class="ch-head"><span class="ch-num">00</span><div><div class="ch-kicker">PRELUDE · 考情导航</div><h2>开篇：考情速览与使用指南</h2></div></div>
+
+  <h3>数据结构在 408 里值多少分？</h3>
+  <table>
+    <thead><tr><th>科目</th><th>分值</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><strong>数据结构</strong></td><td><strong>45 / 150 分</strong></td><td>单选题约 11~12 道（22~24 分）＋ 综合应用题 2 道（约 21~23 分，含一道算法设计题）</td></tr>
+      <tr><td>计算机组成原理</td><td>45 分</td><td>——</td></tr>
+      <tr><td>操作系统</td><td>35 分</td><td>与数据结构联动多（进程队列 = 队列、文件 = B+ 树……）</td></tr>
+      <tr><td>计算机网络</td><td>25 分</td><td>——</td></tr>
+    </tbody>
+  </table>
+  <div class="box note"><div class="bt">📌 与教材的对应关系</div>
+    <p>本教程按 408 考纲组织，章节顺序与<strong>严蔚敏《数据结构（C 语言版）》</strong>和<strong>王道《数据结构考研复习指导》</strong>一致，可以完美搭配使用：本册负责「讲懂 + 图解 + 手算」，王道负责海量刷题。</p>
+  </div>
+
+  <h3>怎么用这一册效果最好？</h3>
+  <ol class="steps">
+    <li><strong>先读结构图</strong>：每一章的图解（链表图、树图、图论图）就是考场上你脑中应有的画面，务必能自己在纸上画出来。</li>
+    <li><strong>再背手算模板</strong>：next 数组、Prim/Kruskal、Dijkstra 表格、散列 ASL……这些是选择题的直接得分点，每章的「🧮 考场手算」框就是为它们准备的。</li>
+    <li><strong>然后敲代码</strong>：考研代码题要求能写出可运行的算法，本册代码全部用 C++（含引用传参 <code>&amp;</code>，写法见上一册第 9 章），可直接上机验证。</li>
+    <li><strong>最后做每章练习</strong>：题目按真题风格改编，先自己算，再点开答案对照。</li>
+  </ol>
+  <div class="box tip"><div class="bt">💡 前置知识自查（来自上一册）</div>
+    <p>本册会用到：<code>struct</code> 结构体（第 13 章）、函数与引用传参（第 9 章）、指针（第 12 章）、<code>queue</code> 等 STL 容器（第 15 章）。哪一块生疏了，回上一册对应章节补 20 分钟即可。</p>
+  </div>
+  <table>
+    <thead><tr><th>章节</th><th>考频</th><th>主要出题方式</th></tr></thead>
+    <tbody>
+      <tr><td>01 绪论与复杂度</td><td>⭐⭐</td><td>选择题：算时间复杂度</td></tr>
+      <tr><td>02 线性表</td><td>⭐⭐⭐</td><td>选择 + <strong>算法设计大题高频区</strong></td></tr>
+      <tr><td>03 栈、队列、数组</td><td>⭐⭐⭐</td><td>选择题极多：出栈序列、循环队列、矩阵压缩</td></tr>
+      <tr><td>04 串与 KMP</td><td>⭐⭐</td><td>选择题：手算 next / nextval</td></tr>
+      <tr><td>05 树与二叉树</td><td>⭐⭐⭐</td><td>选择题最多的一章 + 大题（遍历、线索、哈夫曼）</td></tr>
+      <tr><td>06 图</td><td>⭐⭐⭐</td><td>大题常客：手算 MST / 最短路 / 拓扑</td></tr>
+      <tr><td>07 查找</td><td>⭐⭐⭐</td><td>选择 + 大题：判定树、AVL、B 树、散列 ASL</td></tr>
+      <tr><td>08 排序</td><td>⭐⭐⭐</td><td>选择题极多：手算排序过程、稳定性、复杂度大表</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="chapter" id="ch1">
+  <div class="ch-head"><span class="ch-num">01</span><div><div class="ch-kicker">CHAPTER 01 · 基础篇 ⭐⭐</div><h2>绪论：数据结构三要素与复杂度分析</h2></div></div>
+  <div class="goals">📌 本章目标：分清逻辑结构与存储结构，掌握大 O 时间复杂度的推导方法——这是每年选择题的「送分题」，必须稳拿。</div>
+
+  <h3>程序 = 数据结构 + 算法</h3>
+  <p>这是计算机科学家沃斯（Wirth）的著名公式。<strong>数据结构</strong>决定数据「怎么摆放」，<strong>算法</strong>决定「按什么步骤处理」。摆放方式不同，处理效率天差地别——这就是这门课要研究的一切。</p>
+
+  <h3>考点一：数据结构三要素</h3>
+  <ol>
+    <li><strong>逻辑结构</strong>：数据元素之间<strong>逻辑上</strong>的关系，与怎么存无关。四种：集合、线性结构（一对一）、树形结构（一对多）、图状结构（多对多）。</li>
+    <li><strong>存储结构（物理结构）</strong>：逻辑结构在内存中的映像。四种：顺序存储、链式存储、索引存储、散列（哈希）存储。</li>
+    <li><strong>数据的运算</strong>：运算的<strong>定义</strong>针对逻辑结构，运算的<strong>实现</strong>针对存储结构。</li>
+  </ol>
+  <table>
+    <thead><tr><th>逻辑结构</th><th>元素关系</th><th>典型例子</th></tr></thead>
+    <tbody>
+      <tr><td>集合</td><td>除「同属一个集合」外无其他关系</td><td>并查集</td></tr>
+      <tr><td>线性结构</td><td>一对一，有且仅有一个开始和终端结点</td><td>线性表、栈、队列、串</td></tr>
+      <tr><td>树形结构</td><td>一对多</td><td>二叉树、B 树</td></tr>
+      <tr><td>图状结构</td><td>多对多</td><td>有向图、无向图、网</td></tr>
+    </tbody>
+  </table>
+  <div class="box warn"><div class="bt">⚠️ 选择题陷阱</div>
+    <p>「循环队列」「顺序表」是<strong>线性结构</strong>；判断「存储结构」的标志是看它是否关心<strong>内存地址</strong>（顺序表关心、链表也关心——它们都是存储结构层面的名词，逻辑上都叫线性表）。考题爱用「有序表」设坑：<strong>有序表是逻辑结构（描述元素已排序），不是存储结构</strong>。</p>
+  </div>
+
+  <h3>考点二：算法的五个特性与设计目标</h3>
+  <p><strong>五个重要特性</strong>：有穷性（有限步内结束——注意「死循环程序」是程序不是算法）、确定性、可行性、输入（0 个或多个）、输出（1 个或多个）。<br><strong>设计目标</strong>：正确性、可读性、健壮性、高效率与低存储量。</p>
+
+  <h3>考点三：时间复杂度（每年必考）</h3>
+  <p>语句执行次数 T(n) 随问题规模 n 的增长规律，用大 O 记号表示，只保留<strong>最高阶且去掉系数</strong>。考场三步法：</p>
+  <ol class="steps">
+    <li>找出执行次数最多的那条语句（基本操作）。</li>
+    <li>算出它一共执行了多少次 f(n)（累加求和 / 解不等式）。</li>
+    <li>f(n) 取最高阶、去系数，写 O(f(n))。</li>
+  </ol>
+  <p>常见复杂度从小到大（必背顺序）：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 700 300" role="img" aria-label="复杂度增长曲线">
+      <line class="da" x1="60" y1="262" x2="670" y2="262" marker-end="url(#ar1c)"/>
+      <line class="da" x1="60" y1="262" x2="60" y2="28" marker-end="url(#ar1c)"/>
+      <defs><marker id="ar1c" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <polyline points="60,250 660,250" fill="none" stroke="#0d9488" stroke-width="2.5"/>
+      <polyline points="60,256 240,242 460,228 660,214" fill="none" stroke="#2563eb" stroke-width="2.5"/>
+      <polyline points="60,256 400,190 660,124" fill="none" stroke="#f59e0b" stroke-width="2.5"/>
+      <polyline points="60,256 300,236 500,150 640,60" fill="none" stroke="#7c3aed" stroke-width="2.5"/>
+      <polyline points="60,256 180,250 280,226 360,170 420,96 460,34" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+      <text x="672" y="255" font-size="13" fill="#0d9488" font-weight="700">O(1)</text>
+      <text x="672" y="218" font-size="13" fill="#2563eb" font-weight="700">O(log n)</text>
+      <text x="672" y="128" font-size="13" fill="#f59e0b" font-weight="700">O(n)</text>
+      <text x="646" y="56" font-size="13" fill="#7c3aed" font-weight="700">O(n log n)</text>
+      <text x="472" y="32" font-size="13" fill="#ef4444" font-weight="700">O(n²)</text>
+      <text x="360" y="288" font-size="13" fill="#64748b">问题规模 n →</text>
+      <text x="24" y="150" font-size="13" fill="#64748b" transform="rotate(-90 24 150)">执行次数 →</text>
+    </svg>
+    <div class="cap">图 1-1 各阶复杂度的增长速度：n² 是灾难级，log n 是优秀级</div>
+  </div>
+
+  <h4>例题 1：乘法增长 → 对数阶</h4>
+  <div class="code"><div class="code-head"><span>logn.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int x = 1;
+while (x &lt; n)
+    x = x * 2;      // 基本语句：每次翻倍，执行 ⌈log₂n⌉ 次 → O(log₂n)</code></pre></div>
+  <div class="box note"><div class="bt">🧮 考场手算</div>
+    <p>凡是循环变量<strong>乘 2（或乘 3、除 2）</strong>增长到 n 的，一律 O(log₂n)。设执行 t 次后 2ᵗ ≥ n，取对数即得。</p>
+  </div>
+
+  <h4>例题 2：嵌套累加 → 平方阶</h4>
+  <div class="code"><div class="code-head"><span>n2.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int sum = 0;
+for (int i = 1; i &lt;= n; i++)
+    for (int j = i; j &lt;= n; j++)   // 内层执行 n-i+1 次
+        sum++;                      // 共 n+(n-1)+…+1 = n(n+1)/2 → O(n²)</code></pre></div>
+
+  <h4>例题 3：递归式 → 套速查表</h4>
+  <table>
+    <thead><tr><th>递归式</th><th>典型算法</th><th>结果</th></tr></thead>
+    <tbody>
+      <tr><td>T(n) = T(n−1) + O(1)</td><td>递归遍历链表 / 先序递归（单子链）</td><td>O(n)</td></tr>
+      <tr><td>T(n) = 2T(n/2) + O(n)</td><td>归并排序、快排（最好情况）</td><td>O(n log₂n)</td></tr>
+      <tr><td>T(n) = T(n/2) + O(1)</td><td>折半查找</td><td>O(log₂n)</td></tr>
+      <tr><td>T(n) = 2T(n−1) + O(1)</td><td>汉诺塔</td><td>O(2ⁿ)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>考点四：最好 / 最坏 / 平均时间复杂度</h3>
+  <p>同一算法输入不同，代价不同。最坏情况给出<strong>上界</strong>（通常说某算法是 O(f(n)) 指最坏），平均情况按概率加权。典型：直接插入排序最好 O(n)（基本有序）、最坏 O(n²)（基本逆序）——第 8 章会反复用到。</p>
+
+  <h3>考点五：空间复杂度</h3>
+  <p>只算<strong>辅助空间</strong>。原地工作（只用常数个辅助变量）是 O(1)；递归的函数栈要计入（递归深度 d 就是 O(d)）。例：归并排序需要长度 n 的辅助数组 → O(n)；快排递归栈平均 O(log₂n)、最坏 O(n)。</p>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>1-1</strong>：<code>for (i=1; i&lt;=n; i++) for (j=1; j&lt;=i*2; j++) x++;</code> 的时间复杂度？</p>
+    <p><strong>1-2</strong>：<code>i=1; while(i&lt;=n) i=i*3;</code> 的时间复杂度？</p>
+    <p><strong>1-3</strong>（真题风格）：以下程序段的时间复杂度？<code>for(i=1;i&lt;=n;i++) for(j=1;j&lt;=n;j*=2) x++;</code></p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>1-1</strong>：内层次数 2+4+…+2n = n(n+1) → <strong>O(n²)</strong>。</p>
+      <p><strong>1-2</strong>：3ᵗ ≥ n → <strong>O(log₃n) = O(log₂n)</strong>（对数底数不影响数量级）。</p>
+      <p><strong>1-3</strong>：外层 n 次，内层每次 log₂n 次 → <strong>O(n log₂n)</strong>。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch2">
+  <div class="ch-head"><span class="ch-num">02</span><div><div class="ch-kicker">CHAPTER 02 · 线性结构 ⭐⭐⭐</div><h2>线性表：顺序表与链表全对比</h2></div></div>
+  <div class="goals">📌 本章目标：熟练写出顺序表插入/删除、单链表建表与插删代码，记住平均移动次数和判空条件——这是算法设计大题的「母题」。</div>
+
+  <h3>线性表的定义</h3>
+  <p>具有<strong>相同数据类型</strong>的 n 个数据元素的<strong>有限序列</strong>（n=0 时为空表）。逻辑上一对一，有前驱后继。注意：线性表是<strong>逻辑结构</strong>；顺序表和链表是它的两种<strong>存储结构</strong>。</p>
+
+  <h3>一、顺序表：一排连续的储物格</h3>
+  <div class="code"><div class="code-head"><span>SqList.h — 静态分配（动态分配用指针 + malloc，思想相同）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#define MaxSize 50
+typedef struct {
+    int data[MaxSize];   // 连续存储区
+    int length;          // 当前元素个数
+} SqList;</code></pre></div>
+  <ul>
+    <li><strong>位序 vs 下标</strong>：位序 i 从 1 开始，对应下标 i−1，这是选择题和代码题共同的易错点。</li>
+    <li><strong>特点</strong>：随机存取 O(1)（一算地址就到）；插入删除要大量移动元素。</li>
+  </ul>
+
+  <h4>插入：第 i 个位置插入 e，后面的元素整体后移</h4>
+  <div class="diagram">
+    <svg viewBox="0 0 760 235" role="img" aria-label="顺序表插入过程">
+      <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#f59e0b"/></marker></defs>
+      <text class="dl" x="70" y="24">插入前（n=5，在位序 3 处插入 6）</text>
+      <rect class="dm" x="60"  y="36" width="72" height="42" rx="6"/><text class="dt" x="96"  y="63">3</text>
+      <rect class="dm" x="132" y="36" width="72" height="42" rx="6"/><text class="dt" x="168" y="63">5</text>
+      <rect class="dm" x="204" y="36" width="72" height="42" rx="6"/><text class="dt" x="240" y="63">7</text>
+      <rect class="dm" x="276" y="36" width="72" height="42" rx="6"/><text class="dt" x="312" y="63">9</text>
+      <rect class="dm" x="348" y="36" width="72" height="42" rx="6"/><text class="dt" x="384" y="63">11</text>
+      <rect class="dm" x="420" y="36" width="72" height="42" rx="6"/><text class="ds" x="456" y="62">空</text>
+      <rect class="dm" x="492" y="36" width="72" height="42" rx="6"/><text class="ds" x="528" y="62">空</text>
+      <path class="da" d="M240,36 C260,8 312,8 332,30" stroke="#f59e0b" marker-end="url(#ar2)"/>
+      <path class="da" d="M312,36 C332,4 384,4 404,30" stroke="#f59e0b" marker-end="url(#ar2)"/>
+      <path class="da" d="M384,36 C404,0 456,0 476,30" stroke="#f59e0b" marker-end="url(#ar2)"/>
+      <text class="dl" x="440" y="18" fill="#b45309">从最后一位起依次后移</text>
+      <text class="dl" x="70" y="128">插入后（n=6）</text>
+      <rect class="dm" x="60"  y="140" width="72" height="42" rx="6"/><text class="dt" x="96"  y="167">3</text>
+      <rect class="dm" x="132" y="140" width="72" height="42" rx="6"/><text class="dt" x="168" y="167">5</text>
+      <rect class="dterm" x="204" y="140" width="72" height="42" rx="6"/><text class="dt" x="240" y="167">6</text>
+      <rect class="dm" x="276" y="140" width="72" height="42" rx="6"/><text class="dt" x="312" y="167">7</text>
+      <rect class="dm" x="348" y="140" width="72" height="42" rx="6"/><text class="dt" x="384" y="167">9</text>
+      <rect class="dm" x="420" y="140" width="72" height="42" rx="6"/><text class="dt" x="456" y="167">11</text>
+      <rect class="dm" x="492" y="140" width="72" height="42" rx="6"/><text class="ds" x="528" y="166">空</text>
+      <text class="ds" x="96"  y="205">下标 0</text><text class="ds" x="168" y="205">1</text><text class="ds" x="240" y="205">2（位序3）</text>
+      <text class="ds" x="312" y="205">3</text><text class="ds" x="384" y="205">4</text><text class="ds" x="456" y="205">5</text>
+    </svg>
+    <div class="cap">图 2-1 顺序表插入：第 i 个及以后的元素从后往前依次后移，腾出位置</div>
+  </div>
+  <div class="code"><div class="code-head"><span>Insert.cpp（考研标准写法，&amp; 引用见上一册第 9 章）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">bool ListInsert(SqList &amp;L, int i, int e) {
+    if (i &lt; 1 || i &gt; L.length + 1) return false;   // 位序非法（允许插到表尾后一位）
+    if (L.length &gt;= MaxSize) return false;          // 表满
+    for (int j = L.length; j &gt;= i; j--)             // 后移：必须从后往前！
+        L.data[j] = L.data[j - 1];
+    L.data[i - 1] = e;                              // 位序 i → 下标 i-1
+    L.length++;
+    return true;
+}
+
+bool ListDelete(SqList &amp;L, int i, int &amp;e) {
+    if (i &lt; 1 || i &gt; L.length) return false;
+    e = L.data[i - 1];
+    for (int j = i; j &lt; L.length; j++)              // 前移：从前往后
+        L.data[j - 1] = L.data[j];
+    L.length--;
+    return true;
+}</code></pre></div>
+  <div class="box note"><div class="bt">🧮 考场手算：平均移动次数</div>
+    <p>插入：等概率下平均移动 <strong>n/2</strong> 次；删除：平均移动 <strong>(n−1)/2</strong> 次 → 插删时间复杂度都是 O(n)，按值查找（顺序比较）也是 O(n)，按位查找 O(1)。</p>
+  </div>
+
+  <h3>二、单链表：用指针串起来的珍珠链</h3>
+  <div class="code"><div class="code-head"><span>LNode.h（408 卷面最常见的定义，务必默写）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">typedef struct LNode {
+    int data;              // 数据域
+    struct LNode *next;    // 指针域：指向后继结点
+} LNode, *LinkList;        // LNode* 强调「结点」，LinkList 强调「整个链表」</code></pre></div>
+  <div class="box note"><div class="bt">📌 头指针 / 头结点 / 首元结点</div>
+    <p><strong>头指针</strong>：指向链表第一个结点的指针，链表的「名字」，<strong>必须有</strong>；<strong>头结点</strong>：在首元结点前附加的一个结点（不存数据），<strong>可有可无</strong>，有了它「在表头插入」和「在表中间插入」逻辑就统一了，<strong>推荐考研统一带头结点</strong>。</p>
+  </div>
+
+  <h4>插入与删除：只改指针，不搬元素</h4>
+  <div class="diagram">
+    <svg viewBox="0 0 780 190" role="img" aria-label="单链表插入过程">
+      <defs><marker id="ar2b" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <rect class="dm" x="40"  y="60" width="90" height="52" rx="8"/><text class="dt" x="85" y="83">头结点</text><rect x="40" y="92" width="90" height="20" fill="#e2e8f0" rx="2"/><text class="ds" x="85" y="107">next</text>
+      <path class="da" d="M130,86 L178,86" marker-end="url(#ar2b)"/>
+      <rect class="dm" x="182" y="60" width="80" height="52" rx="8"/><text class="dt" x="222" y="83">p</text><rect x="182" y="92" width="80" height="20" fill="#e2e8f0" rx="2"/><text class="ds" x="222" y="107">next</text>
+      <path class="da" d="M262,86 L310,86" stroke="#0d9488" stroke-dasharray="5 4" marker-end="url(#ar2b)"/>
+      <text class="dl" x="286" y="74">①</text>
+      <rect class="dterm" x="314" y="60" width="80" height="52" rx="8"/><text class="dt" x="354" y="83">s（新）</text><rect x="314" y="92" width="80" height="20" fill="#ccfbf1" rx="2"/><text class="ds" x="354" y="107">next</text>
+      <path class="da" d="M394,86 L442,86" stroke="#0d9488" stroke-dasharray="5 4" marker-end="url(#ar2b)"/>
+      <text class="dl" x="418" y="74">②</text>
+      <rect class="dm" x="446" y="60" width="80" height="52" rx="8"/><text class="dt" x="486" y="83">q</text><rect x="446" y="92" width="80" height="20" fill="#e2e8f0" rx="2"/><text class="ds" x="486" y="107">next</text>
+      <path class="da" d="M526,86 L574,86" marker-end="url(#ar2b)"/>
+      <rect class="dm" x="578" y="60" width="80" height="52" rx="8"/><text class="ds" x="618" y="90">…</text>
+      <text class="dl" x="390" y="160">① s-&gt;next = p-&gt;next;   ② p-&gt;next = s;（两句顺序不能颠倒！）</text>
+    </svg>
+    <div class="cap">图 2-2 单链表插入：先接新的（①），再改旧的（②）；颠倒了会「丢失」后半条链</div>
+  </div>
+  <div class="code"><div class="code-head"><span>link.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">// 头插法建表：读入的顺序与链表顺序【相反】
+LinkList CreateByHead(int a[], int n) {
+    LinkList L = new LNode;      // 头结点
+    L-&gt;next = NULL;
+    for (int i = 0; i &lt; n; i++) {
+        LNode *s = new LNode;
+        s-&gt;data = a[i];
+        s-&gt;next = L-&gt;next;       // 新结点插到头结点之后
+        L-&gt;next = s;
+    }
+    return L;
+}
+
+// 尾插法建表：顺序一致，需要一个尾指针 r
+LinkList CreateByTail(int a[], int n) {
+    LinkList L = new LNode;
+    LNode *r = L;                // r 永远指向尾结点
+    for (int i = 0; i &lt; n; i++) {
+        LNode *s = new LNode;
+        s-&gt;data = a[i]; r-&gt;next = s; r = s;
+    }
+    r-&gt;next = NULL;
+    return L;
+}
+
+// 删除 p 的后继结点
+void DeleteAfter(LNode *p) {
+    LNode *q = p-&gt;next;
+    p-&gt;next = q-&gt;next;
+    delete q;
+}</code></pre></div>
+
+  <h3>三、双链表与循环链表</h3>
+  <div class="code"><div class="code-head"><span>dlink.cpp — 双链表：前后都能走</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">typedef struct DNode {
+    int data;
+    struct DNode *prior, *next;
+} DNode, *DLinkList;
+
+// 在 p 之后插入 s —— 四句口诀：先接新，再改旧
+s-&gt;next = p-&gt;next;
+s-&gt;prior = p;
+p-&gt;next-&gt;prior = s;    // 注意：必须在 p-&gt;next = s 之前做
+p-&gt;next = s;</code></pre></div>
+  <table>
+    <thead><tr><th>结构</th><th>判空条件（带头结点）</th><th>特点</th></tr></thead>
+    <tbody>
+      <tr><td>循环单链表</td><td><code>L-&gt;next == L</code></td><td>尾结点 next 指回头结点；从任一结点可遍历全表，常只设尾指针</td></tr>
+      <tr><td>循环双链表</td><td><code>L-&gt;next == L</code> 且 <code>L-&gt;prior == L</code></td><td>头尾互指，双向都可回到头</td></tr>
+      <tr><td>静态链表</td><td><code>next == -1</code></td><td>用数组模拟链表（游标），无指针也能「链」，容量固定</td></tr>
+    </tbody>
+  </table>
+
+  <h3>四、顺序表 vs 链表：一张表定选择</h3>
+  <table>
+    <thead><tr><th>对比项</th><th>顺序表</th><th>链表</th></tr></thead>
+    <tbody>
+      <tr><td>存取方式</td><td>随机存取 O(1)</td><td>顺序存取 O(n)</td></tr>
+      <tr><td>插入 / 删除</td><td>O(n)，大量搬移</td><td>已知位置 O(1) 改指针（查找仍 O(n)）</td></tr>
+      <tr><td>空间</td><td>静态分配可能溢出/闲置</td><td>按需分配，但每个结点多一个指针域</td></tr>
+      <tr><td>缓存友好</td><td>✔ 连续内存命中率极高</td><td>✘ 结点散落各处</td></tr>
+      <tr><td>适用场景</td><td>查多改少、表长稳定、按位访问</td><td>频繁插删、表长未知</td></tr>
+    </tbody>
+  </table>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>2-1</strong>：设计 O(n) 时间、O(1) 空间的算法，将顺序表<strong>原地逆置</strong>。</p>
+    <p><strong>2-2</strong>：在带头结点的单链表中删除所有值为 x 的结点。</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <div class="code"><div class="code-head"><span>practice2.cpp</span></div>
+<pre><code class="language-cpp">// 2-1 双下标对撞交换
+void Reverse(SqList &amp;L) {
+    for (int i = 0, j = L.length - 1; i &lt; j; i++, j--)
+        swap(L.data[i], L.data[j]);
+}
+
+// 2-2 前驱指针法：p 扫描，pre 记录前驱
+void DelX(LinkList &amp;L, int x) {
+    LNode *pre = L, *p = L-&gt;next;
+    while (p != NULL) {
+        if (p-&gt;data == x) {
+            pre-&gt;next = p-&gt;next;
+            delete p;
+            p = pre-&gt;next;
+        } else {
+            pre = p; p = p-&gt;next;
+        }
+    }
+}</code></pre></div>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch3">
+  <div class="ch-head"><span class="ch-num">03</span><div><div class="ch-kicker">CHAPTER 03 · 线性结构 ⭐⭐⭐</div><h2>栈、队列与数组：受限的线性表</h2></div></div>
+  <div class="goals">📌 本章目标：掌握栈和队列的存储与代码，会算出栈序列个数与循环队列元素个数，会用栈手算表达式求值，会套特殊矩阵压缩公式。</div>
+
+  <h3>一、栈（Stack）：后进先出 LIFO</h3>
+  <p>只允许在<strong>栈顶</strong>一端插入（进栈 push）和删除（出栈 pop），像摞盘子。栈是递归、函数调用、表达式求值的底层机制。</p>
+  <div class="code"><div class="code-head"><span>stack.cpp — 顺序栈（top 指向栈顶元素，初值 −1）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#define MaxSize 50
+typedef struct {
+    int data[MaxSize];
+    int top;                       // 栈顶指针
+} SqStack;
+
+void InitStack(SqStack &amp;S) { S.top = -1; }
+bool StackEmpty(SqStack S)  { return S.top == -1; }
+
+bool Push(SqStack &amp;S, int x) {
+    if (S.top == MaxSize - 1) return false;   // 栈满
+    S.data[++S.top] = x;                      // 先移指针再存
+    return true;
+}
+
+bool Pop(SqStack &amp;S, int &amp;x) {
+    if (S.top == -1) return false;            // 栈空
+    x = S.data[S.top--];                      // 先取再移
+    return true;
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 两种 top 约定（选择题坑点）</div>
+    <p>约定一：<code>top = -1</code> 表示空，元素存 <code>data[++top]</code>（先加后存），栈顶元素是 <code>data[top]</code>；约定二：<code>top = 0</code> 表示空、指向栈顶<strong>下一格</strong>，元素存 <code>data[top++]</code>，栈顶元素是 <code>data[top-1]</code>，栈满条件变 <code>top == MaxSize</code>。看清题目用哪种约定！</p>
+  </div>
+  <div class="box tip"><div class="bt">💡 两个高频考点</div>
+    <p>① <strong>共享栈</strong>：两个栈共享一个数组，栈底分设两端、向中间推进，栈满条件 <code>top1 + 1 == top2</code>——空间利用率更高。② <strong>出栈序列个数</strong>：n 个不同元素依次进栈，出栈序列共有卡特兰数 <strong>C(2n,n)/(n+1)</strong> 种（n=3 时 5 种，n=4 时 14 种）。判断某序列「可不可能」：模拟进出栈即可。</p>
+  </div>
+
+  <h3>二、队列（Queue）：先进先出 FIFO</h3>
+  <p>队尾入队（rear）、队头出队（front）。顺序队列不断后移会造成<strong>假溢出</strong>（前面已出队的位置浪费）——解决：取模构成<strong>循环队列</strong>。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 760 250" role="img" aria-label="循环队列示意图">
+      <defs><marker id="ar3" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <text class="dl" x="380" y="26">MaxSize = 8 的循环队列（物理上仍是一条数组，逻辑上首尾相接）</text>
+      <rect class="dm" x="80"  y="50" width="70" height="46" rx="6"/><text class="ds" x="115" y="78">front→</text>
+      <rect class="dm" x="150" y="50" width="70" height="46" rx="6"/><text class="dt" x="185" y="79">A</text>
+      <rect class="dm" x="220" y="50" width="70" height="46" rx="6"/><text class="dt" x="255" y="79">B</text>
+      <rect class="dm" x="290" y="50" width="70" height="46" rx="6"/><text class="dt" x="325" y="79">C</text>
+      <rect class="dm" x="360" y="50" width="70" height="46" rx="6"/><rect x="360" y="50" width="70" height="46" fill="#ccfbf1" rx="6"/><text class="dt" x="395" y="79">rear→</text>
+      <rect class="dm" x="430" y="50" width="70" height="46" rx="6"/><text class="ds" x="465" y="78">空</text>
+      <rect class="dm" x="500" y="50" width="70" height="46" rx="6"/><text class="ds" x="535" y="78">空</text>
+      <rect class="dm" x="570" y="50" width="70" height="46" rx="6"/><text class="ds" x="605" y="78">空</text>
+      <path class="da" d="M640,73 C700,73 700,150 605,150 L150,150 C60,150 60,90 78,86" stroke="#0d9488" stroke-dasharray="7 5" marker-end="url(#ar3)"/>
+      <text class="dl" x="380" y="170">rear 继续前进越界后取模回绕：(rear + 1) % 8</text>
+      <text class="dl" x="380" y="210">当前元素个数 = (rear − front + MaxSize) % MaxSize = (3 − 0 + 8) % 8 = 3</text>
+    </svg>
+    <div class="cap">图 3-1 循环队列：下标对 MaxSize 取模，数组变成逻辑上的「环」</div>
+  </div>
+  <div class="code"><div class="code-head"><span>queue.cpp — 循环队列（牺牲一格区分队空与队满）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">typedef struct {
+    int data[MaxSize];
+    int front, rear;
+} SqQueue;
+
+bool EnQueue(SqQueue &amp;Q, int x) {
+    if ((Q.rear + 1) % MaxSize == Q.front) return false;   // 队满（牺牲一格）
+    Q.data[Q.rear] = x;
+    Q.rear = (Q.rear + 1) % MaxSize;                        // 取模回绕
+    return true;
+}
+
+bool DeQueue(SqQueue &amp;Q, int &amp;x) {
+    if (Q.rear == Q.front) return false;                    // 队空
+    x = Q.data[Q.front];
+    Q.front = (Q.front + 1) % MaxSize;
+    return true;
+}</code></pre></div>
+  <table>
+    <thead><tr><th>判空 / 判满方案</th><th>队空</th><th>队满</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>牺牲一格（最常用）</td><td><code>front == rear</code></td><td><code>(rear+1)%MaxSize == front</code></td><td>最多存 MaxSize−1 个</td></tr>
+      <tr><td>增设 size 变量</td><td><code>size == 0</code></td><td><code>size == MaxSize</code></td><td>不浪费空间</td></tr>
+      <tr><td>增设 tag 标志</td><td>出队后 <code>tag=0 且 front==rear</code></td><td>入队后 <code>tag=1 且 front==rear</code></td><td>记录最后一次操作</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 双端队列（选择题常客）</div>
+    <p>两端都可进可出 = 双端队列；<strong>输入受限</strong>：只能一端进、两端出；<strong>输出受限</strong>：两端进、只能一端出。考法：给出某种双端队列，判断哪个输出序列合法——同样用模拟法验证。</p>
+  </div>
+
+  <h3>三、栈的应用 1：括号匹配</h3>
+  <div class="code"><div class="code-head"><span>bracket.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">bool bracketCheck(char str[], int len) {
+    SqStack S; InitStack(S);
+    for (int i = 0; i &lt; len; i++) {
+        char c = str[i];
+        if (c == '(' || c == '[' || c == '{') {
+            Push(S, c);                       // 左括号进栈
+        } else if (c == ')' || c == ']' || c == '}') {
+            if (StackEmpty(S)) return false;  // 右括号多了
+            char t; Pop(S, t);
+            if ((c == ')' &amp;&amp; t != '(') ||
+                (c == ']' &amp;&amp; t != '[') ||
+                (c == '}' &amp;&amp; t != '{')) return false;
+        }
+    }
+    return StackEmpty(S);                     // 栈空 → 全部匹配；不空 → 左括号多了
+}</code></pre></div>
+
+  <h3>四、栈的应用 2：表达式求值（必考手算）</h3>
+  <h4>中缀 → 后缀（逆波兰式）手算规则</h4>
+  <ol>
+    <li><strong>操作数</strong>：直接加入输出。</li>
+    <li><strong>运算符</strong>：先把栈中<strong>优先级 ≥ 自己</strong>的运算符弹出输出，再把自己入栈（左括号在栈里当「盾牌」挡住弹出）。</li>
+    <li><strong>左括号</strong>入栈；<strong>右括号</strong>：连续弹出输出直到遇到左括号（左括号丢弃）。</li>
+    <li>结束时把栈中剩余运算符依次弹出。</li>
+  </ol>
+  <div class="box note"><div class="bt">🧮 考场手算：A + B * (C − D) − E / F</div>
+    <table>
+      <thead><tr><th>读入</th><th>动作</th><th>栈内</th><th>已输出</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>输出</td><td>—</td><td>A</td></tr>
+        <tr><td>+</td><td>入栈</td><td>+</td><td>A</td></tr>
+        <tr><td>B</td><td>输出</td><td>+</td><td>A B</td></tr>
+        <tr><td>*</td><td>优先级高于 +，入栈</td><td>+ *</td><td>A B</td></tr>
+        <tr><td>(</td><td>入栈</td><td>+ * (</td><td>A B</td></tr>
+        <tr><td>C − D</td><td>C 输出；− 入栈；D 输出</td><td>+ * ( −</td><td>A B C D</td></tr>
+        <tr><td>)</td><td>弹到 ( 为止：− 输出</td><td>+ *</td><td>A B C D −</td></tr>
+        <tr><td>−</td><td>弹 * 和 +（≥自己）再入栈</td><td>−</td><td>A B C D − * +</td></tr>
+        <tr><td>E / F</td><td>E 输出；/ 入栈；F 输出</td><td>− /</td><td>A B C D − * + E F</td></tr>
+        <tr><td>结束</td><td>全部弹空</td><td>—</td><td><strong>A B C D − * + E F / −</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h4>后缀式求值</h4>
+  <p>从左到右扫：数字入栈；遇运算符弹出<strong>两个</strong>数计算再压回——注意<strong>先弹出的是右操作数</strong>（减法除法别减反了）。</p>
+
+  <h3>五、栈的应用 3：递归的本质</h3>
+  <p>函数调用靠<strong>函数调用栈</strong>实现：每调用一次，栈里压入一帧（参数、局部变量、返回地址）；返回时弹出一帧。<strong>递归 = 自己调用自己 → 栈深 = 递归深度</strong>。递归优点是思路清晰，缺点是开销大、可能栈溢出，可用「尾递归改循环」优化。</p>
+
+  <h3>六、数组：特殊矩阵的压缩存储（真题高频）</h3>
+  <p>对称矩阵只需存<strong>下三角（含对角线）</strong>共 n(n+1)/2 个元素，按行优先存入一维数组 a[0..]，a<sub>ij</sub>（i ≥ j）的下标公式：</p>
+  <div class="box note"><div class="bt">🧮 考场手算：下标公式（1 起始行列，0 起始存储）</div>
+    <table>
+      <thead><tr><th>矩阵类型</th><th>公式（下标从 0 的数组）</th></tr></thead>
+      <tbody>
+        <tr><td>对称矩阵（存下三角，i ≥ j）</td><td><strong>k = i(i−1)/2 + j − 1</strong>；若 i &lt; j 按对称取 a<sub>ji</sub></td></tr>
+        <tr><td>下三角矩阵</td><td>同上（多存一个常数 c，放末尾）</td></tr>
+        <tr><td>三对角矩阵（|i−j| ≤ 1）</td><td><strong>k = 2i + j − 3</strong></td></tr>
+        <tr><td>稀疏矩阵</td><td>三元组表 (行, 列, 值) 或十字链表</td></tr>
+      </tbody>
+    </table>
+    <p>验证：a₁₁ → 1×0/2+1−1=0 ✔；a₃₂ → 3×2/2+2−1=4 ✔（a₃₁ 是 3，a₃₂ 是 4，对得上）。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>3-1</strong>：元素 a、b、c、d、e 依次进栈（可随时出栈），下列哪个出栈序列不可能：① abcde ② edcba ③ a c b e d ④ d b c a e？</p>
+    <p><strong>3-2</strong>：循环队列 MaxSize=10，front=3，rear=1，队中元素个数是多少？</p>
+    <p><strong>3-3</strong>：10 阶对称矩阵压缩存下三角，a₈₅ 存在数组下标多少的位置？</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>3-1</strong>：④ 不可能。d 最先出栈说明 a、b、c 都还在栈里且 c 上、b 中、a 下，d 出栈后下一个必须先出 c，不可能直接出 b（①②③均可模拟成功）。元素总数 5 → 出栈序列共 42 种（卡特兰数）。</p>
+      <p><strong>3-2</strong>：(1 − 3 + 10) % 10 = <strong>8</strong> 个。</p>
+      <p><strong>3-3</strong>：k = 8×7/2 + 5 − 1 = <strong>32</strong>。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch4">
+  <div class="ch-head"><span class="ch-num">04</span><div><div class="ch-kicker">CHAPTER 04 · 线性结构 ⭐⭐</div><h2>串与 KMP：主串指针从不回头</h2></div></div>
+  <div class="goals">📌 本章目标：理解朴素匹配为什么慢，熟练手算 next 与 nextval 数组——这是本章选择题的唯一高频题型，模板固定，稳拿分。</div>
+
+  <h3>基本概念</h3>
+  <p>串（string）是<strong>内容受限的线性表：元素只能是字符</strong>。子串在主串中的位置用<strong>位序</strong>表示，且从 <strong>1</strong> 开始数（教材约定）。模式匹配：在主串 S 中找模式串 T 第一次出现的位置。</p>
+
+  <h3>朴素模式匹配（BF 算法）为什么慢？</h3>
+  <p>每次失配，主串指针 i 都要<strong>回溯</strong>到本次起点+1、模式串指针 j 回到 1 重新比，最坏 O(nm)。例：S = "aaaaab"，T = "aaab"，每次都要比到最后一个字符才发现失配。</p>
+
+  <h3>KMP 的核心思想</h3>
+  <p>失配时，<strong>主串指针 i 绝不回溯</strong>，只把模式串指针 j 退回到 <code>next[j]</code> 继续比较。凭什么？模式串已经匹配过的部分里，<strong>前缀和后缀有相等的部分</strong>，这部分不必重比。整体复杂度 O(n+m)。</p>
+
+  <h3>手算 next 数组（必考！）</h3>
+  <div class="box note"><div class="bt">🧮 考场手算模板</div>
+    <p><strong>规则</strong>：next[j] = 模式串第 1 ~ j−1 个字符构成的子串中，<strong>最长相等前后缀的长度 + 1</strong>。约定 next[1] = 0（第 1 位失配时 j 归 0、i 前进），next[2] = 1（前面只剩 1 个字符）。</p>
+    <p><strong>逐位操作</strong>：对每一位 j，只看它<strong>前面</strong>那一段：找「开头能对上的最长小段」，其长度 + 1 写入 next[j]。</p>
+    <p>例：T = <strong>a b a b a</strong>：</p>
+    <table>
+      <thead><tr><th>j</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
+      <tbody>
+        <tr><td>T[j]</td><td>a</td><td>b</td><td>a</td><td>b</td><td>a</td></tr>
+        <tr><td>前面的串</td><td>—</td><td>a</td><td>ab</td><td>aba</td><td>abab</td></tr>
+        <tr><td>最长相等前后缀</td><td>—</td><td>无(0)</td><td>无(0)</td><td>a(1)</td><td>ab(2)</td></tr>
+        <tr><td><strong>next[j]</strong></td><td><strong>0</strong></td><td><strong>1</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>3</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>nextval：在 next 基础上再优化</h3>
+  <div class="box note"><div class="bt">🧮 考场手算模板</div>
+    <p>求出 next 后逐位检查：<strong>若 T[j] == T[next[j]]，则 nextval[j] = nextval[next[j]]（继承更小的）；否则 nextval[j] = next[j]</strong>。从左往右算，后面要引用前面刚算好的 nextval。</p>
+    <p>例：T = <strong>a b a b a</strong>（沿用上表 next = 0 1 1 2 3）：</p>
+    <table>
+      <thead><tr><th>j</th><th>比较</th><th>结论</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>—</td><td>nextval = 0</td></tr>
+        <tr><td>2</td><td>T[2]=b ≠ T[next[2]=1]=a</td><td>nextval = 1</td></tr>
+        <tr><td>3</td><td>T[3]=a = T[1]=a</td><td>nextval = nextval[1] = 0</td></tr>
+        <tr><td>4</td><td>T[4]=b = T[2]=b</td><td>nextval = nextval[2] = 1</td></tr>
+        <tr><td>5</td><td>T[5]=a = T[3]=a</td><td>nextval = nextval[3] = 0</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>代码实现（下标从 1 开始，T[0]、S[0] 空置）</h3>
+  <div class="code"><div class="code-head"><span>kmp.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">void get_next(char T[], int next[], int m) {
+    int i = 1, j = 0;
+    next[1] = 0;
+    while (i &lt; m) {
+        if (j == 0 || T[i] == T[j]) {   // 字符相等（或从头开始）
+            ++i; ++j;
+            next[i] = j;                // next[i+1] 由 next[i] 推出
+        } else {
+            j = next[j];                // 失配：j 退到 next[j]
+        }
+    }
+}
+
+int KMP(char S[], char T[], int n, int m, int next[]) {
+    int i = 1, j = 1;
+    while (i &lt;= n &amp;&amp; j &lt;= m) {
+        if (j == 0 || S[i] == T[j]) {   // 匹配成功或 j 归零：双指针一起走
+            ++i; ++j;
+        } else {
+            j = next[j];                // 失配：i 不动，j 回退
+        }
+    }
+    if (j &gt; m) return i - m;            // 匹配成功，返回起始位序
+    return 0;                           // 失败
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 真题套路提醒</div>
+    <p>① 求 next 是「看<strong>前面</strong>」算自己，别把 T[j] 自己算进去；② KMP 过程中<strong>主串指针 i 永不回退</strong>（选择题原题）；③ next 数组的计算与<strong>主串无关</strong>，只由模式串自己决定；④ 有些教材 next 定义从 −1 或右移一位起，看清约定再套。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>4-1</strong>：手算 T = "abaabc" 的 next 与 nextval。</p>
+    <p><strong>4-2</strong>：模式串 "aaab" 在主串 "aaaab" 中匹配，用 KMP 一共比较了几次字符？</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>4-1</strong>：next = 0 1 1 2 3 4；nextval：j=1→0；j=2 b≠a→1；j=3 a=a(T[1])→0；j=4 a=T[?]: next[4]=2, T[4]=a≠T[2]=b → nextval=2；j=5 b: next[5]=3, T[5]=b≠T[3]=a → nextval=3；j=6 c: next[6]=4, T[6]=c≠T[4]=a → nextval=4。即 <strong>0 1 0 2 3 4</strong>。</p>
+      <p><strong>4-2</strong>：比较 8 次。j 在第 4 位失配后 next[4]=2，接着 next[2]=1，再 next[1]=0 → i 前进，总比 4+2+2 次。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch5">
+  <div class="ch-head"><span class="ch-num">05</span><div><div class="ch-kicker">CHAPTER 05 · 非线性结构 ⭐⭐⭐</div><h2>树与二叉树：选择题最大的「粮仓」</h2></div></div>
+  <div class="goals">📌 本章目标：背熟二叉树五大性质，会写四种遍历，掌握线索二叉树、树森林转换、哈夫曼树与并查集——本章选择题密度全书第一。</div>
+
+  <h3>一、树的性质（先背结论再做题）</h3>
+  <ul>
+    <li><strong>结点数 = 总度数 + 1</strong>（每个结点被一条边指着，除了根）。</li>
+    <li>度为 m 的树第 i 层至多 <strong>m<sup>i−1</sup></strong> 个结点；h 层 m 叉树至多 (m<sup>h</sup>−1)/(m−1) 个结点。</li>
+    <li>度为 m、有 n 个结点的树：至少有 <strong>(m−1)n + 1 − mn</strong>…（化简后：n₀ 至少 n − (mn−1)/(m−1) 取整相关，做题直接用 n₀ = n₂+1 推）。</li>
+  </ul>
+
+  <h3>二、二叉树与它的两大「贵族」</h3>
+  <p>二叉树：每个结点至多两棵子树，且<strong>子树有左右之分</strong>（有序）。</p>
+  <table>
+    <thead><tr><th>性质</th><th>结论</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td><strong>n₀ = n₂ + 1</strong></td><td>叶子数 = 度 2 结点数 + 1</td><td>由结点数 = 度数 + 1 推出，<strong>选择题第一高频</strong></td></tr>
+      <tr><td>第 i 层至多</td><td>2<sup>i−1</sup> 个结点（i ≥ 1）</td><td>满则该层全满</td></tr>
+      <tr><td>h 层至多</td><td>2<sup>h</sup> − 1 个结点</td><td>此时称满二叉树</td></tr>
+      <tr><td>完全二叉树高度</td><td><strong>⌈log₂(n+1)⌉ = ⌊log₂n⌋ + 1</strong></td><td>n 个结点</td></tr>
+      <tr><td>完全二叉树编号</td><td>结点 i 的孩子是 2i、2i+1；双亲是 ⌊i/2⌋</td><td>1 起始编号；i ≤ ⌊n/2⌋ 时为分支结点</td></tr>
+    </tbody>
+  </table>
+  <div class="box note"><div class="bt">📌 满二叉树 vs 完全二叉树</div>
+    <p><strong>满二叉树</strong>：每层都满。<strong>完全二叉树</strong>：只允许最后一层缺<strong>右边</strong>若干连续结点。完全二叉树可以用数组顺序存储而不浪费空间——这正是「堆」的地基（第 8 章）。</p>
+  </div>
+
+  <h3>三、存储结构</h3>
+  <div class="code"><div class="code-head"><span>BiTree.h — 二叉链表（408 默认写法）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">typedef struct BiTNode {
+    int data;
+    struct BiTNode *lchild, *rchild;
+} BiTNode, *BiTree;</code></pre></div>
+  <p>n 个结点的二叉链表共有 2n 个指针域，用了 n−1 个（n−1 条边），<strong>空指针 = n+1 个</strong>——这 n+1 个空位就是「线索化」的原材料。</p>
+
+  <h3>四、遍历：所有大题的出发点</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 700 300" role="img" aria-label="二叉树三种遍历">
+      <line class="da" x1="350" y1="55" x2="230" y2="145"/>
+      <line class="da" x1="350" y1="55" x2="470" y2="145"/>
+      <line class="da" x1="230" y1="145" x2="160" y2="235"/>
+      <line class="da" x1="230" y1="145" x2="300" y2="235"/>
+      <line class="da" x1="470" y1="145" x2="410" y2="235"/>
+      <line class="da" x1="470" y1="145" x2="530" y2="235"/>
+      <circle class="db" cx="350" cy="55" r="24"/><text class="dt" x="350" y="61">A</text>
+      <circle class="db" cx="230" cy="145" r="24"/><text class="dt" x="230" y="151">B</text>
+      <circle class="db" cx="470" cy="145" r="24"/><text class="dt" x="470" y="151">C</text>
+      <circle class="dterm" cx="160" cy="235" r="24"/><text class="dt" x="160" y="241">D</text>
+      <circle class="dterm" cx="300" cy="235" r="24"/><text class="dt" x="300" y="241">E</text>
+      <circle class="dterm" cx="410" cy="235" r="24"/><text class="dt" x="410" y="241">F</text>
+      <circle class="dterm" cx="530" cy="235" r="24"/><text class="dt" x="530" y="241">G</text>
+      <text class="ds" x="350" y="290">先序（根左右）：A B D E C F G　｜　中序（左根右）：D B E A F C G　｜　后序（左右根）：D E B F G C A</text>
+    </svg>
+    <div class="cap">图 5-1 同一棵树的三种遍历：区别只在「根」被访问的时机</div>
+  </div>
+  <div class="code"><div class="code-head"><span>order.cpp — 三种递归遍历只差一行顺序</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">void PreOrder(BiTree T) {          // 先序
+    if (T != NULL) {
+        visit(T);                  // 根
+        PreOrder(T-&gt;lchild);       // 左
+        PreOrder(T-&gt;rchild);       // 右
+    }
+}
+void InOrder(BiTree T) {           // 中序：visit 移到中间
+    if (T != NULL) {
+        InOrder(T-&gt;lchild);
+        visit(T);
+        InOrder(T-&gt;rchild);
+    }
+}
+void PostOrder(BiTree T) {         // 后序：visit 移到最后
+    if (T != NULL) {
+        PostOrder(T-&gt;lchild);
+        PostOrder(T-&gt;rchild);
+        visit(T);
+    }
+}
+
+// 层序遍历：借助队列（C++ STL，见上一册第 15 章）
+void LevelOrder(BiTree T) {
+    queue&lt;BiTree&gt; Q;
+    if (T != NULL) Q.push(T);
+    while (!Q.empty()) {
+        BiTree p = Q.front(); Q.pop();
+        visit(p);                          // 出队即访问
+        if (p-&gt;lchild) Q.push(p-&gt;lchild);  // 先左后右依次入队
+        if (p-&gt;rchild) Q.push(p-&gt;rchild);
+    }
+}</code></pre></div>
+  <div class="box warn"><div class="bt">⚠️ 序列还原规则（大题/选择都考）</div>
+    <p><strong>中序 + 任意一种其他遍历</strong>（先序/后序/层序）可以唯一确定二叉树；<strong>先序+后序不能</strong>（无法区分只有左孩子还是只有右孩子）。大题套路：先序找根 → 中序分左右 → 递归还原。</p>
+  </div>
+
+  <h3>五、线索二叉树：把 n+1 个空指针用起来</h3>
+  <p>若结点的左/右指针为空，就让它分别指向该结点的<strong>前驱/后继</strong>（按某种遍历），并用 tag 区分「孩子指针」和「线索」：</p>
+  <div class="code"><div class="code-head"><span>ThreadTree.h</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">typedef struct ThreadNode {
+    int data;
+    struct ThreadNode *lchild, *rchild;
+    int ltag, rtag;    // 0 = 指向孩子；1 = 指向前驱/后继的线索
+} ThreadNode, *ThreadTree;</code></pre></div>
+  <div class="diagram">
+    <svg viewBox="0 0 620 240" role="img" aria-label="中序线索二叉树">
+      <defs><marker id="ar5" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#0d9488"/></marker></defs>
+      <line class="da" x1="310" y1="55" x2="190" y2="155"/>
+      <line class="da" x1="310" y1="55" x2="430" y2="155"/>
+      <circle class="db" cx="310" cy="50" r="24"/><text class="dt" x="310" y="56">A</text>
+      <circle class="db" cx="190" cy="160" r="24"/><text class="dt" x="190" y="166">B</text>
+      <circle class="db" cx="430" cy="160" r="24"/><text class="dt" x="430" y="166">C</text>
+      <path class="da" d="M210,142 C250,110 280,90 295,72" stroke="#0d9488" stroke-dasharray="6 4" marker-end="url(#ar5)"/>
+      <text class="dl" x="212" y="98" fill="#0f766e">B 的右线索 → 后继 A</text>
+      <path class="da" d="M412,146 C370,112 340,92 326,74" stroke="#0d9488" stroke-dasharray="6 4" marker-end="url(#ar5)"/>
+      <text class="dl" x="416" y="100" fill="#0f766e">C 的左线索 → 前驱 A</text>
+      <text class="ds" x="310" y="220">中序序列：B A C —— 空指针按中序接到前驱/后继上</text>
+    </svg>
+    <div class="cap">图 5-2 中序线索二叉树：虚线为线索，Tag=1 表示这是线索而不是孩子</div>
+  </div>
+  <div class="box tip"><div class="bt">💡 线索树选择题要点</div>
+    <p>中序线索树上找某结点的<strong>后继</strong>：若 rtag=1 直接走右线索；若有右孩子，后继 = 右子树中「最左下的结点」。n 个结点的线索二叉树含 <strong>n+1 个线索</strong>（空指针数）。</p>
+  </div>
+
+  <h3>六、树、森林与二叉树的互相转换</h3>
+  <p>规则一句话：<strong>左孩子、右兄弟</strong>——树中结点的第一个孩子变成它在二叉树中的左孩子，下一个兄弟变成右孩子。转换后树的根<strong>没有右子树</strong>；森林同理，各棵树的根互为右兄弟。</p>
+  <table>
+    <thead><tr><th>树 / 森林的遍历</th><th>对应二叉树的遍历</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>树的<strong>先根</strong>遍历</td><td>对应二叉树的<strong>先序</strong>遍历</td><td>选择题原题级考点</td></tr>
+      <tr><td>树的<strong>后根</strong>遍历</td><td>对应二叉树的<strong>中序</strong>遍历</td><td>注意：树没有「中根」的说法</td></tr>
+      <tr><td>森林的先序 / 中序遍历</td><td>对应二叉树的先序 / 中序遍历</td><td>森林的「中序」= 依次后根遍历每棵树</td></tr>
+    </tbody>
+  </table>
+  <p>树的三种存储：①<strong>双亲表示法</strong>（数组存 data + parent 下标，找双亲 O(1)、找孩子难）；②<strong>孩子表示法</strong>（顺序 + 单链表）；③<strong>孩子兄弟表示法</strong>（就是转二叉树用的二叉链表）。</p>
+
+  <h3>七、哈夫曼树与哈夫曼编码</h3>
+  <p><strong>带权路径长度 WPL</strong> = Σ（叶权值 × 到根的路径长度）。WPL 最小的二叉树叫哈夫曼树（最优二叉树）。构造：<strong>每次取出权值最小的两棵树合并</strong>，新根权值为其和，重复 n−1 次。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 680 350" role="img" aria-label="哈夫曼树构造">
+      <line class="da" x1="330" y1="45" x2="215" y2="135"/>
+      <line class="da" x1="330" y1="45" x2="445" y2="135"/>
+      <line class="da" x1="445" y1="135" x2="385" y2="222"/>
+      <line class="da" x1="445" y1="135" x2="505" y2="222"/>
+      <line class="da" x1="505" y1="222" x2="465" y2="300"/>
+      <line class="da" x1="505" y1="222" x2="545" y2="300"/>
+      <circle class="db" cx="330" cy="40" r="22"/><text class="dt" x="330" y="46">15</text>
+      <circle class="dterm" cx="210" cy="135" r="22"/><text class="dt" x="210" y="141">8</text>
+      <circle class="db" cx="450" cy="135" r="22"/><text class="dt" x="450" y="141">7</text>
+      <circle class="dterm" cx="385" cy="222" r="22"/><text class="dt" x="385" y="228">4</text>
+      <circle class="db" cx="510" cy="222" r="22"/><text class="dt" x="510" y="228">3</text>
+      <circle class="dterm" cx="465" cy="305" r="20"/><text class="dt" x="465" y="311">1</text>
+      <circle class="dterm" cx="555" cy="305" r="20"/><text class="dt" x="555" y="311">2</text>
+      <text class="ds" x="120" y="46">权值 {1, 2, 4, 8}</text>
+      <text class="ds" x="140" y="70">合并次序：1+2=3 → 3+4=7 → 7+8=15</text>
+      <text class="dl" x="600" y="140" fill="#0f766e">左 0 右 1：</text>
+      <text class="ds" x="600" y="162">8 → 0</text>
+      <text class="ds" x="600" y="184">4 → 10</text>
+      <text class="ds" x="600" y="206">2 → 111</text>
+      <text class="ds" x="600" y="228">1 → 110</text>
+    </svg>
+    <div class="cap">图 5-3 哈夫曼树：权值越小的叶子离根越远；WPL = 1×3 + 2×3 + 4×2 + 8×1 = 25</div>
+  </div>
+  <div class="box note"><div class="bt">🧮 哈夫曼树必背结论</div>
+    <p>① n 个叶子（初始权值）的哈夫曼树共 <strong>2n − 1</strong> 个结点，且<strong>不存在度为 1 的结点</strong>；② 哈夫曼编码是<strong>前缀码</strong>（任何编码都不是另一个的前缀），解码不会歧义；③ 同一组权值可能构造出形态不同但 WPL 相同的哈夫曼树（左右子树交换不影响）。</p>
+  </div>
+
+  <h3>八、并查集（考纲新增，要求不高）</h3>
+  <p>用「双亲表示法」的森林维护若干不相交集合，支持两个操作：Find（找所属集合代表）、Union（合并两集合）。典型应用：判断图的连通性、Kruskal 判环。</p>
+  <div class="code"><div class="code-head"><span>ufs.cpp — 最简实现</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int fa[N];
+void init() { for (int i = 0; i &lt; N; i++) fa[i] = i; }   // 各自为营
+
+int find(int x) {                       // 一直向上找根
+    return fa[x] == x ? x : find(fa[x]);
+}
+
+void merge(int x, int y) {              // 一棵树挂到另一棵下
+    fa[find(x)] = find(y);
+}</code></pre></div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>5-1</strong>：一棵二叉树有 20 个叶子结点、30 个度为 1 的结点，总结点数是多少？</p>
+    <p><strong>5-2</strong>：n 个结点的二叉链表中空指针有多少个？中序线索二叉树中有多少条线索？</p>
+    <p><strong>5-3</strong>：已知先序 ABDEC、中序 DBEAC，画出二叉树并写后序。</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>5-1</strong>：n₂ = n₀ − 1 = 19，总数 = 20 + 30 + 19 = <strong>69</strong>。</p>
+      <p><strong>5-2</strong>：均为 <strong>n+1</strong>。</p>
+      <p><strong>5-3</strong>：先序首字符 A 是根，中序 DBE | A | C 定位左右子树 → 根 A，左子树（先序 BDE / 中序 DBE）继续分解……结果后序为 <strong>DEBCA</strong>。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch6">
+  <div class="ch-head"><span class="ch-num">06</span><div><div class="ch-kicker">CHAPTER 06 · 非线性结构 ⭐⭐⭐</div><h2>图：从存储到四大算法</h2></div></div>
+  <div class="goals">📌 本章目标：掌握两种存储结构，会手推 BFS/DFS 序列，能在考场上用表格法算 Prim、Kruskal、Dijkstra、拓扑排序与关键路径——图的大题套路极其固定。</div>
+
+  <h3>一、基本概念与术语</h3>
+  <ul>
+    <li><strong>无向图</strong>：边 (v,w) 无方向；<strong>有向图</strong>：弧 &lt;v,w&gt; 从 v 指向 w。</li>
+    <li><strong>完全图</strong>：任意两顶点间都有边。无向完全图 n(n−1)/2 条边；有向完全图 n(n−1) 条弧。</li>
+    <li><strong>连通</strong>（无向：任意两点有路径）/<strong>强连通</strong>（有向：双向都有路径）。<strong>生成树</strong>：连通图含全部 n 个顶点的极小连通子图，<strong>恰有 n−1 条边</strong>。</li>
+    <li>无向图所有顶点度数之和 = <strong>2×边数</strong>；有向图入度之和 = 出度之和 = 弧数。</li>
+  </ul>
+
+  <h3>二、存储结构</h3>
+  <div class="code"><div class="code-head"><span>graph.h — 邻接矩阵（适合稠密图）与邻接表（适合稀疏图）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">#define MaxVertexNum 100
+// 邻接矩阵：判断有没有边 O(1)
+int G[MaxVertexNum][MaxVertexNum];   // 0/1 或权值 INFINITY 表示不邻接
+
+// 邻接表：边表用链串起来
+typedef struct ArcNode {             // 边表结点
+    int adjvex;                      // 邻接点下标
+    struct ArcNode *next;
+} ArcNode;
+typedef struct VNode {               // 顶点表结点
+    int data;
+    ArcNode *first;
+} VNode, AdjList[MaxVertexNum];</code></pre></div>
+  <div class="diagram">
+    <svg viewBox="0 0 760 250" role="img" aria-label="图及其邻接表">
+      <defs><marker id="ar6" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <circle class="db" cx="90"  cy="60"  r="24"/><text class="dt" x="90"  y="66">0</text>
+      <circle class="db" cx="210" cy="60"  r="24"/><text class="dt" x="210" y="66">1</text>
+      <circle class="db" cx="90"  cy="180" r="24"/><text class="dt" x="90"  y="186">2</text>
+      <circle class="db" cx="210" cy="180" r="24"/><text class="dt" x="210" y="186">3</text>
+      <line class="da" x1="112" y1="53" x2="186" y2="53"/>
+      <line class="da" x1="90"  y1="86" x2="90"  y2="154"/>
+      <line class="da" x1="112" y1="70" x2="186" y2="170"/>
+      <line class="da" x1="112" y1="186" x2="184" y2="186"/>
+      <text class="ds" x="150" y="120">无向图 G</text>
+      <text class="dcode" x="330" y="46">邻接表：</text>
+      <rect class="dm" x="330" y="60" width="46" height="40" rx="6"/><text class="dt" x="353" y="85">0</text>
+      <rect x="376" y="60" width="30" height="40" fill="#e2e8f0" rx="4"/>
+      <path class="da" d="M406,80 L446,80" marker-end="url(#ar6)"/>
+      <rect class="dm" x="450" y="60" width="46" height="40" rx="6"/><text class="dt" x="473" y="85">1</text>
+      <rect x="496" y="60" width="30" height="40" fill="#e2e8f0" rx="4"/>
+      <path class="da" d="M526,80 L566,80" marker-end="url(#ar6)"/>
+      <rect class="dm" x="570" y="60" width="46" height="40" rx="6"/><text class="dt" x="593" y="85">2</text>
+      <rect x="616" y="60" width="30" height="40" fill="#e2e8f0" rx="4"/><text class="ds" x="631" y="85">∧</text>
+      <text class="ds" x="470" y="120">0 的边表：邻接 1、2</text>
+      <rect class="dm" x="330" y="140" width="46" height="40" rx="6"/><text class="dt" x="353" y="165">1</text>
+      <rect x="376" y="140" width="30" height="40" fill="#e2e8f0" rx="4"/>
+      <path class="da" d="M406,160 L446,160" marker-end="url(#ar6)"/>
+      <rect class="dm" x="450" y="140" width="46" height="40" rx="6"/><text class="dt" x="473" y="165">0</text>
+      <rect x="496" y="140" width="30" height="40" fill="#e2e8f0" rx="4"/>
+      <path class="da" d="M526,160 L566,160" marker-end="url(#ar6)"/>
+      <rect class="dm" x="570" y="140" width="46" height="40" rx="6"/><text class="dt" x="593" y="165">3</text>
+      <rect x="616" y="140" width="30" height="40" fill="#e2e8f0" rx="4"/><text class="ds" x="631" y="165">∧</text>
+      <text class="ds" x="470" y="200">无向图中每条边存两次（对称）</text>
+    </svg>
+    <div class="cap">图 6-1 图与它的邻接表：顶点表 + 每个顶点一条边链</div>
+  </div>
+  <table>
+    <thead><tr><th>存储</th><th>空间</th><th>找邻接点</th><th>适合</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>邻接矩阵</td><td>O(n²)</td><td>O(n) 扫一行</td><td>稠密图</td><td>无向图矩阵对称；便于判断两点的边是否存在</td></tr>
+      <tr><td>邻接表</td><td>O(n+e)（无向 2e 个边结点）</td><td>沿链找</td><td>稀疏图</td><td>有向图邻接表求出度易、求入度难（逆邻接表反之）</td></tr>
+      <tr><td>十字链表</td><td>O(n+e)</td><td>——</td><td><strong>有向图</strong></td><td>入边出边都串起来，出度入度都好求</td></tr>
+      <tr><td>邻接多重表</td><td>O(n+e)</td><td>——</td><td><strong>无向图</strong></td><td>每条边只存一次，方便对边做标记</td></tr>
+    </tbody>
+  </table>
+
+  <h3>三、BFS 与 DFS（序列 + 代码 + 复杂度）</h3>
+  <div class="code"><div class="code-head"><span>bfs-dfs.cpp — 邻接表版本</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">bool visited[MaxVertexNum];
+
+// 广度优先：类似树的层序，靠「队列」
+void BFS(AdjList G, int v) {
+    queue&lt;int&gt; Q;
+    visited[v] = true;
+    cout &lt;&lt; v &lt;&lt; " ";
+    Q.push(v);
+    while (!Q.empty()) {
+        int u = Q.front(); Q.pop();
+        for (int w = FirstNeighbor(G, u); w &gt;= 0; w = NextNeighbor(G, u, w))
+            if (!visited[w]) {
+                visited[w] = true;
+                cout &lt;&lt; w &lt;&lt; " ";
+                Q.push(w);
+            }
+    }
+}
+
+// 深度优先：类似树的先序，靠「递归」（本质是栈）
+void DFS(AdjList G, int v) {
+    visited[v] = true;
+    cout &lt;&lt; v &lt;&lt; " ";
+    for (int w = FirstNeighbor(G, v); w &gt;= 0; w = NextNeighbor(G, v, w))
+        if (!visited[w]) DFS(G, w);
+}</code></pre></div>
+  <table>
+    <thead><tr><th>遍历</th><th>辅助结构</th><th>邻接矩阵复杂度</th><th>邻接表复杂度</th><th>序列唯一性</th></tr></thead>
+    <tbody>
+      <tr><td>BFS</td><td>队列</td><td>O(n²)</td><td>O(n+e)</td><td>邻接矩阵唯一；邻接表看建表顺序</td></tr>
+      <tr><td>DFS</td><td>栈 / 递归</td><td>O(n²)</td><td>O(n+e)</td><td>同上</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 两个延伸考点</div>
+    <p>① 非连通图遍历一次只能访问一个连通分量，调用 BFS/DFS 的次数 = <strong>连通分量个数</strong>（有向图则不一定）；② BFS 求得的单源最短路径在<strong>无权图</strong>上是正确的（逐层扩散，先到的一定最短）。</p>
+  </div>
+
+  <h3>四、最小生成树 MST：Prim 与 Kruskal</h3>
+  <p>带权连通图边权和最小的生成树。<strong>当各边权互不相同时 MST 唯一</strong>；否则可能不唯一，但<strong>总权值唯一</strong>。</p>
+  <div class="code"><div class="code-head"><span>mst.cpp — 两套思想：加点 vs 加边</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">// Prim：「一棵树长大」——每次挑【树内 → 树外】的最短边，加入新点
+// 适合稠密图，O(n²)，与边数无关
+void Prim(int G[][N], int n) {
+    int lowCost[N];            // 树外各点到树的最短距离
+    bool inTree[N] = {false};
+    for (int i = 1; i &lt; n; i++) lowCost[i] = G[0][i];
+    inTree[0] = true;
+    for (int k = 1; k &lt; n; k++) {
+        int minV = -1;
+        for (int j = 0; j &lt; n; j++)                     // 扩展点循环 n-1 轮
+            if (!inTree[j] &amp;&amp; (minV == -1 || lowCost[j] &lt; lowCost[minV]))
+                minV = j;
+        inTree[minV] = true;
+        for (int j = 0; j &lt; n; j++)                     // 用新点更新距离
+            if (!inTree[j] &amp;&amp; G[minV][j] &lt; lowCost[j])
+                lowCost[j] = G[minV][j];
+    }
+}
+
+// Kruskal：「森林变森林」——边按权从小到大试，不成环就要
+// 适合稀疏图 O(e log e)，判环用并查集
+sort(edges, edges + e);                  // 按 权值 从小到大排序
+int cnt = 0;                             // 已选边数，选满 n-1 条结束
+for (int i = 0; i &lt; e &amp;&amp; cnt &lt; n - 1; i++) {
+    if (find(u) != find(v)) {            // 两端不在同一集合 → 不成环
+        merge(u, v);                     // （并查集见第 5 章）
+        cnt++;
+    }
+}</code></pre></div>
+  <div class="box note"><div class="bt">🧮 考场手算模板</div>
+    <p><strong>Prim</strong>：画两列「树内集合 | 候选最短边」，每轮把新点圈进去，更新树外点到树的距离。口诀「<strong>加点不回退</strong>」。<br>
+    <strong>Kruskal</strong>：把所有边按权排成一列，从头到尾打勾（不成环）打叉（成环），选够 n−1 条为止。口诀「<strong>按边排队，成环跳过</strong>」。</p>
+  </div>
+
+  <h3>五、最短路径：Dijkstra 与 Floyd</h3>
+  <h4>Dijkstra：单源最短路，贪心 + 手算表格</h4>
+  <p>思想：每轮从「未确定」顶点中挑 dist 最小的 U 确定下来，再用 U 松弛它的邻边。<strong>不能处理负权边</strong>（选择题考点）。时间复杂度 O(n²)。</p>
+  <div class="box note"><div class="bt">🧮 考场手算：以 0 为源点</div>
+    <p>画一张「轮次 × 顶点」的 dist 表格，每轮：① 从未确定行里选最小 → 划掉（确定）；② 用它更新它的邻点。到第 n−1 轮全部确定。真题就考<strong>某轮结束后 dist 数组长什么样</strong>，逐轮填表即可，不要跳步。</p>
+  </div>
+  <h4>Floyd：所有点对最短路，动态规划</h4>
+  <div class="code"><div class="code-head"><span>floyd.cpp — 三重循环，背下来也就五行</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">for (int k = 0; k &lt; n; k++)        // 中间点 k 必须在最外层！
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; n; j++)
+            if (D[i][k] + D[k][j] &lt; D[i][j])
+                D[i][j] = D[i][k] + D[k][j];
+// 时间 O(n³)，空间 O(n²)；允许负权边，但不允许负权回路</code></pre></div>
+
+  <h3>六、有向无环图：拓扑排序与关键路径</h3>
+  <p><strong>AOV 网</strong>（顶点=活动）做<strong>拓扑排序</strong>：<strong>AOE 网</strong>（边=活动、点=事件）算<strong>关键路径</strong>。</p>
+  <ol class="steps">
+    <li>拓扑排序：选一个<strong>入度为 0</strong> 的顶点输出并删除（含其所有出边），重复直到全部输出。若中途没有入度 0 的点 → <strong>图中有环，无拓扑序列</strong>。实现：入度表 + 队列，O(n+e)。</li>
+    <li>逆拓扑排序：反过来删「出度为 0」的点（或对拓扑排序结果取反），DFS 按出栈序也得到逆拓扑序。</li>
+    <li>关键路径（AOE）：源点 → 汇点<strong>最长路径</strong>，其长度 = 工程最短完工时间。关键活动满足：<strong>最迟开始时间 = 最早开始时间（l == e，时间余量为 0）</strong>。</li>
+  </ol>
+  <div class="box note"><div class="bt">🧮 关键路径四步手算法</div>
+    <table>
+      <thead><tr><th>步骤</th><th>求什么</th><th>怎么算</th></tr></thead>
+      <tbody>
+        <tr><td>① 顺推</td><td>事件最早发生 ve</td><td>ve(j) = max( ve(i) + 权 )，按拓扑序从源点 0 开始</td></tr>
+        <tr><td>② 逆推</td><td>事件最迟 vl</td><td>vl(i) = min( vl(j) − 权 )，按逆拓扑序从汇点 = ve 开始</td></tr>
+        <tr><td>③ 换算活动</td><td>活动最早 e、最迟 l</td><td>e = 弧尾 ve；l = 弧头 vl − 权</td></tr>
+        <tr><td>④ 挑活动</td><td>关键活动</td><td>e == l 的活动，串起来即关键路径</td></tr>
+      </tbody>
+    </table>
+    <p>结论记忆：<strong>缩短关键活动不一定缩短工期</strong>（可能关键路径转移）；关键路径可能有多条，所有关键路径<strong>共同</strong>的活动加速才有效。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>6-1</strong>：n 个顶点的强连通图至少有多少条弧？</p>
+    <p><strong>6-2</strong>：对有向图顶点 {1,2,3,4}，弧 1→2、1→3、2→4、3→4，写出所有拓扑序列。</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>6-1</strong>：<strong>n 条</strong>（所有顶点连成一个有向环，每个点一进一出）。</p>
+      <p><strong>6-2</strong>：1 必须最先、4 必须最后，2 和 3 任意 → <strong>1 2 3 4 和 1 3 2 4</strong> 两种。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch7">
+  <div class="ch-head"><span class="ch-num">07</span><div><div class="ch-kicker">CHAPTER 07 · 查找与排序 ⭐⭐⭐</div><h2>查找：折半、B 树、散列三巨头</h2></div></div>
+  <div class="goals">📌 本章目标：会画折半查找判定树，掌握 B 树的核心性质与分裂过程，会算散列表两种冲突处理下的 ASL——本章手算题型非常固定，多练即满分。</div>
+
+  <h3>一、顺序查找</h3>
+  <p>从前往后扫，<strong>有序无序都行</strong>。成功 ASL = (n+1)/2，不成功 ASL = n+1（带哨兵时从后往前找）。优化：有序表不成功查找可与折半结合提前终止。</p>
+
+  <h3>二、折半查找（二分）</h3>
+  <p>仅适用于<strong>有序的顺序表</strong>。mid = ⌊(low+high)/2⌋，比中点、砍一半。</p>
+  <div class="code"><div class="code-head"><span>binsearch.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int BinarySearch(int a[], int n, int key) {   // 长度 n，下标 0..n-1
+    int low = 0, high = n - 1;
+    while (low &lt;= high) {
+        int mid = (low + high) / 2;
+        if      (a[mid] == key) return mid;
+        else if (a[mid] &gt;  key) high = mid - 1;
+        else                    low  = mid + 1;
+    }
+    return -1;
+}</code></pre></div>
+  <div class="diagram">
+    <svg viewBox="0 0 700 330" role="img" aria-label="折半查找判定树">
+      <line class="da" x1="350" y1="60" x2="180" y2="150"/>
+      <line class="da" x1="350" y1="60" x2="520" y2="150"/>
+      <line class="da" x1="180" y1="150" x2="100" y2="245"/>
+      <line class="da" x1="180" y1="150" x2="260" y2="245"/>
+      <line class="da" x1="520" y1="150" x2="440" y2="245"/>
+      <line class="da" x1="520" y1="150" x2="600" y2="245"/>
+      <circle class="db" cx="350" cy="55" r="26"/><text class="dt" x="350" y="61">7</text>
+      <circle class="db" cx="180" cy="145" r="26"/><text class="dt" x="180" y="151">4</text>
+      <circle class="db" cx="520" cy="145" r="26"/><text class="dt" x="520" y="151">10</text>
+      <circle class="dterm" cx="100" cy="240" r="26"/><text class="dt" x="100" y="246">2</text>
+      <circle class="dterm" cx="260" cy="240" r="26"/><text class="dt" x="260" y="246">6</text>
+      <circle class="dterm" cx="440" cy="240" r="26"/><text class="dt" x="440" y="246">9</text>
+      <circle class="dterm" cx="600" cy="240" r="26"/><text class="dt" x="600" y="246">12</text>
+      <text class="ds" x="350" y="315">有序表 (2,4,6,7,9,10,12) 的判定树：树上结点 = 比较次数</text>
+    </svg>
+    <div class="cap">图 7-1 折半查找判定树：查找成功最多比较 ⌈log₂(n+1)⌉ 次</div>
+  </div>
+  <div class="box note"><div class="bt">🧮 考场手算</div>
+    <p>① 判定树是<strong>平衡二叉树</strong>，同层左右必满一半；② n 个元素的成功 ASL = (Σ 各深度结点数 × 深度)/n，失败结点 n+1 个；③ 最多比较次数 = <strong>⌈log₂(n+1)⌉ = ⌊log₂n⌋ + 1</strong>；④ 手算技巧：mid 序列由区间的 ⌊(low+high)/2⌋ 决定，逐次写区间即可。</p>
+  </div>
+
+  <h3>三、分块查找（索引顺序查找）</h3>
+  <p>块间有序、块内无序：先在索引表（各块最大值）折半/顺序定块，再块内顺序找。设 n 元素分 b 块、每块 s 个：顺序查索引时 ASL = (b+1)/2 + (s+1)/2，最优 s = √n，此时 ASL = √n + 1。</p>
+
+  <h3>四、B 树与 B+ 树（m 阶）</h3>
+  <div class="diagram">
+    <svg viewBox="0 0 720 230" role="img" aria-label="B树结构示例">
+      <line class="da" x1="360" y1="70" x2="150" y2="150"/>
+      <line class="da" x1="360" y1="70" x2="360" y2="150"/>
+      <line class="da" x1="360" y1="70" x2="570" y2="150"/>
+      <rect class="dm" x="290" y="40" width="140" height="52" rx="8"/>
+      <text class="dt" x="360" y="62">[ 40 | 70 ]</text><text class="ds" x="360" y="84">根（2 关键字 → 3 棵子树）</text>
+      <rect class="dm" x="90"  y="150" width="120" height="52" rx="8"/>
+      <text class="dt" x="150" y="172">[ 12 | 25 ]</text><text class="ds" x="150" y="194">叶</text>
+      <rect class="dm" x="300" y="150" width="120" height="52" rx="8"/>
+      <text class="dt" x="360" y="172">[ 55 ]</text><text class="ds" x="360" y="194">叶</text>
+      <rect class="dm" x="510" y="150" width="120" height="52" rx="8"/>
+      <text class="dt" x="570" y="172">[ 85 | 92 ]</text><text class="ds" x="570" y="194">叶</text>
+    </svg>
+    <div class="cap">图 7-2 一棵 3 阶 B 树片段：关键字把区间分开，左小右大，全部数据在内外结点都有</div>
+  </div>
+  <div class="box note"><div class="bt">🧮 m 阶 B 树核心性质（选择题大仓库）</div>
+    <ul>
+      <li>根结点至少 <strong>2 棵子树、1 个关键字</strong>；其他非叶结点至少 <strong>⌈m/2⌉ 棵子树</strong>（即 ⌈m/2⌉−1 个关键字）；至多 m 棵子树。</li>
+      <li>所有<strong>叶子结点（失败结点）出现在同一层</strong>，且不带信息。</li>
+      <li>含 n 个关键字、m 阶 B 树的<strong>叶子层数（高度下限思路）</strong>：n ≤ (m−1)(1+m+m²+…+m^(l−1)) = m^l − 1。</li>
+      <li>插入溢出：结点关键字超过 m−1 → <strong>从中间 ⌈m/2⌉ 处分裂</strong>，中间关键字升到父结点；删除不足则借 / 合并。</li>
+      <li>含 n 个关键字的 B 树叶结点（失败结点）数 = <strong>n + 1</strong>。</li>
+    </ul>
+  </div>
+  <div class="box tip"><div class="bt">💡 B 树 vs B+ 树</div>
+    <p>B+ 树：n 棵子树的结点含 <strong>n 个关键字</strong>（B 树是 n+1 棵子树 n 个关键字）；<strong>数据全部在叶子层</strong>且叶子用链表串成有序链表 → 便于范围查找和顺序遍历（这正是数据库索引用 B+ 树的原因）；非叶结点只是索引。m 阶 B+ 树结点最少子树数同 B 树（⌈m/2⌉），根为 2。</p>
+  </div>
+
+  <h3>五、散列表（哈希表）</h3>
+  <p>散列函数 H(key) 直接把关键字映射到地址；两个不同 key 映射到同一地址叫<strong>冲突（同义词）</strong>，非同义词挤到同一地址叫<strong>堆积</strong>。</p>
+  <ul>
+    <li><strong>常用哈希</strong>：除留余数法 H(key) = key % p（p 取不超过表长的最大质数）。</li>
+    <li><strong>冲突处理——开放定址法</strong>：线性探测 Hi = (H + dᵢ) % m，dᵢ = 1,2,…（易堆积）；二次探测 dᵢ = 1²,−1²,2²,−2²…；伪随机序列。</li>
+    <li><strong>冲突处理——拉链法（链接法）</strong>：同义词挂成单链表，无堆积，删除方便。</li>
+    <li><strong>装填因子 α = 表中元素数 / 表长</strong>——ASL 直接依赖 α，与表长本身无关（选择题原话）。</li>
+  </ul>
+  <div class="box note"><div class="bt">🧮 考场手算：ASL（每年必考的填表题）</div>
+    <p><strong>步骤</strong>：① 逐个元素按哈希函数 + 冲突策略插入，标出每个元素的<strong>比较次数</strong>；② 成功 ASL = 所有元素比较次数之和 ÷ 元素个数；③ 失败 ASL = 从每个可能哈希地址找到空位的比较次数之和 ÷ 哈希函数模数 p（<strong>分母是 p 不是表长！</strong>开放定址失败查找必须走到「空」才停）。</p>
+    <p>例：H(key)=key%7，表长 7，线性探测，依次插入 15, 22, 29（三者都映射到地址 1，连环冲突）：</p>
+    <table>
+      <thead><tr><th>地址</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+      <tbody>
+        <tr><td>值</td><td>—</td><td>15</td><td>22</td><td>29</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>比较次数</td><td></td><td>1</td><td>2</td><td>3</td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <p>15 先来 → H=1 空着，直接放入，比较 1 次；22 → H=1 被占，探到 2 放入，比较 2 次；29 → 1、2 都被占，落到 3，比较 3 次 → <strong>成功 ASL = (1+2+3)/3 = 2</strong>。失败 ASL：地址 0 探 1 次遇空，地址 1 探到 4 空 = 4 次，地址 2 → 3 次，地址 3 → 2 次，4、5、6 各 1 次 → (1+4+3+2+1+1+1)/7 = <strong>13/7</strong>（分母 7 = p）。</p>
+  </div>
+  <div class="box warn"><div class="bt">⚠️ 高频细节</div>
+    <p>① 散列查找<strong>与有序无关</strong>，平均 O(1) 但最坏 O(n)；② 拉链法成功/失败 ASL 分母分别是元素个数与地址数 p；③ 删除在开放定址法下不能物理删除，只能打「已删」标记，否则断链。</p>
+  </div>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>7-1</strong>：长度 15 的有序表折半查找，查找成功最多比较几次？长度 100 呢？</p>
+    <p><strong>7-2</strong>：3 阶 B 树中每个结点最少 / 最多几个关键字？含 9 个关键字的 3 阶 B 树最少几层（含叶失败层怎么算）？</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>7-1</strong>：⌈log₂16⌉ = <strong>4</strong> 次；⌈log₂101⌉ = <strong>7</strong> 次。</p>
+      <p><strong>7-2</strong>：3 阶 B 树非根结点子树数 2~3 → 关键字 <strong>1~2</strong> 个。n=9 时失败结点 10 个，3 层可容纳最多 m³−1 = 26 个关键字，故 3 层（含失败层为 4 层结点行）足够——考试按「叶失败结点数 = n+1」逐层算下限即可。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch8">
+  <div class="ch-head"><span class="ch-num">08</span><div><div class="ch-kicker">CHAPTER 08 · 查找与排序 ⭐⭐⭐</div><h2>排序：一张大表 + 两道手算套路</h2></div></div>
+  <div class="goals">📌 本章目标：把「八大排序」的复杂度、稳定性、手算过程压缩进一张总表；重点吃透快速排序与堆排序——选择题与代码大题双料常客。</div>
+
+  <h3>总表：先背下这张（选择题 70% 出自它）</h3>
+  <table>
+    <thead><tr><th>算法</th><th>最好</th><th>平均</th><th>最坏</th><th>空间</th><th>稳定</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>直接插入</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✔</td><td>基本有序时极快</td></tr>
+      <tr><td>冒泡</td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✔</td><td>有序时一趟即可停</td></tr>
+      <tr><td><strong>快速排序</strong></td><td>O(n log₂n)</td><td>O(n log₂n)</td><td><strong>O(n²)</strong></td><td>O(log₂n)</td><td>✘</td><td>基本有序/逆序时退化，<strong>所有内部排序中平均性能最优</strong></td></tr>
+      <tr><td>简单选择</td><td>O(n²)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✘</td><td>比较次数固定 n(n−1)/2</td></tr>
+      <tr><td><strong>堆排序</strong></td><td>O(n log₂n)</td><td>O(n log₂n)</td><td>O(n log₂n)</td><td>O(1)</td><td>✘</td><td>适合大文件 TopK</td></tr>
+      <tr><td>归并排序</td><td>O(n log₂n)</td><td>O(n log₂n)</td><td>O(n log₂n)</td><td><strong>O(n)</strong></td><td>✔</td><td>「2 路归并」趟数 = ⌈log₂n⌉</td></tr>
+      <tr><td>希尔排序</td><td>—</td><td>—</td><td>—</td><td>O(1)</td><td>✘</td><td>仅适用于顺序存储；复杂度与增量序列有关</td></tr>
+      <tr><td>基数排序</td><td>O(d(n+r))</td><td>同左</td><td>同左</td><td>O(r)</td><td>✔</td><td>d 位、基数 r；不比较关键字</td></tr>
+    </tbody>
+  </table>
+  <div class="box warn"><div class="bt">⚠️ 三个必背结论</div>
+    <p>① <strong>稳定的算法</strong>：插冒归基（直接插入、冒泡、归并、基数）；快选堆希不稳定——「<strong>快些选一堆</strong>（不稳定）」。<br>
+    ② 比较<strong>次数与初始序列无关</strong>：简单选择、折半插入（移动次数有关）；<strong>趟数与初始序列有关</strong>：冒泡、快排。<br>
+    ③ 排序趟数与「序列是否有序」强相关的还有：直接插入（趟数固定但比较次数变化）。归并、堆的趟数固定。</p>
+  </div>
+
+  <h3>一、插入排序：直接插入与折半插入、希尔</h3>
+  <p>直接插入：把第 i 个元素插到前面有序段中合适位置。折半插入：找位置用二分（<strong>比较次数降为 O(n log n)，移动次数不变</strong>）。希尔：按增量分组做插入排序，增量逐趟缩小到 1。</p>
+
+  <h3>二、冒泡与快速排序</h3>
+  <div class="code"><div class="code-head"><span>quick.cpp — 快排： partition 是必默写代码</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int Partition(int a[], int low, int high) {
+    int pivot = a[low];              // 第一个元素作枢轴
+    while (low &lt; high) {
+        while (low &lt; high &amp;&amp; a[high] &gt;= pivot) high--;  // 右边找小
+        a[low] = a[high];
+        while (low &lt; high &amp;&amp; a[low]  &lt;= pivot) low++;   // 左边找大
+        a[high] = a[low];
+    }
+    a[low] = pivot;                  // 枢轴归位
+    return low;                      // 返回枢轴最终位置
+}
+
+void QuickSort(int a[], int low, int high) {
+    if (low &lt; high) {
+        int p = Partition(a, low, high);
+        QuickSort(a, low, p - 1);    // 递归左右两段
+        QuickSort(a, p + 1, high);
+    }
+}</code></pre></div>
+  <div class="box note"><div class="bt">🧮 考场手算：写快排每一趟</div>
+    <p>「第 1 趟」= 枢轴一次归位后的数组状态；手算时盯住枢轴（通常首元素），挖坑填坑直到 low==high。考题问「第 k 趟后序列」或「枢轴位置」：每趟确定<strong>一个</strong>元素的最终位置，共 n−1 趟（每趟一个）——注意「<strong>一趟</strong>」在考研语境 = 对当前处理的整个子区间做一次 Partition？<strong>不是</strong>：教材的「一趟」指对每个未处理子表各做一次划分（严版约定），答题按题目给的过程示例对齐即可。</p>
+  </div>
+
+  <h3>三、选择排序：简单选择与堆排序</h3>
+  <p>简单选择：每趟从无序区选最小放前面。堆排序重点在「手算建堆与调整」：</p>
+  <div class="diagram">
+    <svg viewBox="0 0 700 310" role="img" aria-label="大根堆与筛选">
+      <line class="da" x1="350" y1="55" x2="180" y2="150"/>
+      <line class="da" x1="350" y1="55" x2="520" y2="150"/>
+      <line class="da" x1="180" y1="150" x2="100" y2="245"/>
+      <line class="da" x1="180" y1="150" x2="260" y2="245"/>
+      <line class="da" x1="520" y1="150" x2="440" y2="245"/>
+      <line class="da" x1="520" y1="150" x2="600" y2="245"/>
+      <circle class="db" cx="350" cy="50" r="27"/><text class="dt" x="350" y="56">9</text>
+      <circle class="db" cx="180" cy="145" r="27"/><text class="dt" x="180" y="151">7</text>
+      <circle class="db" cx="520" cy="145" r="27"/><text class="dt" x="520" y="151">8</text>
+      <circle class="dterm" cx="100" cy="240" r="27"/><text class="dt" x="100" y="246">3</text>
+      <circle class="dterm" cx="260" cy="240" r="27"/><text class="dt" x="260" y="246">5</text>
+      <circle class="dterm" cx="440" cy="240" r="27"/><text class="dt" x="440" y="246">4</text>
+      <circle class="dterm" cx="600" cy="240" r="27"/><text class="dt" x="600" y="246">6</text>
+      <text class="ds" x="350" y="300">大根堆：每个结点 ≥ 其孩子（数组表示：i 的孩子是 2i 与 2i+1，1 起始）</text>
+    </svg>
+    <div class="cap">图 8-1 大根堆：堆顶永远是最大值，逻辑是树、存储是数组</div>
+  </div>
+  <div class="box note"><div class="bt">🧮 考场手算：建堆与输出</div>
+    <p><strong>建堆（自底向上）</strong>：从最后一个分支结点 ⌊n/2⌋ 起<strong>倒序</strong>逐个「下沉」调整；<strong>输出</strong>：堆顶与堆尾交换 → 堆规模减 1 → 新堆顶下沉。<strong>「下沉一次 = 一层」</strong>：把孩子中较大者与父比较，父小则交换继续往下。大根堆→升序，小根堆→降序。</p>
+  </div>
+  <div class="code"><div class="code-head"><span>heap.cpp — 下沉调整（1 起始存储）</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">void SiftDown(int a[], int k, int n) {      // a[k] 下沉，堆规模 n
+    a[0] = a[k];                            // 暂存
+    for (int i = 2 * k; i &lt;= n; i *= 2) {   // 沿较大的孩子下沉
+        if (i &lt; n &amp;&amp; a[i] &lt; a[i + 1]) i++;
+        if (a[0] &gt;= a[i]) break;
+        a[k] = a[i];                        // 孩子上移
+        k = i;
+    }
+    a[k] = a[0];                            // 放到最终位置
+}
+
+void HeapSort(int a[], int n) {
+    for (int i = n / 2; i &gt;= 1; i--)        // ① 建堆：从最后分支结点倒序
+        SiftDown(a, i, n);
+    for (int i = n; i &gt; 1; i--) {
+        swap(a[1], a[i]);                   // ② 堆顶换到末尾
+        SiftDown(a, 1, i - 1);              // ③ 规模减一后重新下沉
+    }
+}</code></pre></div>
+
+  <h3>四、归并、基数与外部排序一页纸</h3>
+  <ul>
+    <li><strong>归并</strong>：2 路归并第 k 趟后得到长度 2ᵏ 的有序段；n 个元素共 ⌈log₂n⌉ 趟；空间 O(n)（它的硬伤）。</li>
+    <li><strong>基数</strong>：按「最低位优先 LSD」逐位「分配 + 收集」d 遍；每遍 O(n+r)；队列实现，天然稳定。</li>
+    <li><strong>外部排序</strong>：败者树（多路归并选最小）、置换-选择（生成更长初始归并段）、最佳归并树（哈夫曼思想，k 叉）。</li>
+  </ul>
+  <div class="box practice"><div class="bt">✏️ 动手练习</div>
+    <p><strong>8-1</strong>：序列 {49, 38, 65, 97, 76, 13, 27} 以 49 为枢轴，写出一趟快排后的结果。</p>
+    <p><strong>8-2</strong>：把 {45, 78, 12, 90, 33} 调整为大根堆（1 起始数组），写出建堆后的数组。</p>
+    <details class="ans"><summary>👀 查看参考答案</summary>
+      <p><strong>8-1</strong>：{27, 38, 13, <strong>49</strong>, 76, 97, 65}——49 归位于下标 4（1 起始），左段全小于它，右段全大于它。</p>
+      <p><strong>8-2</strong>：数组 {45, 78, 12, 90, 33}（a[1]~a[5]）。从 i=⌊5/2⌋=2 倒序调整：① i=2 结点 78，孩子中较大者 90 &gt; 78 → 交换，得 {45, <strong>90</strong>, 12, <strong>78</strong>, 33}；② i=1 结点 45，较大孩子 90 &gt; 45 → 交换后 45 落到 a[2]，再与它的较大孩子 78 比较，78 &gt; 45 → 再交换。最终 <strong>{90, 78, 12, 45, 33}</strong>。</p>
+    </details>
+  </div>
+</section>
+
+<section class="chapter" id="ch9">
+  <div class="ch-head"><span class="ch-num">09</span><div><div class="ch-kicker">CHAPTER 09 · 冲刺篇 🎯</div><h2>代码大题专项：答题模板与高频母题</h2></div></div>
+  <div class="goals">📌 本章目标：掌握算法设计题的标准答题格式，吃透 2 道真题风格完整解答，扫一遍 408 十余年常考母题——大题其实是「套路题」。</div>
+
+  <h3>一、标准答题格式：三段式，缺一扣分</h3>
+  <ol class="steps">
+    <li><strong>① 算法思想（文字描述）</strong>：用 3~5 句话说清「扫描什么、维护什么、怎么处理」。阅卷先看这段定档。</li>
+    <li><strong>② 算法实现</strong>：C/C++ 函数，<strong>签名要带引用 &amp;</strong>（修改链表/表长时），关键行加注释。能写伪代码也行，但代码更稳。</li>
+    <li><strong>③ 复杂度分析</strong>：一句「时间 O(f(n))，空间 O(g(n))」并说明理由（扫描了几遍、用了几个辅助变量）。</li>
+  </ol>
+  <div class="box warn"><div class="bt">⚠️ 阅卷视角的得分细节</div>
+    <p>① 除非题目要求「时间最优」，<strong>O(n) 双指针解法与 O(n²) 朴素解法分差通常在 2~3 分</strong>，写不出最优解时把朴素解写完整同样值钱；② 边界（空表、单结点、全相同）写进思想描述里是加分项；③ 变量命名清晰（pre/cur/slow/fast），涂改太多会影响观感。</p>
+  </div>
+
+  <h3>二、真题风格解答一：主元素（2013 真题改编）</h3>
+  <p><strong>题目</strong>：已知长度 n 的整数数组 A，其中若有元素出现次数严格超过 n/2，称为主元素；找出主元素，不存在则返回 −1。要求时间 O(n)、空间 O(1)。</p>
+  <div class="code"><div class="code-head"><span>majority.cpp — 摩尔投票法</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">int Majority(int A[], int n) {
+    // 第 1 趟：候选抵消
+    int candidate = A[0], count = 1;
+    for (int i = 1; i &lt; n; i++) {
+        if (A[i] == candidate) count++;
+        else if (count &gt; 0)    count--;
+        else { candidate = A[i]; count = 1; }   // 票数清零，换候选人
+    }
+    // 第 2 趟：验证（候选可能不存在，必须数一遍！）
+    count = 0;
+    for (int i = 0; i &lt; n; i++)
+        if (A[i] == candidate) count++;
+    if (count &gt; n / 2) return candidate;
+    return -1;
+}</code></pre></div>
+  <ul>
+    <li><strong>思想</strong>：主元素与非主元素「两两抵消」，抵消殆尽后剩下的候选只可能是主元素；因候选未必真存在，再扫一遍验证。</li>
+    <li><strong>复杂度</strong>：两趟扫描，时间 O(n)；仅常数个变量，空间 O(1)。</li>
+  </ul>
+
+  <h3>三、真题风格解答二：链表重排（2019 真题改编）</h3>
+  <p><strong>题目</strong>：带头结点单链表 L=(a₁, a₂, …, aₙ)，就地重排为 (a₁, aₙ, a₂, aₙ₋₁, …)。要求时间尽量高效、空间 O(1)。</p>
+  <p><strong>思想</strong>：① 快慢指针找中点，断成两半；② 后半段<strong>原地逆置</strong>；③ 两段交替归并。三步全是链表基本操作——<strong>大题 = 基本操作的组合</strong>。</p>
+  <div class="diagram">
+    <svg viewBox="0 0 780 190" role="img" aria-label="链表重排三步">
+      <defs><marker id="ar9" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#64748b"/></marker></defs>
+      <text class="dl" x="390" y="22">① 快慢指针找中点，断链</text>
+      <rect class="dm" x="40"  y="36" width="66" height="40" rx="7"/><text class="dt" x="73"  y="62">a₁</text>
+      <rect class="dm" x="126" y="36" width="66" height="40" rx="7"/><text class="dt" x="159" y="62">a₂</text>
+      <rect class="dm" x="212" y="36" width="66" height="40" rx="7"/><text class="dt" x="245" y="62">a₃</text>
+      <rect class="dm" x="298" y="36" width="66" height="40" rx="7"/><text class="dt" x="331" y="62">a₄</text>
+      <path class="da" d="M364,56 L410,56" marker-end="url(#ar9)"/>
+      <rect class="dm" x="414" y="36" width="66" height="40" rx="7"/><text class="dt" x="447" y="62">a₅</text>
+      <rect class="dm" x="500" y="36" width="66" height="40" rx="7"/><text class="dt" x="533" y="62">a₆</text>
+      <rect class="dm" x="586" y="36" width="66" height="40" rx="7"/><text class="dt" x="619" y="62">a₇</text>
+      <path class="da" d="M540,36 L520,20" stroke="#b45309"/>
+      <text class="dl" x="452" y="20" fill="#b45309">前半 a₁~a₄ ｜ 后半 a₅~a₇</text>
+      <text class="dl" x="390" y="112">② 后半段逆置 → a₇→a₆→a₅　　③ 交替插入</text>
+      <rect class="dm" x="60" y="126" width="60" height="38" rx="7"/><text class="dt" x="90" y="150">a₁</text>
+      <rect class="dterm" x="140" y="126" width="60" height="38" rx="7"/><text class="dt" x="170" y="150">a₇</text>
+      <rect class="dm" x="220" y="126" width="60" height="38" rx="7"/><text class="dt" x="250" y="150">a₂</text>
+      <rect class="dterm" x="300" y="126" width="60" height="38" rx="7"/><text class="dt" x="330" y="150">a₆</text>
+      <rect class="dm" x="380" y="126" width="60" height="38" rx="7"/><text class="dt" x="410" y="150">a₃</text>
+      <rect class="dterm" x="460" y="126" width="60" height="38" rx="7"/><text class="dt" x="490" y="150">a₅</text>
+      <rect class="dm" x="540" y="126" width="60" height="38" rx="7"/><text class="dt" x="570" y="150">a₄</text>
+      <path class="da" d="M120,145 L138,145" marker-end="url(#ar9)"/>
+      <path class="da" d="M200,145 L218,145" marker-end="url(#ar9)"/>
+      <path class="da" d="M280,145 L298,145" marker-end="url(#ar9)"/>
+      <path class="da" d="M360,145 L378,145" marker-end="url(#ar9)"/>
+      <path class="da" d="M440,145 L458,145" marker-end="url(#ar9)"/>
+      <path class="da" d="M520,145 L538,145" marker-end="url(#ar9)"/>
+    </svg>
+    <div class="cap">图 9-1 重排三步走：断链 → 逆置后半段 → 交替归并</div>
+  </div>
+  <div class="code"><div class="code-head"><span>rearrange.cpp</span><button class="copy-btn">复制</button></div>
+<pre><code class="language-cpp">void Rearrange(LinkList L) {
+    // ① 快慢指针：slow 到中点，fast 扫尾
+    LNode *slow = L, *fast = L;
+    while (fast-&gt;next != NULL) {
+        slow = slow-&gt;next;
+        fast = fast-&gt;next;
+        if (fast-&gt;next != NULL) fast = fast-&gt;next;
+    }
+    // ② 断链：p1 = 前半, p2 = 后半
+    LNode *p2 = slow-&gt;next;
+    slow-&gt;next = NULL;
+    // ③ 后半段原地逆置（头插法）
+    LNode *p = p2, *q;
+    p2 = NULL;
+    while (p != NULL) {
+        q = p-&gt;next;
+        p-&gt;next = p2;
+        p2 = p;
+        p = q;
+    }
+    // ④ 交替归并：p1 取一个、p2 插一个
+    LNode *p1 = L-&gt;next, *t = L;
+    while (p1 != NULL &amp;&amp; p2 != NULL) {
+        LNode *n1 = p1-&gt;next, *n2 = p2-&gt;next;
+        t-&gt;next = p1; t = p1; p1 = n1;
+        t-&gt;next = p2; t = p2; p2 = n2;
+    }
+    t-&gt;next = (p1 != NULL) ? p1 : p2;   // 接上剩余结点
+}</code></pre></div>
+  <ul>
+    <li><strong>复杂度</strong>：三个线性阶段各扫一遍，时间 O(n)；只用指针变量，空间 O(1)。</li>
+  </ul>
+
+  <h3>四、高频母题清单（考前必扫）</h3>
+  <table>
+    <thead><tr><th>出处</th><th>母题</th><th>关键手法</th></tr></thead>
+    <tbody>
+      <tr><td>顺序表</td><td>删除重复元素（有序 / 无序）</td><td>有序：双下标 k 记新长度</td></tr>
+      <tr><td>顺序表</td><td>两个有序表合并 / 原地循环左移 p 位</td><td>合并 O(m+n)；左移 = 三次逆置（2021 真题风格）</td></tr>
+      <tr><td>顺序表</td><td>找缺失的最小正整数（2018）</td><td>原地哈希：值 v 放下标 v−1</td></tr>
+      <tr><td>顺序表 / 数组</td><td>三元组最小距离（2021）</td><td>三指针，每次后移最小者</td></tr>
+      <tr><td>链表</td><td>倒数第 k 个结点（2009）</td><td>双指针：fast 先走 k 步</td></tr>
+      <tr><td>链表</td><td>两链表公共结点</td><td>先对齐长度再同步走</td></tr>
+      <tr><td>链表</td><td>奇偶位拆分 / 逆置每 k 个</td><td>拆表 + 头插 / 组内逆置</td></tr>
+      <tr><td>栈 / 队列</td><td>两个栈模拟队列（2009 / 2022 风格）</td><td>S1 进 S2 出，S2 空才把 S1 全部倒入</td></tr>
+      <tr><td>树</td><td>求 WPL（2014）</td><td>层序遍历，depth × 权值累加</td></tr>
+      <tr><td>树</td><td>判断是否 BST / 完全二叉树 / 平衡</td><td>BST：中序递增；完全：层序遇空后不许再有结点</td></tr>
+      <tr><td>图 / 队列</td><td>用队列排 vase 火车调度等（2009）</td><td>看清「栈 or 队列」的性质再模拟</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 大题提分路径</div>
+    <p>母题表里每一行都亲手写一遍代码 + 默写思想两句话。408 大题的「新题」几乎都是这些母题换皮：换存储结构、加一个限制条件、换问法。<strong>写完对答案时，重点对「思想段」：看自己漏了哪个边界、哪句复杂度理由。</strong></p>
+  </div>
+</section>
+
+<section class="chapter" id="ch10">
+  <div class="ch-head"><span class="ch-num">10</span><div><div class="ch-kicker">CHAPTER 10 · 冲刺篇 🎯</div><h2>复习规划与得分策略</h2></div></div>
+  <div class="goals">📌 本章目标：把 10 章内容装进一个可执行的复习节奏里，明确选择题和大题各自的得分打法。</div>
+
+  <h3>三轮复习法</h3>
+  <table>
+    <thead><tr><th>轮次</th><th>时间参考</th><th>任务</th><th>目标</th></tr></thead>
+    <tbody>
+      <tr><td><strong>第一轮 · 懂</strong></td><td>约 6 周（每天 1.5~2h）</td><td>跟本册逐章过概念 + 图解，每章结束做配套练习并「合上书手算一遍」；配合王道课后选择题</td><td>能自己画出每章结构图、推出每个公式</td></tr>
+      <tr><td><strong>第二轮 · 熟</strong></td><td>约 4 周</td><td>按章刷真题与王道错题；每天手算 1 个 KMP / 堆 / Dijkstra / 散列 ASL 维持手感；开始写第 9 章母题代码</td><td>选择题正确率 ≥ 85%，大题三段式成型</td></tr>
+      <tr><td><strong>第三轮 · 稳</strong></td><td>考前 3~4 周</td><td>整卷限时模拟；只看错题本；背「第 8 章总表 + 各章手算模板」；模拟大题答题卡书写</td><td>稳定输出 38+ 分</td></tr>
+    </tbody>
+  </table>
+
+  <h3>选择题 vs 大题：两套打法</h3>
+  <div class="cards">
+    <div class="card"><span class="ic">🎯</span><b>选择题（约 22~24 分）</b><span class="desc">拼的是「结论准确」：复杂度大表、判空条件、B 树性质、稳定性口诀。错题按章归类，反复看结论页而不是重做题。</span></div>
+    <div class="card"><span class="ic">✍️</span><b>算法大题（约 15 分）</b><span class="desc">拼的是「三段式完整」：思想 3 句 + 代码带注释 + 复杂度一句。先在草稿定思路再下笔，卷面分也是分。</span></div>
+    <div class="card"><span class="ic">🧮</span><b>手算大题（约 8~10 分）</b><span class="desc">拼的是「步骤不跳」：KMP、堆、Dijkstra、关键路径、散列 ASL 都按本册模板逐行画表，跳步就是丢分。</span></div>
+  </div>
+
+  <h3>推荐资料</h3>
+  <table>
+    <thead><tr><th>资料</th><th>用法</th></tr></thead>
+    <tbody>
+      <tr><td>严蔚敏《数据结构（C 语言版）》</td><td>教材本体，定义以它为准；配套习题别错过</td></tr>
+      <tr><td>王道《数据结构考研复习指导》</td><td>主刷题资料：课后题 → 真题归类 → 错题本</td></tr>
+      <tr><td>天勤《数据结构高分笔记》</td><td>语言更口语，适合第一轮替换阅读</td></tr>
+      <tr><td>408 历年真题（2009 至今）</td><td>第二轮核心；每套限时做，只统计数据结构部分得分</td></tr>
+      <tr><td>本册《C++ 零基础入门教程》</td><td>代码大题的语法参考：指针、引用、STL 三章</td></tr>
+    </tbody>
+  </table>
+  <div class="box tip"><div class="bt">💡 最后的建议</div>
+    <p>数据结构是 408 四门里「回报率」最高的一门：套路最固定、图解最直观、和操作系统/组成原理互相成全。别在偏难怪知识点上钻牛角尖——把每章的「🧮 考场手算」练到条件反射，你的 45 分就稳了。</p>
+  </div>
+</section>
+
+<section class="end-card">
+  <h2>🎉 数据结构篇完！</h2>
+  <p>从线性表到 B+ 树，从 Dijkstra 到快排手算——你已经把 408 数据结构的考点地图完整走了一遍。</p>
+  <p>接下来：回到第 9 章把母题代码全部亲手写一遍，然后带着本册的手算模板去刷王道与真题。祝上岸！🎓</p>
+  <p style="margin-top:18px"><a class="btn btn-light" href="#intro">↺ 回到考情速览</a></p>
+</section>
+
+</div>
+</main>
+</div>
+
+<button id="backTop" title="回到顶部">↑</button>
+<p class="footer-note">数据结构考研教程（408）· 衔接《C++ 零基础入门教程》· 祝你上岸 🚀</p>
+
+<script>
+(function () {
+  // ---------- C++ 语法高亮 ----------
+  var KW = ("alignas alignof auto bool break case catch char class const constexpr continue " +
+    "default delete do double else enum false float for friend goto if inline int long " +
+    "mutable namespace new nullptr operator override private protected public return short " +
+    "signed sizeof static struct switch template this throw true try typedef typename union " +
+    "unsigned using virtual void volatile while").split(" ");
+  var TY = ("string vector map set pair queue stack deque list array size_t ifstream ofstream " +
+    "fstream ostream istream greater LinkList LNode SqList SqQueue BiTree BiTNode ThreadTree " +
+    "ThreadNode DNode DLinkList AdjList ArcNode VNode").split(" ");
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function hl(code) {
+    var out = "", last = 0, m;
+    var re = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(^[ \t]*#[^\n]*)|(\b\d[\w.]*)|([A-Za-z_]\w*)/gm;
+    while ((m = re.exec(code))) {
+      out += esc(code.slice(last, m.index));
+      if (m[1]) out += '<span class="tk-c">' + esc(m[1]) + '</span>';
+      else if (m[2]) out += '<span class="tk-s">' + esc(m[2]) + '</span>';
+      else if (m[3]) out += '<span class="tk-p">' + esc(m[3]) + '</span>';
+      else if (m[4]) out += '<span class="tk-n">' + esc(m[4]) + '</span>';
+      else {
+        var w = m[5];
+        var isFn = /^\s*[(]/.test(code.slice(re.lastIndex));
+        if (KW.indexOf(w) >= 0) out += '<span class="tk-k">' + w + '</span>';
+        else if (TY.indexOf(w) >= 0) out += '<span class="tk-t">' + w + '</span>';
+        else if (isFn) out += '<span class="tk-f">' + w + '</span>';
+        else out += esc(w);
+      }
+      last = re.lastIndex;
+    }
+    out += esc(code.slice(last));
+    return out;
+  }
+  var blocks = document.querySelectorAll("pre code.language-cpp");
+  for (var i = 0; i < blocks.length; i++) {
+    blocks[i].innerHTML = hl(blocks[i].textContent);
+  }
+
+  // ---------- 复制按钮 ----------
+  var codes = document.querySelectorAll(".code");
+  for (var j = 0; j < codes.length; j++) {
+    (function (box) {
+      var btn = box.querySelector(".copy-btn");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var text = box.querySelector("code").textContent;
+        function done() {
+          btn.textContent = "已复制 ✓";
+          setTimeout(function () { btn.textContent = "复制"; }, 1600);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, done);
+        } else {
+          var ta = document.createElement("textarea");
+          ta.value = text; document.body.appendChild(ta);
+          ta.select(); document.execCommand("copy");
+          document.body.removeChild(ta); done();
+        }
+      });
+    })(codes[j]);
+  }
+
+  // ---------- 阅读进度条 + 返回顶部 ----------
+  var bar = document.getElementById("progress");
+  var back = document.getElementById("backTop");
+  window.addEventListener("scroll", function () {
+    var h = document.documentElement;
+    var p = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+    bar.style.width = (p * 100) + "%";
+    back.style.display = h.scrollTop > 600 ? "block" : "none";
+  });
+  back.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // ---------- 侧边目录滚动高亮 ----------
+  var links = document.querySelectorAll(".toc a");
+  var map = {};
+  for (var k = 0; k < links.length; k++) map[links[k].getAttribute("href").slice(1)] = links[k];
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && map[e.target.id]) {
+          for (var n = 0; n < links.length; n++) links[n].classList.remove("active");
+          var a = map[e.target.id];
+          a.classList.add("active");
+          a.scrollIntoView({ block: "nearest" });
+        }
+      });
+    }, { rootMargin: "-70px 0px -65% 0px", threshold: 0 });
+    var secs = document.querySelectorAll("section.chapter");
+    for (var s = 0; s < secs.length; s++) obs.observe(secs[s]);
+  }
+
+  // ---------- 移动端目录抽屉 ----------
+  var toggle = document.getElementById("tocToggle");
+  if (toggle) {
+    toggle.addEventListener("click", function () {
+      document.body.classList.toggle("nav-open");
+    });
+    var tocLinks = document.querySelectorAll(".toc a");
+    for (var t = 0; t < tocLinks.length; t++) {
+      tocLinks[t].addEventListener("click", function () {
+        document.body.classList.remove("nav-open");
+      });
+    }
+  }
+})();
+</script>
+</body>
+</html>

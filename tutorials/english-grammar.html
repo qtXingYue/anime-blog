@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>零基础英语语法通关教程 · 从 0 到四级</title>
+<style>
+:root{
+  --brand:#4f6ef7;--brand2:#22d3ee;--ink:#2b3040;--muted:#64748b;--line:#e5e9f2;--card:#fff;
+  --rose:#e11d48;--blue:#2563eb;--green:#059669;--amber:#d97706;--violet:#7c3aed;--teal:#0d9488;--pink:#db2777;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;background:#f4f6fb;color:var(--ink);line-height:1.8;font-size:15.5px}
+#progress{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));z-index:99;border-radius:0 4px 4px 0}
+/* ---------- 侧边导航 ---------- */
+#sidebar{position:fixed;top:0;left:0;bottom:0;width:252px;background:#fff;border-right:1px solid var(--line);overflow-y:auto;padding:18px 12px 30px;z-index:50}
+#sidebar .brand{font-size:19px;font-weight:900;line-height:1.4;padding:4px 10px 14px;background:linear-gradient(120deg,#4f6ef7,#a855f7,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+#sidebar .tip0{font-size:12px;color:var(--muted);padding:0 10px 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+#sidebar a{display:flex;gap:7px;align-items:center;padding:6.5px 10px;border-radius:9px;color:#4b5563;font-size:13.5px;text-decoration:none;margin:1px 0}
+#sidebar a:hover{background:#eef1ff;color:var(--brand)}
+#sidebar a.active{background:linear-gradient(135deg,#4f6ef7,#6d8bff);color:#fff;font-weight:700}
+#topnav{display:none;position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto;white-space:nowrap;padding:8px 12px;gap:6px}
+#topnav a{display:inline-block;padding:5px 12px;border-radius:99px;background:#f1f4fb;color:#4b5563;font-size:13px;text-decoration:none;margin-right:2px}
+#topnav a.active{background:var(--brand);color:#fff}
+/* ---------- 布局 ---------- */
+main{margin-left:252px;padding:10px 22px 60px}
+.page{max-width:960px;margin:0 auto}
+section{background:var(--card);border-radius:18px;padding:30px 34px;margin:28px 0;box-shadow:0 1px 3px rgba(16,24,40,.07);scroll-margin-top:16px}
+section h2{font-size:23px;display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+section h2 .num{min-width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#4f6ef7,#22d3ee);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;flex:none}
+h2 .stars{margin-left:auto;font-size:12.5px;color:#b45309;background:#fffbeb;border:1px solid #fde68a;padding:3px 11px;border-radius:99px;white-space:nowrap;font-weight:700}
+h3{border-left:4px solid var(--brand);padding:2px 0 2px 12px;margin:30px 0 12px;font-size:19px;color:#1e293b}
+h3:first-of-type{margin-top:14px}
+h4{margin:18px 0 8px;font-size:16px;color:#334155}
+p{margin:8px 0}
+ul,ol{margin:8px 0 8px 24px}
+li{margin:5px 0}
+b{color:#111827}
+.hero{border-radius:20px;background:linear-gradient(135deg,#1e1b4b 0%,#4338ca 45%,#0ea5e9 100%);color:#fff;padding:46px 40px;box-shadow:0 14px 40px rgba(67,56,202,.35)}
+.hero h1{font-size:33px;line-height:1.35;margin-bottom:10px}
+.hero .sub{font-size:15.5px;opacity:.94;max-width:720px}
+.hero .stats{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0 14px}
+.hero .stats span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:5px 14px;border-radius:99px;font-size:13.5px;backdrop-filter:blur(4px)}
+.hero .who{background:rgba(255,255,255,.1);border-left:4px solid var(--brand2);padding:12px 16px;border-radius:0 12px 12px 0;font-size:14.5px;max-width:760px}
+.part{margin:38px 0 4px;padding:22px 28px;border-radius:16px;background:linear-gradient(135deg,#312e81,#4f6ef7 55%,#22d3ee);color:#fff;box-shadow:0 8px 24px rgba(79,110,247,.28)}
+.part b{font-size:20px;display:block}
+.part span{font-size:13.5px;opacity:.95}
+/* ---------- 例句色标 ---------- */
+.sen{font-size:16.5px;margin:10px 0;line-height:2.1}
+.cS{background:#ffe4e6;border-bottom:2.5px solid var(--rose);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cV{background:#dbeafe;border-bottom:2.5px solid var(--blue);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cO{background:#d1fae5;border-bottom:2.5px solid var(--green);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cP{background:#fef3c7;border-bottom:2.5px solid var(--amber);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cA{background:#ede9fe;border-bottom:2.5px solid var(--violet);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cD{background:#ccfbf1;border-bottom:2.5px solid var(--teal);padding:1px 5px;border-radius:5px;margin:0 1px}
+.cC{background:#fce7f3;border-bottom:2.5px solid var(--pink);padding:1px 5px;border-radius:5px;margin:0 1px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:12px 0;font-size:13.5px}
+.legend i{font-style:normal;padding:1px 8px;border-radius:6px;font-weight:700}
+/* ---------- 公式与提示框 ---------- */
+.frm{background:#eef2ff;border-left:5px solid var(--brand);padding:12px 18px;border-radius:0 12px 12px 0;margin:14px 0;font-weight:700;font-size:16px}
+.frm small{font-weight:600;color:var(--muted)}
+.frm .neg{color:var(--rose)}
+.tip{background:#ecfdf5;border-left:5px solid #10b981;padding:11px 16px;border-radius:0 12px 12px 0;margin:13px 0}
+.warn{background:#fffbeb;border-left:5px solid #f59e0b;padding:11px 16px;border-radius:0 12px 12px 0;margin:13px 0}
+.trap{background:#fff1f2;border-left:5px solid #f43f5e;padding:11px 16px;border-radius:0 12px 12px 0;margin:13px 0}
+.mn{background:linear-gradient(135deg,#f5f3ff,#ede9fe);border:2px dashed #8b5cf6;border-radius:14px;padding:12px 18px;text-align:center;font-weight:800;color:#5b21b6;margin:15px 0;font-size:16px}
+/* ---------- 信号词 ---------- */
+.sig{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;align-items:center}
+.sig .lab{font-weight:800;color:#475569;font-size:14px;margin-right:2px}
+.sig span:not(.lab){background:#eef2ff;color:#4338ca;border:1px solid #dbe1ff;border-radius:99px;padding:2.5px 12px;font-size:13.5px;font-weight:600}
+/* ---------- 表格 ---------- */
+.tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;line-height:1.65}
+.tbl th{background:#eef1ff;color:#3730a3;padding:9px 11px;border:1px solid #dbe3ff;font-size:13.5px}
+.tbl td{padding:8px 11px;border:1px solid #e8ecf5;vertical-align:top}
+.tbl tr:nth-child(even) td{background:#fafbff}
+.tbl .hl{background:#fff7ed !important;font-weight:700}
+.tbl .ok{color:#059669;font-weight:700}
+.tbl .no{color:var(--rose);font-weight:700}
+.tbl .ce{text-align:center}
+/* ---------- 对比卡 ---------- */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;border:1.5px solid var(--line);border-radius:16px;overflow:hidden;margin:18px 0;box-shadow:0 1px 3px rgba(16,24,40,.05)}
+.vs .side{padding:14px 18px}
+.vs .side.l{background:#eff6ff;border-right:1px dashed #c7d2fe}
+.vs .side.r{background:#fdf4ff}
+.vs .mid{display:flex;align-items:center;justify-content:center;font-weight:900;color:#94a3b8;background:#fff;padding:0 12px;font-size:15px}
+.vs h5{font-size:15.5px;margin-bottom:6px}
+.vs p{font-size:14px;margin:5px 0}
+.vs .ex{background:rgba(255,255,255,.75);border-radius:8px;padding:5px 10px;margin-top:6px;font-size:14.5px}
+/* ---------- 卡片 ---------- */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin:14px 0}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin:14px 0}
+.kcard{border:1.5px solid var(--line);border-radius:14px;padding:14px 17px;background:#fff}
+.kcard h5{color:var(--brand);margin-bottom:6px;font-size:15.5px}
+.ex{background:#f8fafc;border-radius:8px;padding:5px 11px;margin-top:6px;font-size:14.5px}
+/* ---------- 图片/图 ---------- */
+.fig{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:16px 12px 10px;margin:16px 0;text-align:center}
+.fig svg{max-width:100%;height:auto}
+.fig figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+/* ---------- 小测 ---------- */
+.quiz{background:#f8fafc;border:2px dashed #cbd5e1;border-radius:16px;padding:18px 24px;margin:24px 0}
+.quiz .qt{font-weight:900;color:#334155;margin-bottom:6px;font-size:16px}
+.quiz ol{margin-left:22px}
+.quiz li{margin:11px 0;font-size:15px}
+.quiz details{margin-top:5px}
+.quiz summary{display:inline-block;cursor:pointer;background:var(--brand);color:#fff;padding:2.5px 16px;border-radius:99px;font-size:13px;user-select:none;font-weight:700}
+.quiz details[open] summary{background:#94a3b8}
+.quiz details p{margin-top:8px;background:#fff;border-radius:10px;padding:8px 14px;border:1px solid var(--line);font-size:14.5px}
+/* ---------- 急救包 ---------- */
+.fix{border:1px solid var(--line);border-radius:13px;padding:11px 16px;margin:11px 0;background:#fff}
+.fix .bad{color:#be123c;font-weight:700}
+.fix .good{color:#047857;font-weight:800}
+.fix .why{color:var(--muted);font-size:13.5px;margin-top:2px}
+/* ---------- 其他 ---------- */
+.star{background:#fffbeb;border:1px solid #fde68a;color:#b45309;font-size:12px;padding:1.5px 9px;border-radius:99px;vertical-align:middle;margin-left:7px;white-space:nowrap;font-weight:700}
+.center{text-align:center}
+.muted{color:var(--muted);font-size:13.5px}
+.foot{text-align:center;color:var(--muted);font-size:13.5px;padding:26px 10px 10px;line-height:2}
+#backtop{position:fixed;right:26px;bottom:26px;width:46px;height:46px;border-radius:50%;background:var(--brand);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 6px 18px rgba(79,110,247,.4);display:none;z-index:70}
+#backtop:hover{background:#3b5bdb}
+@media (max-width:1080px){
+  #sidebar{display:none}main{margin-left:0}#topnav{display:flex}
+  section{padding:22px 18px}.hero{padding:32px 22px}.hero h1{font-size:25px}
+}
+@media print{#sidebar,#topnav,#backtop,#progress{display:none}main{margin:0}section{box-shadow:none;page-break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<aside id="sidebar">
+  <div class="brand">📚 英语语法<br>零基础通关</div>
+  <div class="tip0">建议按顺序学,每章末尾做小测;混淆时回「对比卡」查。</div>
+<a href="/" style="display:block;margin:0 0 10px;padding:9px 12px;border-radius:9px;background:rgba(15,23,42,.06);color:inherit;font-weight:700;font-size:13px;text-decoration:none">← 返回作品集</a>
+      <nav>
+    <a href="#s0">🗺️ 学习路线 · 怎么用</a>
+    <a href="#s1">🧱 词性与句子成分</a>
+    <a href="#s2">🏗️ 五大基本句型</a>
+    <a href="#s3">📦 名词与复数</a>
+    <a href="#s4">🔤 冠词 a/an/the</a>
+    <a href="#s5">👤 代词</a>
+    <a href="#s6">🎨 形容词与副词</a>
+    <a href="#s7">📍 介词</a>
+    <a href="#s8">⚙️ 动词总览与变形</a>
+    <a href="#s9">⏰ 时态大全(核心)</a>
+    <a href="#s10">🔄 被动语态</a>
+    <a href="#s11">🎫 情态动词</a>
+    <a href="#s12">🐾 非谓语动词</a>
+    <a href="#s13">🌳 三大从句</a>
+    <a href="#s14">🫧 虚拟语气</a>
+    <a href="#s15">🔀 一致·倒装·强调</a>
+    <a href="#s16">🚑 四级易错急救包</a>
+    <a href="#s17">📅 21天通关计划</a>
+  </nav>
+</aside>
+
+<nav id="topnav">
+  <a href="#s0">学习路线</a><a href="#s1">词性成分</a><a href="#s2">句型</a><a href="#s3">名词</a><a href="#s4">冠词</a><a href="#s5">代词</a><a href="#s6">形副</a><a href="#s7">介词</a><a href="#s8">动词</a><a href="#s9">时态★</a><a href="#s10">被动</a><a href="#s11">情态</a><a href="#s12">非谓语</a><a href="#s13">从句</a><a href="#s14">虚拟</a><a href="#s15">一致倒装</a><a href="#s16">急救包</a><a href="#s17">21天计划</a>
+</nav>
+
+<main><div class="page">
+
+<header class="hero">
+  <h1>零基础英语语法通关教程</h1>
+  <p class="sub">从「单词认识一堆、句子拼不出来」到「稳过四级」—— 一张地图、18 个章节、几十张时间轴和决策树,把时态和语法一次理清楚。</p>
+  <div class="stats">
+    <span>📚 18 章 · 由浅入深</span><span>🖼️ 30+ 图表 · 时间轴</span><span>⏰ 16 时态一网打尽</span><span>⚔️ 8 张易混对比卡</span><span>🚑 四级易错急救包</span><span>📅 21 天通关计划</span>
+  </div>
+  <p class="who">🎯 专为你设计:你已经背了几千个单词,但一写句子就时态混乱、语序错乱、从句懵圈。<b>这不是你笨,而是没人给过你一张「语法全景地图」</b>——单词是砖,语法是图纸,这份教程就是把图纸画给你看。</p>
+</header>
+
+<!-- ==================== 第0章 学习路线 ==================== -->
+<section id="s0">
+  <h2><span class="num">0</span>学习路线:为什么你的语法总是记不住?<span class="stars">先看这章</span></h2>
+
+  <h3>0.1 先诊断:你的三个"病根"</h3>
+  <div class="grid3">
+    <div class="kcard"><h5>🧩 病根一:知识点是散的</h5><p>时态、从句、非谓语……一个个孤立地背,像一堆没装进柜子的衣服,当然一用就乱。<br><b>药方:先搭框架</b>——本教程按「骨架 → 心脏 → 血管」的顺序搭好整栋楼。</p></div>
+    <div class="kcard"><h5>⏰ 病根二:时态靠背中文</h5><p>"现在完成时 = have done"这样背,三天就忘。时态本质是<b>时间轴上的图像</b>,不是公式。<br><b>药方:每个时态都画成时间轴</b>,先"看见"它,再记公式。</p></div>
+    <div class="kcard"><h5>✍️ 病根三:没有"守门员"</h5><p>一写长句就多个动词、缺成分,是因为缺一条铁律来检查句子。<br><b>药方:全书第一定律(见第1章)</b>,写完句子数动词,一秒定位错误。</p></div>
+  </div>
+
+  <h3>0.2 本教程怎么用(三步循环)</h3>
+  <div class="grid3">
+    <div class="kcard"><h5>① 看图理解</h5><p>每个语法点先用<b>图/时间轴/色标例句</b>建立画面,看懂再往下。</p></div>
+    <div class="kcard"><h5>② 抄公式口诀</h5><p>蓝色公式框、紫色口诀框,当天抄一遍。口诀是给忘的时候兜底的。</p></div>
+    <div class="kcard"><h5>③ 做随堂小测</h5><p>每章末尾有小测,点击"查看答案"对答案。<b>错了就跳回对应小节</b>,这是记得住的关键。</p></div>
+  </div>
+  <div class="tip">💡 <b>建议节奏:</b>第 1–8 章是地基(词性→句型→名词冠词→介词→动词),每天 1–2 章;第 9 章时态是全书心脏,至少留 3 天,反复看时间轴和对比卡;第 12–15 章是从句等高阶内容;第 16 章考前急救,第 17 章给你 21 天计划表。</div>
+
+  <h3>0.3 四级到底考哪些语法?(把力气花在刀刃上)</h3>
+  <table class="tbl">
+    <tr><th>四级题型</th><th>背后考的语法</th><th>重点章节</th></tr>
+    <tr><td>📖 仔细阅读 · 长难句</td><td>三大从句、非谓语动词、倒装、分隔结构</td><td>第 12、13、15 章</td></tr>
+    <tr><td>✍️ 翻译(段落)</td><td class="hl">时态、被动语态、非谓语、主谓一致、情态动词</td><td class="hl">第 9、10、11、12、15 章</td></tr>
+    <tr><td>📝 写作</td><td>五大句型、从句(提升句式)、虚拟语气、强调句</td><td>第 2、13、14 章</td></tr>
+    <tr><td>🎧 听力</td><td>时态信号词、情态动词表推测(must / can't have done)</td><td>第 9、11 章</td></tr>
+    <tr><td>🔤 选词填空</td><td>词性判断(名/动/形/副)、动词变形</td><td>第 1、8 章</td></tr>
+  </table>
+  <div class="mn">📌 结论:四级语法的命根 = <b>时态 + 非谓语 + 从句</b>。这三块学透,语法分基本拿满。</div>
+
+  <h3>0.4 全书统一色标(看颜色 = 认成分)</h3>
+  <p>全书所有例句都按同一套颜色标注成分。学几章之后,你看到颜色就能反应出成分,长难句自动"解码"。</p>
+  <div class="legend">
+    <i class="cS">主语 Subject</i><i class="cV">谓语动词 Verb</i><i class="cO">宾语 Object</i><i class="cP">表语 Predicative</i><i class="cA">状语 Adverbial</i><i class="cD">定语 Attributive</i><i class="cC">补语 Complement</i>
+  </div>
+  <p class="sen center" style="font-size:17px"><span class="cD">The little</span> <span class="cS">girl</span> <span class="cA">happily</span> <span class="cV">gave</span> <span class="cO">her mother</span> <span class="cD">a beautiful</span> <span class="cO">gift</span> <span class="cA">in the room</span>.</p>
+  <p class="center muted">↑ 这个小女孩开心地在房间里给了她妈妈一份漂亮的礼物。(现在看不懂没关系,学完第 1 章你就能拆)</p>
+</section>
+
+<!-- ==================== 第1章 词性与句子成分 ==================== -->
+<section id="s1">
+  <h2><span class="num">1</span>词性与句子成分:盖楼先认砖<span class="stars">一切的地基</span></h2>
+
+  <h3>1.1 十大词类:每个单词都有"岗位"</h3>
+  <p>把英语想成一家公司,<b>单词就是员工,词性就是岗位</b>。句子出错的根源,九成是"岗位安排错了"。</p>
+  <table class="tbl">
+    <tr><th>词类</th><th>缩写</th><th>干什么(岗位)</th><th>例子</th></tr>
+    <tr><td><b>名词</b> noun</td><td class="ce">n.</td><td>人或事物的"名字"</td><td>teacher, water, happiness</td></tr>
+    <tr><td><b>动词</b> verb</td><td class="ce">v.</td><td>表示动作或状态(句子的心脏)</td><td>run, be, love</td></tr>
+    <tr><td><b>形容词</b> adjective</td><td class="ce">adj.</td><td>给名词"上妆",说明它什么样</td><td>beautiful, tall, useful</td></tr>
+    <tr><td><b>副词</b> adverb</td><td class="ce">adv.</td><td>给动作/形容词"加细节"</td><td>quickly, very, here</td></tr>
+    <tr><td><b>代词</b> pronoun</td><td class="ce">pron.</td><td>代替名词,避免重复</td><td>he, it, them, mine</td></tr>
+    <tr><td><b>介词</b> preposition</td><td class="ce">prep.</td><td>表示时间、地点、关系</td><td>in, on, at, with</td></tr>
+    <tr><td><b>连词</b> conjunction</td><td class="ce">conj.</td><td>连接词与句</td><td>and, but, because, if</td></tr>
+    <tr><td><b>冠词</b> article</td><td class="ce">art.</td><td>名词的"帽子"(就这 3 个)</td><td>a, an, the</td></tr>
+    <tr><td><b>数词</b> numeral</td><td class="ce">num.</td><td>数量与顺序</td><td>one, hundred, first</td></tr>
+    <tr><td><b>感叹词</b> interjection</td><td class="ce">int.</td><td>表达情绪</td><td>wow, oh, well</td></tr>
+  </table>
+  <div class="mn">口诀:「<b>名动形副代,介连冠数感</b>」—— 按考试出现频率排序,前五个必须滚瓜烂熟。</div>
+
+  <h3>1.2 最容易搞混的一对:形容词 vs 副词</h3>
+  <div class="warn">⚠️ 一条铁律:<b>形容词修饰名词,副词修饰动词/形容词/整句</b>。中文都用"地/的"糊弄过去,英语分得很清。</div>
+  <p class="sen">He is a <span class="cD">careful</span> driver. <span class="muted">(careful 修饰名词 driver,用形容词)</span></p>
+  <p class="sen">He drives <span class="cA">carefully</span>. <span class="muted">(carefully 修饰动作 drives,用副词)</span></p>
+  <div class="trap">❌ 特例陷阱:look / sound / feel / smell / taste / become 这些"系动词"后面接<b>形容词</b>!<br>✅ He looks <b>tired</b>.(他看起来很累)&nbsp;&nbsp;❌ He looks tiredly.<br>记忆:这类词像 be 动词,后面是"描述主语怎么样",不是修饰动作。</div>
+
+  <h3>1.3 八大句子成分:句子里的"职务"</h3>
+  <p>词性是单词的岗位,<b>成分是单词在句子里担任的职务</b>。同一个词可以任不同职(如 <i>water</i> 作名词"水",也可作动词"浇水")。核心 8 个:</p>
+  <table class="tbl">
+    <tr><th>成分</th><th>一句话理解</th><th>例句中是谁</th></tr>
+    <tr><td><b>主语</b> Subject</td><td>动作的"谁/什么"(名词、代词担任)</td><td class="ce"><span class="cS">The little girl</span></td></tr>
+    <tr><td><b>谓语</b> Verb</td><td>句子的心脏,那个动词本身</td><td class="ce"><span class="cV">gave</span></td></tr>
+    <tr><td><b>宾语</b> Object</td><td>动作的承受者(动作给到"谁/什么")</td><td class="ce"><span class="cO">her mother / a gift</span></td></tr>
+    <tr><td><b>表语</b> Predicative</td><td>跟在系动词(be/look…)后,说明主语"是什么/怎么样"</td><td class="ce">She is <span class="cP">a nurse</span>.</td></tr>
+    <tr><td><b>定语</b> Attributive</td><td>名词的"修饰语",翻译成"……的"</td><td class="ce"><span class="cD">beautiful</span> gift</td></tr>
+    <tr><td><b>状语</b> Adverbial</td><td>修饰动词/整句:时间、地点、方式、原因</td><td class="ce"><span class="cA">happily / in the room</span></td></tr>
+    <tr><td><b>补语</b> Complement</td><td>补足宾语/主语的身份、状态</td><td class="ce">We call him <span class="cC">a hero</span>.</td></tr>
+    <tr><td><b>同位语</b> Appositive</td><td>给前面的名词"贴个说明标签"</td><td class="ce">Tom, <span class="cP">my friend</span>, is here.</td></tr>
+  </table>
+  <div class="tip">💡 <b>快速判断法:</b>问"谁/什么干的?"→ 主语;"干了啥?"→ 谓语;"干给谁?"→ 宾语;"什么样的名词?"→ 定语;"什么时候/在哪/怎么干的?"→ 状语。</div>
+
+  <h3>1.4 语法第一定律(全书最重要的一句话)</h3>
+  <div class="frm">🔬 一个简单句 = <u>有且只有一个</u>谓语动词</div>
+  <p>这句话是你以后<b>检查一切句子错误的钥匙</b>。两个动作想同时出现?只有三条路:</p>
+  <div class="grid3">
+    <div class="kcard"><h5>路线① 降级(非谓语)</h5><p>第二个动词戴上"帽子"变成 to do / doing / done。<br><span class="ex">❌ I want learn English.<br>✅ I want <b>to learn</b> English.</span></p></div>
+    <div class="kcard"><h5>路线② 连词分家</h5><p>用 and / but / because 等把两个句子合法连起来。<br><span class="ex">✅ I opened the door <b>and</b> looked in.</span></p></div>
+    <div class="kcard"><h5>路线③ 送进从句</h5><p>整句降级当零件(定语/宾语/状语从句),第 13 章详讲。<br><span class="ex">✅ The man <b>who lives</b> next door is a doctor.</span></p></div>
+  </div>
+  <div class="warn">⚠️ <b>写完句子先数动词:</b>句子里有几个动词?留一个当谓语,其余的要么戴帽子(非谓语),要么找组织(连词/从句)。四级翻译和写作 80% 的语法扣分都栽在这一条上。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 1 章小试牛刀</div>
+    <ol>
+      <li>She finished her homework <b>____</b>(quick / quickly).<details><summary>查看答案</summary><p><b>quickly</b>。修饰动词 finished(怎么完成的),用副词。</p></details></li>
+      <li>找出谓语:My brother and I often <u>play</u> basketball <u>after</u> school.<details><summary>查看答案</summary><p><b>play</b> 是谓语。after 是介词不是动词;"often / after school"都是状语;My brother and I 是并列主语。</p></details></li>
+      <li>改错:I am agree with you.<details><summary>查看答案</summary><p>✅ <b>I agree with you.</b> agree 本身是动词,句中已是谓语,不能再套 be(否则出现两个谓语)。</p></details></li>
+      <li>改错:He made me to laugh.<details><summary>查看答案</summary><p>✅ <b>He made me laugh.</b> make/let/have + 宾语 + 动词原形(第 12 章详讲)。这里 laugh 已"降级",不加 to。</p></details></li>
+      <li>改错:Although he is rich, but he is not happy.<details><summary>查看答案</summary><p>✅ <b>Although he is rich, he is not happy.</b> 或 He is rich, <b>but</b> he is not happy. although 与 but 中文里成对,英语中<b>只能留一个</b>(中式英语头号错误,第 13 章详讲)。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第2章 五大基本句型 ==================== -->
+<section id="s2">
+  <h2><span class="num">2</span>五大基本句型:英语句子只有 5 种骨架<span class="stars">四级写作地基</span></h2>
+
+  <p>英语句子千变万化,但把修饰成分剥掉,<b>骨架只有 5 种</b>。以后看长难句、写作文,心里都要默念这 5 个骨架。</p>
+
+  <h3>2.1 句型一:S + V(主谓)—— "谁 + 干嘛"</h3>
+  <p>谓语是<b>不及物动词</b>(动作自己就能说完,不需要"承受者")。</p>
+  <p class="sen"><span class="cS">Birds</span> <span class="cV">fly</span>. <span class="muted">鸟会飞。</span>　　<span class="cS">He</span> <span class="cV">smiled</span> <span class="cA">quietly</span>. <span class="muted">他静静地笑了。</span></p>
+
+  <h3>2.2 句型二:S + V + O(主谓宾)—— "谁 + 干 + 什么"</h3>
+  <p>最常见,约九成句子是这个。谓语是<b>及物动词</b>(动作需要一个对象)。</p>
+  <p class="sen"><span class="cS">I</span> <span class="cV">love</span> <span class="cO">English</span>. <span class="muted">我爱英语。</span>　　<span class="cS">We</span> <span class="cV">have finished</span> <span class="cO">the work</span>.</p>
+
+  <h3>2.3 句型三:S + V + P(主系表)—— "谁 + 是/显得 + 怎么样"</h3>
+  <p>系动词像一座桥,把主语和"描述主语的词"连起来。</p>
+  <p class="sen"><span class="cS">She</span> <span class="cV">is</span> <span class="cP">a teacher</span>. <span class="muted">她是老师。</span>　　<span class="cS">The soup</span> <span class="cV">smells</span> <span class="cP">good</span>. <span class="muted">汤闻起来很香。</span></p>
+  <table class="tbl">
+    <tr><th>系动词家族</th><th>成员</th><th>例句</th></tr>
+    <tr><td>纯系动词</td><td>be (am/is/are/was/were)</td><td>He <b>is</b> happy.</td></tr>
+    <tr><td>感官类</td><td>look, sound, taste, smell, feel</td><td>The idea <b>sounds</b> great.</td></tr>
+    <tr><td>变化类</td><td>become, get, turn, go, grow</td><td>Leaves <b>turn</b> yellow in autumn.</td></tr>
+    <tr><td>保持类</td><td>keep, stay, remain</td><td>Please <b>keep</b> quiet.</td></tr>
+    <tr><td>似乎类</td><td>seem, appear</td><td>He <b>seems</b> tired.</td></tr>
+  </table>
+  <div class="tip">💡 <b>判断技巧:</b>系动词前后说的是"同一个东西/同一种状态"(She = a teacher)。后面接<b>形容词或名词</b>,不接副词(第 1 章的陷阱)。</div>
+
+  <h3>2.4 句型四:S + V + 人 + 物(主谓双宾)—— "给谁什么东西"</h3>
+  <p class="sen"><span class="cS">My uncle</span> <span class="cV">gave</span> <span class="cO">me</span> <span class="cO">a watch</span>. <span class="muted">舅舅给了我一块手表。</span></p>
+  <div class="frm">give sb sth = give sth <b>to</b> sb　·　buy sb sth = buy sth <b>for</b> sb</div>
+  <p>常见双宾动词:givesendshowtellteachbuybringlendpassoffer</p>
+
+  <h3>2.5 句型五:S + V + O + C(主谓宾补)—— "把谁弄得怎么样"</h3>
+  <p class="sen"><span class="cS">We</span> <span class="cV">call</span> <span class="cO">him</span> <span class="cC">Tom</span>. <span class="muted">我们叫他汤姆。</span>　　<span class="cS">The news</span> <span class="cV">made</span> <span class="cO">everyone</span> <span class="cC">happy</span>. <span class="muted">这消息让所有人开心。</span></p>
+  <p>常见宾补动词:makecallnamekeepfindleaveconsiderthinksee elect</p>
+
+  <h3>2.6 双宾 vs 宾补:一秒分辨</h3>
+  <div class="vs">
+    <div class="side l"><h5>🟦 双宾:gave me a watch</h5><p>"me"和"a watch"是<b>两个不同的东西</b>(给出去的东西不等于我)。</p><p class="ex">me ≠ a watch → 双宾</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🟪 宾补:call him Tom</h5><p>"him"和"Tom"是<b>同一个东西</b>(汤姆就是他)。在中间加个 be 试试:"him is Tom" 语义通 → 宾补。</p><p class="ex">him = Tom → 宾补</p></div>
+  </div>
+
+  <h3>2.7 组合拳:复杂句 = 5 大骨架 + 定状装饰</h3>
+  <p>四级阅读的长难句,吓人但拆掉装饰后就是五大句型之一:</p>
+  <p class="sen"><span class="cD">The tall</span> <span class="cS">boy</span> <span class="cD">in blue</span> <span class="cA">quickly</span> <span class="cV">passed</span> <span class="cO">the ball</span> <span class="cA">to me in the game</span>.</p>
+  <p>剥掉装饰 → 核心骨架:<b>The boy passed the ball</b>(主谓宾)。再长的句子也一样:先找"谁+干+什么"的主干。</p>
+  <div class="mn">口诀:「<b>主谓、主谓宾、主系表,再加双宾和宾补,定状都是装饰品</b>」</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 2 章小试牛刀(判断句型)</div>
+    <ol>
+      <li>The soup tastes delicious.<details><summary>查看答案</summary><p>主系表(tastes 系动词 + delicious 表语)。</p></details></li>
+      <li>My aunt bought me a new phone.<details><summary>查看答案</summary><p>主谓双宾(me 间接宾语,a new phone 直接宾语;me ≠ phone)。</p></details></li>
+      <li>We found the room empty.<details><summary>查看答案</summary><p>主谓宾补(the room = empty,"房间是空的",同一事物)。</p></details></li>
+      <li>改错:The flowers look beautifully.<details><summary>查看答案</summary><p>✅ The flowers look <b>beautiful</b>. look 是系动词,后接形容词。</p></details></li>
+      <li>把 "He sent me an email." 改写成 send sth to sb 的形式。<details><summary>查看答案</summary><p>He sent <b>an email to me</b>. give/send/show/tell 类接 <b>to</b>;buy/make 类接 <b>for</b>。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第3章 名词 ==================== -->
+<section id="s3">
+  <h2><span class="num">3</span>名词:可数不可数,复数怎么变<span class="stars">选词填空必考</span></h2>
+
+  <h3>3.1 可数 vs 不可数:先分家再谈复数</h3>
+  <div class="grid2">
+    <div class="kcard"><h5>🧮 可数名词</h5><p>能一个一个数,有单复数之分,前面能加 a/one/two。</p><p class="ex">a book → two books;an apple → three apples</p></div>
+    <div class="kcard"><h5>🌊 不可数名词</h5><p>像水一样没法数"个",<b>没有复数</b>,前面不能加 a/one。</p><p class="ex">water, money, time, love, information</p></div>
+  </div>
+  <div class="trap">❌ <b>中英文"可数"不对齐!</b>下面这些中文里能数、英语里<b>不可数</b>(四级选词填空反复考):<br>
+  furniture(家具)、luggage(行李)、equipment(设备)、homework(作业)、information(信息)、advice(建议)、news(消息)、progress(进步)、money(钱)、bread(面包)、paper(纸)、traffic(交通)</div>
+  <div class="warn">⚠️ 想表达"几条/几件"怎么办?用「a + 量词 + of」:<br>a <b>piece of</b> news / advice / information(一条消息/建议)<br>a <b>cup of</b> tea,a <b>bag of</b> rice,a <b>set of</b> furniture<br>复数加在量词上:two <b>pieces of</b> advice ✅(advice 永远不加 s)</div>
+  <div class="tip">💡 有些名词可数/不可数<b>意思不同</b>:paper 纸 / a paper 一份报纸·论文;room 空间 / a room 房间;work 工作 / a work 一件作品;time 时间 / a time 一次;glass 玻璃 / a glass 玻璃杯;chicken 鸡肉 / a chicken 一只鸡。</div>
+
+  <h3>3.2 规则变化:5 条流水线</h3>
+  <table class="tbl">
+    <tr><th>规则</th><th>例子</th></tr>
+    <tr><td>① 一般 + s</td><td>book→books, dog→dogs</td></tr>
+    <tr><td>② s / x / ch / sh / z 结尾 + es</td><td>bus→buses, box→boxes, watch→watches, dish→dishes</td></tr>
+    <tr><td>③ 辅音字母 + y → 变 y 为 i 加 es(元音+y 直接+s)</td><td>city→cities, baby→babies;boy→boys, key→keys</td></tr>
+    <tr><td>④ f / fe → ves</td><td>leaf→leaves, knife→knives, life→lives, wife→wives, half→halves</td></tr>
+    <tr><td>⑤ o 结尾:有生命 + es,无生命/外来词 + s</td><td>tomato→tomatoes, potato→potatoes, hero→heroes;photo→photos, piano→pianos, radio→radios, zoo→zoos</td></tr>
+  </table>
+  <div class="mn">口诀:「<b>黑人英雄爱吃土豆西红柿</b>」→ +es 的只有 tomatoes / potatoes / heroes(等有生命的)。<br>④ 的叛徒:roof→roofs, belief→beliefs, chief→chiefs(直接+s,四级爱考)。</div>
+
+  <h3>3.3 不规则变化:分组记忆</h3>
+  <table class="tbl">
+    <tr><th>组别</th><th>单词</th></tr>
+    <tr><td>a → e 型</td><td>man→men, woman→women, policeman→policemen</td></tr>
+    <tr><td>oo → ee 型</td><td>foot→feet, tooth→teeth, goose→geese</td></tr>
+    <tr><td>特殊变形</td><td>child→children, mouse→mice, ox→oxen, person→people</td></tr>
+    <tr><td class="hl">单复数同形</td><td class="hl">sheep, deer, fish, means, species, Chinese, Japanese(两只 sheep,不是 sheeps!)</td></tr>
+    <tr><td>只有复数</td><td>people, police, cattle, clothes, trousers, scissors, glasses(眼镜)</td></tr>
+    <tr><td>长得像复数其实是单数</td><td>news, maths, physics(学科), the United States(<b>The news is</b> good.)</td></tr>
+  </table>
+  <div class="warn">⚠️ 集体名词 family / class / team / audience / government:<b>看意思定单复</b>——当成整体用单数,强调成员用复数。<br><span class="ex">My family <b>is</b> big.(家庭这个整体)　My family <b>are</b> all watching TV.(家人们各自在看)</span></div>
+
+  <h3>3.4 名词所有格:"……的"</h3>
+  <table class="tbl">
+    <tr><th>形式</th><th>用法</th><th>例子</th></tr>
+    <tr><td>名词 + 's</td><td>有生命的名词</td><td>Tom's bag;children's books(不规则复数仍加 's)</td></tr>
+    <tr><td>复数以 s 结尾 → 只加 '</td><td>复数名词</td><td>the students' dorm;Teachers' Day 教师节</td></tr>
+    <tr><td>of + 名词</td><td>无生命的名词</td><td>the leg <b>of</b> the table;the door <b>of</b> the classroom</td></tr>
+    <tr><td>双重所有格</td><td>of + 's 结构</td><td>a friend <b>of mine</b>; a friend <b>of my father's</b>(我父亲的一位朋友)</td></tr>
+    <tr><td class="hl">时间、距离也可用 's</td><td class="hl">四级翻译高频</td><td class="hl">today's newspaper 今天的报纸;ten minutes' walk 十分钟的路程</td></tr>
+  </table>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 3 章小试牛刀</div>
+    <ol>
+      <li>改错:She gave me some good advices.<details><summary>查看答案</summary><p>✅ some good <b>advice</b>。advice 不可数,永不加 s。"两条建议"= two <b>pieces of</b> advice。</p></details></li>
+      <li>There are three ______(woman doctor)in the hospital.<details><summary>查看答案</summary><p><b>women doctors</b>。man/woman 修饰名词时,两个词一起变复数(这是特殊规则)。</p></details></li>
+      <li>Mum, I need two more ______(knife).<details><summary>查看答案</summary><p><b>knives</b>。f/fe 结尾变 ves。</p></details></li>
+      <li>翻译:我家离车站十分钟的路程。<details><summary>查看答案</summary><p>My home is <b>ten minutes' walk</b> from the station. 时间/距离所有格,s 结尾只加 '。</p></details></li>
+      <li>改错:The police is looking for the thief.<details><summary>查看答案</summary><p>✅ The police <b>are</b> looking...。police 是只有复数的名词(同理 people、cattle)。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第4章 冠词 ==================== -->
+<section id="s4">
+  <h2><span class="num">4</span>冠词:a / an / the 三顶帽子<span class="stars">翻译写作必错点</span></h2>
+
+  <p>冠词就 3 个,却是中国学生最"凭感觉"的地方。记住核心思想:<b>冠词 = 告诉听者"这个名词你熟不熟"</b>。</p>
+
+  <h3>4.1 a 还是 an?—— 看发音,不看字母</h3>
+  <div class="frm">an + <b>元音音素</b>开头的词　·　a + 辅音音素开头的词</div>
+  <table class="tbl">
+    <tr><th>✅ an(发音以元音开头)</th><th>✅ a(发音以辅音开头)</th></tr>
+    <tr><td>an hour(h 不发音)</td><td>a university(ju: 辅音开头)</td></tr>
+    <tr><td>an honest man(h 不发音)</td><td>a European country(ju: 开头)</td></tr>
+    <tr><td>an MBA(读作 em)</td><td>a one-way street(w 开头)</td></tr>
+  </table>
+
+  <h3>4.2 一棵决策树:该戴哪顶帽子?</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 780 392" width="780" role="img" aria-label="冠词决策树">
+      <defs>
+        <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+      </defs>
+      <rect x="175" y="10" width="430" height="56" rx="14" fill="#4f6ef7"/>
+      <text x="390" y="33" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">眼前有个名词,先问:特指吗?第二次提到吗?</text>
+      <text x="390" y="55" text-anchor="middle" fill="#dbeafe" font-size="12.5">"特指"= 听话人知道你说的具体是哪个</text>
+      <line x1="300" y1="66" x2="145" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="390" y1="66" x2="390" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="480" y1="66" x2="635" y2="130" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="18" y="132" width="255" height="168" rx="13" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="145" y="157" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">不特指,泛泛而谈</text>
+      <text x="145" y="180" text-anchor="middle" font-size="12.5" fill="#475569">第一次提到 + 可数单数</text>
+      <text x="145" y="202" text-anchor="middle" font-size="12.5" fill="#475569">I saw a cat.</text>
+      <text x="145" y="224" text-anchor="middle" font-size="12.5" fill="#475569">a university / an hour</text>
+      <text x="145" y="246" text-anchor="middle" font-size="12.5" fill="#475569">(看发音,不看字母)</text>
+      <text x="145" y="268" text-anchor="middle" font-size="12.5" fill="#475569">a "一(个)" 的概念</text>
+      <line x1="145" y1="300" x2="145" y2="318" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="70" y="322" width="150" height="34" rx="17" fill="#2563eb"/>
+      <text x="145" y="345" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ a / an</text>
+      <rect x="262" y="132" width="256" height="168" rx="13" fill="#f5f3ff" stroke="#c4b5fd"/>
+      <text x="390" y="157" text-anchor="middle" font-size="14" font-weight="bold" fill="#6d28d9">特指,双方都知道</text>
+      <text x="390" y="180" text-anchor="middle" font-size="12.5" fill="#475569">第二次提到:I saw a cat.</text>
+      <text x="390" y="200" text-anchor="middle" font-size="12.5" fill="#475569">The cat was black.</text>
+      <text x="390" y="222" text-anchor="middle" font-size="12.5" fill="#475569">独一无二:the sun / the moon</text>
+      <text x="390" y="244" text-anchor="middle" font-size="12.5" fill="#475569">最高级/序数词前:the best</text>
+      <text x="390" y="266" text-anchor="middle" font-size="12.5" fill="#475569">乐器/江河:play the piano</text>
+      <line x1="390" y1="300" x2="390" y2="318" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="315" y="322" width="150" height="34" rx="17" fill="#7c3aed"/>
+      <text x="390" y="345" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ the</text>
+      <rect x="507" y="132" width="255" height="168" rx="13" fill="#f0fdf4" stroke="#86efac"/>
+      <text x="635" y="157" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">泛指的复数或不可数</text>
+      <text x="635" y="180" text-anchor="middle" font-size="12.5" fill="#475569">泛指时干脆不戴帽:</text>
+      <text x="635" y="202" text-anchor="middle" font-size="12.5" fill="#475569">Books are my friends.</text>
+      <text x="635" y="224" text-anchor="middle" font-size="12.5" fill="#475569">Water is important.</text>
+      <text x="635" y="246" text-anchor="middle" font-size="12.5" fill="#475569">三餐/球类/学科/by bus</text>
+      <text x="635" y="268" text-anchor="middle" font-size="12.5" fill="#475569">play basketball / have lunch</text>
+      <line x1="635" y1="300" x2="635" y2="318" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="548" y="322" width="175" height="34" rx="17" fill="#059669"/>
+      <text x="635" y="345" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ 什么都不加</text>
+    </svg>
+    <figcaption>图 4-1 冠词决策树:特指 → the;泛指可数单数 → a/an;泛指复数/不可数 → 零冠词</figcaption>
+  </figure>
+
+  <h3>4.3 零冠词高频清单(不加冠词的场合)</h3>
+  <ul>
+    <li><b>泛指的复数、不可数名词:</b>Children love games. / Knowledge is power.</li>
+    <li><b>三餐:</b>have breakfast / lunch / dinner(有形容词时可加:a big dinner)</li>
+    <li><b>球类运动(对比:乐器加 the):</b>play basketball / football ⚡ play <b>the</b> piano / violin</li>
+    <li><b>语言、学科:</b>speak Chinese, study math</li>
+    <li><b>by + 交通工具:</b>by bus / by car / by plane / on foot</li>
+    <li><b>称呼、头衔前:</b>Doctor Wang, Uncle Tom</li>
+  </ul>
+  <div class="warn">⚠️ <b>经典辨析(英式用法,四级爱考):</b><br>
+  go to <b>school</b> 去上学(去干学生的本职能)<br>
+  go to <b>the</b> school 去学校(去这个地方,如开家长会)<br>
+  同类:go to bed 睡觉 / go to the bed 走向床边;in hospital 住院 / in the hospital 在医院里。</div>
+  <div class="trap">❌ out of question(没问题)≠ out of <b>the</b> question(不可能)——一字之差意思相反,真题考过!</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 4 章小试牛刀</div>
+    <ol>
+      <li>It took me ______ hour to finish the work.<details><summary>查看答案</summary><p><b>an</b>。hour 的 h 不发音,以元音音素 /aʊ/ 开头。</p></details></li>
+      <li>The Yangtze is ______ longest river in China.<details><summary>查看答案</summary><p><b>the</b>。最高级前必须加 the。</p></details></li>
+      <li>改错:My sister is learning to play piano.<details><summary>查看答案</summary><p>✅ play <b>the</b> piano。乐器前加 the(球类运动不加)。</p></details></li>
+      <li>We had ______ wonderful dinner at that restaurant.<details><summary>查看答案</summary><p><b>a</b>。dinner 前有形容词 wonderful 修饰时,要加 a。</p></details></li>
+      <li>______ are good for your health. (A. Vegetable　B. Vegetables　C. The vegetable)<details><summary>查看答案</summary><p><b>B</b>。泛指一类事物用复数、零冠词。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第5章 代词 ==================== -->
+<section id="s5">
+  <h2><span class="num">5</span>代词:一张表解决人称,一组对比解决不定代词<span class="stars">听力阅读常客</span></h2>
+
+  <h3>5.1 人称代词全家福(全书必背表)</h3>
+  <table class="tbl">
+    <tr><th>人称</th><th>主格<br>(当主语)</th><th>宾格<br>(当宾语)</th><th>形容词性物主<br>(必须接名词)</th><th>名词性物主<br>(独立使用)</th><th>反身代词<br>(……自己)</th></tr>
+    <tr><td>我</td><td>I</td><td>me</td><td>my</td><td>mine</td><td>myself</td></tr>
+    <tr><td>你/你们</td><td>you</td><td>you</td><td>your</td><td>yours</td><td>yourself/yourselves</td></tr>
+    <tr><td>他</td><td>he</td><td>him</td><td>his</td><td>his</td><td>himself</td></tr>
+    <tr><td>她</td><td>she</td><td>her</td><td>her</td><td>hers</td><td>herself</td></tr>
+    <tr><td>它</td><td>it</td><td>it</td><td>its</td><td>its</td><td>itself</td></tr>
+    <tr><td>我们</td><td>we</td><td>us</td><td>our</td><td>ours</td><td>ourselves</td></tr>
+    <tr><td>他们</td><td>they</td><td>them</td><td>their</td><td>theirs</td><td>themselves</td></tr>
+  </table>
+  <div class="mn">口诀:「<b>形容词性像衣服,必须搭配名词;名词性脱了衣服独立站</b>」—— mine = my + 名词。<br>This is <b>my</b> bag. / This bag is <b>mine</b>. / a friend of <b>mine</b>(双重所有格)</div>
+
+  <h3>5.2 it 的五大用法(小词大用)</h3>
+  <ol>
+    <li><b>指物、动物:</b>I have a cat. <b>It</b> is cute.</li>
+    <li><b>指天气、时间、距离:</b><b>It</b> is raining. / <b>It's</b> 8 o'clock. / <b>It's</b> 3 kilometers away.</li>
+    <li><b>指身份不明的人:</b>— Who is knocking? — <b>It's</b> me.</li>
+    <li class="hl" style="list-style:decimal"><b>形式主语 / 形式宾语(★四级写作高频):</b><br><span class="ex"><b>It</b> is important <b>to learn</b> English.(真正主语是 to learn English,先让 it 占位)<br>I find <b>it</b> hard <b>to get up</b> early.(真正宾语后置)</span></li>
+    <li><b>强调句:</b><b>It</b> is Tom <b>that/who</b> broke the window.(第 15 章详讲)</li>
+  </ol>
+
+  <h3>5.3 that/those 替代法(四级阅读翻译必会)</h3>
+  <p class="sen">The weather in the south is warmer than <span class="cV">that</span> in the north. <span class="muted">(that = the weather,避免重复)</span></p>
+  <p>单数/不可数用 <b>that</b>,复数用 <b>those</b>:The streets here are cleaner than <b>those</b> in my hometown.</p>
+  <div class="warn">⚠️ <b>it vs one:</b>it 指的就是那一个(同一个);one 指同类中的另一个。<br>I lost my pen, so I bought <b>one</b>.(新买一支)　I found my pen, <b>it</b> was under the desk.(就是那支)</div>
+
+  <h3>5.4 不定代词:四级最爱的"数量+色彩"题</h3>
+  <table class="tbl">
+    <tr><th>一组</th><th>分工</th><th>例句</th></tr>
+    <tr><td>some / any</td><td>肯定句用 some;否定疑问用 any;请求建议的问句仍用 some</td><td>Would you like <b>some</b> tea?(想对方说好)</td></tr>
+    <tr><td>many / much</td><td>many + 可数复数;much + 不可数(口语多用 a lot of)</td><td><b>many</b> books / <b>much</b> water</td></tr>
+    <tr><td class="hl">few / a few</td><td class="hl">+ 可数;a few = 有几个(肯定);few = 几乎没有(否定)</td><td class="hl">I have <b>a few</b> friends.(有几个)<br>I have <b>few</b> friends.(几乎没朋友)</td></tr>
+    <tr><td class="hl">little / a little</td><td class="hl">+ 不可数;a little = 有一点;little = 几乎没有</td><td class="hl">There is <b>little</b> water left. Let's buy some.</td></tr>
+    <tr><td>both / all</td><td>both 两者都;all 三者及以上都</td><td><b>Both</b> (of the) answers are right.</td></tr>
+    <tr><td>either / neither / none</td><td>either 两者任一;neither 两者都不;none 三者以上都不</td><td><b>None</b> of them knows the truth.</td></tr>
+    <tr><td>everyone / everything</td><td>全部按<b>单数</b>对待!</td><td><b>Everyone is</b> here.(不是 are!)</td></tr>
+  </table>
+  <div class="tip">💡 记忆:<b>带 a 的(a few / a little)是"有",不带 a 的(few / little)是"几乎没有"</b>;再按名词可数与否选 few 系还是 little 系。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 5 章小试牛刀</div>
+    <ol>
+      <li>This bike is not ______ (my / me / mine).<details><summary>查看答案</summary><p><b>mine</b>。句尾独立使用,用名词性物主代词。</p></details></li>
+      <li>The population of China is larger than ______ of Japan.<details><summary>查看答案</summary><p><b>that</b>。代替 the population(单数),避免重复。</p></details></li>
+      <li>改错:Everyone in our class like English.<details><summary>查看答案</summary><p>✅ Everyone ... <b>likes</b> English. everyone/everybody/no one 等一律接单数动词。</p></details></li>
+      <li>Hurry up! We still have ______ minutes left. (a few / a little)<details><summary>查看答案</summary><p><b>a few</b>。minutes 可数;"还剩几分钟"是肯定含义。</p></details></li>
+      <li>翻译:我发现学英语很难。 (用形式宾语)<details><summary>查看答案</summary><p>I find <b>it</b> difficult <b>to learn</b> English. 真正宾语 to learn English 后置,it 占位。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第6章 形容词与副词 ==================== -->
+<section id="s6">
+  <h2><span class="num">6</span>形容词与副词:位置、排序、比较级<span class="stars">写作提分利器</span></h2>
+
+  <h3>6.1 形容词站哪儿?</h3>
+  <ul>
+    <li><b>名词前(定语):</b>a <b>beautiful</b> girl</li>
+    <li><b>系动词后(表语):</b>She is <b>beautiful</b>.</li>
+    <li class="hl" style="list-style:disc"><b>复合不定代词之后(★高频):</b>something <b>important</b>, nothing <b>new</b>, anything <b>else</b>(修饰 something/anything/nothing 的形容词必须后置!)</li>
+    <li><b>enough 前后:</b>修饰名词放前面 <b>enough</b> money;修饰形容词/副词放后面 old <b>enough</b>, fast <b>enough</b></li>
+  </ul>
+  <p><b>多个形容词的排序口诀:</b>「县官行令谢国材」= 限(限定词)观(观点好坏)形(形状)龄(年龄新旧)令(no,是"龄"…记成:县官行龄谢国材?统一为:</p>
+  <div class="mn">排序口诀:「<b>限观形龄色国材</b>」<br>限定词 → 观点(美丑好坏)→ 形状大小 → 年龄新旧 → 颜色 → 国籍 → 材料<br>例:a <b>lovely little black</b> dog(一只可爱的小黑狗)<br>a <b>beautiful old brown Chinese wooden</b> box</div>
+
+  <h3>6.2 副词怎么造?哪些形副同形?</h3>
+  <table class="tbl">
+    <tr><th>构成</th><th>例子</th></tr>
+    <tr><td>一般 + ly</td><td>quick→quickly, bad→badly</td></tr>
+    <tr><td>辅音字母+y → ily</td><td>easy→easily, happy→happily</td></tr>
+    <tr><td>le 结尾去 e + y</td><td>possible→possibly, terrible→terribly</td></tr>
+    <tr><td>特例</td><td>true→truly, whole→wholly</td></tr>
+    <tr><td class="hl">形副同形</td><td class="hl">fast, hard, late, early, high, deep, near(<b>He runs fast.</b> / a <b>fast</b> car)</td></tr>
+  </table>
+  <div class="vs">
+    <div class="side l"><h5>💪 hard 努力地</h5><p>work <b>hard</b> 努力工作<br>rain <b>hard</b> 雨下得很大</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🙈 hardly 几乎不(否定!)</h5><p>I <b>hardly</b> know him. 我几乎不认识他<br>He <b>hardly</b> ever works. 他几乎从不工作</p></div>
+  </div>
+  <p class="muted">同类对比:late 迟到 / lately 最近;high 高地(实) / highly 高度地(抽象:think highly of);near 附近 / nearly 几乎;most 大多数 / mostly 主要地。</p>
+
+  <h3>6.3 比较级与最高级(写作翻译双高频)</h3>
+  <table class="tbl">
+    <tr><th>构成</th><th>比较级</th><th>最高级</th></tr>
+    <tr><td>单音节 + er / est</td><td>tall → taller</td><td>tallest</td></tr>
+    <tr><td>以 e 结尾 + r / st</td><td>nice → nicer</td><td>nicest</td></tr>
+    <tr><td>重读闭音节双写末字母</td><td>big → bigger, hot → hotter, thin → thinner</td><td>biggest, hottest, thinnest</td></tr>
+    <tr><td>辅音+y → ier / iest</td><td>happy → happier</td><td>happiest</td></tr>
+    <tr><td>多音节 more / most + 原形</td><td>more beautiful</td><td>most beautiful</td></tr>
+    <tr><td class="hl">不规则(必背)</td><td class="hl">good/well→better;bad/badly→worse;many/much→more;little→less;far→farther/further;old→older/elder</td><td class="hl">best / worst / most / least / farthest / eldest</td></tr>
+  </table>
+  <div class="mn">五大句型,写作直接用:<br>① A is 比较级 than B:He is <b>taller than me</b>.<br>② as 原级 as / not as 原级 as:He is <b>as tall as me</b>.<br>③ the+比较级…, the+比较级…:<b>The harder</b> you work, <b>the more</b> progress you will make. 越……越……<br>④ 比较级 and 比较级:<b>better and better</b> 越来越好<br>⑤ the + 最高级 + in/of:He is <b>the tallest in</b> our class / <b>of</b> the three.</div>
+  <div class="trap">❌ 四级三大陷阱:<br>
+  ① <b>very 不能修饰比较级!</b>要说 much / far / even / a little + 比较级:much better ✅ very better ❌<br>
+  ② <b>同一范围比较要排除自己</b>:He is taller than <b>any other</b> student in his class. ✅(other 不可少,否则=比自己高也比自己高,逻辑矛盾)<br>
+  ③ <b>两者比较用比较级 + the:</b>He is <b>the taller</b> of the two.(有 the!)二者选一"较……的"。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 6 章小试牛刀</div>
+    <ol>
+      <li>This problem is ______(easy)than that one.<details><summary>查看答案</summary><p><b>easier</b>。辅音+y 变 ier。</p></details></li>
+      <li>改错:She is more taller than her sister.<details><summary>查看答案</summary><p>✅ She is <b>taller</b> than her sister. taller 本身就是比较级,不能再加 more。</p></details></li>
+      <li>改错:He is stronger than any student in his team.<details><summary>查看答案</summary><p>✅ stronger than <b>any other</b> student。同队比较需排除他自己。</p></details></li>
+      <li>I can ______(hard / hardly)hear you. Speak louder, please.<details><summary>查看答案</summary><p><b>hardly</b>。"几乎听不见"才要对方大点声;hard = 努力地,不通。</p></details></li>
+      <li>补全:The harder you study, ______.<details><summary>查看答案</summary><p><b>the more you will learn / the better grades you will get</b>。"the+比较级, the+比较级"结构,四级作文万能句。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第7章 介词 ==================== -->
+<section id="s7">
+  <h2><span class="num">7</span>介词:一张图记时间,一张图记方位<span class="stars">固定搭配靠积累</span></h2>
+
+  <h3>7.1 时间三兄弟:at / on / in(套娃图)</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 780 190" width="780" role="img" aria-label="时间介词嵌套图">
+      <rect x="15" y="25" width="750" height="118" rx="13" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="33" y="52" font-size="14.5" font-weight="bold" fill="#1d4ed8">IN —— 大范围:年 / 月 / 季节 / 世纪 / 泛指早中晚</text>
+      <text x="33" y="74" font-size="12.5" fill="#475569">in 2026 · in May · in spring · in the 21st century · in the morning</text>
+      <rect x="425" y="88" width="325" height="44" rx="10" fill="#fef3c7" stroke="#fcd34d"/>
+      <text x="441" y="106" font-size="13" font-weight="bold" fill="#b45309">ON —— 具体某一天(含某天的早中晚)</text>
+      <text x="441" y="124" font-size="12" fill="#475569">on May 1st · on Monday · on Sunday morning</text>
+      <rect x="595" y="63" width="140" height="26" rx="8" fill="#dcfce7" stroke="#86efac"/>
+      <text x="665" y="81" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">AT —— 时刻点: at 8:00 · at noon</text>
+      <text x="33" y="102" font-size="12.5" fill="#475569">范围从大到小,介词也从 in → on → at:</text>
+      <text x="33" y="124" font-size="12.5" fill="#475569">in 2026 → in May → on May 1st → at 8:00</text>
+      <line x1="30" y1="165" x2="750" y2="165" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="60" y="185" font-size="12.5" fill="#64748b">← 越大越笼统</text>
+      <text x="600" y="185" font-size="12.5" fill="#64748b">越具体越精确 →</text>
+    </svg>
+    <figcaption>图 7-1 时间介词套娃图:范围越大用 in,锁定到某天用 on,精确到时刻用 at</figcaption>
+  </figure>
+  <div class="mn">口诀:「<b>at 点、on 天、in 段</b>」—— at 时刻点 / on 具体某天 / in 较长时段。</div>
+  <table class="tbl">
+    <tr><th>介词</th><th>用法</th><th>例子</th></tr>
+    <tr><td><b>at</b></td><td>时刻点、黎明正午夜里、年龄</td><td>at 7:00, at noon, at night, at midnight, at the age of 18, at that moment</td></tr>
+    <tr><td><b>on</b></td><td>具体某一天、某天的上午下午晚上、节日当天</td><td>on Monday, on June 1st, on a rainy day, on Sunday morning, on Christmas Day</td></tr>
+    <tr><td><b>in</b></td><td>年、月、季节、世纪、泛指早中晚、"……后"</td><td>in 2026, in winter, in the evening, in an hour(一小时后)</td></tr>
+    <tr><td><b>since</b></td><td>+ 过去时间点(配现在完成时 ★)</td><td>I have lived here <b>since</b> 2015.</td></tr>
+    <tr><td><b>for</b></td><td>+ 一段时间(持续多久)</td><td>I have lived here <b>for</b> ten years.</td></tr>
+    <tr><td><b>by / until</b></td><td>by 到……之前(截止);until 一直到</td><td>Finish it <b>by</b> Friday. / Wait <b>until</b> Friday.</td></tr>
+  </table>
+  <div class="warn">⚠️ 易混:<b>in the morning</b>(泛指早晨)vs <b>on Monday morning</b>(特指某天早晨,介词跟着"天"走用 on);<b>at night</b> 固定搭配(不是 in the night)。</div>
+
+  <h3>7.2 方位介词:一图看懂</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 780 228" width="780" role="img" aria-label="方位介词场景图">
+      <!-- panel 1: in -->
+      <g>
+        <rect x="28" y="105" width="70" height="58" rx="4" fill="#fde68a" stroke="#b45309" stroke-width="2" opacity="0.85"/>
+        <circle cx="63" cy="134" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <text x="63" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">in 在……里</text>
+      </g>
+      <!-- panel 2: on -->
+      <g>
+        <rect x="153" y="105" width="70" height="58" rx="4" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <circle cx="188" cy="90" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <text x="188" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">on 在……上(接触)</text>
+      </g>
+      <!-- panel 3: above -->
+      <g>
+        <rect x="278" y="105" width="70" height="58" rx="4" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <circle cx="313" cy="52" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <line x1="313" y1="66" x2="313" y2="98" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrA)"/>
+        <text x="313" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">above 在……上方(不接触)</text>
+      </g>
+      <!-- panel 4: under -->
+      <g>
+        <rect x="395" y="118" width="90" height="7" fill="#b45309"/>
+        <rect x="401" y="125" width="5" height="52" fill="#b45309"/>
+        <rect x="474" y="125" width="5" height="52" fill="#b45309"/>
+        <circle cx="440" cy="158" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <text x="440" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">under 在……下面</text>
+      </g>
+      <!-- panel 5: behind -->
+      <g>
+        <circle cx="534" cy="140" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <rect x="540" y="105" width="70" height="58" rx="4" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <text x="575" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">behind 在……后面</text>
+      </g>
+      <!-- panel 6: between -->
+      <g>
+        <line x1="648" y1="180" x2="772" y2="180" stroke="#94a3b8" stroke-width="2"/>
+        <rect x="652" y="115" width="35" height="50" rx="3" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <rect x="732" y="115" width="35" height="50" rx="3" fill="#fde68a" stroke="#b45309" stroke-width="2"/>
+        <circle cx="710" cy="168" r="12" fill="#ef4444" stroke="#b91c1c" stroke-width="2"/>
+        <text x="710" y="195" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#334155">between 在(两者)之间</text>
+      </g>
+      <line x1="15" y1="180" x2="625" y2="180" stroke="#94a3b8" stroke-width="2"/>
+    </svg>
+    <figcaption>图 7-2 方位介词场景图:on 接触、above 悬空、under 正下方、between 两者之间(三者以上用 among)</figcaption>
+  </figure>
+  <div class="warn">⚠️ 高频三连:<br>
+  <b>across</b> 从表面横穿:swim <b>across</b> the river 游过河<br>
+  <b>through</b> 从内部穿过:walk <b>through</b> the forest 穿过森林<br>
+  <b>over</b> 越过(上方跨过):fly <b>over</b> the mountain 飞越群山</div>
+
+  <h3>7.3 方式介词:by / with / in / on</h3>
+  <table class="tbl">
+    <tr><th>介词</th><th>用法</th><th>例子</th></tr>
+    <tr><td><b>by</b></td><td>交通方式(不加冠词)、凭借手段</td><td>by bus / by car / by plane;by working hard 通过努力</td></tr>
+    <tr><td><b>on</b></td><td>on foot 步行;on the bus(加冠词用 on)</td><td>I go to school <b>on foot</b>.</td></tr>
+    <tr><td><b>with</b></td><td>用具体工具;带着,具有</td><td>write <b>with</b> a pen;a girl <b>with</b> long hair</td></tr>
+    <tr><td><b>in</b></td><td>用语言、材料;穿着</td><td>say it <b>in</b> English;write <b>in</b> ink;a lady <b>in</b> red</td></tr>
+  </table>
+
+  <h3>7.4 四级高频介词搭配表(直接背)</h3>
+  <table class="tbl">
+    <tr><th>搭配</th><th>意思</th><th>搭配</th><th>意思</th></tr>
+    <tr><td>depend / rely <b>on</b></td><td>依靠</td><td>be interested <b>in</b></td><td>对……感兴趣</td></tr>
+    <tr><td>listen <b>to</b> / belong <b>to</b></td><td>听 / 属于</td><td>be good <b>at</b></td><td>擅长</td></tr>
+    <tr><td>agree <b>with</b> sb / <b>to</b> sth</td><td>同意人 / 同意事</td><td>be afraid <b>of</b> / be proud <b>of</b></td><td>害怕 / 自豪</td></tr>
+    <tr><td>arrive <b>in</b> 大地 / <b>at</b> 小地</td><td>到达</td><td>be famous <b>for</b>(因) / <b>as</b>(作为)</td><td>出名</td></tr>
+    <tr><td>be made <b>of</b>(看得出) / <b>from</b>(看不出)</td><td>由……制成</td><td>be angry <b>with</b> sb / <b>at</b> sth</td><td>生气</td></tr>
+    <tr><td>spend … <b>(in)</b> doing / <b>on</b> sth</td><td>花费</td><td>pay attention <b>to</b> doing ★to 是介词!</td><td>注意</td></tr>
+    <tr><td>succeed <b>in</b> doing</td><td>成功做成</td><td>catch / keep up <b>with</b></td><td>赶上 / 跟上</td></tr>
+    <tr><td>apologize <b>to</b> sb <b>for</b> sth</td><td>为某事向某人道歉</td><td>take part <b>in</b></td><td>参加</td></tr>
+  </table>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 7 章小试牛刀</div>
+    <ol>
+      <li>He was born ______ a cold winter morning.<details><summary>查看答案</summary><p><b>on</b>。具体某天的早晨,介词跟着"天"用 on。</p></details></li>
+      <li>We walked ______ the forest and got lost.<details><summary>查看答案</summary><p><b>through</b>。从森林内部穿过。</p></details></li>
+      <li>The desk is made ______ wood.<details><summary>查看答案</summary><p><b>of</b>。木桌看得出原材料用 of(看不出,如 paper from wood,用 from)。</p></details></li>
+      <li>改错:She is good in English.<details><summary>查看答案</summary><p>✅ good <b>at</b>。固定搭配 be good at。</p></details></li>
+      <li>______ the help of my teacher, I passed the exam.<details><summary>查看答案</summary><p><b>With</b>。with the help of... 在……的帮助下,固定搭配。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<div class="part"><b>PART 2 · 核心引擎 🔥</b><span>第 8–12 章:动词变形 → 时态 → 被动语态 → 情态动词 → 非谓语动词。四级语法的"心脏"全在这里,第 9 章时态请学到"能在时间轴上看见画面"为止。</span></div>
+
+<!-- ==================== 第8章 动词总览 ==================== -->
+<section id="s8">
+  <h2><span class="num">8</span>动词总览与变形:学时态前的最后一块地基<span class="stars">时态的原材料</span></h2>
+
+  <h3>8.1 动词的五个"形态"(时态就靠它们变)</h3>
+  <p>英语动词像变形金刚,一共 5 个形态。后面所有时态,都是"<b>时间 + 形态</b>"的组合:</p>
+  <table class="tbl">
+    <tr><th>形态</th><th>谁负责</th><th>例:do</th><th>例:go</th><th>例:be</th></tr>
+    <tr><td>① 原形</td><td>一般现在(复数)、情态动词/助动词后</td><td>do</td><td>go</td><td>be</td></tr>
+    <tr><td>② 三单形式</td><td>一般现在(第三人称单数)</td><td>does</td><td>goes</td><td>is</td></tr>
+    <tr><td>③ 过去式</td><td>一般过去时</td><td>did</td><td>went</td><td>was/were</td></tr>
+    <tr><td>④ 过去分词</td><td class="hl">完成时 + 被动语态(两大考点)</td><td class="hl">done</td><td class="hl">gone</td><td class="hl">been</td></tr>
+    <tr><td>⑤ 现在分词</td><td class="hl">进行时 + 非谓语主动</td><td class="hl">doing</td><td class="hl">going</td><td class="hl">being</td></tr>
+  </table>
+  <div class="mn">口诀:「<b>doing 管进行,done 管完成和被动,原形跟在助动词、情态动词后面走</b>」—— 这三句话能解决 80% 的动词填空。</div>
+
+  <h3>8.2 规则变形流水线</h3>
+  <table class="tbl">
+    <tr><th>变化</th><th>三单(一般现在)</th><th>过去式/过去分词</th><th>现在分词</th></tr>
+    <tr><td>一般情况</td><td>work → works</td><td>work → work<b>ed</b></td><td>work → work<b>ing</b></td></tr>
+    <tr><td>s/x/ch/sh/o 结尾</td><td>pass→passes, do→does, watch→watches</td><td>pass→passed, watch→watched</td><td>do→doing(直接+ing)</td></tr>
+    <tr><td>辅音字母+y</td><td>study→stud<b>ies</b>, fly→fl<b>ies</b></td><td>study→stud<b>ied</b></td><td>study→stud<b>ying</b>(y 保留!)</td></tr>
+    <tr><td>重读闭音节双写</td><td>—</td><td>stop→sto<b>pped</b>, plan→pla<b>nned</b>, prefer→prefe<b>rr</b>ed ★</td><td>run→ru<b>nning</b>, sit→si<b>tting</b>, begin→begi<b>nning</b></td></tr>
+    <tr><td>不发音 e 结尾</td><td>—</td><td>like→lik<b>ed</b>, hope→hop<b>ed</b></td><td>去 e + ing:make→mak<b>ing</b>, write→writ<b>ing</b></td></tr>
+    <tr><td>特例</td><td>have→has</td><td>lie→lied(说谎) / lay(躺)</td><td>die→d<b>ying</b>, lie→l<b>ying</b>, tie→t<b>ying</b></td></tr>
+  </table>
+
+  <h3>8.3 不规则动词分组背(四级高频 40 个)</h3>
+  <table class="tbl">
+    <tr><th>分组</th><th>动词(原形-过去式-过去分词)</th></tr>
+    <tr><td><b>AAA 型</b>(三个一样)</td><td>cut-cut-cut, cost, hit, let, put, set, hurt, read(拼写同,读音变 /red/)</td></tr>
+    <tr><td><b>ABA 型</b>(原形和分词一样)</td><td>come-came-come, become-became-become, run-ran-run</td></tr>
+    <tr><td><b>ABB 型</b>(后两个一样)</td><td>buy-bought, bring-brought, think-thought, teach-taught, catch-caught;find-found, have-had, make-made, get-got, tell-told, sell-sold, say-said, pay-paid, sit-sat, win-won, stand-stood;feel-felt, keep-kept, sleep-slept, leave-left, meet-met, mean-meant, build-built, send-sent, spend-spent, lend-lent</td></tr>
+    <tr><td class="hl"><b>ABC 型</b>(三个都不同)</td><td class="hl"><b>i-a-u 组</b>(唱歌游泳开始响铃):begin-began-begun, drink, sing, swim, ring<br>其他必背:do-did-done, go-went-gone, take-took-taken, give-gave-given, see-saw-seen, eat-ate-eaten, write-wrote-written, speak-spoke-spoken, break-broke-broken, choose-chose-chosen, drive-drove-driven, ride-rode-ridden, know-knew-known, grow-grew-grown, throw-threw-thrown, fly-flew-flown, wear-wore-worn, fall-fell-fallen, forget-forgot-forgotten, be-was/were-been</td></tr>
+  </table>
+
+  <h3>8.4 动词四大类(时态/被动/情态的说明书)</h3>
+  <div class="grid2">
+    <div class="kcard"><h5>🏋️ 实义动词</h5><p>有实际意义:eat, run, love。<b>及物</b>后面直接接宾语(love English);<b>不及物</b>不能直接接(❌ arrive the station → arrive <b>at/in</b>)。</p></div>
+    <div class="kcard"><h5>🪞 系动词</h5><p>be, look, sound, feel, become, keep, seem……后面接<b>形容词/名词</b>作表语(第 2 章)。</p></div>
+    <div class="kcard"><h5>🛠️ 助动词</h5><p>be / have / do。本身不表示具体动作,只帮忙<b>构成时态、语态、否定、疑问</b>:be→进行时和被动;have→完成时;do→否定和疑问(do not know, Do you know?)</p></div>
+    <div class="kcard"><h5>🎫 情态动词</h5><p>can, may, must, should, will……后面<b>必须接动词原形</b>,没有人称变化(第 11 章)。</p></div>
+  </div>
+  <div class="warn">⚠️ <b>及物动词不加介词</b>(中式英语重灾区):discuss / enter / marry / reach / attend / answer / serve 都是及物的——discuss the problem ✅(不是 discuss about);reach Beijing ✅(不是 reach to)。</div>
+  <h4>常用短语动词(选词填空/听力高频)</h4>
+  <p class="muted" style="line-height:2">give up 放弃 · put off 推迟 · turn out 结果是 · turn up 出现/调大 · set up 建立 · look up 查阅 · look into 调查 · carry out 执行 · bring up 抚养/提出 · take on 承担 · break down 出故障 · break out 爆发 · come up with 想出 · run out (of) 用完 · make up 编造/组成 · pick up 捡起/学会/接人 · put up with 忍受 · go over 复习 · get over 克服 · get through 度过/接通 · deal with 处理 · figure out 弄明白</p>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 8 章小试牛刀</div>
+    <ol>
+      <li>He ______(go)to school by bike every day.<details><summary>查看答案</summary><p><b>goes</b>。第三人称单数 + 一般现在时。</p></details></li>
+      <li>写出 prefer 的过去式和过去分词。<details><summary>查看答案</summary><p><b>preferred, preferred</b>。重读闭音节双写 r 再加 ed。</p></details></li>
+      <li>改错:Did you went there yesterday?<details><summary>查看答案</summary><p>✅ Did you <b>go</b> there yesterday? did 已经承担了"过去"的信息,后面的动词用<b>原形</b>("过去"的标志只出现一次)。</p></details></li>
+      <li>改错:We discussed about the problem last night.<details><summary>查看答案</summary><p>✅ We <b>discussed</b> the problem...。discuss 是及物动词,不加 about。</p></details></li>
+      <li>I can't ______ what he means. (A. give up　B. figure out)<details><summary>查看答案</summary><p><b>B. figure out</b>(弄明白)。give up 是"放弃"。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第9章 时态大全 ==================== -->
+<section id="s9">
+  <h2><span class="num">9</span>时态大全:16 个时态,先学精 9 个<span class="stars">⭐ 全书心脏 · 四级命根</span></h2>
+
+  <p>别怕"16 个时态"——它只是一道乘法题:<b>4 种时间 × 4 种状态</b>。时间好懂(过去/现在/将来/过去将来),关键是 4 种"状态"是什么:</p>
+  <div class="grid2">
+    <div class="kcard"><h5>📷 一般态 = 拍快照</h5><p>笼统地交代"经常发生 / 发生了 / 会发生",不关心进行或完成的细节。<br>常配词:often, yesterday, tomorrow</p></div>
+    <div class="kcard"><h5>🎬 进行态 = 拍视频</h5><p>镜头怼着一个<b>正在进行的动作</b>拍:be + doing。<br>常配词:now, at that time, at 8 last night</p></div>
+    <div class="kcard"><h5>📦 完成态 = 强调结果</h5><p>动作<b>在某时间点之前已完成/积累</b>,强调结果或影响:have + done。<br>常配词:already, yet, since, by + 时间点</p></div>
+    <div class="kcard"><h5>🏃 完成进行态 = 结果 + 过程</h5><p>动作从过去一直做到某个时间点,<b>强调"一直在做"的过程</b>:have been + doing。</p></div>
+  </div>
+
+  <h3>9.1 16 时态总览表(绿 = 四级核心 9 个,灰 = 认识即可)</h3>
+  <table class="tbl">
+    <tr><th>时间 \ 状态</th><th>一般</th><th>进行</th><th>完成</th><th>完成进行</th></tr>
+    <tr><th>现在</th><td class="hl">do / does<br><small>works</small></td><td class="hl">am/is/are + doing<br><small>is working</small></td><td class="hl">have/has + done<br><small>has worked</small></td><td style="background:#f3f4f6">have/has been doing<br><small>has been working</small></td></tr>
+    <tr><th>过去</th><td class="hl">did / was<br><small>worked</small></td><td class="hl">was/were + doing<br><small>was working</small></td><td class="hl">had + done<br><small>had worked</small></td><td style="background:#f3f4f6">had been doing<br><small>had been working</small></td></tr>
+    <tr><th>将来</th><td class="hl">will + do<br><small>will work</small></td><td style="background:#f3f4f6">will be doing<br><small>will be working</small></td><td style="background:#f3f4f6">will have done<br><small>will have worked</small></td><td style="background:#f3f4f6">will have been doing</td></tr>
+    <tr><th>过去将来</th><td class="hl">would + do<br><small>would work</small></td><td style="background:#f3f4f6">would be doing</td><td style="background:#f3f4f6">would have done</td><td style="background:#f3f4f6">would have been doing</td></tr>
+  </table>
+  <div class="tip">💡 优先学精 9 个绿格:一般现在、现在进行、现在完成、一般过去、过去进行、过去完成、一般将来、过去将来,外加了解现在完成进行时。其余 7 个只是它们的组合,看懂即可,四级几乎不单独考。</div>
+
+  <!-- ---------- 9.2 一般现在时 ---------- -->
+  <h3>9.2 一般现在时 do / does:习惯、真理、状态</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 118" width="720" role="img" aria-label="一般现在时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="140" y="50" font-size="12.5" fill="#94a3b8">过去</text>
+      <text x="580" y="50" font-size="12.5" fill="#94a3b8">将来</text>
+      <circle cx="280" cy="85" r="5.5" fill="#10b981"/><circle cx="325" cy="85" r="5.5" fill="#10b981"/>
+      <circle cx="405" cy="85" r="5.5" fill="#10b981"/><circle cx="450" cy="85" r="5.5" fill="#10b981"/>
+      <text x="365" y="60" font-size="13" font-weight="bold" fill="#059669">↻ 反复发生 · 常态</text>
+      <text x="360" y="112" text-anchor="middle" font-size="12" fill="#64748b">没有明确的"某一次",只说习惯、真理和长期状态</text>
+    </svg>
+    <figcaption>图 9-1 一般现在时:像一串重复的点,跨着过去、现在、将来反复出现</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + 动词原形(第三人称单数 + s)　·　be → am / is / are</div>
+  <ul>
+    <li><b>习惯、经常的动作:</b>I <b>get</b> up at six every day. / She <b>works</b> in a bank.</li>
+    <li><b>客观真理、事实:</b>The earth <b>goes</b> around the sun.</li>
+    <li><b>现在的状态、特征:</b>He <b>is</b> a doctor. / The soup <b>tastes</b> good.</li>
+  </ul>
+  <div class="sig"><span class="lab">信号词:</span><span>always 总是</span><span>usually 通常</span><span>often 经常</span><span>sometimes 有时</span><span>seldom 很少</span><span>never 从不</span><span>every day / week</span><span>on Sundays</span></div>
+  <div class="trap">❌ <b>两个必错点:</b><br>
+  ① 三单忘加 s:He <b>likes</b> music.(不是 like)<br>
+  ② <b>if / when 引导的从句里,将来用一般现在代替</b>(★四级翻译必考):<br>If it <b>rains</b> tomorrow, we will stay home. ✅(不是 if it will rain)——主句才用 will,从句"降级"。</div>
+
+  <!-- ---------- 9.3 一般过去时 ---------- -->
+  <h3>9.3 一般过去时 did:过去某时发生,与现在无关</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 118" width="720" role="img" aria-label="一般过去时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="580" y="50" font-size="12.5" fill="#94a3b8">将来</text>
+      <circle cx="180" cy="85" r="7" fill="#e11d48"/>
+      <text x="180" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#e11d48">did ✓</text>
+      <text x="180" y="110" text-anchor="middle" font-size="12" fill="#64748b">过去某个明确的时间点</text>
+    </svg>
+    <figcaption>图 9-2 一般过去时:时间轴上过去的一个"点",动作已完成、已翻篇</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + 动词过去式　·　be → was / were</div>
+  <ul>
+    <li><b>过去某时发生的动作:</b>I <b>visited</b> Beijing last year.</li>
+    <li><b>过去的状态:</b>She <b>was</b> a nurse ten years ago.</li>
+  </ul>
+  <div class="sig"><span class="lab">信号词:</span><span>yesterday</span><span>last week / month / year</span><span>… ago</span><span>in 1990 / in the past</span><span>just now 刚才</span><span>at that time</span><span>the other day 前几天</span></div>
+  <div class="warn">⚠️ 易错:<br>① 忘了变形:Yesterday I <b>went</b> shopping.(不是 go)<br>② <b>used to do</b> 过去常常(现在不了):I <b>used to</b> smoke, but I have given it up. —— 别和 be used to doing(习惯于)搞混,对比卡见 9.11。</div>
+
+  <!-- ---------- 9.4 一般将来时 ---------- -->
+  <h3>9.4 一般将来时 will do:站在现在,望向将来</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 118" width="720" role="img" aria-label="一般将来时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在(说话时)</text>
+      <text x="140" y="50" font-size="12.5" fill="#94a3b8">过去</text>
+      <line x1="368" y1="85" x2="532" y2="85" stroke="#c4b5fd" stroke-width="3" stroke-dasharray="6 4"/>
+      <circle cx="540" cy="85" r="7" fill="#7c3aed"/>
+      <text x="540" y="60" text-anchor="middle" font-size="13" font-weight="bold" fill="#7c3aed">will do</text>
+      <text x="540" y="110" text-anchor="middle" font-size="12" fill="#64748b">还没发生,但即将/将会发生</text>
+    </svg>
+    <figcaption>图 9-3 一般将来时:虚线 = 从"现在"望过去,动作落在将来</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + <b>will</b> + 动词原形(所有人称通用,不变形!)<br><small>否定 will not = won't;疑问 Will you...?</small></div>
+  <ul>
+    <li><b>临时决定、预测:</b>It <b>will rain</b> tomorrow. / OK, I <b>will help</b> you.</li>
+    <li><b>客观将来:</b>She <b>will be</b> twenty next year.</li>
+  </ul>
+  <div class="sig"><span class="lab">信号词:</span><span>tomorrow</span><span>next week / year / month</span><span>in + 一段时间(…之后)</span><span>soon 不久</span><span>in the future</span><span>this evening</span></div>
+  <div class="warn">⚠️ <b>will vs be going to(四级爱考的细微差别):</b><br>
+  <b>be going to do</b> = 早就计划好的,或"有迹象要发生":I <b>am going to</b> study abroad next year.(早决定了) / Look at the clouds! It <b>is going to</b> rain.(眼看要下)<br>
+  <b>will</b> = 说话时临时决定或单纯预测:— The phone is ringing. — I <b>will</b> get it.(临时起意)</div>
+  <div class="tip">💡 另外 3 种"表将来"的方式,见到要认识:<br>① <b>现在进行时表安排</b>:I <b>am leaving</b> tomorrow.(票都买好了)<br>② <b>一般现在时表时刻表</b>:The train <b>leaves</b> at 6:30.(车次时刻表,雷打不动)<br>③ be about to do 马上就要:Hurry up! The film <b>is about to</b> begin.</div>
+
+  <!-- ---------- 9.5 现在进行时 ---------- -->
+  <h3>9.5 现在进行时 am/is/are doing:此刻正在拍视频</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 118" width="720" role="img" aria-label="现在进行时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="140" y="50" font-size="12.5" fill="#94a3b8">过去</text>
+      <text x="580" y="50" font-size="12.5" fill="#94a3b8">将来</text>
+      <line x1="290" y1="85" x2="435" y2="85" stroke="#4f6ef7" stroke-width="7" stroke-linecap="round"/>
+      <text x="365" y="58" text-anchor="middle" font-size="13" font-weight="bold" fill="#2563eb">🎬 正在进行</text>
+      <text x="365" y="112" text-anchor="middle" font-size="12" fill="#64748b">镜头对准"此时此刻",动作在说话时进行着</text>
+    </svg>
+    <figcaption>图 9-5 现在进行时:一小段录像,正中央压着"现在"这条线</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + am / is / are + <b>doing</b></div>
+  <ul>
+    <li><b>说话此刻正在进行的动作:</b>Listen! Someone <b>is singing</b>.</li>
+    <li><b>现阶段(不一定此刻)正在进行:</b>I <b>am reading</b> a novel these days.</li>
+    <li><b>已计划好的将来安排:</b>We <b>are flying</b> to Shanghai tomorrow.</li>
+  </ul>
+  <div class="sig"><span class="lab">信号词:</span><span>now / right now</span><span>at the moment 此刻</span><span>Look! / Listen!</span><span>these days</span><span>currently 目前</span></div>
+  <div class="trap">❌ <b>状态动词不用进行时!</b>表"知道、喜欢、拥有"等状态的词:know, like, love, want, need, believe, understand, belong, own, remember……<br>
+  ✅ I <b>know</b> the answer.(不是 I am knowing)<br>
+  ✅ This book <b>belongs to</b> me.(不是 is belonging)</div>
+
+  <!-- ---------- 9.6 过去进行时 ---------- -->
+  <h3>9.6 过去进行时 was/were doing:过去某时,动作正拍到一半</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 118" width="720" role="img" aria-label="过去进行时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="580" y="50" font-size="12.5" fill="#94a3b8">将来</text>
+      <line x1="150" y1="85" x2="295" y2="85" stroke="#e11d48" stroke-width="7" stroke-linecap="round"/>
+      <line x1="220" y1="70" x2="220" y2="100" stroke="#e11d48" stroke-width="2" stroke-dasharray="3 2"/>
+      <text x="222" y="56" text-anchor="middle" font-size="13" font-weight="bold" fill="#e11d48">🎬 过去某时正在发生</text>
+      <text x="220" y="112" text-anchor="middle" font-size="12" fill="#64748b">"过去的一个录像片段",常被 when/while 的另一个动作打断</text>
+    </svg>
+    <figcaption>图 9-6 过去进行时:把"进行镜头"搬到过去</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + was / were + <b>doing</b></div>
+  <p class="sen">I <span class="cV">was reading</span> <span class="cA">at 9 last night</span>. <span class="muted">昨晚九点我正在看书。</span></p>
+  <p class="sen"><span class="cA">While I was cooking</span>, the phone <span class="cV">rang</span>. <span class="muted">我正做饭时,电话响了。</span></p>
+  <div class="sig"><span class="lab">信号词:</span><span>at 8 last night</span><span>at that time / moment</span><span>this time yesterday</span><span>while + 过去进行</span></div>
+  <div class="warn">⚠️ <b>when vs while(长动作 vs 短动作):</b><br>
+  <b>while</b> + 延续动作(过去进行):While she <b>was washing</b> clothes, I <b>was watching</b> TV.(两个长动作同时)<br>
+  <b>when</b> + 短动作(一般过去)打断长动作:When he <b>came</b> in, I <b>was sleeping</b>.<br>
+  口诀:「<b>when 打断,while 相伴</b>」。</div>
+
+  <!-- ---------- 9.7 现在完成时 ---------- -->
+  <h3>9.7 现在完成时 have/has done ★:过去的事,"连着"现在</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 128" width="720" role="img" aria-label="现在完成时时间轴">
+      <line x1="30" y1="88" x2="690" y2="88" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="24" x2="360" y2="110" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="580" y="48" font-size="12.5" fill="#94a3b8">将来</text>
+      <circle cx="170" cy="88" r="7" fill="#059669"/>
+      <text x="170" y="64" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">① 过去发生</text>
+      <line x1="178" y1="88" x2="352" y2="88" stroke="#059669" stroke-width="7" stroke-linecap="round"/>
+      <text x="265" y="64" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#047857">② 影响一直"续"到现在</text>
+      <line x1="360" y1="80" x2="360" y2="42" stroke="#059669" stroke-width="2.5" marker-end="url(#arrA)"/>
+      <text x="372" y="38" font-size="12.5" font-weight="bold" fill="#047857">💥 对现在有影响 / 结果还在</text>
+      <text x="195" y="118" text-anchor="middle" font-size="12" fill="#64748b">两种用法都强调:不关心几点发生的,只关心和"现在"的关系</text>
+    </svg>
+    <figcaption>图 9-7 现在完成时:过去种下的"因",现在还开着"果"——这是它与一般过去时的本质区别</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + have / has + <b>过去分词(done)</b><br><small>否定 haven't / hasn't;疑问 Have you ever...?</small></div>
+  <ol>
+    <li><b>过去发生,对现在造成影响(结果用法):</b>I <b>have lost</b> my key.(所以现在进不去门) / He <b>has broken</b> his leg.(现在还打着石膏)</li>
+    <li><b>从过去持续到现在(延续用法):</b>We <b>have known</b> each other <b>for</b> ten years. / He <b>has taught</b> here <b>since</b> 2020.</li>
+    <li><b>到目前为止的经历:</b>Have you <b>ever been</b> to Paris? — Yes, I <b>have been</b> there twice.</li>
+  </ol>
+  <div class="sig"><span class="lab">信号词(高频!):</span><span>already 已经(肯定)</span><span>yet 还(否定/疑问)</span><span>just 刚刚</span><span>ever / never</span><span>so far / up to now 至今</span><span>recently 最近</span><span>since + 时间点</span><span>for + 时间段</span><span>in the past few years</span><span>How long…?</span></div>
+  <div class="trap">❌ <b>现在完成时的三大天条(四级选择/改错必考):</b><br>
+  ① <b>不能再和明确的过去时间连用</b>:yesterday / ago / last week / in 1990 / just now 出现 → 必须用一般过去!<br>❌ I have seen this film <i>last week</i>. → ✅ I <b>saw</b> this film last week.<br>
+  ② <b>非延续动词不能和 for / since 连用</b>(动作一瞬间完成,没法"持续"):buy, die, join, leave, come, begin, borrow, marry…<br>❌ He has bought the car <i>for two years</i>. → ✅ He <b>has had</b> the car for two years.<br>换延续表达:die→has been dead;join→has been in / a member of;leave→has been away;begin→has been on;borrow→has kept;marry→has been married<br>
+  ③ <b>have been to vs have gone to:</b>He <b>has been to</b> Beijing.(去过,人已回来) / He <b>has gone to</b> Beijing.(去了还没回来,人不在说话现场)</div>
+
+  <!-- ---------- 9.8 过去完成时 ---------- -->
+  <h3>9.8 过去完成时 had done:"过去的过去"</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 720 122" width="720" role="img" aria-label="过去完成时时间轴">
+      <line x1="30" y1="85" x2="690" y2="85" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="360" y1="22" x2="360" y2="105" stroke="#4f6ef7" stroke-width="3"/>
+      <text x="360" y="15" text-anchor="middle" font-size="13" font-weight="bold" fill="#4f6ef7">现在</text>
+      <text x="580" y="50" font-size="12.5" fill="#94a3b8">将来</text>
+      <circle cx="160" cy="85" r="7" fill="#b45309"/>
+      <text x="160" y="60" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#b45309">had done ✓</text>
+      <line x1="285" y1="66" x2="285" y2="104" stroke="#e11d48" stroke-width="2.5" stroke-dasharray="4 3"/>
+      <text x="285" y="52" text-anchor="middle" font-size="12.5" font-weight="bold" fill="#e11d48">过去参照点</text>
+      <text x="160" y="112" text-anchor="middle" font-size="12" fill="#64748b">站在此刻回望:动作在"过去的某点"之前就完成了</text>
+    </svg>
+    <figcaption>图 9-8 过去完成时:必须先有一个"过去参照点",动作发生在它之前</figcaption>
+  </figure>
+  <div class="frm">公式:主语 + <b>had</b> + 过去分词(done)</div>
+  <p class="sen"><span class="cA">When I got to the station</span>, the train <span class="cV">had left</span>. <span class="muted">我到车站时(过去参照点),火车已经开走了(更早的动作)。</span></p>
+  <p class="sen"><span class="cA">By the end of last year</span>, we <span class="cV">had built</span> <span class="cO">three schools</span>. <span class="muted">到去年年底为止,我们已经建了三所学校。</span></p>
+  <div class="sig"><span class="lab">信号词:</span><span>by the end of last…</span><span>by the time + 过去从句</span><span>by then</span><span>before / after</span><span>hardly… when…</span></div>
+  <div class="trap">❌ <b>最大误区:没有"过去参照点"就乱用过去完成时!</b><br>
+  句子里必须能找到两个过去的动作/时间:<b>更早的</b>用 had done,<b>较晚的</b>用 did。只有一个过去动作 → 老实用一般过去时。<br>
+  ✅ He <b>told</b> me that he <b>had finished</b> the work.(told 是过去参照点,finish 更早)</div>
+
+  <!-- ---------- 9.9 过去将来时 & 完成进行时 ---------- -->
+  <h3>9.9 过去将来时 would do & 现在完成进行时(认识即可)</h3>
+  <div class="grid2">
+    <div class="kcard"><h5>⏪⏩ 过去将来时 would do</h5><p><b>站在过去的某个点"望将来"</b>。最常出现在宾语从句里:主句是过去时,从句的"将来"就变 would。<br><span class="ex">He <b>said</b> he <b>would come</b> the next day.<br>他说他第二天会来。</span></p></div>
+    <div class="kcard"><h5>🏃 现在完成进行时 have been doing</h5><p>动作从过去开始,<b>一直做到现在,可能还要继续</b>——强调"过程"。和现在完成时的区别见对比卡⑤。<br><span class="ex">I <b>have been learning</b> English for ten years.<br>这十年我一直在学英语(还在学)。</span></p></div>
+  </div>
+
+  <!-- ---------- 9.10 决策树 ---------- -->
+  <h3>9.10 时态选择决策树:做任何时态题,先走一遍</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 780 415" width="780" role="img" aria-label="时态选择决策树">
+      <rect x="200" y="10" width="380" height="48" rx="13" fill="#4f6ef7"/>
+      <text x="390" y="32" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="bold">拿到句子,第一问:动作发生在什么时候?</text>
+      <text x="390" y="50" text-anchor="middle" fill="#dbeafe" font-size="12">先找时间信号词;没有信号词,就靠语境判断</text>
+      <line x1="260" y1="58" x2="140" y2="94" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="390" y1="58" x2="390" y2="94" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="520" y1="58" x2="640" y2="94" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="15" y="96" width="245" height="38" rx="10" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="137" y="120" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1d4ed8">过去(yesterday / ago / last…)</text>
+      <rect x="267" y="96" width="245" height="38" rx="10" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="390" y="120" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1d4ed8">现在 / 经常(now / often…)</text>
+      <rect x="520" y="96" width="245" height="38" rx="10" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="642" y="120" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#1d4ed8">将来(tomorrow / next…)</text>
+      <line x1="137" y1="134" x2="137" y2="164" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="390" y1="134" x2="390" y2="164" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="642" y1="134" x2="642" y2="164" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="15" y="166" width="245" height="38" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+      <text x="137" y="190" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#c2410c">第二问:和"现在"有联系吗?</text>
+      <rect x="267" y="166" width="245" height="38" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+      <text x="390" y="190" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#c2410c">此刻正在发生吗?</text>
+      <rect x="520" y="166" width="245" height="38" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+      <text x="642" y="190" text-anchor="middle" font-size="13.5" font-weight="bold" fill="#c2410c">早就计划好 / 有迹象吗?</text>
+      <line x1="70" y1="204" x2="70" y2="234" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="40" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">是</text>
+      <line x1="205" y1="204" x2="205" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="228" y="246" text-anchor="middle" font-size="12" font-weight="bold" fill="#be123c">否</text>
+      <line x1="322" y1="204" x2="322" y2="234" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="295" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">是</text>
+      <line x1="458" y1="204" x2="458" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="482" y="246" text-anchor="middle" font-size="12" font-weight="bold" fill="#be123c">否</text>
+      <line x1="575" y1="204" x2="575" y2="234" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="548" y="224" text-anchor="middle" font-size="12" font-weight="bold" fill="#059669">是</text>
+      <line x1="710" y1="204" x2="710" y2="280" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <text x="733" y="246" text-anchor="middle" font-size="12" font-weight="bold" fill="#be123c">否</text>
+      <rect x="20" y="236" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="120" y="254" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">现在完成时</text>
+      <text x="120" y="271" text-anchor="middle" font-size="12" fill="#065f46">have / has + done</text>
+      <rect x="110" y="282" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="210" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">一般过去时</text>
+      <text x="210" y="317" text-anchor="middle" font-size="12" fill="#065f46">did(与现在无关)</text>
+      <rect x="290" y="236" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="390" y="254" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">现在进行时</text>
+      <text x="390" y="271" text-anchor="middle" font-size="12" fill="#065f46">am / is / are + doing</text>
+      <rect x="352" y="282" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="452" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">一般现在时</text>
+      <text x="452" y="317" text-anchor="middle" font-size="12" fill="#065f46">do / does(习惯、真理)</text>
+      <rect x="525" y="236" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="625" y="254" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">be going to do</text>
+      <text x="625" y="271" text-anchor="middle" font-size="12" fill="#065f46">计划、打算、有迹象</text>
+      <rect x="565" y="282" width="200" height="42" rx="11" fill="#dcfce7" stroke="#22c55e"/>
+      <text x="665" y="300" text-anchor="middle" font-size="13" font-weight="bold" fill="#047857">will do</text>
+      <text x="665" y="317" text-anchor="middle" font-size="12" fill="#065f46">临时决定、预测</text>
+      <rect x="15" y="345" width="745" height="56" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-dasharray="5 3"/>
+      <text x="387" y="368" text-anchor="middle" font-size="13" font-weight="bold" fill="#475569">过去时里的"补问":当时正拍到一半?→ 过去进行时 was/were doing</text>
+      <text x="387" y="390" text-anchor="middle" font-size="13" font-weight="bold" fill="#475569">过去之前还有更早的动作?→ 过去完成时 had done(必须有过去参照点)</text>
+    </svg>
+    <figcaption>图 9-9 时态决策树:一问时间 → 二问状态 → 三定公式,覆盖 90% 的时态题</figcaption>
+  </figure>
+
+  <!-- ---------- 9.11 八张对比卡 ---------- -->
+  <h3>9.11 八张易混对比卡(混淆时回来翻)</h3>
+
+  <div class="vs">
+    <div class="side l"><h5>🔴 一般过去时 did</h5><p><b>只讲过去,和现在断开</b>。常带明确的过去时间。</p><p class="ex">I <b>saw</b> this film last week.<br>我上周看了这部电影(只陈述事实)。</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🟢 现在完成时 have done</h5><p><b>过去的事,影响/延续到现在</b>。不带具体过去时间。</p><p class="ex">I <b>have seen</b> this film, so I won't see it again.<br>我看过了(所以现在不想再看)。</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>🟢 现在完成时 have done</h5><p><b>参照点 = 现在</b>:到"现在"为止已完成。<br>信号:since, for, so far, already, yet</p><p class="ex">I <b>have finished</b> my homework.<br>(现在作业写完了)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🟠 过去完成时 had done</h5><p><b>参照点 = 过去某时</b>:"过去的过去"。<br>信号:by the end of last…, by the time…</p><p class="ex">I <b>had finished</b> my homework before mum came home.<br>(在"妈妈回来"那个过去时刻之前)</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>🔵 一般现在时 do</h5><p><b>习惯、反复、事实</b>,没有进行中的画面。<br>信号:always, often, every day</p><p class="ex">She <b>teaches</b> English.<br>她教英语(职业)。</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🟣 现在进行时 be doing</h5><p><b>此刻正在发生</b>,有画面感。<br>信号:now, Look! Listen!</p><p class="ex">She <b>is teaching</b> English now.<br>她此刻正在上课。</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>⏩ will do</h5><p><b>说话时临时决定</b>,或单纯预测将来。</p><p class="ex">— The phone is ringing.<br>— I <b>will</b> answer it.(临时接手)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>📋 be going to do</h5><p><b>早就计划好</b>,或<b>有迹象</b>表明要发生。</p><p class="ex">I <b>am going to</b> visit grandma this weekend.(早有安排)<br>Look at the clouds! It <b>is going to</b> rain.</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>📦 现在完成时 have done</h5><p><b>强调结果、总量</b>:干成了多少。</p><p class="ex">I <b>have written</b> three letters.<br>(写完了三封,看结果)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🏃 现在完成进行时 have been doing</h5><p><b>强调过程还在延续</b>:一直在干。</p><p class="ex">I <b>have been writing</b> letters all morning.<br>(一上午一直在写,可能还没完)</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>🕰️ used to do</h5><p><b>过去常常</b>做某事,<b>现在不了</b>。to 后接动词原形。</p><p class="ex">I <b>used to get up</b> late.<br>我过去常常晚起(现在不了)。</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>📅 be used to doing</h5><p><b>(现在)习惯于</b>做某事。这里 to 是<b>介词</b>,后接 doing。</p><p class="ex">I <b>am used to getting</b> up early now.<br>我现在习惯早起了。</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>🔮 will do(一般将来)</h5><p><b>参照点 = 现在</b>:从现在望将来。</p><p class="ex">I <b>will tell</b> him the news.<br>(现在承诺/预测)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>⏮️ would do(过去将来)</h5><p><b>参照点 = 过去</b>:主句是过去时,从句里的"将来"退一步变 would。</p><p class="ex">He said he <b>would tell</b> me the news.<br>(站在"他说"那个过去时刻)</p></div>
+  </div>
+
+  <div class="vs">
+    <div class="side l"><h5>🎯 一般过去时 did</h5><p><b>一个"点"</b>:动作干脆发生完。</p><p class="ex">When he <b>came</b> in, I was reading.<br>他进来(短动作,点)。</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>🎬 过去进行时 was doing</h5><p><b>一段"录像"</b>:当时正在持续。</p><p class="ex">While I <b>was reading</b>, he came in.<br>我正在看书(长动作,段)。</p></div>
+  </div>
+
+  <!-- ---------- 9.12 三步定音法 ---------- -->
+  <h3>9.12 做题口诀:「三步定音法」</h3>
+  <div class="mn">第一步 🔍 <b>找信号词</b>:yesterday/ago → 过去系;now/Look! → 进行系;since/so far → 完成系;tomorrow → 将来系。<br>
+  第二步 🧭 <b>画时间轴</b>:没有信号词,问自己——动作和"现在"有关系吗?在另一个过去动作之前吗?<br>
+  第三步 📷 <b>定状态</b>:笼统一笔带过 → 一般;正在拍视频 → 进行;强调结果影响 → 完成。</div>
+  <div class="tip">💡 检验你是否真懂时态的标志:看到 <b>since 2020</b> 脑中自动浮现"一根线从过去连到现在";看到 <b>yesterday</b> 自动浮现"过去的一个点"。把 9.2–9.8 的七张时间轴各看三遍,时态就再也乱不了。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 9 章小试牛刀(时态大练兵)</div>
+    <ol>
+      <li>I ______(read)this book twice. It's wonderful.<details><summary>查看答案</summary><p><b>have read</b>。"看过两次"= 到现在为止的经历,现在完成时。</p></details></li>
+      <li>— Where is Tom? — He ______(go)to the library.<details><summary>查看答案</summary><p><b>has gone to</b>。人不在说话现场(去了还没回来),用 has gone to;has been to 是"去过已回"。</p></details></li>
+      <li>By the time I got to the cinema, the film ______(begin).<details><summary>查看答案</summary><p><b>had begun</b>。"我到影院"是过去参照点,电影开始更早 → 过去完成时。</p></details></li>
+      <li>Listen! The baby ______(cry).<details><summary>查看答案</summary><p><b>is crying</b>。Listen! 是现在进行时的经典信号词。</p></details></li>
+      <li>He ______(live)in Shanghai since 2018.<details><summary>查看答案</summary><p><b>has lived / has been living</b>。since 2018:从过去持续到现在,现在完成(进行)时。</p></details></li>
+      <li>改错:She has bought this bike last Sunday.<details><summary>查看答案</summary><p>✅ She <b>bought</b> this bike last Sunday. last Sunday 是明确过去时间,禁配现在完成时。</p></details></li>
+      <li>改错:My brother has joined the army for five years.<details><summary>查看答案</summary><p>✅ My brother <b>has been in</b> the army for five years. / has been a soldier for five years. join 是非延续动词,不能接 for 时间段。</p></details></li>
+      <li>If it ______(be)fine tomorrow, we will go hiking.<details><summary>查看答案</summary><p><b>is</b>。if 引导的条件从句,将来用一般现在时代替("主将从现")。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第10章 被动语态 ==================== -->
+<section id="s10">
+  <h2><span class="num">10</span>被动语态:be 扛时态,done 不变<span class="stars">四级翻译必考</span></h2>
+
+  <h3>10.1 什么时候用被动?</h3>
+  <ul>
+    <li><b>不知道或不必说"谁干的":</b>The window <b>was broken</b> last night.(谁打破的不重要)</li>
+    <li><b>强调"被作用的对象":</b>The Great Wall <b>was built</b> thousands of years ago.(重点在长城)</li>
+    <li><b>客观说明、规定、新闻:</b>Smoking <b>is not allowed</b> here. 禁止吸烟。</li>
+  </ul>
+
+  <h3>10.2 主动 → 被动:三步变身</h3>
+  <div class="mn">第一步:宾语 → 提到句首当主语<br>第二步:谓语 → <b>be + 过去分词</b>(be 负责体现时态和人称,done 永远不变)<br>第三步:原主语 → 变成 by 短语(不知道/不重要时可省略)</div>
+  <p class="sen"><span class="cS">We</span> <span class="cV">speak</span> <span class="cO">English</span> <span class="cA">here</span>.　→　<span class="cS">English</span> <span class="cV">is spoken</span> <span class="cA">here (by us)</span>.</p>
+  <p class="sen"><span class="cS">Tom</span> <span class="cV">cleaned</span> <span class="cO">the room</span> <span class="cA">yesterday</span>.　→　<span class="cS">The room</span> <span class="cV">was cleaned</span> <span class="cA">yesterday</span>.</p>
+  <div class="tip">💡 双宾语句变被动有两条路:He gave me a book. → <b>I was given</b> a book. / <b>A book was given to</b> me.(人、物都能当被动主语)</div>
+
+  <h3>10.3 各时态的被动式(只背一张表)</h3>
+  <p>核心心法:<b>be 负责变时态(和人称),done 永远不动</b>。把第 9 章的"be 各时态形态"背下来,这张表就自动会了。</p>
+  <table class="tbl">
+    <tr><th>时态/结构</th><th>被动公式</th><th>例句</th></tr>
+    <tr><td>一般现在时</td><td>am / is / are + done</td><td>English <b>is spoken</b> all over the world.</td></tr>
+    <tr><td>一般过去时</td><td>was / were + done</td><td>The bridge <b>was built</b> in 1990.</td></tr>
+    <tr><td>一般将来时</td><td>will be + done</td><td>A new airport <b>will be built</b> next year.</td></tr>
+    <tr><td>现在进行时</td><td>am / is / are <b>being</b> + done</td><td>The road <b>is being repaired</b> now.</td></tr>
+    <tr><td>现在完成时</td><td>have / has <b>been</b> + done</td><td>The work <b>has been finished</b>.</td></tr>
+    <tr><td>过去完成时</td><td>had been + done</td><td>The house <b>had been sold</b> before I arrived.</td></tr>
+    <tr><td class="hl">情态动词</td><td class="hl">can / must / should + be + done</td><td class="hl">The task <b>must be finished</b> today.</td></tr>
+  </table>
+
+  <h3>10.4 两大雷区</h3>
+  <div class="trap">❌ <b>雷区一:不及物动词没有被动!</b>动作没有"承受者"就变不了被动:happen, take place, occur, break out(爆发), come true, belong to, die, rise…<br>
+  ✅ The accident <b>happened</b> last night. ❌ The accident was happened…</div>
+  <div class="warn">⚠️ <b>雷区二:感官、使役动词变被动后,to 要"还回来":</b><br>
+  主动:The boss made him <b>work</b> all night.(make sb do,不带 to)<br>
+  被动:He <b>was made to work</b> all night.(被动后必须有 to!同类:be seen to do / be heard to do / be let to do)</div>
+  <div class="tip">💡 <b>"主动形式表被动"三兄弟</b>(不用被动却含被动义):<br>
+  ① The bike needs <b>repairing</b>. = needs <b>to be repaired</b>(need/want/require + doing)<br>
+  ② The book is worth <b>reading</b>. 值得一读<br>
+  ③ This pen writes <b>smoothly</b>. 这支笔写起来顺滑(主语是物)</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 10 章小试牛刀</div>
+    <ol>
+      <li>The Great Wall ______(build)thousands of years ago.<details><summary>查看答案</summary><p><b>was built</b>。长城是"被建的",一般过去时被动。</p></details></li>
+      <li>English ______(speak)in many countries.<details><summary>查看答案</summary><p><b>is spoken</b>。一般现在时被动。</p></details></li>
+      <li>改错:The accident was happened last night.<details><summary>查看答案</summary><p>✅ The accident <b>happened</b> last night. happen 不及物,永远没有被动。</p></details></li>
+      <li>He was made ______(work)ten hours a day.<details><summary>查看答案</summary><p><b>to work</b>。make sb do 变被动后,必须还原 to。</p></details></li>
+      <li>The flowers need ______(water).<details><summary>查看答案</summary><p><b>watering</b> = to be watered。need + doing 主动表被动。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第11章 情态动词 ==================== -->
+<section id="s11">
+  <h2><span class="num">11</span>情态动词:一件外套,后面永远穿"原形"<span class="stars">推测题必考</span></h2>
+
+  <h3>11.1 基本用法:三条纪律</h3>
+  <div class="frm">情态动词(can / may / must / should / will / would / need / shall…)+ <b>动词原形</b></div>
+  <ul>
+    <li><b>没有人称变化:</b>He <b>can</b> swim. ✅(不是 cans)</li>
+    <li><b>否定直接加 not:</b>can't, mustn't, needn't, shouldn't, won't</li>
+    <li><b>疑问句提到句首:</b><b>Can</b> you help me? / <b>Must</b> I go now?</li>
+  </ul>
+  <table class="tbl">
+    <tr><th>情态动词</th><th>核心意义</th><th>例句</th></tr>
+    <tr><td>can / could</td><td>能力;许可;可能</td><td>She <b>can</b> speak three languages.</td></tr>
+    <tr><td>may / might</td><td>许可;可能(更不确定)</td><td>You <b>may</b> leave now. / He <b>might</b> come later.</td></tr>
+    <tr><td>must</td><td>必须;一定(推测)</td><td>You <b>must</b> finish it today.</td></tr>
+    <tr><td>have to</td><td>不得不(客观所迫)</td><td>It's late. I <b>have to</b> go now.</td></tr>
+    <tr><td>should / ought to</td><td>应该;劝告</td><td>You <b>should</b> see a doctor.</td></tr>
+    <tr><td>need</td><td>需要(多用于否定疑问)</td><td><b>Need</b> I come? — No, you <b>needn't</b>.</td></tr>
+    <tr><td>will / would</td><td>意愿;would 更委婉/过去习惯</td><td><b>Would</b> you please open the window?</td></tr>
+  </table>
+
+  <h3>11.2 must vs have to / mustn't vs needn't(两张经典对比卡)</h3>
+  <div class="vs">
+    <div class="side l"><h5>💜 must 主观义务</h5><p>"我自己要求自己/上级要求",来自内心或说话人。</p><p class="ex">I <b>must</b> work hard to pass CET-4.<br>(我要过四级,我自愿卷)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>⛓️ have to 客观所迫</h5><p>"不得不",被外部环境逼的。有人称和时态变化(had to)。</p><p class="ex">The last bus leaves in 5 minutes. I <b>have to</b> run!<br>(客观赶车)</p></div>
+  </div>
+  <div class="vs">
+    <div class="side l"><h5>🚫 mustn't 禁止(千万别)</h5><p>= must not,<b>语气最强的禁止</b>。</p><p class="ex">You <b>mustn't</b> smoke here.<br>这儿严禁吸烟。</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>😌 needn't / don't have to 不必</h5><p>= 没有必要做(但做了也没错)。"必须"的否定是"不必",不是"禁止"!</p><p class="ex">You <b>needn't</b> hurry. There's plenty of time.<br>你不用急。</p></div>
+  </div>
+
+  <h3>11.3 情态动词 + have done:对"过去"的推测和悔恨 ★</h3>
+  <p>这是四级听力、翻译的重灾区。公式:<b>情态动词 + have + 过去分词</b>,全部在讨论"过去发生的事"。</p>
+  <table class="tbl">
+    <tr><th>结构</th><th>含义</th><th>例句</th></tr>
+    <tr><td class="hl">must have done</td><td class="hl">过去<b>一定</b>做了(很有把握)</td><td class="hl">The ground is wet. It <b>must have rained</b> last night.</td></tr>
+    <tr><td class="hl">can't have done</td><td class="hl">过去<b>不可能</b>做了(must 的否定推测)</td><td class="hl">He <b>can't have finished</b> it so soon.</td></tr>
+    <tr><td>may / might have done</td><td>过去<b>也许</b>做了(不确定)</td><td>She <b>may have missed</b> the train.</td></tr>
+    <tr><td class="hl">should have done</td><td class="hl"><b>本应该</b>做(却没做)→ 带责备/后悔</td><td class="hl">You <b>should have told</b> me earlier!</td></tr>
+    <tr><td>shouldn't have done</td><td><b>本不该</b>做(却做了)</td><td>You <b>shouldn't have laughed</b> at him.</td></tr>
+    <tr><td>needn't have done</td><td><b>本不必</b>做(却做了)</td><td>You <b>needn't have brought</b> an umbrella. It didn't rain.</td></tr>
+  </table>
+  <div class="mn">推测程度排排站:<b>must(一定)＞ may(可能)＞ might(也许)＞ can't(绝不可能)</b><br>注意:推测句里"一定不"用 can't,不用 mustn't!</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 11 章小试牛刀</div>
+    <ol>
+      <li>The light in his room is still on. He ______(must / be)at home.<details><summary>查看答案</summary><p><b>must be</b>。对"现在"的肯定推测,情态动词 + 原形 be。</p></details></li>
+      <li>The ground is wet. It ______(must / rain)last night.<details><summary>查看答案</summary><p><b>must have rained</b>。对"过去"的肯定推测 = must + have done。</p></details></li>
+      <li>改错:You mustn't hurry. There is plenty of time.<details><summary>查看答案</summary><p>✅ You <b>needn't / don't have to</b> hurry. mustn't 是"禁止",此处意思是"不必"。</p></details></li>
+      <li>改错:He cans swim very well.<details><summary>查看答案</summary><p>✅ He <b>can</b> swim very well. 情态动词无人称变化,永远不带 s。</p></details></li>
+      <li>You ______(should / tell)me earlier. I missed the train!<details><summary>查看答案</summary><p><b>should have told</b>。本应该早告诉我(却没告诉),带责备。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第12章 非谓语动词 ==================== -->
+<section id="s12">
+  <h2><span class="num">12</span>非谓语动词:第二个动词必须"戴帽子"<span class="stars">⭐ 选词填空+翻译高频</span></h2>
+
+  <h3>12.1 为什么会有"非谓语"?</h3>
+  <p>还记得<b>语法第一定律</b>吗?一个简单句只能有一个谓语动词。那两个动作怎么放一起?第二个动词就得"降级"——戴上三顶帽子之一:</p>
+  <table class="tbl">
+    <tr><th>帽子</th><th>身份</th><th>核心含义</th><th>例子</th></tr>
+    <tr><td class="hl"><b>to do</b> 不定式</td><td>目的、打算、具体某一次</td><td>"要做 / 为了做"(朝向将来)</td><td>He got up early <b>to catch</b> the train.<br>为了赶火车(目的)</td></tr>
+    <tr><td class="hl"><b>doing</b> 现在分词 / 动名词</td><td>主动、进行、伴随</td><td>"正在做 / 主动做"</td><td><b>Hearing</b> the news, she cried.<br>听到消息时(她主动听,同时发生)</td></tr>
+    <tr><td class="hl"><b>done</b> 过去分词</td><td>被动、完成</td><td>"被做 / 已完成"</td><td><b>Seen</b> from space, the earth is blue.<br>从太空看(地球"被看")</td></tr>
+  </table>
+
+  <h3>12.2 三兄弟决策树:先问"谁发的?为了啥?"</h3>
+  <figure class="fig">
+    <svg viewBox="0 0 780 330" width="780" role="img" aria-label="非谓语决策树">
+      <rect x="200" y="10" width="380" height="50" rx="13" fill="#4f6ef7"/>
+      <text x="390" y="32" text-anchor="middle" fill="#fff" font-size="14.5" font-weight="bold">句子里多出来的动词,先问两个问题:</text>
+      <text x="390" y="51" text-anchor="middle" fill="#dbeafe" font-size="12">①动作谁发出的(主动/被动)? ②想表达什么(目的/状态)?</text>
+      <line x1="270" y1="60" x2="140" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="390" y1="60" x2="390" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <line x1="510" y1="60" x2="640" y2="118" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrA)"/>
+      <rect x="15" y="120" width="245" height="118" rx="13" fill="#eff6ff" stroke="#93c5fd"/>
+      <text x="137" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#1d4ed8">表目的、打算、待办</text>
+      <text x="137" y="168" text-anchor="middle" font-size="12.5" fill="#475569">"为了…… / 将要做的某一次"</text>
+      <text x="137" y="192" text-anchor="middle" font-size="12.5" fill="#475569">He ran fast to catch the bus.</text>
+      <text x="137" y="214" text-anchor="middle" font-size="12.5" fill="#475569">I have a lot of work to do.</text>
+      <rect x="62" y="252" width="150" height="34" rx="17" fill="#2563eb"/>
+      <text x="137" y="275" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ to do</text>
+      <rect x="268" y="120" width="245" height="118" rx="13" fill="#ecfdf5" stroke="#6ee7b7"/>
+      <text x="390" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#047857">主语主动发出 / 进行 / 伴随</text>
+      <text x="390" y="168" text-anchor="middle" font-size="12.5" fill="#475569">主句主语 = 动作的发出者</text>
+      <text x="390" y="192" text-anchor="middle" font-size="12.5" fill="#475569">Hearing the news, she cried.</text>
+      <text x="390" y="214" text-anchor="middle" font-size="12.5" fill="#475569">the man standing there</text>
+      <rect x="315" y="252" width="150" height="34" rx="17" fill="#059669"/>
+      <text x="390" y="275" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ doing</text>
+      <rect x="520" y="120" width="245" height="118" rx="13" fill="#fff1f2" stroke="#fda4af"/>
+      <text x="642" y="145" text-anchor="middle" font-size="14" font-weight="bold" fill="#be123c">主语被动承受 / 已完成</text>
+      <text x="642" y="168" text-anchor="middle" font-size="12.5" fill="#475569">主句主语 = 动作的承受者</text>
+      <text x="642" y="192" text-anchor="middle" font-size="12.5" fill="#475569">Seen from space, the earth is blue.</text>
+      <text x="642" y="214" text-anchor="middle" font-size="12.5" fill="#475569">the window broken by Tom</text>
+      <rect x="567" y="252" width="150" height="34" rx="17" fill="#e11d48"/>
+      <text x="642" y="275" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">→ done</text>
+    </svg>
+    <figcaption>图 12-1 非谓语决策树:看主句主语和非谓语动词是"主动"还是"被动"关系,一眼定 doing / done</figcaption>
+  </figure>
+  <div class="warn">⚠️ <b>悬垂结构陷阱(四级改错爱考):</b>非谓语的逻辑主语必须是主句主语!<br>
+  ❌ Walking in the street, <b>a car hit me</b>.(车不会"散步")<br>
+  ✅ Walking in the street, <b>I was hit</b> by a car. / While I was walking in the street, a car hit me.</div>
+
+  <h3>12.3 非谓语的四大岗位</h3>
+  <h4>岗位一:作状语(修饰整句,前面常加逗号)</h4>
+  <p class="sen"><span class="cA"><b>Walking</b> in the street</span>, <span class="cS">I</span> <span class="cV">met</span> <span class="cO">an old friend</span>. <span class="muted">主动 → doing</span></p>
+  <p class="sen"><span class="cA"><b>Given</b> more time</span>, <span class="cS">we</span> <span class="cV">could do</span> <span class="cO">it</span> <span class="cP">better</span>. <span class="muted">被动 → done</span></p>
+  <p class="sen"><span class="cA"><b>To pass</b> the exam</span>, <span class="cS">I</span> <span class="cV">study</span> <span class="cO">English</span> <span class="cA">every day</span>. <span class="muted">目的 → to do</span></p>
+
+  <h4>岗位二:作定语(放在名词后面"……的")</h4>
+  <ul>
+    <li>the man <b>standing</b> there 站在那儿的男人(主动)</li>
+    <li>the window <b>broken</b> by Tom 被 Tom 打碎的窗户(被动)</li>
+    <li>I have a lot of homework <b>to do</b>. 要做的作业(将来/待办)</li>
+  </ul>
+
+  <h4>岗位三:作主语(动名词和不定式都行)</h4>
+  <p class="sen"><b>Learning</b> English takes time. = <b>To learn</b> English takes time. = <b>It</b> takes time <b>to learn</b> English.(用 it 作形式主语最常见)</p>
+
+  <h4>岗位四:作宾语——背这两张名单 ★</h4>
+  <div class="grid2">
+    <div class="kcard"><h5>只能接 to do(想做还没做)</h5><p class="muted" style="line-height:1.9">want, hope, wish, decide, plan, agree, refuse, promise, manage(设法), afford(负担得起), offer, learn, expect</p><p class="ex">I <b>decided to change</b> my plan.</p></div>
+    <div class="kcard"><h5>只能接 doing(享受/完成/回避)</h5><p class="muted" style="line-height:1.9">enjoy, finish, practice, mind(介意), avoid(避免), suggest, keep, miss(错过), imagine, consider, admit, risk, delay</p><p class="ex">He <b>suggested going</b> by train.</p></div>
+  </div>
+  <div class="mn">口诀:「<b>享受完成多练习,避免介意别建议</b>」→ enjoy / finish / practice / avoid / mind / suggest 后面全接 doing。suggest / advise / consider(考虑)后也禁止接 to do!</div>
+  <h4>两者都接、意思大不同(必背 6 组)</h4>
+  <table class="tbl">
+    <tr><th>to do(还没做)</th><th>doing(做过/在做)</th></tr>
+    <tr><td>remember <b>to lock</b> the door 记得要锁门</td><td>remember <b>locking</b> the door 记得锁过了</td></tr>
+    <tr><td>forget <b>to bring</b> 忘了要带</td><td>forget <b>bringing</b> 忘了带过</td></tr>
+    <tr><td>stop <b>to rest</b> 停下来去休息</td><td>stop <b>resting</b> 停止休息</td></tr>
+    <tr><td>try <b>to pass</b> 努力去通过</td><td>try <b>restarting</b> it 试着重启看看</td></tr>
+    <tr><td>regret <b>to tell</b> you 遗憾地通知</td><td>regret <b>saying</b> that 后悔说过</td></tr>
+    <tr><td>go on <b>to read</b> 接着读(另一件事)</td><td>go on <b>reading</b> 继续读(同一件事)</td></tr>
+  </table>
+
+  <h3>12.4 假冒动词的"介词 to"(最高频坑!)</h3>
+  <div class="trap">❌ 这些短语里的 <b>to 是介词</b>,后面必须接 doing,不是动词原形:<br>
+  look forward <b>to doing</b> 期待 · be used <b>to doing</b> 习惯于 · pay attention <b>to doing</b> 注意 · devote…<b>to doing</b> 致力于 · object <b>to doing</b> 反对 · lead <b>to doing</b> 导致 · be addicted <b>to doing</b> 沉迷于<br>
+  ✅ I'm looking forward to <b>hearing</b> from you.(四级写作万能结尾,别写 to hear!)</div>
+  <h4>顺手打包的高频固定搭配</h4>
+  <p class="muted" style="line-height:2">have trouble / difficulty / fun (in) doing 做某事有困难/乐趣 · be busy (in) doing 忙于 · spend time (in) doing 花时间做 · It's no use crying 哭没有用 · can't help doing 禁不住 · There is no denying that 不可否认 · 疑问词 + to do:I don't know <b>what to do</b>.</p>
+  <h4>特殊句型:使役/感官动词 + 宾语 + 三帽子</h4>
+  <table class="tbl">
+    <tr><th>结构</th><th>含义</th><th>例句</th></tr>
+    <tr><td>see / watch / hear sb <b>do</b></td><td>看到<b>全过程</b></td><td>I saw him <b>cross</b> the street.</td></tr>
+    <tr><td>see / watch / hear sb <b>doing</b></td><td>看到<b>正在发生</b></td><td>I saw him <b>crossing</b> the street.</td></tr>
+    <tr><td>make / let / have sb <b>do</b></td><td>使/让某人做(接原形!)</td><td>Let me <b>try</b>. / have sb do sth</td></tr>
+    <tr><td class="hl">have sth <b>done</b></td><td class="hl">让别人做某事(某物被……)</td><td class="hl">I <b>had my hair cut</b>. 我剪了头发(理发师剪的)</td></tr>
+    <tr><td>make / let 变被动</td><td>to 还原回来</td><td>He was made <b>to work</b> all night.</td></tr>
+  </table>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 12 章小试牛刀</div>
+    <ol>
+      <li>He kept ______(talk)although nobody listened.<details><summary>查看答案</summary><p><b>talking</b>。keep 后必须接 doing。</p></details></li>
+      <li>______(see)from the hill, the city looks beautiful.<details><summary>查看答案</summary><p><b>Seen</b>。城市是"被看"的,主句主语 the city 与 see 是被动关系 → done。</p></details></li>
+      <li>改错:I look forward to hear from you.<details><summary>查看答案</summary><p>✅ look forward to <b>hearing</b> from you。这里的 to 是介词,后接 doing。</p></details></li>
+      <li>The film was so touching that I couldn't help ______(cry).<details><summary>查看答案</summary><p><b>crying</b>。can't help doing 禁不住做某事。</p></details></li>
+      <li>改错:She suggested to go to the beach.<details><summary>查看答案</summary><p>✅ She suggested <b>going</b> to the beach. suggest 后不接 to do(可接 that 从句)。</p></details></li>
+      <li>I'm busy ______(prepare)for the exam.<details><summary>查看答案</summary><p><b>preparing</b>。be busy (in) doing。</p></details></li>
+      <li>I remember ______(lock)the door, but it's open now.<details><summary>查看答案</summary><p><b>locking</b>。记得"锁过了"(动作已发生);如果还没锁要说 remember to lock。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<div class="part"><b>PART 3 · 高阶装备 ⚔️</b><span>第 13–15 章:三大从句、虚拟语气、倒装与强调。这是阅读长难句的"解码器",也是写作拉开差距的地方。</span></div>
+
+<!-- ==================== 第13章 三大从句 ==================== -->
+<section id="s13">
+  <h2><span class="num">13</span>三大从句:长难句的解码器<span class="stars">⭐ 阅读+写作核心</span></h2>
+
+  <p>还记得第 1 章的"路线③送进从句"吗?所谓从句,就是<b>把一整个句子降级,去当另一个句子里的零件</b>。按零件的岗位分三类,一个不多:</p>
+  <div class="grid3">
+    <div class="kcard"><h5>🎨 定语从句</h5><p>整个句子去当<b>形容词</b>,修饰某个名词(先行词)。<br><span class="ex">the man <b>who lives next door</b></span></p></div>
+    <div class="kcard"><h5>📦 名词性从句</h5><p>整个句子去当<b>名词</b>(主语/宾语/表语/同位语)。<br><span class="ex">I know <b>that he is honest</b>.</span></p></div>
+    <div class="kcard"><h5>⏱️ 状语从句</h5><p>整个句子去当<b>副词</b>,说明时间/条件/原因等。<br><span class="ex"><b>When it rains</b>, I stay home.</span></p></div>
+  </div>
+
+  <!-- 13.1 定语从句 -->
+  <h3>13.1 定语从句:给名词"装配件"</h3>
+  <p class="sen"><span class="cS">The girl <span class="cD">who is wearing red</span></span> <span class="cV">is</span> <span class="cP">my sister</span>. <span class="muted">穿红衣服的那个女孩是我妹妹。</span></p>
+  <p>被修饰的名词叫<b>先行词</b>(the girl),后面的 who is wearing red 就是定语从句。关系词有<b>三大职能:①连接 ②指代先行词 ③在从句里充当成分</b>。</p>
+  <table class="tbl">
+    <tr><th>关系词</th><th>先行词</th><th>在从句中充当</th><th>例句</th></tr>
+    <tr><td>who / that</td><td>人</td><td>主语、宾语</td><td>the man <b>who</b> helped me</td></tr>
+    <tr><td>whom</td><td>人</td><td>宾语(可省,紧跟介词后不省)</td><td>the lady <b>whom</b> you met</td></tr>
+    <tr><td>whose</td><td>人/物</td><td>定语("谁的")</td><td>the boy <b>whose</b> father is a doctor</td></tr>
+    <tr><td>which / that</td><td>物</td><td>主语、宾语</td><td>the book <b>which/that</b> I bought</td></tr>
+    <tr><td class="hl">when</td><td class="hl">时间</td><td class="hl">时间状语</td><td class="hl">the day <b>when</b> we met</td></tr>
+    <tr><td class="hl">where</td><td class="hl">地点</td><td class="hl">地点状语</td><td class="hl">the city <b>where</b> I was born</td></tr>
+    <tr><td class="hl">why</td><td class="hl">reason 原因</td><td class="hl">原因状语</td><td class="hl">the reason <b>why</b> he was late</td></tr>
+  </table>
+  <div class="tip">💡 <b>选 who 还是 where?把先行词"塞回"从句里试一试:</b><br>
+  从句缺主语/宾语 → 用关系代词(that/who/which);从句主谓宾完整、缺"在……"的状语 → 用关系副词。<br>
+  This is the school <b>that/which</b> I visited last year.(visited 缺宾语,把 school 塞回去:visited the school ✅)<br>
+  This is the school <b>where</b> I studied last year.(studied 完整,塞回去说"studied the school"不通,缺"在学校"的地点状语)</div>
+  <div class="warn">⚠️ <b>只用 that 的场合:</b>先行词是 all / everything / nothing / anything / little / much;被序数词、最高级、the only、the very 修饰;人和物并列。<br>
+  <b>只用 which 的场合:</b>①非限制性(逗号后);②紧跟介词之后(the house in <b>which</b> I lived)。<br>
+  <b>that 绝不能用在逗号后!</b></div>
+  <div class="vs">
+    <div class="side l"><h5>🔖 限制性(不加逗号)</h5><p>从句是名词的"必要说明",删了句子就不完整/变义。</p><p class="ex">He has a daughter <b>who works in a hospital</b>.<br>(可能不止一个女儿,这里特指在医院工作的那个)</p></div>
+    <div class="mid">VS</div>
+    <div class="side r"><h5>📌 非限制性(加逗号)</h5><p>从句只是"顺带补充说明",删了主句照样成立。关系词不可省略、不可用 that。</p><p class="ex">He has a daughter<b>, who works in a hospital</b>.<br>(就一个女儿,补充说她在医院工作)</p></div>
+  </div>
+  <div class="tip">💡 非限制性从句的 which 还能指代<b>前面整句话</b>(写作高分句):He passed the exam<b>, which surprised us all</b>. 他通过了考试,这让所有人都很惊讶。</div>
+
+  <!-- 13.2 名词性从句 -->
+  <h3>13.2 名词性从句:整句当名词用</h3>
+  <div class="grid2">
+    <div class="kcard"><h5>宾语从句(最常见)</h5><p>跟在动词/介词后当宾语。<br><span class="ex">I believe <b>(that) you can do it</b>.<br>I wonder <b>whether it will rain</b>.<br>Do you know <b>where he lives</b>?</span></p></div>
+    <div class="kcard"><h5>主语从句</h5><p>整句当主语,常外包一层 it。<br><span class="ex"><b>That he failed</b> surprised us.<br><b>It</b> is said that he is rich.<br><b>What he said</b> is true.</span></p></div>
+    <div class="kcard"><h5>表语从句</h5><p>跟在系动词后。<br><span class="ex">The problem is <b>that we lack time</b>.<br>That is <b>why I called you</b>.</span></p></div>
+    <div class="kcard"><h5>同位语从句</h5><p>解释抽象名词的内容(常接 news, fact, idea, hope, belief)。<br><span class="ex">The news <b>that our team won</b> excited us.</span></p></div>
+  </div>
+  <div class="frm">引导词就 3 类:that(陈述句内容)· whether/if(是否)· wh- 词(who/what/when/where/why/how,保留疑问含义)</div>
+  <div class="trap">❌ <b>头号规则:从句必须用陈述语序!(听力口语最高频错误)</b><br>
+  ❌ Do you know <b>where is the bank</b>?<br>
+  ✅ Do you know <b>where the bank is</b>?(把疑问句"躺平"成陈述句)<br>
+  ❌ I don't know <b>what does he want</b>. → ✅ I don't know <b>what he wants</b>.</div>
+  <div class="warn">⚠️ <b>if vs whether:</b>介词后、to 前、与 or not 直接连用、句首作主语、表语从句 → 只能用 <b>whether</b>。I'm not sure <b>whether</b> to go. / <b>Whether</b> he agrees doesn't matter.</div>
+  <div class="tip">💡 <b>同位语从句 vs 定语从句,一秒判别:</b>看 that 在从句里缺不缺成分。<br>The news <b>that he won</b> the game(从句完整,that 只是"标签"→ 同位语从句)<br>The news <b>that he told me</b>(told 缺宾语,that 充当 told 的宾语 → 定语从句)</div>
+  <div class="warn">⚠️ <b>时态呼应:</b>主句是过去时,宾语从句跟着用过去系(He said he <b>would come</b>.);但客观真理不受限(He said the earth <b>is</b> round.)。</div>
+
+  <!-- 13.3 状语从句 -->
+  <h3>13.3 状语从句:9 大类一张表</h3>
+  <table class="tbl">
+    <tr><th>类型</th><th>引导词</th><th>例句</th></tr>
+    <tr><td>时间</td><td>when, while, as, before, after, until, once, as soon as, hardly…when</td><td>I'll call you <b>as soon as I arrive</b>.</td></tr>
+    <tr><td class="hl">条件</td><td class="hl">if, unless(=if not 除非), as long as(只要), in case</td><td class="hl"><b>If it rains</b>, we'll stay home. / I won't go <b>unless</b> you go.</td></tr>
+    <tr><td>原因</td><td>because, since, as, now that</td><td><b>Because it rained</b>, we stayed home.</td></tr>
+    <tr><td>目的</td><td>so that, in order that</td><td>Speak louder <b>so that everyone can hear</b>.</td></tr>
+    <tr><td>结果</td><td>so + 形/副…that;such + 名词…that</td><td>He ran <b>so fast that</b> we couldn't catch him.</td></tr>
+    <tr><td>让步</td><td>although/though, even if, while, no matter + wh-/however</td><td><b>Although it rained</b>, we went out.</td></tr>
+    <tr><td>方式</td><td>as, as if / as though</td><td>Do it <b>as I told you</b>.</td></tr>
+    <tr><td>地点</td><td>where, wherever</td><td>Sit <b>wherever you like</b>.</td></tr>
+    <tr><td>比较</td><td>than, as…as</td><td>He is taller <b>than I (am)</b>.</td></tr>
+  </table>
+  <div class="trap">❌ <b>中式英语两大天王(务必戒掉):</b><br>
+  ① because 和 <b>so 不能同时用</b>:❌ Because he was ill, <b>so</b> he didn't come. → 留一个即可!<br>
+  ② although/though 和 <b>but 不能同时用</b>:❌ <b>Although</b> he is rich, <b>but</b> he isn't happy.<br>
+  记忆:英语一个从句只需要"一个交通信号灯"。</div>
+  <div class="warn">⚠️ <b>主将从现(时态篇第 9 章已埋伏笔,这里正式封顶):</b>时间从句、条件从句表将来时,<b>从句用一般现在时,主句才用 will</b>。<br>I <b>will tell</b> him as soon as he <b>comes</b> back. ✅</div>
+  <div class="tip">💡 <b>so…that vs such…that:</b>so + <b>形容词/副词</b>;such + <b>名词</b>(可加形容词)。<br>He is <b>so kind</b> that everyone likes him. = He is <b>such a kind man</b> that everyone likes him.<br>固定陷阱:so many/much/few/little + 名词(用 so 不用 such):so many books that…</div>
+  <div class="mn">not…until 口诀:「<b>直到……才</b>」:I <b>didn't go to bed until</b> mum came back. 妈妈回来我才睡。</div>
+
+  <!-- 13.4 长难句解剖 -->
+  <h3>13.4 实战:长难句四步解剖法(阅读提分核心)</h3>
+  <p class="sen"><span class="cS">The man <span class="cD">who is standing under the tree</span></span> <span class="cV">is</span> <span class="cP">my English teacher</span>, <span class="cD">whom you met last year</span>.</p>
+  <ol>
+    <li><b>找谓语动词</b>:is standing(从句的)、is(主句的)→ 第二个 is 才是主句心脏。</li>
+    <li><b>找关系词切分</b>:who…、whom… 两个从句各归各。</li>
+    <li><b>确定从句修饰谁</b>:who…修饰 the man;whom…修饰 teacher。</li>
+    <li><b>按中文习惯重排</b>:站在树下(的那个)男人是我的英语老师,(这位老师)你去年见过。</li>
+  </ol>
+  <p class="sen"><span class="cS"><span class="cD">What surprised me most</span></span> <span class="cV">was</span> <span class="cP">that the girl <span class="cD">who had lost both legs</span> managed to finish the race</span>.<br><span class="muted">主语从句(What…most)+ 系动词 + 表语从句(that…race),表语从句里又套了定语从句(who…legs)——从句套从句,套路不变。</span></p>
+  <div class="mn">一句话总结:长难句 = 主干(五大句型)+ 从句挂件。先抓主干,再挂零件,再难的句子也散不了架。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 13 章小试牛刀</div>
+    <ol>
+      <li>This is the house ______ I lived ten years ago. (that / which / where)<details><summary>查看答案</summary><p><b>where</b>(或 in which)。lived 完整,缺地点状语;如果句子是 the house ______ I visited,就要选 that/which(缺宾语)。</p></details></li>
+      <li>改错:Do you know where is the nearest bank?<details><summary>查看答案</summary><p>✅ Do you know <b>where the nearest bank is</b>? 宾语从句必须陈述语序。</p></details></li>
+      <li>He told me ______ he had passed the exam. (that / what / whether)<details><summary>查看答案</summary><p><b>that</b>。从句是完整陈述,不缺任何成分,that 引导宾语从句(可省略)。</p></details></li>
+      <li>改错:Because he was ill, so he didn't come to class.<details><summary>查看答案</summary><p>✅ 去掉 so(或去掉 Because):Because he was ill, he didn't come. / He was ill, so he didn't come.</p></details></li>
+      <li>It was ______ a lovely day ______ we went for a picnic. (so / such × that)<details><summary>查看答案</summary><p><b>such…that</b>。a lovely day 是名词短语,用 such;so 用于 so lovely a day that。</p></details></li>
+      <li>The question is ______ we can finish the work on time. (if / whether)<details><summary>查看答案</summary><p><b>whether</b>。表语从句不用 if,只能用 whether。</p></details></li>
+      <li>I won't go to the party ______ I am invited. (unless / if)<details><summary>查看答案</summary><p><b>unless</b>(=if not):除非被邀请,否则我不去。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第14章 虚拟语气 ==================== -->
+<section id="s14">
+  <h2><span class="num">14</span>虚拟语气:与事实相反,动词"退一步"<span class="stars">写作高分句型</span></h2>
+
+  <h3>14.1 一眼看懂虚拟</h3>
+  <p>真实条件说事实(<b>If it rains</b>, we'll stay home —— 可能真下雨);虚拟语气说<b>反事实的假设</b>(If I were you —— 我永远不可能是你)。标记只有一个:<b>动词整体往过去退一步</b>。</p>
+
+  <h3>14.2 if 虚拟三件套(必背表)</h3>
+  <table class="tbl">
+    <tr><th>类型</th><th>if 从句动词</th><th>主句动词</th><th>例句</th></tr>
+    <tr><td>与<b>现在</b>事实相反</td><td class="hl">过去式(did / were)</td><td>would / could / might + do</td><td>If I <b>were</b> you, I <b>would take</b> the job.<br>如果我是你,我就会接受这份工作(我不可能是你)</td></tr>
+    <tr><td>与<b>过去</b>事实相反</td><td class="hl">had + done</td><td>would / could / might + have + done</td><td>If he <b>had studied</b> harder, he <b>would have passed</b>.<br>要是他当时更努力,就通过了(事实上没通过)</td></tr>
+    <tr><td>与<b>将来</b>事实相反(可能性极小)</td><td class="hl">did / were to do / should do</td><td>would + do</td><td>If the sun <b>were to rise</b> in the west, I <b>would change</b> my mind.<br>除非太阳打西边出来</td></tr>
+  </table>
+  <div class="mn">口诀:「<b>虚拟退一步海阔天空</b>」—— 虚拟现在 → 退成过去式;虚拟过去 → 退成过去完成时。<br>be 一律用 <b>were</b>(连 I / he 都用):If I <b>were</b> you. ★</div>
+  <div class="tip">💡 <b>省略 if 的倒装虚拟(高级感拉满的写作句型):</b>从句里有 were / had / should 时,可省 if 并把它们提到句首:<br><b>Were I</b> you, I would go. = If I were you…<br><b>Had he known</b> the truth, he would have told us. = If he had known…<br><b>Should it rain</b> tomorrow, we would cancel the trip.</div>
+
+  <h3>14.3 wish 后面的虚拟(愿望,但因不现实而"虚拟")</h3>
+  <table class="tbl">
+    <tr><th>wish + </th><th>含义</th><th>例句</th></tr>
+    <tr><td>过去式</td><td>但愿现在……(现状难改)</td><td>I wish I <b>were</b> a bird.</td></tr>
+    <tr><td>had done</td><td>真希望当初……(后悔)</td><td>I wish I <b>had studied</b> harder last term.</td></tr>
+    <tr><td>would / could do</td><td>但愿将来能……</td><td>I wish it <b>would stop</b> raining.</td></tr>
+  </table>
+
+  <h3>14.4 隐藏的虚拟:见词就退</h3>
+  <table class="tbl">
+    <tr><th>场景</th><th>规则</th><th>例句</th></tr>
+    <tr><td class="hl">suggest / advise / demand / order / require / insist(坚持要求)+ that 从句</td><td class="hl">谓语用 (should) + 原形</td><td class="hl">The doctor suggested that he <b>(should) rest</b> for two days.<br>★ 四级翻译高频!</td></tr>
+    <tr><td>It is important / necessary / strange + that</td><td>谓语用 (should) + 原形</td><td>It is important that everyone <b>(should) attend</b> the meeting.</td></tr>
+    <tr><td>would rather + 从句</td><td>用过去式</td><td>I would rather you <b>came</b> tomorrow.</td></tr>
+    <tr><td>It's (high) time that…</td><td>用过去式 / should + 原形</td><td>It's high time we <b>went</b> home.</td></tr>
+    <tr><td>as if / as though</td><td>与事实相反时用过去系</td><td>He talks as if he <b>knew</b> everything.</td></tr>
+  </table>
+  <div class="warn">⚠️ <b>suggest 有两面:</b>表"建议"→ 从句虚拟(should do);表"表明、暗示"→ 从句用真实时态(Her face suggested that she <b>was</b> happy.)。insist 表"坚持认为"也用真实时态。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 14 章小试牛刀</div>
+    <ol>
+      <li>If I ______(be)you, I would take the chance.<details><summary>查看答案</summary><p><b>were</b>。虚拟现在,be 一律用 were。</p></details></li>
+      <li>If he ______(study)harder last year, he would have passed the exam.<details><summary>查看答案</summary><p><b>had studied</b>。主句是 would have done(与过去相反),从句退到过去完成时。</p></details></li>
+      <li>I wish I ______(can)fly like a bird.<details><summary>查看答案</summary><p><b>could</b>。wish 后的现在愿望用过去式情态动词。</p></details></li>
+      <li>改错:I wish I can pass the exam tomorrow.<details><summary>查看答案</summary><p>✅ I wish I <b>could</b> pass...。wish 的愿望都是"虚"的,不用 can/will,用 could/would。</p></details></li>
+      <li>The teacher suggested that he ______(hand)in the paper at once.<details><summary>查看答案</summary><p><b>(should) hand</b>。suggest 表"建议",从句用 (should) + 动词原形。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ==================== 第15章 主谓一致·倒装·强调 ==================== -->
+<section id="s15">
+  <h2><span class="num">15</span>主谓一致 · 倒装 · 强调:收尾三件套<span class="stars">改错+写作双料</span></h2>
+
+  <h3>15.1 主谓一致:动词单复数听谁的?</h3>
+  <table class="tbl">
+    <tr><th>规则</th><th>要点</th><th>例句</th></tr>
+    <tr><td>基本盘</td><td>谓语动词跟主语核心走</td><td>The books <b>are</b> on the desk. / The book <b>is</b>…</td></tr>
+    <tr><td>全单数家族</td><td>everyone / everybody / everything / each / every / no one / nobody / either / neither + 单数动词</td><td>Everyone <b>has</b> a dream. / Neither answer <b>is</b> right.</td></tr>
+    <tr><td class="hl">就近原则</td><td class="hl">either…or / neither…nor / not only…but also / there be → 动词跟<b>最近</b>的主语</td><td class="hl">Either you or he <b>is</b> wrong.<br>There <b>is</b> a pen and two books on the desk.</td></tr>
+    <tr><td>动名词/从句作主语</td><td>一律按单数</td><td>Reading <b>is</b> fun. / What he said <b>is</b> true.</td></tr>
+    <tr><td class="hl">a number of vs the number of</td><td class="hl">a number of + 复数名词 + 复数动词(许多);the number of + 复数名词 + <b>单数</b>动词(……的数量)</td><td class="hl"><b>A number of</b> students <b>are</b> playing.<br><b>The number of</b> students <b>is</b> 500.</td></tr>
+    <tr><td>就远原则</td><td>主语 + with / as well as / together with / along with / except / but + 名词 → 跟<b>前面</b>主语</td><td>The teacher, as well as the students, <b>likes</b> the film.</td></tr>
+    <tr><td class="hl">时间/金钱/距离</td><td class="hl">当作一个整体 → 单数</td><td class="hl">Ten years <b>is</b> a long time. / Five dollars <b>is</b> enough.</td></tr>
+  </table>
+
+  <h3>15.2 倒装:哪些词开头必须倒?</h3>
+  <p><b>部分倒装</b> = 只把助动词/情态动词提到主语前(像一般疑问句);<b>完全倒装</b> = 整个谓语搬到主语前。</p>
+  <table class="tbl">
+    <tr><th>触发条件</th><th>倒装类型</th><th>例句</th></tr>
+    <tr><td class="hl">否定副词开头:never, seldom, hardly, little, not only, no sooner, by no means</td><td class="hl">部分倒装</td><td class="hl"><b>Never have I seen</b> such a beautiful sunset.<br><b>Not only does he</b> sing well, but he also dances.</td></tr>
+    <tr><td class="hl">only + 状语开头(写作金句)</td><td class="hl">部分倒装</td><td class="hl"><b>Only in this way can we</b> learn English well.</td></tr>
+    <tr><td>so / neither / nor 表"也是/也不是"</td><td>部分倒装</td><td>I like English. <b>So does he.</b> / He can't swim. <b>Neither can I.</b></td></tr>
+    <tr><td>so / such…that 的 so/such 部分提前</td><td>部分倒装</td><td><b>So fast did he run</b> that nobody caught him.</td></tr>
+    <tr><td>here / there / 地点状语开头</td><td>完全倒装</td><td><b>Here comes the bus!</b> / In front of the house <b>stands</b> a tall tree.</td></tr>
+  </table>
+  <div class="trap">❌ <b>经典陷阱:主语是代词时,完全倒装要"退回":</b><br>✅ Here <b>comes the bus</b>.(名词主语,倒)<br>✅ Here <b>he comes</b>.(代词主语,不倒!不能说 Here comes he)</div>
+
+  <h3>15.3 强调句:It is/was … that …</h3>
+  <div class="frm">It is / was + 被强调的部分(除谓语外)+ that / who(强调人)+ 句子其余部分</div>
+  <p class="sen">Tom <span class="cV">broke</span> the window <span class="cA">yesterday</span>.<br>→ <b>It was Tom that</b> broke the window.(强调人,可用 who)<br>→ <b>It was the window that</b> Tom broke.(强调物)<br>→ <b>It was yesterday that</b> Tom broke the window.(强调时间)</p>
+  <div class="tip">💡 <b>鉴别是不是强调句:把 It is/was … that 去掉</b>,剩下的词能还原成完整句子 → 是强调句。<br>It was <b>in Beijing</b> that I met her. → 去掉后:I met her in Beijing ✅ → 强调句。<br><b>强调谓语动词</b>用 do/does/did + 原形:I <b>did</b> tell you the truth. 我真的告诉过你。</div>
+  <div class="mn">四级写作三大保险句型:① <b>Only in this way can we…</b>(只有这样我们才能)② <b>It is … that …</b>(强调)③ <b>Not only … but also …</b>(倒装版加分)—— 倒装与强调句用对一处,作文档次立刻不同。</div>
+
+  <div class="quiz">
+    <div class="qt">✏️ 第 15 章小试牛刀</div>
+    <ol>
+      <li>Everyone ______(have)his own dream.<details><summary>查看答案</summary><p><b>has</b>。everyone 永远接单数动词。</p></details></li>
+      <li>Either you or he ______(be)to blame for the mistake.<details><summary>查看答案</summary><p><b>is</b>。either…or 就近原则,跟最近的主语 he。</p></details></li>
+      <li>改错:A number of students is playing on the playground.<details><summary>查看答案</summary><p>✅ A number of students <b>are</b> playing…"许多学生"用复数动词;the number of 才用单数。</p></details></li>
+      <li>改错:Five years are a long time.<details><summary>查看答案</summary><p>✅ Five years <b>is</b> a long time. 时间段作整体看,单数。</p></details></li>
+      <li>改错:Here comes he!<details><summary>查看答案</summary><p>✅ Here <b>he comes</b>! 主语是代词时不倒装。</p></details></li>
+      <li>把 I have never seen such a wonderful film. 改成以 Never 开头的倒装句。<details><summary>查看答案</summary><p><b>Never have I seen</b> such a wonderful film. 否定词开头 → 部分倒装(把 have 提到主语前)。</p></details></li>
+      <li>It was at 8 o'clock that the meeting began. 是强调句吗?<details><summary>查看答案</summary><p><b>是</b>。去掉 It was…that 后,The meeting began at 8 o'clock 仍是完整句子。</p></details></li>
+    </ol>
+  </div>
+</section>
+
+<div class="part"><b>PART 4 · 考前冲刺 🚑</b><span>第 16–17 章:高频错误集中扫雷 + 21 天通关计划。考前一周,把急救包过三遍。</span></div>
+
+<!-- ==================== 第16章 急救包 ==================== -->
+<section id="s16">
+  <h2><span class="num">16</span>四级易错急救包:32 个"送分变送命"点<span class="stars">考前必过三遍</span></h2>
+  <div class="tip">💡 用法:先遮住"正确句",自己改错,再对答案。<b>现在还错的,在旁边做记号,考前只看你打过记号的。</b></div>
+
+  <h3>🅰 时态类(10 个)</h3>
+  <div class="fix"><p class="bad">❌ I have seen this film last week.</p><p class="good">✅ I saw this film last week.</p><p class="why">last week / ago / yesterday 是明确过去时间,禁配现在完成时。</p></div>
+  <div class="fix"><p class="bad">❌ If it will rain tomorrow, we will stay home.</p><p class="good">✅ If it rains tomorrow, we will stay home.</p><p class="why">主将从现:if / when / as soon as 从句用一般现在时表将来。</p></div>
+  <div class="fix"><p class="bad">❌ He has joined the army for five years.</p><p class="good">✅ He has been in the army for five years.</p><p class="why">join / buy / die / leave 是非延续动词,不能接 for / since 时间段。</p></div>
+  <div class="fix"><p class="bad">❌ She has gone to Paris twice.</p><p class="good">✅ She has been to Paris twice.</p><p class="why">have been to 去过(已回);have gone to 去了(人还没回来,无法"两次")。</p></div>
+  <div class="fix"><p class="bad">❌ I am knowing the answer.</p><p class="good">✅ I know the answer.</p><p class="why">know / like / want / believe / belong 等状态动词不用进行时。</p></div>
+  <div class="fix"><p class="bad">❌ By the time he arrived, the meeting began.</p><p class="good">✅ By the time he arrived, the meeting had begun.</p><p class="why">"到达"是过去参照点,"开会"更早 → 过去完成时。</p></div>
+  <div class="fix"><p class="bad">❌ He said he will come the next day.</p><p class="good">✅ He said he would come the next day.</p><p class="why">主句过去时,宾语从句时态跟着退一步(时态呼应)。</p></div>
+  <div class="fix"><p class="bad">❌ Did you went there yesterday?</p><p class="good">✅ Did you go there yesterday?</p><p class="why">did 已承担"过去",后面的动词用原形;过去标志只用一次。</p></div>
+  <div class="fix"><p class="bad">❌ I used to getting up late.</p><p class="good">✅ I used to get up late.(过去常常)<br>✅ I am used to getting up late.(现在习惯于)</p><p class="why">used to do 过去常常;be used to doing 习惯于(to 是介词)。</p></div>
+  <div class="fix"><p class="bad">❌ Look! The bus leaves. Hurry up!</p><p class="good">✅ Look! The bus is leaving. Hurry up!</p><p class="why">Look! / Listen! 是现在进行时的信号词。</p></div>
+
+  <h3>🅱 从句类(6 个)</h3>
+  <div class="fix"><p class="bad">❌ Do you know where is the nearest bank?</p><p class="good">✅ Do you know where the nearest bank is?</p><p class="why">从句一律用陈述语序(主语在前,动词在后)。</p></div>
+  <div class="fix"><p class="bad">❌ Although he is rich, but he is not happy.</p><p class="good">✅ Although he is rich, he is not happy.</p><p class="why">although 和 but 只能二选一(同理 because 和 so)。</p></div>
+  <div class="fix"><p class="bad">❌ This is the house which I lived ten years ago.</p><p class="good">✅ This is the house where I lived ten years ago.</p><p class="why">lived 完整不缺宾语,缺地点状语 → where(或 which/that I lived in)。</p></div>
+  <div class="fix"><p class="bad">❌ This is the best film which I have ever seen.</p><p class="good">✅ This is the best film that I have ever seen.</p><p class="why">先行词被最高级 / 序数词 / the only 修饰时,关系词用 that。</p></div>
+  <div class="fix"><p class="bad">❌ I will call you as soon as he will come back.</p><p class="good">✅ I will call you as soon as he comes back.</p><p class="why">又是"主将从现",时间从句用一般现在时。</p></div>
+  <div class="fix"><p class="bad">❌ The news which he won the game excited us.</p><p class="good">✅ The news that he won the game excited us.</p><p class="why">从句完整、解释 news 的内容 → 同位语从句用 that(不可省、不用 which)。</p></div>
+
+  <h3>🅲 非谓语类(6 个)</h3>
+  <div class="fix"><p class="bad">❌ I'm looking forward to hear from you.</p><p class="good">✅ I'm looking forward to hearing from you.</p><p class="why">这里的 to 是介词,后面接 doing(写作超高频!)。</p></div>
+  <div class="fix"><p class="bad">❌ She suggested to go to the beach.</p><p class="good">✅ She suggested going to the beach.</p><p class="why">suggest / enjoy / finish / avoid / practice / mind 接 doing。</p></div>
+  <div class="fix"><p class="bad">❌ Walking in the street, a car hit me.</p><p class="good">✅ Walking in the street, I was hit by a car.</p><p class="why">悬垂结构:非谓语的逻辑主语必须是主句主语(车不会散步)。</p></div>
+  <div class="fix"><p class="bad">❌ He made me to laugh.</p><p class="good">✅ He made me laugh.</p><p class="why">make / let / have + 宾语 + 动词原形(但变被动后 to 要还原)。</p></div>
+  <div class="fix"><p class="bad">❌ I'm busy to prepare for the exam.</p><p class="good">✅ I'm busy preparing for the exam.</p><p class="why">be busy (in) doing;同类 have trouble (in) doing / spend time doing。</p></div>
+  <div class="fix"><p class="bad">❌ I remember to meet her in 2019.</p><p class="good">✅ I remember meeting her in 2019.</p><p class="why">记得"做过"(已发生)用 remember doing;记得"要做"才用 to do。</p></div>
+
+  <h3>🅳 冠词·介词类(5 个)</h3>
+  <div class="fix"><p class="bad">❌ He is playing the basketball.</p><p class="good">✅ He is playing basketball.(对比:play the piano)</p><p class="why">球类运动零冠词;乐器要加 the。</p></div>
+  <div class="fix"><p class="bad">❌ We will meet in Monday morning.</p><p class="good">✅ We will meet on Monday morning.</p><p class="why">具体某天的早中晚用 on;泛指早中晚才用 in。</p></div>
+  <div class="fix"><p class="bad">❌ We discussed about the plan.</p><p class="good">✅ We discussed the plan.</p><p class="why">discuss / enter / marry / reach / attend 及物,不加介词。</p></div>
+  <div class="fix"><p class="bad">❌ She is good in English.</p><p class="good">✅ She is good at English.</p><p class="why">固定搭配 be good at;同类 be interested in / be afraid of。</p></div>
+  <div class="fix"><p class="bad">❌ He reached to Beijing at last.</p><p class="good">✅ He reached Beijing at last. / arrived in Beijing.</p><p class="why">reach 及物直接接宾语;arrive 才需要介词(大地方 in,小地方 at)。</p></div>
+
+  <h3>🅴 一致性·其他类(5 个)</h3>
+  <div class="fix"><p class="bad">❌ Everyone have their own dreams.</p><p class="good">✅ Everyone has his own dream.</p><p class="why">everyone / everybody / nobody / each 接单数动词。</p></div>
+  <div class="fix"><p class="bad">❌ The number of students are increasing.</p><p class="good">✅ The number of students is increasing.</p><p class="why">the number of(……的数量)单数;a number of(许多)才配复数。</p></div>
+  <div class="fix"><p class="bad">❌ This room is more bigger than that one.</p><p class="good">✅ This room is much bigger than that one.</p><p class="why">比较级不能再加 more;very 也不能修饰比较级,要用 much / far / even。</p></div>
+  <div class="fix"><p class="bad">❌ Ten years are a long time.</p><p class="good">✅ Ten years is a long time.</p><p class="why">时间、金钱、距离作整体 → 单数动词。</p></div>
+  <div class="fix"><p class="bad">❌ You mustn't hurry. There is plenty of time.</p><p class="good">✅ You needn't hurry. There is plenty of time.</p><p class="why">mustn't = 禁止;"不必"是 needn't / don't have to。</p></div>
+</section>
+
+<!-- ==================== 第17章 21天计划 ==================== -->
+<section id="s17">
+  <h2><span class="num">17</span>一页纸语法地图 + 21 天通关计划<span class="stars">照着执行就行</span></h2>
+
+  <h3>17.1 全书浓缩成一页(考前最后看这个)</h3>
+  <ol>
+    <li><b>句子观:</b>句子 = 主谓骨架 + 定状装饰;一个简单句<b>只有一个谓语动词</b>,多出来的动词戴帽子(to do / doing / done)或进从句。</li>
+    <li><b>五大句型:</b>主谓 / 主谓宾 / 主系表 / 主谓双宾 / 主谓宾补——长难句剥掉装饰就是其中之一。</li>
+    <li><b>时态观:</b>时态 = 时间 × 状态。9 个核心时态,每个都是时间轴上的一幅画:<b>信号词直接决定时态</b>(yesterday→did;since→have done;now→be doing;tomorrow→will)。</li>
+    <li><b>被动语态:</b>be + done,be 扛时态、done 不动;不及物动词没有被动。</li>
+    <li><b>情态动词:</b>后接原形;+ have done 推测过去(must have 一定做了 / can't have 不可能 / should have 本应该)。</li>
+    <li><b>非谓语:</b>to do 目的将来 / doing 主动进行 / done 被动完成;看主句主语和它的主被动关系来选。</li>
+    <li><b>三大从句:</b>定语从句当形容词(关系词=连接+指代+成分);名词性从句当名词(必须陈述语序!);状语从句当副词(主将从现!because/so、although/but 不共存)。</li>
+    <li><b>虚拟语气:</b>与事实相反,动词退一步(现在→过去式;过去→had done);suggest 建议 +(should) do。</li>
+    <li><b>一致性:</b>everyone 单数;either…or 就近;with/as well as 就远;the number of 单数;a number of 复数;十年五美元整体单数。</li>
+    <li><b>倒装强调:</b>否定词、only+状语开头 → 部分倒装;It is…that 强调句(去掉后句子仍完整);Only in this way can we… 写作万能。</li>
+  </ol>
+
+  <h3>17.2 21 天通关计划表</h3>
+  <table class="tbl">
+    <tr><th>阶段</th><th>天数</th><th>学习任务</th><th>当口过关标准</th></tr>
+    <tr><td rowspan="2">第 1 周<br>打地基</td><td>Day 1–2</td><td>第 1–2 章:词性、成分、五大句型</td><td>能拆出任意简单句的主谓宾</td></tr>
+    <tr><td>Day 3–5</td><td>第 3–7 章:名词冠词 → 代词形副 → 介词(每天约 2 章)</td><td>不规则名词、比较级变化表默写过关</td></tr>
+    <tr><td>第 1 周</td><td>Day 6–7</td><td>第 8 章动词变形 + 前面错题重做</td><td>40 个不规则动词 10 分钟默完</td></tr>
+    <tr><td rowspan="3">第 2 周<br>时态攻坚<br>(最重要)</td><td>Day 8–9</td><td>第 9 章前半:一般现在 / 过去 / 将来 / 两种进行</td><td>5 张时间轴能默画 3 张</td></tr>
+    <tr><td>Day 10–11</td><td>第 9 章后半:三种完成时 + 决策树 + 8 张对比卡</td><td>不看答案说出"现在完成 vs 一般过去"区别</td></tr>
+    <tr><td>Day 12–14</td><td>第 10 章被动 + 第 11 章情态 + 时态综合自测</td><td>第 9 章小测全对</td></tr>
+    <tr><td rowspan="4">第 3 周<br>高阶+实战</td><td>Day 15–16</td><td>第 12 章非谓语(决策树 + to 是介词的清单)</td><td>doing/done 判断 10 题全对</td></tr>
+    <tr><td>Day 17–18</td><td>第 13 章三大从句 + 用四步法解剖 2 个真题长难句</td><td>能独立拆一篇阅读的首句</td></tr>
+    <tr><td>Day 19–20</td><td>第 14 章虚拟 + 第 15 章一致倒装强调</td><td>if 三件套默写;写作句型各造 1 句</td></tr>
+    <tr><td>Day 21</td><td>第 16 章急救包 32 条大扫雷 + 全书小测重做</td><td>带记号的错点全部清零</td></tr>
+  </table>
+  <div class="tip">💡 <b>每天 30 分钟黄金配比:</b>15 分钟学新内容 → 10 分钟重做昨天的错题 → 5 分钟把当天的公式框抄一遍。<b>抄写公式框</b>是防遗忘的核心动作。</div>
+
+  <h3>17.3 通关之后:语法怎样才不会"退回去"?</h3>
+  <ul>
+    <li><b>在翻译里用:</b>每天练 2 句四级真题翻译,写完用「第 1.4 节数动词法」自检。</li>
+    <li><b>在阅读里认:</b>每周精读 1 篇四级阅读,用「13.4 四步解剖法」拆 3 个长难句。</li>
+    <li><b>在写作里验:</b>每月写 1 篇作文,刻意用上:从句、非谓语、倒装/强调句各一处。</li>
+    <li><b>定期回访:</b>第 9 章(时态)和第 12、13 章(非谓语/从句)每两周回看一次对比卡——这三章是记忆的"重灾区",也是四级语法的全部命脉。</li>
+  </ul>
+  <div class="mn">最后送你一句话:语法的尽头不是背诵,而是<b>条件反射</b>。当看到 since 2020 就手痒写 have done 时,你就再也不需要这份教程了。加油!🎓</div>
+</section>
+</div>
+
+<footer class="foot">
+  🌱 语言不是知识,是肌肉记忆 —— 看懂只是 20%,剩下 80% 来自反复使用。<br>
+  把本页保存到手机,每天按「21 天计划」推进;遇到混的时候,回来翻「对比卡」和「急救包」。<br>
+  加油,四级只是起点。💪
+</footer>
+
+<button id="backtop" title="回到顶部">↑</button>
+
+<script>
+(function(){
+  var bar=document.getElementById('progress'),bt=document.getElementById('backtop');
+  var links=Array.prototype.slice.call(document.querySelectorAll('#sidebar a,#topnav a'));
+  var secs=Array.prototype.slice.call(document.querySelectorAll('section'));
+  function onScroll(){
+    var h=document.documentElement;
+    var max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?h.scrollTop/max*100:0)+'%';
+    bt.style.display=h.scrollTop>600?'block':'none';
+    var cur='';
+    for(var i=0;i<secs.length;i++){if(secs[i].getBoundingClientRect().top<140)cur=secs[i].id;}
+    links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur);});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  bt.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  onScroll();
+})();
+</script>
+</body>
+</html>
