@@ -41,242 +41,264 @@
 </script>
 
 <script>
-// @ts-nocheck 存量浏览器 JS 未做类型治理(69 处 possibly-null/implicit-any),先静默保门禁可用
-(function initVideoBg() {
-  const videoA = document.getElementById('bgVideoA');
-  const videoB = document.getElementById('bgVideoB');
-  const stack = document.getElementById('bgVideoStack');
-  const overlay = document.getElementById('bgOverlay');
-  const placeholder = document.getElementById('bgVideoPlaceholder');
-  const lab = document.getElementById('bgLab');
-  const net = document.getElementById('bgLabNet');
-  const btn = document.getElementById('bgToggle');
+// @ts-nocheck
+(function initVideoBgModule() {
+  const MODES = ['video', 'lab', 'off'];
+  const LABELS = { video: '视频', lab: '实验一 · 极光', off: '静态' };
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const conn = navigator.connection || {};
   const saveData = !!conn.saveData;
   const slowNet = conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g';
-  // 三态循环:视频 → 实验一极光 → 静态。
-  // 视频约 750KB,移动端也放开;省流模式 / 减少动态默认停在静态占位
-  const MODES = ['video', 'lab', 'off'];
-  const LABELS = { video: '视频', lab: '实验一 · 极光', off: '静态' };
-  let mode = (!reduced && !saveData && !slowNet) ? 'video' : 'off';
-  let active = videoA;
-  let standby = videoB;
-  let started = false;
 
-  function onTimeUpdate() {
-    if (this !== active || !started) return;
-    const dur = active.duration;
-    if (!dur || !isFinite(dur)) return;
-    const remain = dur - active.currentTime;
-
-    // 剩余 < 0.3s 时预启动 standby
-    if (remain < 0.3 && remain > 0.05 && standby.paused) {
-      standby.currentTime = 0;
-      standby.play().catch(() => {});
-    }
-
-    // A 到达末尾：瞬间切换层级，A 暂停并重置为下一轮备胎
-    if (remain <= 0.05 || active.ended) {
-      active.classList.remove('active');
-      standby.classList.add('active');
-      active.pause();
-      active.currentTime = 0;
-      // 交换角色
-      const tmp = active;
-      active = standby;
-      standby = tmp;
-    }
+  // 全局跨路由保存当前选中的背景模式
+  if (!window.__currentBgMode) {
+    window.__currentBgMode = (!reduced && !saveData && !slowNet) ? 'video' : 'off';
   }
 
-  videoA.addEventListener('timeupdate', onTimeUpdate);
-  videoB.addEventListener('timeupdate', onTimeUpdate);
+  let cleanupCurrentBg = null;
 
-  // 首帧可用或真正开播就撤掉静态占位：自动播放被拦时也能先把视频首帧顶到最前，
-  // 不依赖 play() promise 是否兑现，避免严格浏览器下占位残留盖在视频上
-  function onReadyToShow() {
-    if (mode === 'video' && placeholder) placeholder.classList.add('fade-out');
-  }
-  ['playing', 'loadeddata'].forEach(evt => {
-    videoA.addEventListener(evt, onReadyToShow);
-    videoB.addEventListener(evt, onReadyToShow);
-  });
+  function setup() {
+    if (cleanupCurrentBg) {
+      cleanupCurrentBg();
+      cleanupCurrentBg = null;
+    }
 
-  let playFailed = false;
-  let recoveryBound = false;
+    const videoA = document.getElementById('bgVideoA');
+    const videoB = document.getElementById('bgVideoB');
+    const stack = document.getElementById('bgVideoStack');
+    const overlay = document.getElementById('bgOverlay');
+    const placeholder = document.getElementById('bgVideoPlaceholder');
+    const lab = document.getElementById('bgLab');
+    const net = document.getElementById('bgLabNet');
+    const btn = document.getElementById('bgToggle');
 
-  function bindAutoplayRecovery() {
-    if (recoveryBound) return;
-    recoveryBound = true;
-    const recover = () => {
-      if (mode === 'video' && active.paused) {
+    if (!videoA || !videoB || !stack || !overlay || !lab) return;
+
+    let active = videoA;
+    let standby = videoB;
+    let started = false;
+    let playFailed = false;
+    let recoveryBound = false;
+
+    function onTimeUpdate() {
+      if (this !== active || !started) return;
+      const dur = active.duration;
+      if (!dur || !isFinite(dur)) return;
+      const remain = dur - active.currentTime;
+
+      // 剩余 < 0.3s 时预启动 standby
+      if (remain < 0.3 && remain > 0.05 && standby.paused) {
+        standby.currentTime = 0;
+        standby.play().catch(() => {});
+      }
+
+      // A 到达末尾：瞬间切换层级，A 暂停并重置为下一轮备胎
+      if (remain <= 0.05 || active.ended) {
+        active.classList.remove('active');
+        standby.classList.add('active');
+        active.pause();
+        active.currentTime = 0;
+        const tmp = active;
+        active = standby;
+        standby = tmp;
+      }
+    }
+
+    function onReadyToShow() {
+      if (window.__currentBgMode === 'video' && placeholder) {
+        placeholder.classList.add('fade-out');
+      }
+    }
+
+    videoA.addEventListener('timeupdate', onTimeUpdate);
+    videoB.addEventListener('timeupdate', onTimeUpdate);
+    ['playing', 'loadeddata'].forEach(evt => {
+      videoA.addEventListener(evt, onReadyToShow);
+      videoB.addEventListener(evt, onReadyToShow);
+    });
+
+    function recover() {
+      if (window.__currentBgMode === 'video' && active && active.paused) {
         active.play().then(() => {
           playFailed = false;
           if (placeholder) placeholder.classList.add('fade-out');
         }).catch(() => {});
       }
-    };
-    // 自动播放被浏览器拦截时，第一次任意交互立即补播，保证视频背景成为首屏展示
-    ['pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(type =>
-      window.addEventListener(type, recover, { once: true, passive: true }));
-  }
-
-  function tryPlay() {
-    if (mode !== 'video') return;
-    active.play().then(() => {
-      playFailed = false;
-      if (placeholder) placeholder.classList.add('fade-out');
-    }).catch(() => {
-      // 自动播放被拦：保留静态占位，等首次交互补播；不要假装成功直接淡出占位
-      playFailed = true;
-      bindAutoplayRecovery();
-    });
-  }
-
-  function start() {
-    if (started) return;
-    started = true;
-    active = videoA;
-    standby = videoB;
-    active.classList.add('active');
-    standby.classList.remove('active');
-    active.currentTime = 0;
-    tryPlay();
-  }
-
-  function stop() {
-    started = false;
-    playFailed = false;
-    recoveryBound = false;
-    videoA.pause();
-    videoB.pause();
-    videoA.classList.remove('active');
-    videoB.classList.remove('active');
-    if (placeholder) placeholder.classList.remove('fade-out');
-  }
-
-  // ═══ 实验一的粒子星网(移植自 /lab/exp-01-motion.html)═══
-  // 粒子数按屏宽收敛,且只在极光模式 + 页面可见时跑;切走立刻停 rAF,
-  // 免得和首页的 GSAP 滚动动画抢帧
-  // 粒子数本就按屏宽收敛(375px 下只有 ~17 个),手机跑得动
-  const netOk = !!net && !reduced;
-  let netCtx = null, netRaf = 0, netPts = [], netW = 0, netH = 0, netDpr = 1;
-  let netDot = 'rgba(200,205,240,.55)', netLine = '139,123,251';
-  const ptr = { x: -9999, y: -9999 };
-
-  // 明暗两套配色写在 CSS 变量里,主题一换就重读,不必每帧去查样式
-  function netColors() {
-    const cs = getComputedStyle(document.documentElement);
-    netDot = cs.getPropertyValue('--lab-net-dot').trim() || netDot;
-    netLine = cs.getPropertyValue('--lab-net-line').trim() || netLine;
-  }
-
-  function netResize() {
-    netDpr = Math.min(window.devicePixelRatio || 1, 2);
-    netW = net.width = window.innerWidth * netDpr;
-    netH = net.height = window.innerHeight * netDpr;
-    net.style.width = window.innerWidth + 'px';
-    net.style.height = window.innerHeight + 'px';
-    const n = Math.min(72, Math.floor(window.innerWidth / 22));
-    netPts = [];
-    for (let i = 0; i < n; i++) netPts.push({
-      x: Math.random() * netW, y: Math.random() * netH,
-      vx: (Math.random() - 0.5) * 0.25 * netDpr,
-      vy: (Math.random() - 0.5) * 0.25 * netDpr,
-      r: (Math.random() * 1.6 + 0.6) * netDpr
-    });
-  }
-
-  function onPtr(e) { ptr.x = e.clientX * netDpr; ptr.y = e.clientY * netDpr; }
-
-  function netFrame() {
-    netRaf = requestAnimationFrame(netFrame);
-    const x = netCtx, DIST = 130 * netDpr, R = 150 * netDpr;
-    x.clearRect(0, 0, netW, netH);
-    x.fillStyle = netDot;
-    for (const p of netPts) {
-      const dx = p.x - ptr.x, dy = p.y - ptr.y, d = Math.hypot(dx, dy);
-      if (d < R && d > 0) { const f = (1 - d / R) * 1.4; p.vx += dx / d * f * 0.16; p.vy += dy / d * f * 0.16; }
-      p.vx *= 0.99; p.vy *= 0.99; p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > netW) p.vx *= -1;
-      if (p.y < 0 || p.y > netH) p.vy *= -1;
-      x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fill();
     }
-    x.lineWidth = netDpr;
-    for (let i = 0; i < netPts.length; i++) {
-      for (let j = i + 1; j < netPts.length; j++) {
-        const a = netPts[i], b = netPts[j], dd = Math.hypot(a.x - b.x, a.y - b.y);
-        if (dd < DIST) {
-          x.strokeStyle = `rgba(${netLine},${(1 - dd / DIST) * 0.28})`;
-          x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke();
+
+    function bindAutoplayRecovery() {
+      if (recoveryBound) return;
+      recoveryBound = true;
+      ['pointerdown', 'touchstart', 'keydown', 'scroll', 'wheel'].forEach(type =>
+        window.addEventListener(type, recover, { once: true, passive: true }));
+    }
+
+    function tryPlay() {
+      if (window.__currentBgMode !== 'video') return;
+      active.play().then(() => {
+        playFailed = false;
+        if (placeholder) placeholder.classList.add('fade-out');
+      }).catch(() => {
+        playFailed = true;
+        bindAutoplayRecovery();
+      });
+    }
+
+    function start() {
+      if (started) return;
+      started = true;
+      active = videoA;
+      standby = videoB;
+      active.classList.add('active');
+      standby.classList.remove('active');
+      active.currentTime = 0;
+      tryPlay();
+    }
+
+    function stop() {
+      started = false;
+      playFailed = false;
+      recoveryBound = false;
+      videoA.pause();
+      videoB.pause();
+      videoA.classList.remove('active');
+      videoB.classList.remove('active');
+      if (placeholder) placeholder.classList.remove('fade-out');
+    }
+
+    // ═══ 实验一粒子星网 ═══
+    const netOk = !!net && !reduced;
+    let netCtx = null, netRaf = 0, netPts = [], netW = 0, netH = 0, netDpr = 1;
+    let netDot = 'rgba(200,205,240,.55)', netLine = '139,123,251';
+    const ptr = { x: -9999, y: -9999 };
+
+    function netColors() {
+      const cs = getComputedStyle(document.documentElement);
+      netDot = cs.getPropertyValue('--lab-net-dot').trim() || netDot;
+      netLine = cs.getPropertyValue('--lab-net-line').trim() || netLine;
+    }
+
+    function netResize() {
+      if (!net) return;
+      netDpr = Math.min(window.devicePixelRatio || 1, 2);
+      netW = net.width = window.innerWidth * netDpr;
+      netH = net.height = window.innerHeight * netDpr;
+      net.style.width = window.innerWidth + 'px';
+      net.style.height = window.innerHeight + 'px';
+      const n = Math.min(72, Math.floor(window.innerWidth / 22));
+      netPts = [];
+      for (let i = 0; i < n; i++) netPts.push({
+        x: Math.random() * netW, y: Math.random() * netH,
+        vx: (Math.random() - 0.5) * 0.25 * netDpr,
+        vy: (Math.random() - 0.5) * 0.25 * netDpr,
+        r: (Math.random() * 1.6 + 0.6) * netDpr
+      });
+    }
+
+    function onPtr(e) { ptr.x = e.clientX * netDpr; ptr.y = e.clientY * netDpr; }
+
+    function netFrame() {
+      netRaf = requestAnimationFrame(netFrame);
+      if (!netCtx) return;
+      const x = netCtx, DIST = 130 * netDpr, R = 150 * netDpr;
+      x.clearRect(0, 0, netW, netH);
+      x.fillStyle = netDot;
+      for (const p of netPts) {
+        const dx = p.x - ptr.x, dy = p.y - ptr.y, d = Math.hypot(dx, dy);
+        if (d < R && d > 0) { const f = (1 - d / R) * 1.4; p.vx += dx / d * f * 0.16; p.vy += dy / d * f * 0.16; }
+        p.vx *= 0.99; p.vy *= 0.99; p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > netW) p.vx *= -1;
+        if (p.y < 0 || p.y > netH) p.vy *= -1;
+        x.beginPath(); x.arc(p.x, p.y, p.r, 0, 7); x.fill();
+      }
+      x.lineWidth = netDpr;
+      for (let i = 0; i < netPts.length; i++) {
+        for (let j = i + 1; j < netPts.length; j++) {
+          const a = netPts[i], b = netPts[j], dd = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dd < DIST) {
+            x.strokeStyle = `rgba(${netLine},${(1 - dd / DIST) * 0.28})`;
+            x.beginPath(); x.moveTo(a.x, a.y); x.lineTo(b.x, b.y); x.stroke();
+          }
         }
       }
     }
-  }
 
-  function netStart() {
-    if (!netOk || netRaf) return;
-    if (!netCtx) {
-      netCtx = net.getContext('2d');
-      netColors();
-      netResize();
-      window.addEventListener('resize', netResize);
-      new MutationObserver(netColors).observe(document.documentElement, {
-        attributes: true, attributeFilter: ['data-theme']
-      });
+    function netStart() {
+      if (!netOk || netRaf) return;
+      if (!netCtx) {
+        netCtx = net.getContext('2d');
+        netColors();
+        netResize();
+        window.addEventListener('resize', netResize);
+      }
+      window.addEventListener('pointermove', onPtr, { passive: true });
+      netRaf = requestAnimationFrame(netFrame);
     }
-    window.addEventListener('pointermove', onPtr, { passive: true });
-    netRaf = requestAnimationFrame(netFrame);
-  }
 
-  function netStop() {
-    if (netRaf) { cancelAnimationFrame(netRaf); netRaf = 0; }
-    window.removeEventListener('pointermove', onPtr);
-    if (netCtx) netCtx.clearRect(0, 0, netW, netH);
-  }
+    function netStop() {
+      if (netRaf) { cancelAnimationFrame(netRaf); netRaf = 0; }
+      window.removeEventListener('pointermove', onPtr);
+      if (netCtx) netCtx.clearRect(0, 0, netW, netH);
+    }
 
-  function apply() {
-    const isVideo = mode === 'video';
-    const isLab = mode === 'lab';
-    stack.classList.toggle('on', isVideo);
-    lab.classList.toggle('on', isLab);
-    // 重遮罩只配视频:视频画面又亮又杂,不重压正文读不了;
-    // 极光是暗底柔光,自带的轻渐变(.bg-lab::after)就够了,套重遮罩会浑浊发灰
-    overlay.classList.toggle('on', isVideo);
-    if (isVideo) start(); else stop();
-    if (isLab) netStart(); else netStop();
+    function apply() {
+      const mode = window.__currentBgMode;
+      const isVideo = mode === 'video';
+      const isLab = mode === 'lab';
+      stack.classList.toggle('on', isVideo);
+      lab.classList.toggle('on', isLab);
+      overlay.classList.toggle('on', isVideo);
+      if (isVideo) start(); else stop();
+      if (isLab) netStart(); else netStop();
+      if (btn) {
+        btn.style.opacity = mode === 'off' ? '0.45' : '1';
+        btn.setAttribute('aria-label', `背景：${LABELS[mode]}（点击切换）`);
+        btn.title = `背景：${LABELS[mode]}`;
+      }
+    }
+
+    videoA.addEventListener('canplay', () => {
+      if (window.__currentBgMode === 'video' && !started) apply();
+    });
+
     if (btn) {
-      btn.style.opacity = mode === 'off' ? '0.45' : '1';
-      btn.setAttribute('aria-label', `背景：${LABELS[mode]}（点击切换）`);
-      btn.title = `背景：${LABELS[mode]}`;
+      btn.onclick = () => {
+        const curIdx = MODES.indexOf(window.__currentBgMode);
+        window.__currentBgMode = MODES[(curIdx + 1) % MODES.length];
+        apply();
+      };
     }
-  }
 
-  let loaded = 0;
-  function onLoaded() {
-    loaded++;
-    if (loaded >= 1 && mode === 'video' && !started) apply();
-  }
-  videoA.addEventListener('loadeddata', onLoaded);
-  videoB.addEventListener('loadeddata', onLoaded);
-  videoA.addEventListener('canplay', () => { if (mode === 'video' && !started) apply(); });
-
-  if (btn) btn.addEventListener('click', () => {
-    mode = MODES[(MODES.indexOf(mode) + 1) % MODES.length];
     apply();
-  });
+
+    cleanupCurrentBg = () => {
+      videoA.removeEventListener('timeupdate', onTimeUpdate);
+      videoB.removeEventListener('timeupdate', onTimeUpdate);
+      stop();
+      netStop();
+    };
+  }
+
+  // 绑定 Astro 5 视图过渡生命周期
+  document.addEventListener('astro:page-load', setup);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
 
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-      videoA.pause();
-      videoB.pause();
-      netStop();
+      const vA = document.getElementById('bgVideoA');
+      const vB = document.getElementById('bgVideoB');
+      if (vA) vA.pause();
+      if (vB) vB.pause();
     } else {
-      if (mode === 'video' && started) tryPlay();
-      if (mode === 'lab') netStart();
+      const vA = document.getElementById('bgVideoA');
+      if (window.__currentBgMode === 'video' && vA && vA.paused) {
+        vA.play().catch(() => {});
+      }
     }
   });
-
-  apply();
 })();
 </script>
