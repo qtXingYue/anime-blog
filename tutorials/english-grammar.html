@@ -117,10 +117,28 @@ b{color:#111827}
 .muted{color:var(--muted);font-size:13.5px}
 .foot{text-align:center;color:var(--muted);font-size:13.5px;padding:26px 10px 10px;line-height:2}
 #backtop{position:fixed;right:26px;bottom:26px;width:46px;height:46px;border-radius:50%;background:var(--brand);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:0 6px 18px rgba(79,110,247,.4);display:none;z-index:70}
-#backtop:hover{background:#3b5bdb}
+table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media (max-width:1080px){
   #sidebar{display:none}main{margin-left:0}#topnav{display:flex}
   section{padding:22px 18px}.hero{padding:32px 22px}.hero h1{font-size:25px}
+}
+@media (max-width:680px){
+  .vs{display:flex;flex-direction:column;border-radius:14px}
+  .vs .side.l{border-right:none;border-bottom:1px dashed #c7d2fe}
+  .vs .mid{padding:4px 12px;font-size:13px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .vs .side{padding:12px 14px}
+  .grid2,.grid3{grid-template-columns:1fr;gap:10px}
+  #topnav{scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:8px 10px}
+  #topnav::-webkit-scrollbar{display:none}
+}
+@media (max-width:540px){
+  main{padding:0}
+  section{padding:18px 12px;border-radius:14px;margin-bottom:14px}
+  .hero{padding:24px 16px;border-radius:14px}
+  .hero h1{font-size:22px}
+  .quiz{padding:14px 14px;border-radius:12px}
+  .quiz ol{margin-left:18px}
+  #backtop{right:16px;bottom:20px;width:40px;height:40px;font-size:16px}
 }
 @media print{#sidebar,#topnav,#backtop,#progress{display:none}main{margin:0}section{box-shadow:none;page-break-inside:avoid}}
 </style>
