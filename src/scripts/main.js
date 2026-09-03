@@ -1,10 +1,12 @@
 // ============================================================
 //  QT新月 作品集 — main.js
+//  全面适配 Astro 5 ClientRouter (View Transitions SPA 路由生命周期)
 // ============================================================
 
 import { bindCardFx, bindGlowFocus } from './card-fx.js';
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const CSS_SCROLL_DRIVEN = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
 
 // ═══ TURBO TOP LOADER (毫秒级顶部极速光感进度条) ═══
 function getOrCreateTurboLoader() {
@@ -30,18 +32,15 @@ document.addEventListener('astro:page-load', () => {
   }, 380);
 });
 
-// ═══ MOBILE DRAWER ═══
-(function initDrawer() {
+// ═══ MOBILE DRAWER (移动端汉堡菜单) ═══
+function initDrawer() {
   const hamburger = document.getElementById('hamburger');
   const drawer = document.getElementById('mobileDrawer');
   const backdrop = document.getElementById('drawerBackdrop');
   const closeBtn = document.getElementById('drawerClose');
   if (!hamburger || !drawer) return;
 
-  let scrollY = 0;
-
   function openDrawer() {
-    scrollY = window.scrollY;
     hamburger.classList.add('open');
     hamburger.setAttribute('aria-expanded', 'true');
     drawer.classList.add('open');
@@ -57,65 +56,51 @@ document.addEventListener('astro:page-load', () => {
     document.body.style.overflow = '';
   }
 
-  hamburger.addEventListener('click', () => {
+  hamburger.onclick = () => {
     if (drawer.classList.contains('open')) closeDrawer();
     else openDrawer();
-  });
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+  };
+  if (closeBtn) closeBtn.onclick = closeDrawer;
+  if (backdrop) backdrop.onclick = closeDrawer;
 
   drawer.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
+    link.onclick = () => {
       if (drawer.classList.contains('open')) closeDrawer();
-    });
+    };
   });
+}
 
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && drawer.classList.contains('open')) {
-      closeDrawer();
-      hamburger.focus();
-    }
+// ═══ ENTRANCE ANIMATION (首屏文字逐行浮现) ═══
+function runEntrance() {
+  const elements = document.querySelectorAll('.load-reveal');
+  if (!elements.length) return;
+  elements.forEach((el, i) => {
+    const delay = Number(el.dataset.loadDelay || i * 80);
+    window.setTimeout(() => el.classList.add('entered'), 50 + delay);
   });
-})();
-
-// ═══ ENTRANCE ANIMATION ═══
-(function initEntrance() {
-  function runEntrance() {
-    document.querySelectorAll('.load-reveal').forEach((el, i) => {
-      const delay = Number(el.dataset.loadDelay || i * 100);
-      window.setTimeout(() => el.classList.add('entered'), 180 + delay);
-    });
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(runEntrance));
-  } else {
-    requestAnimationFrame(runEntrance);
-  }
-  window.addEventListener('pageshow', () => {
-    document.querySelectorAll('.load-reveal').forEach(el => el.classList.add('entered'));
-  });
-})();
+}
 
 // ═══ SCROLL PROGRESS + COMPACT HEADER ═══
-const CSS_SCROLL_DRIVEN = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
-const progressBar = document.getElementById('scrollProgress');
-const siteHeader = document.getElementById('siteHeader');
-const heroVisual = document.querySelector('.hero-visual');
-
 function updateScroll() {
   const scrollTop = window.scrollY;
   const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-  // 支持 CSS scroll-driven 的浏览器由样式表 scaleX 驱动(合成器线程),JS 不再写 width
-  if (progressBar && !CSS_SCROLL_DRIVEN) progressBar.style.width = `${scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0}%`;
-  if (siteHeader) siteHeader.classList.toggle('scrolled', scrollTop > 80);
+  const progressBar = document.getElementById('scrollProgress');
+  const siteHeader = document.getElementById('siteHeader');
+  const heroVisual = document.querySelector('.hero-visual');
+
+  if (progressBar && !CSS_SCROLL_DRIVEN) {
+    progressBar.style.width = `${scrollable > 0 ? Math.min((scrollTop / scrollable) * 100, 100) : 0}%`;
+  }
+  if (siteHeader) {
+    siteHeader.classList.toggle('scrolled', scrollTop > 80);
+  }
   if (!prefersReducedMotion && scrollTop < window.innerHeight && heroVisual) {
     heroVisual.style.transform = `translateY(${scrollTop * -0.08}px)`;
   }
 }
 window.addEventListener('scroll', updateScroll, { passive: true });
-updateScroll();
 
-// ═══ REVEAL ON SCROLL (IntersectionObserver — reliable mechanism) ═══
+// ═══ REVEAL ON SCROLL (IntersectionObserver 滚动视差显现) ═══
 function initReveal() {
   const revealElements = document.querySelectorAll('.reveal, [data-reveal]');
 
@@ -186,9 +171,8 @@ function initReveal() {
 // ═══ COUNT-UP for stat numbers ═══
 function countUp(el) {
   const target = el.dataset.countTarget || el.textContent;
-  // 提取数字部分和后缀
   const match = target.match(/^(\d+)(.*)$/);
-  if (!match) return; // 非纯数字（如"省二等"、"HCCDA"）不动画
+  if (!match) return;
   const end = parseInt(match[1], 10);
   const suffix = match[2];
   const duration = 1200;
@@ -204,9 +188,6 @@ function countUp(el) {
 
 // ═══ SKILL TAGS STAGGER ═══
 function initSkillTags() {
-  // 只处理技能区自己的标签。早先这里选的是全站 .skill-tag，
-  // 而下面的 observer 只观察 .skill-category——项目卡里的技术标签
-  // 被设成透明后永远没人恢复，线上一直处于隐形状态。
   const staggerTags = document.querySelectorAll('.skill-category .skill-tag');
 
   if (prefersReducedMotion) {
@@ -241,24 +222,24 @@ function initSkillTags() {
 }
 
 // ═══ LINE-MASK TITLE REVEAL (行遮罩式标题入场) ═══
-// 把 .section-title 的文字包进 overflow:hidden 遮罩,入视口时整行从下方滑入。
-// 与 .reveal 整块淡入互斥:被处理的标题摘掉 reveal 类,由遮罩接管入场。
-const titleMaskObserver = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('lm-in');
-      titleMaskObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.5 }) : null;
-
+let titleMaskObserver = null;
 function initTitleMasks() {
-  if (prefersReducedMotion || !titleMaskObserver) return;
+  if (prefersReducedMotion || !('IntersectionObserver' in window)) return;
+  if (!titleMaskObserver) {
+    titleMaskObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('lm-in');
+          titleMaskObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+  }
+
   document.querySelectorAll('.section-title').forEach(el => {
     if (el.dataset.maskDone) return;
     const text = (el.textContent || '').trim();
     if (!text || el.querySelector('.lm-inner')) { el.dataset.maskDone = '1'; return; }
-    // 标题都是纯文本模板输出,这里才敢回填 innerHTML
     el.classList.remove('reveal', 'visible');
     el.classList.add('lm-title');
     el.innerHTML = `<span class="lm-wrap"><span class="lm-inner">${text}</span></span>`;
@@ -267,29 +248,7 @@ function initTitleMasks() {
   });
 }
 
-// ═══ INITIALIZE AFTER LAYOUT IS READY ═══
-// ES modules execute after DOM parsing, but we need 2 rAFs to ensure layout is complete
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    initTitleMasks();
-    initReveal();
-    initSkillTags();
-  });
-});
-
-// Safety net: if still not visible after 2s, force show all reveal elements
-setTimeout(() => {
-  document.querySelectorAll('.reveal:not(.visible), [data-reveal]:not(.visible)').forEach(el => {
-    if (!el.closest('.projects-stack')) {
-      el.classList.add('visible');
-      el.style.opacity = '';
-      el.style.transform = '';
-      el.style.filter = '';
-    }
-  });
-}, 2000);
-
-// ═══ GSAP + ScrollTrigger (for advanced animations only) ═══
+// ═══ GSAP + ScrollTrigger (粘性卡片堆叠与进度追踪) ═══
 const hasGsap = !!(window.gsap && window.ScrollTrigger);
 if (hasGsap) {
   gsap.registerPlugin(ScrollTrigger);
@@ -299,31 +258,18 @@ function getShouldStack() {
   return !window.matchMedia('(max-width: 768px), (prefers-reduced-motion: reduce)').matches;
 }
 
-// sticky 卡片吸顶后停在视口的哪个高度（CSS 里按 --card-i 逐层错开），
-// 堆叠动画的起止点要拿它对齐，写死百分比在不同视口高度下会错位
 const stickyTopOf = el => parseFloat(getComputedStyle(el).top) || 0;
 
-// ═══ STICKY PROJECT CARD STACKING + PROGRESS WIDGET ═══
-// 参与粘性堆叠的只有特写级大卡；进度器的锚点还额外包含两条 band-rule，
-// 这样滚过专题区与索引区时挂件不会空转。DOM 顺序即锚点顺序，天然单调。
-const stackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
-const progressAnchors = Array.from(document.querySelectorAll('[data-pp]'));
-
-const projectProgress = document.getElementById('projectProgress');
-const projectProgressCount = document.getElementById('projectProgressCount');
-const projectProgressName = document.getElementById('projectProgressName');
-const projectProgressType = document.getElementById('projectProgressType');
-const projectProgressDots = document.getElementById('projectProgressDots');
-
+let velocityTrigger = null;
+const managedTriggers = [];
+let stackCards = [];
+let progressAnchors = [];
+let projectProgress = null;
+let projectProgressCount = null;
+let projectProgressName = null;
+let projectProgressType = null;
+let projectProgressDots = null;
 let currentProjectIdx = -1;
-
-if (projectProgressDots && progressAnchors.length) {
-  // 特写与后面两个 band 之间插一条短横线，暗示它们不是同一量级
-  projectProgressDots.innerHTML = progressAnchors.map((_, i) =>
-    (i === 3 ? '<span class="project-progress-sep" aria-hidden="true"></span>' : '') +
-    `<span class="project-progress-dot${i === 0 ? ' active' : ''}" data-project-dot="${i}"></span>`
-  ).join('');
-}
 
 function setCurrentProjectByIndex(index) {
   if (!progressAnchors.length || index === currentProjectIdx) return;
@@ -339,7 +285,6 @@ function setCurrentProjectByIndex(index) {
     projectProgress.style.setProperty('--project-progress-fill', progress.toFixed(3));
   }
   if (projectProgressCount) projectProgressCount.innerHTML = `<b>${current}</b><small>/ ${total}</small>`;
-  // 类型与名称直接读 data 属性，不再靠解析 .project-number 的文本
   if (projectProgressType) projectProgressType.textContent = el.dataset.ppType || '项目';
   if (projectProgressName) projectProgressName.textContent = el.dataset.ppName || '项目作品';
   if (projectProgressDots) {
@@ -354,15 +299,15 @@ function setProjectsProgressVisible(visible) {
   if (projectProgress) projectProgress.classList.toggle('active', visible);
 }
 
-let velocityTrigger = null;
-let pageshowBound = false;
-// initStacking 会在每次 resize 时重建 trigger，不回收的话数量会随 resize 次数线性增长。
-// 压缩补间和它的 trigger 也要登记进来：漏掉的话，桌面拖到手机宽度后旧 trigger 还活着，
-// 会把 transform 重新写回已经解除堆叠的卡片上
-const managedTriggers = [];
-
 function initStacking() {
-  const shouldStack = getShouldStack();
+  // 刷新当前页面 DOM 元素
+  stackCards = Array.from(document.querySelectorAll('.projects-stack .project-card'));
+  progressAnchors = Array.from(document.querySelectorAll('[data-pp]'));
+  projectProgress = document.getElementById('projectProgress');
+  projectProgressCount = document.getElementById('projectProgressCount');
+  projectProgressName = document.getElementById('projectProgressName');
+  projectProgressType = document.getElementById('projectProgressType');
+  projectProgressDots = document.getElementById('projectProgressDots');
 
   if (velocityTrigger) {
     velocityTrigger.kill();
@@ -370,6 +315,17 @@ function initStacking() {
   }
   managedTriggers.forEach(t => t.kill());
   managedTriggers.length = 0;
+
+  if (!stackCards.length) return;
+
+  if (projectProgressDots && progressAnchors.length) {
+    projectProgressDots.innerHTML = progressAnchors.map((_, i) =>
+      (i === 3 ? '<span class="project-progress-sep" aria-hidden="true"></span>' : '') +
+      `<span class="project-progress-dot${i === 0 ? ' active' : ''}" data-project-dot="${i}"></span>`
+    ).join('');
+  }
+
+  const shouldStack = getShouldStack();
 
   if (!shouldStack) {
     stackCards.forEach((card, i) => {
@@ -394,19 +350,13 @@ function initStacking() {
 
       if (i < cards.length - 1 && hasGsap) {
         const next = cards[i + 1];
-        // 越靠下层压得越狠。原来是 0.955 - i*0.02，也就是最底下那张反而最大，
-        // 层次是反的；每张卡只被触发一次，所以终值要直接按「离最上层几层」给
         const depth = cards.length - 1 - i;
         const tween = gsap.to(card, {
           scale: 1 - depth * 0.05,
           y: depth * 8,
-          // 从顶边缩：卡片露在上面的那道边不会被缩没，三张卡的露边等宽
           transformOrigin: '50% 0%',
           force3D: true, overwrite: 'auto', ease: 'none',
           scrollTrigger: {
-            // 本卡一吸顶就开始缩，一直缩到下一张卡吸顶盖满为止——整段「在位」时间
-            // 都在动，所以从第一张卡起就能看到缩放。早先起点挂在下一张卡身上
-            // （顶边够到本卡底边才开始），前面那截是完全静止的
             trigger: card,
             start: () => `top ${Math.round(stickyTopOf(card))}px`,
             endTrigger: next,
@@ -435,7 +385,6 @@ function initStacking() {
   });
 
   if (hasGsap) {
-    // 回退链是追加而非替换：万一哪天 id 改了，挂件不会静默提前消失
     const lastProjectSection =
       document.getElementById('projects-more') ||
       document.getElementById('projects-web') ||
@@ -463,9 +412,6 @@ function initStacking() {
         if (Math.abs(skew) > 0.06) skew = Math.sign(skew) * 0.06;
         stackCards.forEach((card) => {
           if (!card.classList.contains('visible')) return;
-          // 这里只动 skewY。原来还写 scaleY 和 y：它们和堆叠压缩动的是同一批属性，
-          // 而这个 tween 每帧重建且 overwrite:'auto'，等于每帧把压缩的缩放按回 1
-          // （慢滚时 skew≈0 → scaleY≈1），压缩因此几乎看不见；y 用 '+=' 还会逐帧累积漂移
           gsap.to(card, {
             skewY: skew * 6,
             duration: 0.5,
@@ -477,25 +423,9 @@ function initStacking() {
       }
     });
   }
-
-  // bfcache 恢复后 ScrollTrigger 的状态可能失效，重算一次由它自己决定显隐；
-  // 早先这里无条件设为可见，导致刚进首页（还没滚到项目区）挂件就浮在右侧
-  if (!pageshowBound) {
-    pageshowBound = true;
-    window.addEventListener('pageshow', () => requestAnimationFrame(() => {
-      if (window.ScrollTrigger) ScrollTrigger.refresh();
-    }));
-  }
 }
 
-// ═══ INIT STACKING after layout ═══
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    initStacking();
-  });
-});
-
-// ═══ KEYBOARD ARROW NAVIGATION FOR CARDS ═══
+// 键盘上下导航
 window.addEventListener('keydown', (e) => {
   if (!projectProgress || !projectProgress.classList.contains('active')) return;
   if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
@@ -505,7 +435,6 @@ window.addEventListener('keydown', (e) => {
     if (targetIdx !== currentProjectIdx && progressAnchors[targetIdx]) {
       e.preventDefault();
       const el = progressAnchors[targetIdx];
-      // band-rule 是一条细线，居中滚会把它下面的内容推出视口
       el.scrollIntoView({
         behavior: 'smooth',
         block: el.classList.contains('project-card') ? 'center' : 'start',
@@ -576,15 +505,7 @@ function initTimelines() {
   });
 }
 
-// ═══ INIT TIMELINES after layout ═══
-requestAnimationFrame(() => {
-  requestAnimationFrame(() => {
-    initTimelines();
-  });
-});
-
 // ═══ VIDEO PAUSE OFFSCREEN (hero 滚出视口即暂停背景视频) ═══
-// 只在"本来就在播"时恢复,不抢 VideoBg 自身的启停逻辑(省流模式/reduced-motion 不受影响)
 function initVideoPause() {
   const hero = document.querySelector('.hero');
   if (!hero || hero.dataset.videoPauseInit || !('IntersectionObserver' in window)) return;
@@ -606,36 +527,39 @@ function initVideoPause() {
   }, { threshold: 0.05 }).observe(hero);
 }
 
-// ═══ SMOOTH SCROLL ═══
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener('click', e => {
-    const href = link.getAttribute('href');
-    if (!href || href.length < 2) return;
-    const target = document.querySelector(href);
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
-  });
-});
-
-// ═══ BRAND CLICK (在首页点击 Logo 时平滑滚回顶部，避免地址栏残留 # 或触发硬刷新) ═══
-document.querySelectorAll('a.brand').forEach(brand => {
-  brand.addEventListener('click', e => {
-    if (window.location.pathname === '/' || window.location.pathname === '') {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (window.location.hash) {
-        history.pushState('', document.title, window.location.pathname + window.location.search);
+// ═══ SMOOTH SCROLL & ANCHORS ═══
+function initScrollAnchors() {
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.onclick = (e) => {
+      const href = link.getAttribute('href');
+      if (!href || href.length < 2) return;
+      const target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
       }
-    }
+    };
   });
-});
 
-// ═══ BACK TO TOP ═══
-const btt = document.getElementById('backToTop');
-if (btt) {
-  window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 600), { passive: true });
+  document.querySelectorAll('a.brand').forEach(brand => {
+    brand.onclick = (e) => {
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.location.hash) {
+          history.pushState('', document.title, window.location.pathname + window.location.search);
+        }
+      }
+    };
+  });
+
+  const btt = document.getElementById('backToTop');
+  if (btt) {
+    window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 600), { passive: true });
+  }
 }
 
-// ═══ MOBILE PROJECT TABS (移动端分类吸顶筛选与平滑滚动定位) ═══
+// ═══ MOBILE PROJECT TABS ═══
 function initMobileProjectTabs() {
   const tabsContainer = document.getElementById('mobileProjectTabs');
   if (!tabsContainer) return;
@@ -643,7 +567,7 @@ function initMobileProjectTabs() {
   if (!buttons.length) return;
   
   buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.onclick = () => {
       const targetSelector = btn.getAttribute('data-target');
       if (!targetSelector) return;
       const targetEl = document.querySelector(targetSelector);
@@ -656,10 +580,9 @@ function initMobileProjectTabs() {
           behavior: 'smooth'
         });
       }
-    });
+    };
   });
 
-  // 滚动监听高亮
   const sections = [
     { target: document.getElementById('projects'), btn: buttons[0] },
     { target: document.querySelector('.projects-stack--feature'), btn: buttons[1] },
@@ -687,16 +610,6 @@ function initMobileProjectTabs() {
   }, { passive: true });
 }
 
-requestAnimationFrame(() => {
-  initMobileProjectTabs();
-});
-
-// ═══ 3D TILT on project cards + GLOW on stat/contact/project cards + A11y Focus ═══
-// 实现在 card-fx.js，博客页复用同一套（那边的文章卡是动态渲染，需要重复绑定）
-// 中卡与索引行刻意不参与倾斜：它们靠平移+描边表达可点，倾斜是大卡量级的语言
-bindCardFx(document, { skipWithin: '.projects-stack' });
-bindGlowFocus(document);
-
 // ═══ CONTACT FORM ═══
 window.handleContactSubmit = async function(e) {
   e.preventDefault();
@@ -723,9 +636,7 @@ window.handleContactSubmit = async function(e) {
   }
 };
 
-// ═══ ANALYTICS HIT (Sakura Backend) ═══
-// sendBeacon 不阻塞、页面卸载也可靠送达;挂在 astro:page-load 上,
-// 首次加载与 SPA 路由切换都会上报(旧实现只在整页加载时上报,SPA 内导航漏计)
+// ═══ ANALYTICS HIT ═══
 function reportAnalytics() {
   try {
     const payload = JSON.stringify({ path: location.pathname, ref: document.referrer || '' });
@@ -741,22 +652,42 @@ function reportAnalytics() {
     }
   } catch (e) {}
 }
-document.addEventListener('astro:page-load', reportAnalytics);
 
-// ═══ 字体回流兜底：思源宋体加载完成后标题高度会变，重算 ScrollTrigger 位置 ═══
+// ═══ 字体回流兜底 ═══
 if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(() => { if (window.ScrollTrigger) window.ScrollTrigger.refresh(); });
 }
 
-// ═══ 路由页面切换安全重新绑定 (SPA 无缝流体路由) ═══
-document.addEventListener('astro:page-load', () => {
+// ═══ UNIFIED PAGE LOAD LIFECYCLE (Astro 5 ClientRouter 核心生命周期中枢) ═══
+function initPageLifecycle() {
+  runEntrance();
+  initDrawer();
+  initReveal();
+  initSkillTags();
   initTitleMasks();
+  initStacking();
+  initTimelines();
   initVideoPause();
+  initScrollAnchors();
+  initMobileProjectTabs();
   bindCardFx(document, { skipWithin: '.projects-stack' });
   bindGlowFocus(document);
-  initMobileProjectTabs();
   updateScroll();
+  reportAnalytics();
+
   if (window.ScrollTrigger) {
-    window.ScrollTrigger.refresh();
+    setTimeout(() => {
+      window.ScrollTrigger.refresh();
+    }, 150);
   }
-});
+}
+
+// 绑定 Astro 5 视图过渡生命周期
+document.addEventListener('astro:page-load', initPageLifecycle);
+
+// 首次 DOM 就绪兜底执行
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initPageLifecycle);
+} else {
+  initPageLifecycle();
+}

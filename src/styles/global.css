@@ -887,11 +887,12 @@ html:not(.theme-transitioning)::view-transition-new(root) {
 .load-reveal {
   opacity: 0; transform: translateY(46px); filter: blur(7px);
   transition: opacity 0.9s var(--ease-out-expo), transform 1s var(--spring), filter 0.8s ease;
+  animation: forceRevealFallback 0.6s var(--ease-out-expo) 1.2s forwards;
 }
-.load-reveal.entered { opacity: 1; transform: translateY(0); filter: blur(0); }
+.load-reveal.entered { opacity: 1; transform: translateY(0); filter: blur(0); animation: none; }
 .hero-name.load-reveal, .hero-name.load-reveal.entered { transform: none; }
 .hero-line.load-reveal { opacity: 1; transform: scaleX(0); filter: none; }
-.hero-line.load-reveal.entered { opacity: 1; transform: scaleX(1); filter: none; transition: transform 0.8s var(--ease-out-expo) 0.1s; }
+.hero-line.load-reveal.entered { opacity: 1; transform: scaleX(1); filter: none; transition: transform 0.8s var(--ease-out-expo) 0.1s; animation: none; }
 .reveal { opacity: 0; transform: translateY(30px); transition: all 600ms var(--ease-out-expo); animation: forceRevealFallback 0.6s var(--ease-out-expo) 1.2s forwards; }
 .reveal.visible { opacity: 1; transform: translateY(0); animation: none; }
 @keyframes forceRevealFallback { to { opacity: 1; transform: translateY(0); } }
