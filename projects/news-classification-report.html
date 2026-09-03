@@ -1,9 +1,8 @@
 <!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>多模型新闻文本分类系统 — 技术报告</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="TextCNN / TextRNN / 朴素贝叶斯三种架构对比，头条新闻 6 分类，TextCNN 达 91% 准确率，模块化 Config 管理。"><meta property="og:title" content="多模型新闻文本分类系统 — 技术报告"><meta property="og:description" content="TextCNN / TextRNN / 朴素贝叶斯三种架构对比，头条新闻 6 分类，TextCNN 达 91% 准确率，模块化 Config 管理。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><style>.compare-table[data-astro-cid-m5iskmdh] td[data-astro-cid-m5iskmdh]:first-child{font-family:PingFang SC,system-ui,sans-serif;color:var(--text-primary);font-weight:600;font-size:.85rem}.compare-table[data-astro-cid-m5iskmdh] td[data-astro-cid-m5iskmdh].num{font-family:Consolas,monospace;color:var(--accent);font-size:1.2rem;font-weight:700}.arch-block[data-astro-cid-m5iskmdh]{background:var(--bg-raised);border:1px solid var(--border);border-radius:16px;padding:1.5rem;margin:1rem 0}.arch-block[data-astro-cid-m5iskmdh] h3[data-astro-cid-m5iskmdh]{margin:0 0 1rem;font-size:.95rem;color:var(--accent)}.arch-block[data-astro-cid-m5iskmdh] p[data-astro-cid-m5iskmdh]{font-size:.85rem;color:var(--text-secondary);margin-bottom:.5rem}.arch-block[data-astro-cid-m5iskmdh] p[data-astro-cid-m5iskmdh]:last-child{margin-bottom:0}.section-arch[data-astro-cid-m5iskmdh]{background:#030707;border:1px solid oklch(50% .15 150 / .15);border-radius:16px;padding:1.5rem;margin:1.25rem 0;font-family:Consolas,monospace;font-size:.82rem;line-height:1.8;color:var(--text-secondary);white-space:pre;overflow-x:auto}.highlight[data-astro-cid-m5iskmdh]{display:inline-block;background:#dabc4326;color:var(--gold);padding:1px 8px;border-radius:4px;font-weight:600}
 @keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/_astro/ai-gallery.DQ6rSoR7.css">
-<style>.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}
-</style><style>[data-astro-transition-scope="astro-3lu5awsv-1"] { view-transition-name: pt-news-classification-report; }@layer astro { ::view-transition-old(pt-news-classification-report) { 
+<link rel="stylesheet" href="/_astro/blog.BdSlArtn.css">
+<link rel="stylesheet" href="/_astro/ai-gallery.AVB2PGth.css"><style>[data-astro-transition-scope="astro-3lu5awsv-1"] { view-transition-name: pt-news-classification-report; }@layer astro { ::view-transition-old(pt-news-classification-report) { 
 	animation-duration: 180ms;
 	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
 	animation-fill-mode: both;
@@ -196,4 +195,159 @@ function initProjectLayout() {
 
 document.addEventListener('astro:page-load', initProjectLayout);
 initProjectLayout();
-</script> </body> </html> 
+</script> <div class="ai-assistant-wrapper" id="aiAssistantWrapper" data-astro-cid-ik6s2ofx> <!-- 遮罩层 (移动端专用) --> <div class="ai-backdrop" id="aiBackdrop" aria-hidden="true" data-astro-cid-ik6s2ofx></div> <!-- 浮动唤起入口按钮 --> <button class="ai-trigger-btn" id="aiTriggerBtn" type="button" aria-label="打开 AI 简历导览助手" aria-expanded="false" data-astro-cid-ik6s2ofx> <span class="ai-trigger-dot" aria-hidden="true" data-astro-cid-ik6s2ofx></span> <span class="ai-trigger-icon" aria-hidden="true" data-astro-cid-ik6s2ofx>✦</span> <span class="ai-trigger-text" data-astro-cid-ik6s2ofx>AI 助手</span> </button> <!-- 聊天悬浮面板 --> <section class="ai-panel" id="aiPanel" role="dialog" aria-label="Hermes AI 简历讲解助手" aria-hidden="true" data-astro-cid-ik6s2ofx> <!-- 头部栏 --> <header class="ai-header" data-astro-cid-ik6s2ofx> <div class="ai-header-info" data-astro-cid-ik6s2ofx> <div class="ai-avatar" aria-hidden="true" data-astro-cid-ik6s2ofx> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ik6s2ofx><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" data-astro-cid-ik6s2ofx></path><rect x="3" y="8" width="18" height="12" rx="4" data-astro-cid-ik6s2ofx></rect><circle cx="9" cy="13" r="1.5" fill="currentColor" data-astro-cid-ik6s2ofx></circle><circle cx="15" cy="13" r="1.5" fill="currentColor" data-astro-cid-ik6s2ofx></circle><path d="M10 17h4" data-astro-cid-ik6s2ofx></path></svg> </div> <div data-astro-cid-ik6s2ofx> <h3 class="ai-title" data-astro-cid-ik6s2ofx>Hermes · 简历讲解员</h3> <p class="ai-status" data-astro-cid-ik6s2ofx><span class="status-pulse" data-astro-cid-ik6s2ofx></span>在线 · 钟文清数字分身</p> </div> </div> <button class="ai-close-btn" id="aiCloseBtn" type="button" aria-label="关闭对话" data-astro-cid-ik6s2ofx>✕</button> </header> <!-- 预设快捷问题推荐 --> <div class="ai-quick-prompts" id="aiQuickPrompts" data-astro-cid-ik6s2ofx> <button type="button" class="quick-chip" data-query="钟文清最擅长哪些核心技术？" data-astro-cid-ik6s2ofx>🎯 核心技术特长</button> <button type="button" class="quick-chip" data-query="介绍一下手势控制 PPT 项目的实现原理与亮点" data-astro-cid-ik6s2ofx>🤖 手势控制 PPT</button> <button type="button" class="quick-chip" data-query="文清获得过哪些竞赛荣誉与证书？" data-astro-cid-ik6s2ofx>🏆 竞赛荣誉与证书</button> <button type="button" class="quick-chip" data-query="如何联系作者钟文清？" data-astro-cid-ik6s2ofx>📬 联系方式</button> </div> <!-- 消息对话流 --> <div class="ai-messages" id="aiMessages" role="log" aria-live="polite" data-astro-cid-ik6s2ofx> <div class="message-bubble assistant" data-astro-cid-ik6s2ofx> <div class="msg-avatar" aria-hidden="true" data-astro-cid-ik6s2ofx>✦</div> <div class="msg-content" data-astro-cid-ik6s2ofx>
+你好！我是钟文清的 AI 简历导览助手 <strong data-astro-cid-ik6s2ofx>Hermes</strong>。<br data-astro-cid-ik6s2ofx><br data-astro-cid-ik6s2ofx>
+我对文清的 <strong data-astro-cid-ik6s2ofx>14 个实战项目</strong>、<strong data-astro-cid-ik6s2ofx>深度学习与爬虫工程</strong>以及<strong data-astro-cid-ik6s2ofx>竞赛荣誉</strong>了如指掌。想了解什么尽管问我，也可以直接点击上方的快捷标签！
+</div> </div> </div> <!-- 底部输入框与状态 --> <footer class="ai-footer" data-astro-cid-ik6s2ofx> <form class="ai-form" id="aiForm" data-astro-cid-ik6s2ofx> <div class="ai-input-wrap" data-astro-cid-ik6s2ofx> <input type="text" id="aiInput" class="ai-input" placeholder="问问文清的项目难点、技能或经历..." maxlength="150" autocomplete="off" aria-label="输入您的问题" data-astro-cid-ik6s2ofx> <span class="ai-char-count" id="aiCharCount" data-astro-cid-ik6s2ofx>0/150</span> </div> <button type="submit" class="ai-send-btn" id="aiSendBtn" aria-label="发送消息" data-astro-cid-ik6s2ofx> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-ik6s2ofx><line x1="22" y1="2" x2="11" y2="13" data-astro-cid-ik6s2ofx></line><polygon points="22 2 15 22 11 13 2 9 22 2" data-astro-cid-ik6s2ofx></polygon></svg> </button> </form> <p class="ai-disclaimer" data-astro-cid-ik6s2ofx>由本地模型驱动 · 严守只读沙箱安全</p> </footer> </section> </div>  <script>
+(function initAiAssistant() {
+  function setup() {
+    const triggerBtn = document.getElementById('aiTriggerBtn');
+    const panel = document.getElementById('aiPanel');
+    const closeBtn = document.getElementById('aiCloseBtn');
+    const backdrop = document.getElementById('aiBackdrop');
+    const form = document.getElementById('aiForm');
+    const input = document.getElementById('aiInput');
+    const sendBtn = document.getElementById('aiSendBtn');
+    const charCount = document.getElementById('aiCharCount');
+    const messages = document.getElementById('aiMessages');
+    const quickPrompts = document.getElementById('aiQuickPrompts');
+
+    if (!triggerBtn || !panel || !form || !input) return;
+
+    let isOpen = false;
+    let isSending = false;
+
+    function openPanel() {
+      isOpen = true;
+      panel.classList.add('active');
+      panel.setAttribute('aria-hidden', 'false');
+      triggerBtn.setAttribute('aria-expanded', 'true');
+      if (backdrop) backdrop.classList.add('active');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closePanel() {
+      isOpen = false;
+      panel.classList.remove('active');
+      panel.setAttribute('aria-hidden', 'true');
+      triggerBtn.setAttribute('aria-expanded', 'false');
+      if (backdrop) backdrop.classList.remove('active');
+    }
+
+    triggerBtn.onclick = () => {
+      if (isOpen) closePanel();
+      else openPanel();
+    };
+
+    if (closeBtn) closeBtn.onclick = closePanel;
+    if (backdrop) backdrop.onclick = closePanel;
+
+    // 字数统计
+    input.oninput = () => {
+      if (charCount) charCount.textContent = `${input.value.length}/150`;
+    };
+
+    // 快捷标签点击直接发送
+    if (quickPrompts) {
+      quickPrompts.querySelectorAll('.quick-chip').forEach(chip => {
+        chip.onclick = () => {
+          const query = chip.getAttribute('data-query');
+          if (query && !isSending) {
+            input.value = query;
+            if (charCount) charCount.textContent = `${query.length}/150`;
+            sendMessage(query);
+          }
+        };
+      });
+    }
+
+    // 安全转义 HTML，杜绝 XSS
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML.replace(/\n/g, '<br>');
+    }
+
+    // 添加气泡
+    function appendMessage(role, text, isHtml = false) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message-bubble ${role}`;
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = role === 'assistant' ? '✦' : '我';
+
+      const content = document.createElement('div');
+      content.className = 'msg-content';
+      if (isHtml) {
+        content.innerHTML = text;
+      } else {
+        content.innerHTML = escapeHtml(text);
+      }
+
+      msgDiv.appendChild(avatar);
+      msgDiv.appendChild(content);
+      messages.appendChild(msgDiv);
+      messages.scrollTop = messages.scrollHeight;
+      return msgDiv;
+    }
+
+    // 发送消息
+    async function sendMessage(text) {
+      if (!text.trim() || isSending) return;
+      isSending = true;
+      if (sendBtn) sendBtn.disabled = true;
+
+      appendMessage('user', text);
+      input.value = '';
+      if (charCount) charCount.textContent = '0/150';
+
+      // 展现等待动效
+      const loadingBubble = appendMessage('assistant', '<div class="typing-dots"><span></span><span></span><span></span></div>', true);
+
+      try {
+        const res = await fetch('/api/chat/assistant', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: text.trim().slice(0, 150) })
+        });
+
+        const data = await res.json();
+        loadingBubble.remove();
+
+        if (res.ok && data.ok) {
+          appendMessage('assistant', data.reply);
+        } else if (res.status === 429) {
+          appendMessage('assistant', '提问太频繁啦，请稍等一分钟后再试哦 ☕');
+        } else {
+          appendMessage('assistant', data.detail || '抱歉，暂时未能连通 AI 助手，请稍后再试！');
+        }
+      } catch (err) {
+        loadingBubble.remove();
+        appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+      } finally {
+        isSending = false;
+        if (sendBtn) sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      sendMessage(input.value);
+    };
+
+    // ESC 键关闭
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closePanel();
+      }
+    });
+  }
+
+  // 挂载到 astro:page-load 生命周期（Astro 5 ClientRouter）
+  document.addEventListener('astro:page-load', setup);
+  setup();
+})();
+</script> </body></html> 
