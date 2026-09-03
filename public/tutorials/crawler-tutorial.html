@@ -278,7 +278,7 @@ print(<span class="c-st">'标题:'</span>, page.css(<span class="c-st">'h1::text
 
   <h3>3.2 URL 的结构</h3>
   <p>一个 URL 拆解后，每一段对爬虫都有意义：</p>
-<pre><code>https://next.xifanacg.com:443/browse?finished=1&amp;sort=release_date#page2
+<pre><code>https://demo-site.com:443/browse?finished=1&amp;sort=release_date#page2
 └─┬─┘   └──────┬──────┘└┬┘└─┬──┘└──────────┬──────────┘└─┬──┘
  协议        域名      端口  路径        查询参数         锚点</code></pre>
   <table>
@@ -595,7 +595,7 @@ titles = jmespath.search(<span class="c-st">'data.list[*].title'</span>, data)</
   <h3>6.6 实战：解析一个列表页</h3>
 <pre><code><span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
 
-page = Fetcher.get(<span class="c-st">'https://next.xifanacg.com/'</span>)
+page = Fetcher.get(<span class="c-st">'https://demo-site.com/'</span>)
 <span class="c-cm"># 一次抓取多个字段，组合成结构化数据</span>
 <span class="c-kw">for</span> card <span class="c-kw">in</span> page.css(<span class="c-st">'a[href^="/anime/"]'</span>):
     href = card.attrib.get(<span class="c-st">'href'</span>)
@@ -939,7 +939,7 @@ r = requests.get(url, proxies={<span class="c-st">'http'</span>: proxy, <span cl
 <pre><code><span class="c-cm"># 命令行创建项目</span>
 scrapy startproject myspider
 cd myspider
-scrapy genspider anime next.xifanacg.com   <span class="c-cm"># 生成一个 spider</span>
+scrapy genspider anime demo-site.com   <span class="c-cm"># 生成一个 spider</span>
 scrapy crawl anime                          <span class="c-cm"># 运行</span></code></pre>
 
   <h3>11.3 Spider 核心代码</h3>
@@ -947,7 +947,7 @@ scrapy crawl anime                          <span class="c-cm"># 运行</span></
 
 <span class="c-kw">class</span> <span class="c-cl">AnimeSpider</span>(scrapy.Spider):
     name = <span class="c-st">'anime'</span>
-    start_urls = [<span class="c-st">'https://next.xifanacg.com/'</span>]
+    start_urls = [<span class="c-st">'https://demo-site.com/'</span>]
 
     <span class="c-kw">def</span> <span class="c-fn">parse</span>(<span class="c-cl">self</span>, response):
         <span class="c-cm"># 解析列表页，提取详情链接并跟进</span>
@@ -1120,7 +1120,7 @@ sched.start()</code></pre>
 <span class="c-kw">import</span> sqlite3, time, random
 <span class="c-kw">from</span> scrapling.fetchers <span class="c-kw">import</span> Fetcher
 
-BASE = <span class="c-st">'https://next.xifanacg.com'</span>
+BASE = <span class="c-st">'https://demo-site.com'</span>
 conn = sqlite3.connect(<span class="c-st">'anime.db'</span>)
 conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS anime(id INTEGER PRIMARY KEY,title TEXT,url TEXT,meta TEXT)'</span>)
 conn.execute(<span class="c-st">'CREATE TABLE IF NOT EXISTS done(url TEXT PRIMARY KEY)'</span>)

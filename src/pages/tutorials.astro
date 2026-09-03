@@ -6,10 +6,11 @@ import BackToTop from '../components/BackToTop.astro';
 import VideoBg from '../components/VideoBg.astro';
 
 // 教程元数据:accent 用于卡片描边/图标底色,与各教程内部主题色呼应
+// wide: true 让卡片跨两列,补齐奇数卡片的网格
 const tutorials = [
   {
-    title: 'C++ 零基础入门教程',
-    desc: '写给完全新手的 C++ 教程:20 章循序渐进,图解 + 可运行代码 + 练习 + 2 个实战项目。',
+    title: 'C++ 零基础入门',
+    desc: '从零整理的 C++ 复习路径:图解 + 可运行代码 + 章末练习 + 2 个实战小项目。',
     href: '/tutorials/cpp-tutorial.html',
     icon: '🚀',
     accent: 'oklch(58% 0.2 265)',
@@ -17,8 +18,8 @@ const tutorials = [
     tags: ['零基础', '图解', '实战项目'],
   },
   {
-    title: '数据结构考研教程',
-    desc: '考研 408 数据结构全考点:图解 + 考场手算模板 + 真题风格代码,衔接 C++ 入门教程。',
+    title: '数据结构 · 考研 408',
+    desc: '全考点复习笔记:图解 + 考场手算模板 + 真题风格代码,衔接 C++ 篇。',
     href: '/tutorials/ds-tutorial.html',
     icon: '📊',
     accent: 'oklch(60% 0.11 190)',
@@ -26,31 +27,32 @@ const tutorials = [
     tags: ['考研 408', '手算模板', '真题代码'],
   },
   {
-    title: 'Spring 全家桶零基础图文教程',
-    desc: 'Spring / Spring MVC / Spring Boot / MyBatis 四件套从零到跑通完整「用户管理」项目。',
-    href: '/tutorials/Spring全家桶零基础图文教程.html',
+    title: 'Spring 全家桶',
+    desc: 'Spring / Spring MVC / Spring Boot / MyBatis 四件套,边学边整理到跑通「用户管理」项目。',
+    href: '/tutorials/spring-tutorial.html',
     icon: '🌱',
     accent: 'oklch(65% 0.17 140)',
     chapters: '11 章 · 53 段代码',
     tags: ['Java 后端', '图文', '完整项目'],
   },
   {
-    title: 'Python 爬虫系统实战教程',
-    desc: '14 章完整爬虫体系:HTTP 原理、请求与解析、并发提速、动态渲染、反爬对抗、Scrapy、接口逆向与工程化部署。',
-    href: '/tutorials/爬虫实战教材.html',
+    title: 'Python 爬虫实战',
+    desc: '爬虫复习主线:HTTP 原理、请求与解析、并发提速、动态渲染、反爬对抗、Scrapy 与工程化部署。',
+    href: '/tutorials/crawler-tutorial.html',
     icon: '🕷️',
     accent: 'oklch(78% 0.15 160)',
-    chapters: '14 章 + 附录 · 2026 完整版',
+    chapters: '14 章 + 附录',
     tags: ['实战项目', '反爬对抗', 'Scrapy'],
   },
   {
-    title: '零基础英语语法通关',
-    desc: '从词性到三大从句的语法通关路线:每章配对比卡与小测,专治「规则都懂题不对」。',
-    href: '/tutorials/零基础英语语法通关教程.html',
+    title: '英语语法通关',
+    desc: '从词性到三大从句的语法复习路线:每章配对比卡与小测,专治「规则都懂题不对」。',
+    href: '/tutorials/english-grammar.html',
     icon: '📚',
     accent: 'oklch(70% 0.14 95)',
     chapters: '16 节 · 33 张对比卡',
     tags: ['零基础', '对比卡', '章末小测'],
+    wide: true,
   },
 ];
 ---
@@ -72,7 +74,7 @@ const tutorials = [
         </p>
         <div class="tutorial-grid">
           {tutorials.map(t => (
-            <a class="tutorial-card reveal" href={t.href} style={`--tut-accent:${t.accent}`}>
+            <a class={`tutorial-card reveal${t.wide ? ' tutorial-card--wide' : ''}`} href={t.href} style={`--tut-accent:${t.accent}`}>
               <span class="tutorial-icon" aria-hidden="true">{t.icon}</span>
               <h2 class="tutorial-title">{t.title}</h2>
               <p class="tutorial-desc">{t.desc}</p>
@@ -132,7 +134,12 @@ const tutorials = [
   }
   .tutorial-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .tutorial-cta { color: var(--tut-accent); font-weight: 700; font-size: var(--text-sm); }
+  /* 奇数第五张卡跨两列,避免孤卡失衡;宽卡内部横向布局 */
+  .tutorial-card--wide { grid-column: 1 / -1; flex-direction: row; align-items: center; gap: var(--space-xl); }
+  .tutorial-card--wide .tutorial-icon { flex-shrink: 0; }
+  .tutorial-card--wide .tutorial-title { margin: 0; }
   @media (max-width: 768px) {
     .tutorial-grid { grid-template-columns: 1fr; }
+    .tutorial-card--wide { grid-column: auto; flex-direction: column; align-items: stretch; }
   }
 </style>
