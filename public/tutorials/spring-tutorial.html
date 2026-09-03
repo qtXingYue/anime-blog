@@ -113,7 +113,7 @@ details summary{cursor:pointer;font-weight:600;color:var(--ink)}
 details[open] summary{margin-bottom:8px}
 
 /* 表格 */
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-collapse:collapse;margin:14px 0;font-size:14.5px}
 th{background:var(--primary);color:#fff;padding:9px 12px;text-align:left;font-weight:600}
 [data-theme="dark"] th{color:#0b1220}
 td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top}
@@ -130,7 +130,7 @@ tr:nth-child(even) td{background:rgba(128,128,128,.04)}
 #top-btn:hover{filter:brightness(1.1)}
 
 @media (max-width:1024px){
-  #sidebar{transform:translateX(-100%);transition:.25s}
+  #sidebar{width:82vw;max-width:300px;transform:translateX(-100%);transition:.25s}
   body.sidebar-open #sidebar{transform:none}
   body.sidebar-open #mask{display:block}
   #menu-btn{display:block}
@@ -138,6 +138,15 @@ tr:nth-child(even) td{background:rgba(128,128,128,.04)}
   section{padding:24px 20px}
   .hero{padding:32px 24px}
   .hero h1{font-size:24px}
+}
+@media (max-width:640px){
+  main{padding:54px 10px 60px}
+  section{padding:18px 14px;border-radius:12px;margin-bottom:16px}
+  .hero{padding:24px 16px;border-radius:14px}
+  .hero h1{font-size:21px}
+  pre{padding:12px 14px;font-size:12px}
+  .box{padding:12px 14px;font-size:13.5px}
+  #top-btn{right:16px;bottom:20px;width:40px;height:40px;font-size:16px}
 }
 @media print{#sidebar,#menu-btn,#top-btn,#progress{display:none}main{margin:0}}
 </style>

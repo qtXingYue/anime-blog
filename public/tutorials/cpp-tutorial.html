@@ -131,9 +131,12 @@ kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-r
  .hero h1,.hero p.lead,.chips,.hero-actions{max-width:calc(100% - 400px)}
 }
 @media(max-width:1080px){.cards{grid-template-columns:repeat(2,1fr)}}
+.toc-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.45);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:998;opacity:0;pointer-events:none;transition:opacity .25s}
+body.nav-open .toc-backdrop{opacity:1;pointer-events:auto}
+table{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 @media(max-width:860px){
  .toc-toggle{display:inline-flex}
- aside.toc{position:fixed;left:0;top:60px;z-index:999;transform:translateX(-105%);transition:transform .25s;box-shadow:0 10px 40px rgba(15,23,42,.2)}
+ aside.toc{position:fixed;left:0;top:60px;z-index:999;width:82vw;max-width:300px;transform:translateX(-105%);transition:transform .25s;box-shadow:0 10px 40px rgba(15,23,42,.2)}
  body.nav-open aside.toc{transform:none}
  main{padding:18px 15px 70px}
  section.chapter{padding:24px 20px}
@@ -142,10 +145,33 @@ kbd{background:#f1f5f9;border:1px solid #cbd5e1;border-bottom-width:2px;border-r
  .cards{grid-template-columns:1fr}
  .end-card{padding:32px 22px}
 }
+@media(max-width:640px){
+ .topbar-inner{padding:0 12px;gap:8px}
+ .logo{font-size:14px}
+ .logo .sub{display:none}
+ .topbar-right{display:none}
+ .btn-mini{padding:5px 9px;font-size:12px;white-space:nowrap}
+ main{padding:14px 10px 70px}
+ section.chapter{padding:20px 14px;border-radius:14px;margin-bottom:18px}
+ .ch-head{gap:10px}
+ .ch-num{width:36px;height:36px;font-size:15px;border-radius:10px}
+ h2{font-size:19px}
+ h3{font-size:16px;margin:24px 0 10px;padding-left:9px}
+ .hero{padding:24px 16px;border-radius:16px}
+ .hero h1{font-size:23px}
+ .hero p.lead{font-size:14px;line-height:1.7}
+ .hero-actions{gap:10px}
+ .btn{padding:9px 16px;font-size:13.5px}
+ pre code{padding:12px 14px;font-size:12px;line-height:1.65}
+ .box{padding:12px 14px;font-size:13.5px}
+ .diagram{padding:14px 8px 10px}
+ #backTop{right:16px;bottom:20px;width:40px;height:40px;font-size:16px}
+}
 </style>
 </head>
 <body>
 <div id="progress"></div>
+<div class="toc-backdrop" id="tocBackdrop" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="topbar-inner">
@@ -2199,6 +2225,12 @@ int main() {
     toggle.addEventListener("click", function () {
       document.body.classList.toggle("nav-open");
     });
+    var backdrop = document.getElementById("tocBackdrop");
+    if (backdrop) {
+      backdrop.addEventListener("click", function () {
+        document.body.classList.remove("nav-open");
+      });
+    }
     var tocLinks = document.querySelectorAll(".toc a");
     for (var t = 0; t < tocLinks.length; t++) {
       tocLinks[t].addEventListener("click", function () {
