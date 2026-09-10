@@ -281,13 +281,13 @@ tr:nth-child(even) td{background:rgba(128,128,128,.04)}
   <tr><td><b>JDK</b></td><td>17（LTS）或更高</td><td>Adoptium 官网下载 Temurin 17，安装时勾选「添加到 PATH」</td></tr>
   <tr><td><b>IntelliJ IDEA</b></td><td>Community 免费版即可</td><td>jetbrains.com 下载，开发 Java 的主流编辑器</td></tr>
   <tr><td><b>MySQL</b></td><td>8.x</td><td>官网或 phpstudy 等集成包；安装时<strong>牢记 root 密码</strong></td></tr>
-  <tr><td><b>Maven</b></td><td>IDEA 自带</td><td>不用单独安装（国内建议在 IDEA 设置里把镜像换成阿里云，下载依赖飞快）</td></tr>
+  <tr><td><b>Maven</b></td><td>IDEA 自带</td><td>不用单独安装（国内必须换阿里云镜像，否则下载依赖极慢，配置见下方「常见报错表」）</td></tr>
   <tr><td><b>Postman / curl</b></td><td>任意</td><td>测试接口用；浏览器只能发 GET 请求，学 POST/PUT/DELETE 需要它</td></tr>
 </table>
-<div class="box warn"><b class="t">⚠️ 版本红线</b>Spring Boot 3.x 强制要求 <b>JDK 17+</b>。网上老教程常见的 JDK 8 + Spring Boot 2.x 组合语法 95% 相同，但请勿混用版本——报错了先查版本匹配。</div>
+<div class="box warn"><b class="t">⚠️ 版本红线</b>Spring Boot 3.x / 4.x 一律要求 <b>JDK 17+</b>。网上老教程常见的 JDK 8 + Spring Boot 2.x 组合语法 95% 相同，但请勿混用版本——报错了先查版本匹配。<br><b>版本时效提醒（2026-09）</b>：Spring Boot <b>3.5 及更早版本的开源维护已于 2026 年 6 月全部结束</b>，不再有免费安全补丁，新项目直接用 <b>4.x</b>。本教程示例基于 4.1.x，你用 Spring Initializr 生成的一般会更新，<b>以生成结果为准</b>。</div>
 <p>装好后打开终端（Windows 用 PowerShell / CMD）验证：</p>
 <pre data-lang="bash"><code class="lang-bash">java -version    # 期望输出: openjdk version "17.x.x" 或更高
-mysql --version  # 期望输出: mysql Ver 8.0.xx</code></pre>
+mysql --version  # 期望输出: mysql Ver 8.4.xx（8.4 是当前 LTS；8.0 亦可）</code></pre>
 <p>两条命令都能出版本号，环境就绪。以后每次写完代码，都是「IDEA 里点运行」+「Postman 里发请求」的循环，不再碰命令行也没关系。</p>
 
 <details class="quiz"><summary>✍️ 自测：Spring Boot 和 Spring MVC 是什么关系？</summary>
@@ -728,7 +728,7 @@ public class OrderService {
 <ul>
   <li><b>配置类与 @Bean</b>：第三方库的类你改不了源码、贴不了注解，可以在配置类里用方法造 Bean：<code>@Bean public RestTemplate restTemplate(){ return new RestTemplate(); }</code>；</li>
   <li><b>作用域</b>：默认所有 Bean 是<b>单例</b>（全容器一份，大家共用）。加 <code>@Scope("prototype")</code> 可改成每次要新的。日常开发用默认即可；</li>
-  <li><b>生命周期</b>：Bean 从「实例化 → 注入依赖 → 初始化 → 使用 → 销毁」全程由容器照管，可用 <code>@PostConstruct</code> 在初始化后插一段自己的逻辑（比如启动时加载缓存）。</li>
+  <li><b>生命周期</b>：Bean 从「实例化 → 注入依赖 → 初始化 → 使用 → 销毁」全程由容器照管，可用 <code>@PostConstruct</code> 在初始化后插一段自己的逻辑（比如启动时加载缓存）。<b>导入注意</b>：Spring Boot 3 起这个注解属于 Jakarta EE，必须 <code>import jakarta.annotation.PostConstruct;</code>；网上老代码里的 <code>javax.annotation.*</code> 已整体改名为 <code>jakarta.annotation.*</code>，照抄会直接编译失败——这就是「新旧教程混用」最常见的坑。</li>
 </ul>
 
 <details class="quiz"><summary>✍️ 自测：@Service 和 @Component 有什么区别？</summary>
@@ -1266,7 +1266,7 @@ INSERT INTO users(username, age, email) VALUES
 <pre data-lang="xml"><code class="lang-xml">&lt;parent&gt;
     &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
     &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
-    &lt;version&gt;3.3.4&lt;/version&gt;
+    &lt;version&gt;4.1.0&lt;/version&gt;
 &lt;/parent&gt;
 
 &lt;dependencies&gt;
@@ -1277,7 +1277,7 @@ INSERT INTO users(username, age, email) VALUES
     &lt;dependency&gt;
         &lt;groupId&gt;org.mybatis.spring.boot&lt;/groupId&gt;
         &lt;artifactId&gt;mybatis-spring-boot-starter&lt;/artifactId&gt;
-        &lt;version&gt;3.0.3&lt;/version&gt;
+        &lt;version&gt;4.0.1&lt;/version&gt;
     &lt;/dependency&gt;
     &lt;dependency&gt;
         &lt;groupId&gt;com.mysql&lt;/groupId&gt;
@@ -1580,8 +1580,16 @@ curl http://localhost:8080/users/999</code></pre>
   <tr><td>XML 动态 SQL 不生效</td><td>yml 没配 mapper-locations 或 id 与方法名不一致</td><td>确认扫描路径正确；<code>&lt;select id=""&gt;</code> 必须等于接口方法名</td></tr>
   <tr><td>改了代码不生效</td><td>IDEA 没重新编译 / 老进程还在跑</td><td>停掉旧进程再运行；必要时 Build → Rebuild Project</td></tr>
   <tr><td>中文乱码</td><td>连接或表编码不是 utf8mb4</td><td>URL 加 <code>characterEncoding=utf8</code>；建表用 <code>utf8mb4</code></td></tr>
-  <tr><td>Maven 依赖下载极慢/失败</td><td>默认镜像在国外</td><td>IDEA 设置里把 Maven 镜像换成阿里云（settings.xml 配 mirror）</td></tr>
+  <tr><td>Maven 依赖下载极慢/失败</td><td>默认镜像在国外</td><td>按下方阿里云镜像配置改 <code>settings.xml</code></td></tr>
 </table>
+<p><b>阿里云 Maven 镜像（国内必备）</b>：打开 <code>~/.m2/settings.xml</code>（没有就新建），加入下面这段；老教程里的 <code>maven.aliyun.com/nexus/content/groups/public</code> 地址已失效，别再抄：</p>
+<pre data-lang="xml"><code class="lang-xml">&lt;mirrors&gt;
+  &lt;mirror&gt;
+    &lt;id&gt;aliyun&lt;/id&gt;
+    &lt;mirrorOf&gt;*&lt;/mirrorOf&gt;
+    &lt;url&gt;https://maven.aliyun.com/repository/public&lt;/url&gt;
+  &lt;/mirror&gt;
+&lt;/mirrors&gt;</code></pre>
 <div class="box info"><b class="t">📌 排错通用套路</b>① 先读报错<b>第一行</b>的 Caused by（根因往往在最后一个 Caused by）；② 看不出就搜报错原文（附上框架+版本号）；③ 还不行就开启 SQL debug 日志，看 SQL 到底执行了什么、参数是什么。</div>
 </section>
 

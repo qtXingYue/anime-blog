@@ -978,7 +978,7 @@ void LevelOrder(BiTree T) {
     <p>① n 个叶子（初始权值）的哈夫曼树共 <strong>2n − 1</strong> 个结点，且<strong>不存在度为 1 的结点</strong>；② 哈夫曼编码是<strong>前缀码</strong>（任何编码都不是另一个的前缀），解码不会歧义；③ 同一组权值可能构造出形态不同但 WPL 相同的哈夫曼树（左右子树交换不影响）。</p>
   </div>
 
-  <h3>八、并查集（考纲新增，要求不高）</h3>
+  <h3>八、并查集（2020 年起已纳入考纲，要求不高）</h3>
   <p>用「双亲表示法」的森林维护若干不相交集合，支持两个操作：Find（找所属集合代表）、Union（合并两集合）。典型应用：判断图的连通性、Kruskal 判环。</p>
   <div class="code"><div class="code-head"><span>ufs.cpp — 最简实现</span><button class="copy-btn">复制</button></div>
 <pre><code class="language-cpp">int fa[N];
