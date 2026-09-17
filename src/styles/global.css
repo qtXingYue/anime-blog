@@ -500,19 +500,19 @@ a:hover { color: var(--gold); }
    早先是按 nth-child 分配的,一重排 DOM 颜色就全错,且中卡/索引行匹配不到。 */
 .project-card[data-accent="violet"],
 .project-card-m[data-accent="violet"],
-.project-row[data-accent="violet"] { --project-accent: oklch(66% 0.19 285); }
+.project-row[data-accent="violet"] { --project-accent: oklch(66% 0.19 285); --beam-color: #a855f7; --beam-speed: 4s; }
 .project-card[data-accent="azure"],
 .project-card-m[data-accent="azure"],
-.project-row[data-accent="azure"] { --project-accent: oklch(68% 0.15 245); }
+.project-row[data-accent="azure"] { --project-accent: oklch(68% 0.15 245); --beam-color: #38bdf8; --beam-speed: 4.2s; }
 .project-card[data-accent="magenta"],
 .project-card-m[data-accent="magenta"],
-.project-row[data-accent="magenta"] { --project-accent: oklch(70% 0.17 330); }
+.project-row[data-accent="magenta"] { --project-accent: oklch(70% 0.17 330); --beam-color: #f43f5e; --beam-speed: 4s; }
 .project-card[data-accent="teal"],
 .project-card-m[data-accent="teal"],
-.project-row[data-accent="teal"] { --project-accent: oklch(68% 0.14 220); }
+.project-row[data-accent="teal"] { --project-accent: oklch(68% 0.14 220); --beam-color: #3ecf8e; --beam-speed: 4.5s; }
 .project-card[data-accent="jade"],
 .project-card-m[data-accent="jade"],
-.project-row[data-accent="jade"] { --project-accent: oklch(70% 0.15 150); }
+.project-row[data-accent="jade"] { --project-accent: oklch(70% 0.15 150); --beam-color: #10b981; --beam-speed: 4.5s; }
 .project-card::before {
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background:
@@ -597,45 +597,38 @@ a:hover { color: var(--gold); }
   overflow: hidden;
   padding: 2px !important;
   border: none !important;
-  background: color-mix(in oklab, var(--project-accent) 26%, transparent) !important;
-  box-shadow: 0 20px 50px oklch(0% 0 0 / 0.35);
+  background: rgba(255, 255, 255, 0.03) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
   transition: transform 350ms var(--ease-out-expo), box-shadow 350ms var(--ease-out-expo);
   top: calc(clamp(76px, 9vh, 96px) + var(--card-i, 0) * clamp(34px, 4vh, 48px));
   z-index: calc(var(--card-i, 0) + 1);
 }
-/* Star Border：旋转专属双星流光层 - 100% 严谨对齐每个项目的强调色 */
+/* Star Border：硬件加速锥形流光彗星层 (1:1 对齐实验三高定物理质感) */
 .projects-stack .project-card::before {
   content: ''; position: absolute; inset: -150%;
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 35deg,
-    var(--project-accent) 85deg,
-    color-mix(in oklab, var(--project-accent) 55%, white) 110deg,
-    var(--project-accent) 135deg,
-    transparent 170deg,
-    transparent 215deg,
-    var(--project-accent) 265deg,
-    color-mix(in oklab, var(--project-accent) 55%, white) 290deg,
-    var(--project-accent) 315deg,
-    transparent 350deg
+    transparent 60deg,
+    var(--beam-color, var(--project-accent)) 120deg,
+    transparent 180deg
   );
-  animation: starBorderRotate 6.5s linear infinite;
+  animation: beamRotate var(--beam-speed, 4s) linear infinite;
   z-index: 0; pointer-events: none;
   opacity: 1 !important;
 }
 .projects-stack .project-card:hover::before,
 .projects-stack .project-card.is-current::before {
   opacity: 1 !important;
-  animation-duration: 3.2s;
+  animation-duration: calc(var(--beam-speed, 4s) * 0.6);
 }
 .projects-stack .project-card:hover {
-  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.45), 0 0 30px color-mix(in oklab, var(--project-accent, var(--accent)) 35%, transparent);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 30px color-mix(in oklab, var(--beam-color, var(--project-accent)) 35%, transparent);
 }
-/* Star Border 内部内容实体面板（外层 2px padding 留出清晰边缘轨道） */
+/* Star Border 内部黑曜石实体面板 (深空黑 #0d0f18 衬托边缘纯正流光，2px padding 留出清晰边缘轨道) */
 .projects-stack .project-card-inner {
   position: relative; z-index: 1;
-  background: linear-gradient(150deg, var(--bg-raised), var(--bg-high));
+  background: #0d0f18 !important;
   padding: var(--space-2xl);
   display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-2xl);
   border-radius: 22px;
@@ -804,55 +797,53 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .project-highlight-value { text-shadow: none; }
 
 /* ═══ STAR BORDER: 硬件加速流光边框 ═══ */
+@keyframes beamRotate {
+  100% { transform: rotate(360deg); }
+}
 @keyframes starBorderRotate {
   100% { transform: rotate(360deg); }
 }
 
-/* Featured card */
+/* Featured card (Star Border: 奢华香槟金微光环绕流动，悬停智能提速) */
 .featured-card {
   position: relative;
   display: block; margin-bottom: var(--space-3xl);
   border-radius: 24px; overflow: hidden;
   padding: 2px !important; border: none !important;
-  background: transparent !important;
-  box-shadow: 0 20px 50px oklch(0% 0 0 / 0.3);
+  background: rgba(255, 255, 255, 0.03) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
   transition: transform 400ms var(--ease-out-expo), box-shadow 400ms var(--ease-out-expo);
   text-decoration: none;
+  --beam-color: #e0a96d;
+  --beam-speed: 5s;
 }
-/* Star Border：旋转金紫双星流光 */
+/* Star Border：硬件加速锥形流光彗星层 (1:1 对齐实验三香槟金) */
 .featured-card::before {
   content: ''; position: absolute; inset: -150%;
   background: conic-gradient(
     from 0deg,
     transparent 0deg,
-    transparent 40deg,
-    var(--gold) 90deg,
-    oklch(80% 0.22 285) 120deg,
-    var(--gold) 135deg,
-    transparent 165deg,
-    transparent 220deg,
-    var(--gold) 270deg,
-    oklch(80% 0.22 285) 300deg,
-    var(--gold) 315deg,
-    transparent 345deg
+    transparent 60deg,
+    var(--beam-color, #e0a96d) 120deg,
+    transparent 180deg
   );
-  animation: starBorderRotate 6s linear infinite;
+  animation: beamRotate var(--beam-speed, 5s) linear infinite;
   z-index: 0; pointer-events: none;
   opacity: 1 !important;
 }
 .featured-card:hover {
   transform: translateY(-3px) scale(1.005);
-  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.45), 0 0 35px oklch(75% 0.22 285 / 0.25);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45), 0 0 35px rgba(224, 169, 109, 0.25);
 }
 .featured-card:hover::before {
-  animation-duration: 3s;
+  animation-duration: calc(var(--beam-speed, 5s) * 0.6);
   opacity: 1 !important;
 }
-/* Star Border 内部内容实体面板（2px padding 留出清晰边缘轨道） */
+/* Star Border 内部黑曜石实体面板 (深空黑 #0d0f18) */
 .featured-card-inner {
   position: relative; z-index: 1;
   border-radius: 22px;
-  background: linear-gradient(145deg, oklch(21% 0.038 280), oklch(14% 0.02 280));
+  background: #0d0f18 !important;
   padding: var(--space-2xl); display: grid; grid-template-columns: 380px 1fr auto; gap: var(--space-xl); align-items: center;
   transition: background 0.3s ease;
 }
@@ -1262,7 +1253,7 @@ html:not(.theme-transitioning)::view-transition-new(root) {
     0 0 35px color-mix(in oklab, var(--project-accent, var(--accent)) 40%, transparent);
 }
 .projects-stack .project-card.is-current::before {
-  animation-duration: 3.2s;
+  animation-duration: calc(var(--beam-speed, 4s) * 0.6);
   opacity: 1 !important;
 }
 .projects-stack .project-card:not(.is-current) .project-visual,
@@ -1329,13 +1320,13 @@ html:not(.theme-transitioning)::view-transition-new(root) {
 }
 [data-theme="light"] .featured-card,
 [data-theme="light"] .projects-stack .project-card {
-  background: transparent !important;
+  background: rgba(0, 0, 0, 0.04) !important;
   border: none !important;
   box-shadow: 0 12px 32px oklch(30% 0.05 280 / 0.06), 0 1px 3px oklch(0% 0 0 / 0.03) !important;
 }
 [data-theme="light"] .featured-card-inner,
 [data-theme="light"] .projects-stack .project-card-inner {
-  background: oklch(100% 0 0 / 0.96) !important;
+  background: #ffffff !important;
 }
 [data-theme="light"] .featured-card:hover,
 [data-theme="light"] .projects-stack .project-card:hover,
