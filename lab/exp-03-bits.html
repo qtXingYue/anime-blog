@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验品三 · 前沿交互工坊 (React Bits 精选) · QT新月</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#07080d; --bg-card:#0f111a; --bg-glass:rgba(18,21,34,.72);
+  --border:rgba(255,255,255,.09); --border-hover:rgba(255,255,255,.22);
+  --txt:#f1f3f9; --txt-dim:#8b93a7; --txt-muted:#555d73;
+  --purple:#9d72ff; --blue:#4ea8de; --cyan:#48cae4; --gold:#e0a96d; --green:#3ecf8e;
+  --mono:"JetBrains Mono","Cascadia Code",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--txt); font-family:var(--sans);
+  line-height:1.7; overflow-x:hidden; min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+/* 深空星云背景 */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:
+    radial-gradient(700px 450px at 15% 15%, rgba(157,114,255,.14), transparent 70%),
+    radial-gradient(650px 400px at 85% 25%, rgba(78,168,222,.12), transparent 70%),
+    radial-gradient(800px 500px at 50% 90%, rgba(62,207,142,.08), transparent 70%),
+    #07080d;
+}
+
+/* 顶部胶囊导航 */
+.nav-wrap{position:fixed;top:16px;left:0;right:0;z-index:99;display:flex;justify-content:center;padding:0 16px;pointer-events:none}
+.nav{
+  pointer-events:auto; display:flex; align-items:center; gap:8px;
+  background:rgba(15,18,28,.82); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border); border-radius:100px; padding:6px 8px 6px 16px;
+  box-shadow:0 12px 36px rgba(0,0,0,.45);
+}
+.nav-brand{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--txt);font-weight:800;font-size:14px;margin-right:8px}
+.nav-mark{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.nav-back{
+  display:inline-flex;align-items:center;gap:6px;color:var(--txt-dim);
+  font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:99px;text-decoration:none;
+  transition:all .2s var(--ease);
+}
+.nav-back:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-gh{
+  display:inline-flex;align-items:center;background:#fff;color:#0b0c10;
+  font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:99px;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+}
+.nav-gh:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,255,255,.25)}
+
+/* 布局容器 */
+.container{max-width:1160px;margin:0 auto;padding:110px 24px 80px}
+
+/* Hero 导言 */
+.hero{text-align:center;margin-bottom:54px}
+.badge{
+  display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--purple);
+  background:rgba(157,114,255,.12);border:1px solid rgba(157,114,255,.3);
+  padding:4px 14px;border-radius:99px;margin-bottom:18px;
+}
+.hero h1{font-size:clamp(32px,5vw,52px);font-weight:900;letter-spacing:-.02em;line-height:1.2;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(135deg,var(--purple),var(--cyan) 50%,var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:16px;color:var(--txt-dim);max-width:620px;margin:0 auto 28px}
+.tech-pill-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
+.tech-pill{font-size:12px;color:var(--txt-dim);background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:99px;padding:3px 12px;font-family:var(--mono)}
+
+/* 章节通用样式 */
+.section{margin-bottom:60px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.sec-title{font-size:22px;font-weight:800;display:flex;align-items:center;gap:10px}
+.sec-title i{font-style:normal;font-size:18px}
+.sec-desc{font-size:13.5px;color:var(--txt-dim)}
+
+/* ═══ 模块 1：Decrypted Text 字符解密工坊 ═══ */
+.decrypt-card{
+  background:var(--bg-glass);backdrop-filter:blur(16px);border:1px solid var(--border);
+  border-radius:24px;padding:36px;position:relative;overflow:hidden;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
+}
+.decrypt-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(157,114,255,.5),transparent);
+}
+.decrypt-display{
+  min-height:130px;display:flex;align-items:center;justify-content:center;
+  background:#090a12;border:1px solid rgba(255,255,255,.06);border-radius:16px;
+  padding:24px 20px;margin-bottom:24px;text-align:center;position:relative;
+}
+.decrypt-tag{position:absolute;top:10px;left:14px;font-family:var(--mono);font-size:11px;color:var(--txt-muted);letter-spacing:1px}
+.decrypt-output{
+  font-family:var(--mono);font-size:clamp(20px,3.6vw,34px);font-weight:800;
+  letter-spacing:.04em;color:var(--cyan);text-shadow:0 0 24px rgba(72,202,228,.4);
+  word-break:break-word;
+}
+.decrypt-controls{
+  display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;
+}
+.decrypt-input-wrap{position:relative;flex:1}
+.decrypt-input{
+  width:100%;background:rgba(255,255,255,.04);border:1px solid var(--border);
+  border-radius:12px;padding:12px 16px;color:var(--txt);font-size:14px;font-family:inherit;
+  outline:none;transition:border-color .2s;
+}
+.decrypt-input:focus{border-color:var(--purple);box-shadow:0 0 0 2px rgba(157,114,255,.2)}
+.btn-replay{
+  background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;
+  border:none;border-radius:12px;padding:12px 24px;font-size:14px;font-weight:700;
+  cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .2s var(--ease);
+  box-shadow:0 4px 18px rgba(157,114,255,.35);
+}
+.btn-replay:hover{transform:translateY(-1px);filter:brightness(1.1)}
+.btn-replay:active{transform:translateY(1px)}
+.decrypt-presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;align-items:center}
+.preset-label{font-size:12px;color:var(--txt-muted);font-weight:600}
+.preset-btn{
+  background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--txt-dim);
+  font-size:12px;padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .2s;
+}
+.preset-btn:hover,.preset-btn.active{color:#fff;background:rgba(255,255,255,.12);border-color:var(--border-hover)}
+
+/* ═══ 模块 2：Star Border 流动流光边框 ═══ */
+.star-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.star-card{
+  position:relative;border-radius:22px;padding:2px;overflow:hidden;
+  background:rgba(255,255,255,.03);box-shadow:0 14px 40px rgba(0,0,0,.3);
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+}
+.star-card:hover{transform:translateY(-4px)}
+/* 硬件加速锥形流光层 */
+.star-card::before{
+  content:"";position:absolute;inset:-150%;
+  background:conic-gradient(from 0deg,transparent 0deg,transparent 60deg,var(--beam-color,var(--purple)) 120deg,transparent 180deg);
+  animation:beamRotate var(--beam-speed,4s) linear infinite;
+}
+.star-card:hover::before{animation-duration:calc(var(--beam-speed,4s) * 0.6)}
+@keyframes beamRotate{100%{transform:rotate(360deg)}}
+.star-card-inner{
+  position:relative;z-index:1;background:#0d0f18;border-radius:20px;
+  padding:28px 24px;height:100%;display:flex;flex-direction:column;justify-content:space-between;
+}
+.star-theme-gold{--beam-color:var(--gold);--beam-speed:5s}
+.star-theme-purple{--beam-color:#a855f7;--beam-speed:4s}
+.star-theme-emerald{--beam-color:var(--green);--beam-speed:4.5s}
+.star-badge{
+  align-self:flex-start;font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:3px 10px;border-radius:99px;border:1px solid;margin-bottom:14px;
+}
+.star-theme-gold .star-badge{color:var(--gold);border-color:rgba(224,169,109,.3);background:rgba(224,169,109,.08)}
+.star-theme-purple .star-badge{color:#c084fc;border-color:rgba(192,132,252,.3);background:rgba(192,132,252,.08)}
+.star-theme-emerald .star-badge{color:var(--green);border-color:rgba(62,207,142,.3);background:rgba(62,207,142,.08)}
+.star-title{font-size:18px;font-weight:800;margin-bottom:8px}
+.star-desc{font-size:13.5px;color:var(--txt-dim);line-height:1.6;margin-bottom:20px}
+.star-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:12px;color:var(--txt-muted);padding-top:14px;border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* ═══ 模块 3：True Focus 景深失焦聚焦 ═══ */
+.focus-card{
+  background:var(--bg-glass);backdrop-filter:blur(16px);border:1px solid var(--border);
+  border-radius:24px;padding:36px;position:relative;overflow:hidden;
+}
+.focus-matrix{
+  position:relative;display:flex;flex-wrap:wrap;gap:12px;padding:20px 0 10px;
+}
+.focus-pill{
+  position:relative;z-index:2;padding:10px 22px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  color:var(--txt);font-size:14.5px;font-weight:600;cursor:pointer;user-select:none;
+  transition:filter .35s var(--ease),opacity .35s var(--ease),color .35s var(--ease),transform .35s var(--ease);
+}
+/* 景深失焦状态 */
+.focus-matrix.active .focus-pill:not(.focused){
+  filter:blur(3.5px); opacity:.32; transform:scale(.97);
+}
+.focus-pill.focused{
+  color:#fff; text-shadow:0 0 16px rgba(157,114,255,.6);
+  border-color:rgba(157,114,255,.5);
+}
+/* 浮动取景高光框 */
+.focus-box{
+  position:absolute;z-index:1;pointer-events:none;border-radius:14px;
+  border:2px solid var(--purple);background:rgba(157,114,255,.12);
+  box-shadow:0 0 30px rgba(157,114,255,.4),inset 0 0 15px rgba(157,114,255,.18);
+  transition:top .35s cubic-bezier(.2,1,.3,1),left .35s cubic-bezier(.2,1,.3,1),width .35s cubic-bezier(.2,1,.3,1),height .35s cubic-bezier(.2,1,.3,1),opacity .3s;
+  opacity:0;
+}
+.focus-box.visible{opacity:1}
+.focus-box::after{
+  content:"FOCUS";position:absolute;bottom:-18px;right:4px;
+  font-family:var(--mono);font-size:9px;font-weight:800;color:var(--purple);letter-spacing:1px;
+}
+.focus-hint{
+  display:flex;align-items:center;gap:14px;margin-top:20px;font-size:13px;color:var(--txt-muted);
+}
+.focus-toggle-btn{
+  background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--txt-dim);
+  font-size:12px;padding:5px 14px;border-radius:99px;cursor:pointer;
+}
+.focus-toggle-btn.active{background:rgba(157,114,255,.2);color:#fff;border-color:var(--purple)}
+
+/* ═══ 模块 4：Pixel Card & Click Spark 物理像素网格 ═══ */
+.pixel-section-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
+.pixel-canvas-card{
+  background:#090a12;border:1px solid var(--border);border-radius:24px;
+  padding:24px;position:relative;overflow:hidden;min-height:300px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+#pixelCanvas{
+  position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;
+}
+.pixel-card-content{position:relative;z-index:2;pointer-events:none}
+.pixel-card-title{font-size:24px;font-weight:900;margin-bottom:8px}
+.pixel-card-sub{font-size:14px;color:var(--txt-dim);max-width:360px}
+.pixel-card-foot{
+  position:relative;z-index:2;pointer-events:none;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:12px;color:var(--txt-muted);
+}
+.spark-trigger-card{
+  background:var(--bg-glass);backdrop-filter:blur(16px);border:1px solid var(--border);
+  border-radius:24px;padding:30px;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;position:relative;overflow:hidden;cursor:pointer;
+  user-select:none;transition:border-color .2s;
+}
+.spark-trigger-card:hover{border-color:var(--border-hover)}
+.spark-icon{
+  width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,rgba(224,169,109,.2),rgba(157,114,255,.2));
+  border:1px solid rgba(224,169,109,.4);display:flex;align-items:center;justify-content:center;
+  font-size:28px;margin-bottom:16px;transition:transform .2s var(--ease);
+}
+.spark-trigger-card:hover .spark-icon{transform:scale(1.08) rotate(6deg)}
+.spark-title{font-size:18px;font-weight:800;margin-bottom:6px}
+.spark-desc{font-size:13px;color:var(--txt-dim);margin-bottom:14px}
+.spark-badge{
+  font-size:11px;font-weight:700;color:var(--gold);background:rgba(224,169,109,.1);
+  border:1px solid rgba(224,169,109,.3);padding:3px 12px;border-radius:99px;
+}
+
+/* 底部声明 */
+.footer{text-align:center;padding:40px 0 30px;color:var(--txt-muted);font-size:13px;border-top:1px solid var(--border)}
+.footer a{color:var(--txt-dim);text-decoration:none}
+.footer a:hover{color:#fff;text-decoration:underline}
+
+/* 响应式断点适配 */
+@media (max-width:980px){
+  .star-grid{grid-template-columns:1fr;gap:16px}
+  .pixel-section-grid{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .container{padding:90px 16px 60px}
+  .decrypt-card,.focus-card{padding:22px 18px;border-radius:18px}
+  .decrypt-controls{grid-template-columns:1fr}
+  .btn-replay{width:100%;justify-content:center}
+  .sec-title{font-size:19px}
+  .pixel-canvas-card{min-height:260px}
+}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="/" class="nav-brand">
+      <span class="nav-mark">月</span>
+      <span>QT新月</span>
+    </a>
+    <a href="/lab.html" class="nav-back">← 实验室主页</a>
+    <a href="https://github.com/qtXingYue" target="_blank" rel="noopener" class="nav-gh">GitHub ↗</a>
+  </nav>
+</div>
+
+<div class="container">
+
+  <!-- 页面头部导言 -->
+  <header class="hero">
+    <div class="badge">EXPERIMENTAL PROTOTYPE · 03</div>
+    <h1>前沿交互工坊<br><span>React Bits 精选自研版</span></h1>
+    <p>从现代顶尖组件库 React Bits 萃取交互灵魂，脱离重型 npm 依赖，以原生现代 Web 技术重构的 4 款高质感微交互原型。</p>
+    <div class="tech-pill-row">
+      <span class="tech-pill">Vanilla JS (0-Dependency)</span>
+      <span class="tech-pill">CSS Hardware GPU Beam</span>
+      <span class="tech-pill">HTML5 Particle Canvas</span>
+      <span class="tech-pill">Fluid Depth-of-Field Blur</span>
+    </div>
+  </header>
+
+  <!-- ═══ 实验 1：Decrypted Text ═══ -->
+  <section class="section" id="sec-decrypt">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title"><i>🔤</i> 字符终端解密 (Decrypted Text)</h2>
+        <p class="sec-desc">基于字符流随机扰动算法，从赛博乱码逐帧收敛锁定为目标明文。</p>
+      </div>
+    </div>
+    <div class="decrypt-card">
+      <div class="decrypt-display">
+        <span class="decrypt-tag">TERMINAL :: DECRYPT_STREAM</span>
+        <div class="decrypt-output" id="decryptOutput">AI / 数据工程 / 全栈架构师</div>
+      </div>
+      <div class="decrypt-controls">
+        <div class="decrypt-input-wrap">
+          <input type="text" class="decrypt-input" id="decryptInput" value="AI / 数据工程 / 全栈架构师" placeholder="输入任意中英文字符，回车或点击解密..." maxlength="40">
+        </div>
+        <button class="btn-replay" id="btnDecryptReplay">⚡ 触发解密</button>
+      </div>
+      <div class="decrypt-presets">
+        <span class="preset-label">经典预设：</span>
+        <button class="preset-btn active" data-text="AI / 数据工程 / 全栈架构师">职业身份</button>
+        <button class="preset-btn" data-text=">>> ACCESS GRANTED: HERMES_SECURITY_GATEWAY">终端越权</button>
+        <button class="preset-btn" data-text="10,000,000+ 跨国商业数据清洗与指纹攻防">数据规模</button>
+        <button class="preset-btn" data-text="MediaPipe 21点隔空翻页演示系统">视觉项目</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 实验 2：Star Border ═══ -->
+  <section class="section" id="sec-star">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title"><i>✨</i> 星芒流动光束边框 (Star Border)</h2>
+        <p class="sec-desc">纯 CSS GPU 锥形渐变旋转与遮罩融合，边框微光环绕流动，悬停智能提速。</p>
+      </div>
+    </div>
+    <div class="star-grid">
+      <!-- 金色轻奢 -->
+      <div class="star-card star-theme-gold">
+        <div class="star-card-inner">
+          <div>
+            <span class="star-badge">LUXURY GOLD</span>
+            <h3 class="star-title">核心代表作 · 重点聚焦</h3>
+            <p class="star-desc">极简高级的香槟金微光轮廓，适用于主推核心项目卡片与重要荣誉勋章展示。</p>
+          </div>
+          <div class="star-footer">
+            <span>Conic Gradient</span>
+            <span>60 FPS Hardware GPU</span>
+          </div>
+        </div>
+      </div>
+      <!-- 赛博霓虹 -->
+      <div class="star-card star-theme-purple">
+        <div class="star-card-inner">
+          <div>
+            <span class="star-badge">CYBER NEON</span>
+            <h3 class="star-title">AI 智能助理 · 悬浮交互</h3>
+            <p class="star-desc">深邃的暗紫电光轮廓流转，用于突出沉浸式 AI 悬浮窗或极客科技板块。</p>
+          </div>
+          <div class="star-footer">
+            <span>Hover Accel 1.6x</span>
+            <span>Zero JS Overhead</span>
+          </div>
+        </div>
+      </div>
+      <!-- 极光翡翠 -->
+      <div class="star-card star-theme-emerald">
+        <div class="star-card-inner">
+          <div>
+            <span class="star-badge">AURORA EMERALD</span>
+            <h3 class="star-title">实时状态 · 开放合作</h3>
+            <p class="star-desc">清澈明亮的高能翡翠流光，用于工作机会开放徽标、实时在线状态提示。</p>
+          </div>
+          <div class="star-footer">
+            <span>Dynamic Speed</span>
+            <span>Full Responsive</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 实验 3：True Focus ═══ -->
+  <section class="section" id="sec-focus">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title"><i>🔍</i> 动态景深聚焦词云 (True Focus)</h2>
+        <p class="sec-desc">光学级景深聚焦体验：当前焦点保持锐利高光，其余元素背景虚化失焦。</p>
+      </div>
+      <button class="focus-toggle-btn active" id="btnFocusAuto">⏸ 自动巡航模式: 开</button>
+    </div>
+    <div class="focus-card">
+      <div class="focus-matrix active" id="focusMatrix">
+        <div class="focus-box" id="focusBox"></div>
+        <span class="focus-pill focused" data-skill="Python 核心">Python 异步高并发</span>
+        <span class="focus-pill" data-skill="计算机视觉">PyTorch & OpenCV</span>
+        <span class="focus-pill" data-skill="隔空交互">MediaPipe 实时手势</span>
+        <span class="focus-pill" data-skill="爬虫逆向">Playwright 自动化反爬</span>
+        <span class="focus-pill" data-skill="微服务架构">FastAPI 高性能微服务</span>
+        <span class="focus-pill" data-skill="现代全栈">Astro 5 流体路由</span>
+        <span class="focus-pill" data-skill="复杂动效">GSAP 视差滚动</span>
+        <span class="focus-pill" data-skill="生成模型">CartoonGAN 风格迁移</span>
+        <span class="focus-pill" data-skill="企业工程">Linux & Docker 自动化</span>
+        <span class="focus-pill" data-skill="色彩科学">OKLCH 设计系统</span>
+        <span class="focus-pill" data-skill="商业大数据">千万级企业数据清洗</span>
+      </div>
+      <div class="focus-hint">
+        <span>💡 交互提示：将鼠标移动到任意词条上，光圈将瞬移对焦，其他词条自动进入单反级虚化景深。</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 实验 4：Pixel Card & Click Spark ═══ -->
+  <section class="section" id="sec-pixel">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title"><i>👾</i> 物理像素消融与点击火花 (Pixel Field)</h2>
+        <p class="sec-desc">Canvas 渲染的交互式数字像素力场，感应鼠标光标激荡与点击物理火花释放。</p>
+      </div>
+    </div>
+    <div class="pixel-section-grid">
+      <!-- 像素力场卡片 -->
+      <div class="pixel-canvas-card" id="pixelCard">
+        <canvas id="pixelCanvas"></canvas>
+        <div class="pixel-card-content">
+          <h3 class="pixel-card-title">数字视网膜网格</h3>
+          <p class="pixel-card-sub">在上方自由滑动鼠标，观察光标磁场如何激发沉睡的微矩阵粒子。</p>
+        </div>
+        <div class="pixel-card-foot">
+          <span>CANVAS 2D DYNAMIC FIELD</span>
+          <span>SPATIAL INTERACTION</span>
+        </div>
+      </div>
+      <!-- 点击微火花卡片 -->
+      <div class="spark-trigger-card" id="sparkCard">
+        <div class="spark-icon">⚡</div>
+        <h3 class="spark-title">点击引爆火花</h3>
+        <p class="spark-desc">在卡片内任意点击，体验粒子沿矢量向外爆裂减速的瞬时反馈。</p>
+        <span class="spark-badge">CLICK SPARK</span>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>实验品三 · 前沿交互工坊 | 设计与研发：钟文清 (QT新月)</p>
+    <p style="margin-top:6px"><a href="/lab.html">← 返回实验室其他实验品</a> · <a href="/">回到主站首页</a></p>
+  </footer>
+
+</div>
+
+<!-- ════════ 全套自研交互核心脚本 ════════ -->
+<script>
+// 1. ═════ Decrypted Text 字符解密算法 ═════
+(function initDecryptedText() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
+  const outputEl = document.getElementById('decryptOutput');
+  const inputEl = document.getElementById('decryptInput');
+  const replayBtn = document.getElementById('btnDecryptReplay');
+  const presetBtns = document.querySelectorAll('.preset-btn');
+  let currentTarget = inputEl.value;
+  let animId = 0;
+
+  function runDecryption(targetText) {
+    if (animId) cancelAnimationFrame(animId);
+    const textArr = targetText.split('');
+    const len = textArr.length;
+    let iteration = 0;
+    const maxIterations = len * 2 + 10;
+
+    function frame() {
+      iteration++;
+      const revealedCount = Math.floor((iteration / maxIterations) * len);
+      let res = '';
+      for (let i = 0; i < len; i++) {
+        if (i < revealedCount) {
+          res += textArr[i];
+        } else if (textArr[i] === ' ' || textArr[i] === '/' || textArr[i] === ':') {
+          res += textArr[i];
+        } else {
+          res += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+      outputEl.textContent = res;
+      if (iteration < maxIterations) {
+        animId = requestAnimationFrame(frame);
+      } else {
+        outputEl.textContent = targetText;
+        animId = 0;
+      }
+    }
+    frame();
+  }
+
+  // 初始执行一次
+  runDecryption(currentTarget);
+
+  replayBtn.addEventListener('click', () => {
+    currentTarget = inputEl.value || 'AI / 数据工程 / 全栈架构师';
+    runDecryption(currentTarget);
+  });
+
+  inputEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      currentTarget = inputEl.value || 'AI / 数据工程 / 全栈架构师';
+      runDecryption(currentTarget);
+    }
+  });
+
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const text = btn.getAttribute('data-text');
+      inputEl.value = text;
+      currentTarget = text;
+      runDecryption(currentTarget);
+    });
+  });
+})();
+
+// 2. ═════ True Focus 景深焦点跟踪与自动巡航 ═════
+(function initTrueFocus() {
+  const matrix = document.getElementById('focusMatrix');
+  const box = document.getElementById('focusBox');
+  const pills = Array.from(matrix.querySelectorAll('.focus-pill'));
+  const autoBtn = document.getElementById('btnFocusAuto');
+  let currentIndex = 0;
+  let autoTimer = null;
+  let isAuto = true;
+
+  function setFocus(pill) {
+    if (!pill) return;
+    pills.forEach(p => p.classList.remove('focused'));
+    pill.classList.add('focused');
+
+    const pRect = pill.getBoundingClientRect();
+    const mRect = matrix.getBoundingClientRect();
+
+    const top = pRect.top - mRect.top;
+    const left = pRect.left - mRect.left;
+
+    box.style.top = (top - 4) + 'px';
+    box.style.left = (left - 4) + 'px';
+    box.style.width = (pRect.width + 8) + 'px';
+    box.style.height = (pRect.height + 8) + 'px';
+    box.classList.add('visible');
+  }
+
+  function nextAuto() {
+    currentIndex = (currentIndex + 1) % pills.length;
+    setFocus(pills[currentIndex]);
+  }
+
+  function startAuto() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(nextAuto, 2200);
+    isAuto = true;
+    autoBtn.classList.add('active');
+    autoBtn.textContent = '⏸ 自动巡航模式: 开';
+  }
+
+  function stopAuto() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
+    isAuto = false;
+    autoBtn.classList.remove('active');
+    autoBtn.textContent = '▶ 自动巡航模式: 关';
+  }
+
+  // 鼠标悬停主动对焦
+  pills.forEach((pill, idx) => {
+    pill.addEventListener('mouseenter', () => {
+      currentIndex = idx;
+      setFocus(pill);
+    });
+  });
+
+  autoBtn.addEventListener('click', () => {
+    if (isAuto) stopAuto(); else startAuto();
+  });
+
+  // 初始聚焦第一个
+  setFocus(pills[0]);
+  startAuto();
+  window.addEventListener('resize', () => setFocus(pills[currentIndex]));
+})();
+
+// 3. ═════ Pixel Field 物理像素网格力场 ═════
+(function initPixelCanvas() {
+  const canvas = document.getElementById('pixelCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let dpr = 1, width = 0, height = 0;
+  const cellSize = 22;
+  let cols = 0, rows = 0;
+  let mouse = { x: -9999, y: -9999, active: false };
+  let grid = [];
+
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = canvas.width = rect.width * dpr;
+    height = canvas.height = rect.height * dpr;
+    cols = Math.ceil(width / (cellSize * dpr));
+    rows = Math.ceil(height / (cellSize * dpr));
+    grid = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        grid.push({
+          x: c * cellSize * dpr,
+          y: r * cellSize * dpr,
+          energy: 0,
+          hue: Math.random() > 0.5 ? 265 : 190
+        });
+      }
+    }
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = (e.clientX - rect.left) * dpr;
+    mouse.y = (e.clientY - rect.top) * dpr;
+    mouse.active = true;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.active = false;
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  // 移动端 touch 支持
+  canvas.addEventListener('touchmove', (e) => {
+    if (!e.touches[0]) return;
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = (e.touches[0].clientX - rect.left) * dpr;
+    mouse.y = (e.touches[0].clientY - rect.top) * dpr;
+    mouse.active = true;
+  }, { passive: true });
+  canvas.addEventListener('touchend', () => { mouse.active = false; });
+
+  const radius = 90;
+  function render() {
+    requestAnimationFrame(render);
+    ctx.clearRect(0, 0, width, height);
+
+    const R = radius * dpr;
+    for (let i = 0; i < grid.length; i++) {
+      const p = grid[i];
+      if (mouse.active) {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < R) {
+          const power = (1 - dist / R);
+          p.energy = Math.max(p.energy, power * 1.2);
+        }
+      }
+
+      // 能量自然衰减
+      p.energy *= 0.94;
+
+      // 基础底色点
+      const size = (cellSize * dpr) - (3 * dpr);
+      if (p.energy > 0.02) {
+        ctx.fillStyle = `hsla(${p.hue}, 90%, 65%, ${Math.min(p.energy * 0.85, 0.9)})`;
+        ctx.fillRect(p.x, p.y, size, size);
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,0.025)';
+        ctx.fillRect(p.x, p.y, size, size);
+      }
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  render();
+})();
+
+// 4. ═════ Click Spark 瞬时粒子爆发 ═════
+(function initClickSpark() {
+  const targetCard = document.getElementById('sparkCard');
+  if (!targetCard) return;
+
+  function createSpark(x, y) {
+    const sparkCount = 10;
+    const colors = ['#e0a96d', '#9d72ff', '#4ea8de', '#fff'];
+
+    for (let i = 0; i < sparkCount; i++) {
+      const spark = document.createElement('div');
+      spark.style.position = 'fixed';
+      spark.style.left = x + 'px';
+      spark.style.top = y + 'px';
+      spark.style.width = '5px';
+      spark.style.height = '5px';
+      spark.style.borderRadius = '50%';
+      spark.style.pointerEvents = 'none';
+      spark.style.zIndex = '9999';
+      spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+      spark.style.boxShadow = `0 0 8px ${spark.style.background}`;
+      document.body.appendChild(spark);
+
+      const angle = (Math.PI * 2 / sparkCount) * i + (Math.random() - 0.5) * 0.4;
+      const velocity = Math.random() * 60 + 40;
+      const vx = Math.cos(angle) * velocity;
+      const vy = Math.sin(angle) * velocity;
+
+      spark.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${vx}px, ${vy}px) scale(0.2)`, opacity: 0 }
+      ], {
+        duration: 500,
+        easing: 'cubic-bezier(0, 0.8, 0.2, 1)'
+      }).onfinish = () => spark.remove();
+    }
+  }
+
+  targetCard.addEventListener('pointerdown', (e) => {
+    createSpark(e.clientX, e.clientY);
+  });
+})();
+</script>
+
+</body>
+</html>

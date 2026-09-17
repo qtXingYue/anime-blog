@@ -301,7 +301,7 @@ int main() {
     </tbody>
   </table>
   <div class="box tip"><div class="bt">💡 新手建议</div>
-    <p>C++ 的概念确实比 Python 多一些，但这恰恰能让你真正理解「程序是怎么在电脑里跑的」，学完再学其他语言会非常轻松。本教程基于 <strong>C++11 及以上标准</strong>，跟着一章一章敲代码，零基础完全可以学会。</p>
+    <p>C++ 的概念确实比 Python 多一些，但这恰恰能让你真正理解「程序是怎么在电脑里跑的」，学完再学其他语言会非常轻松。本教程以 <strong>C++11 为基础</strong>，示例全部按 <strong>现代 C++（C++17 / C++20 可用）</strong>的写法来写，跟着一章一章敲代码，零基础完全可以学会。</p>
   </div>
 </section>
 
@@ -314,15 +314,15 @@ int main() {
   <table>
     <thead><tr><th>方式</th><th>适合谁</th><th>特点</th></tr></thead>
     <tbody>
-      <tr><td><strong>Dev-C++</strong></td><td>完全新手（推荐）</td><td>一个安装包全搞定，国内学校机房常用，界面简单</td></tr>
+      <tr><td><strong>小熊猫 Dev-C++</strong></td><td>完全新手（推荐）</td><td>一个安装包全搞定，国内学校机房常用，界面简单</td></tr>
       <tr><td>VS Code + MinGW</td><td>想用现代编辑器长期学习</td><td>界面漂亮、插件多，但安装配置步骤多一点</td></tr>
       <tr><td>在线编译器</td><td>装不了软件 / 先试试水</td><td>打开网页就能写，零安装</td></tr>
     </tbody>
   </table>
 
-  <h3>方式一：Dev-C++（新手推荐）</h3>
+  <h3>方式一：小熊猫 Dev-C++（新手推荐）</h3>
   <ol class="steps">
-    <li><strong>下载安装</strong>：搜索「小熊猫 Dev-C++」（Red Panda Dev-C++，是维护更活跃的升级版）或经典 Dev-C++，一路「下一步」装完。</li>
+    <li><strong>下载安装</strong>：搜索「<strong>小熊猫 Dev-C++</strong>」（英文名 Red Panda Dev-C++）下载安装，一路「下一步」装完。<strong>别装名字里只有「Dev-C++」的经典版</strong>——它 2015 年后就停止更新了，对新标准支持差、还容易误报错误。</li>
     <li><strong>新建文件</strong>：打开软件，按 <kbd>Ctrl</kbd> + <kbd>N</kbd> 新建一个源代码。</li>
     <li><strong>保存</strong>：按 <kbd>Ctrl</kbd> + <kbd>S</kbd> 保存为 <code>hello.cpp</code>。建议先在桌面建一个 <code>cpp-learn</code> 文件夹统一存放，文件名不要用中文。</li>
     <li><strong>运行</strong>：写下第 3 章的第一个程序，按 <kbd>F11</kbd>（编译并运行）。弹出黑色窗口显示结果，就说明环境搭好了！</li>
@@ -1808,6 +1808,9 @@ srand(time(0));          // 播种：以当前时间为种子，每次运行结�
 int answer = rand() % 100 + 1;   // rand()%100 得到 0~99，+1 变成 1~100</code></pre></div>
   <div class="box note"><div class="bt">💡 两个为什么</div>
     <p>① 为什么播种？不播种的话，rand() 每次运行程序都给出同一串数。② 公式 <code>rand() % N + 1</code> 可以生成 1~N 的随机整数，记下来很有用。</p>
+  </div>
+  <div class="box note"><div class="bt">🔎 进阶（现在了解即可）</div>
+    <p><code>rand()</code> 是 C 语言留下的老接口，随机质量一般，而且对大范围取模会有轻微偏差。C++11 起更推荐 <code>&lt;random&gt;</code> 里的 <code>std::mt19937</code> + <code>uniform_int_distribution</code>。入门阶段用 <code>rand()</code> 完全没问题，做正式项目时再换。</p>
   </div>
 
   <h3>第三步：完整代码</h3>

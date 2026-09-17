@@ -153,9 +153,9 @@ footer{padding:56px 0 72px;color:var(--txt3);font-size:13px;text-align:center;li
     <p>一套覆盖 14 章的完整学习体系：从环境搭建与 HTTP 原理，到请求库、解析库、并发、动态渲染、反爬对抗、Scrapy 框架、接口逆向，再到工程化与多个完整实战项目。图文结合，代码全部可直接运行。</p>
     <div class="meta">
       <span><b>适合：</b>有 Python 基础的开发者</span>
-      <span><b>环境：</b>Python 3.11+</span>
+      <span><b>环境：</b>Python 3.12+（3.11 亦可）</span>
       <span><b>章节：</b>14 章 + 附录</span>
-      <span><b>更新：</b>2026-08</span>
+      <span><b>更新：</b>2026-09</span>
     </div>
   </div>
 </div>
@@ -232,7 +232,14 @@ footer{padding:56px 0 72px;color:var(--txt3);font-size:13px;text-align:center;li
       <li><b>不越权、不传播</b>：不爬登录后的私密数据，不抓取受版权保护的内容（影视、音乐、付费课程）用于二次分发。</li>
     </ol>
   </div>
-  <p>合法场景非常宽广：公开数据采集、学术研究、市场分析、自用工具、SEO 监测。个人学习、数据分析、抓取公开信息都是正当用途。请始终把本教程的技术用在合法用途上。</p>
+  <div class="callout warn"><b>别把「公开」当免罪符</b><br>
+    ① <b>公开的个人信息照样受法律保护</b>——《个人信息保护法》规制的是「处理行为」，与是否公开无关；抓下来做画像、营销、二次传播都可能违法。<br>
+    ② robots 协议是行业惯例，<b>不是免责条款</b>。<br>
+    ③ 绕过技术防护（破解接口、强行过验证码/盾、抓取登录后数据）批量取数，可能触犯《刑法》第 285 条非法获取计算机信息系统数据罪，已有实际判例。<br>
+    ④ 涉及行业数据、重要数据的，还要对照《数据安全法》。<br>
+    <b>练手请用官方示例站、自己搭的站或明确开放的 API</b>，别拿真站点试手。
+  </div>
+  <p>合法场景依然很宽广：公开数据采集、学术研究、市场分析、自用工具、SEO 监测。把力气花在技术上、把边界记在心里，才是这一行能长期做下去的前提。</p>
 
   <div class="callout info"><b>爬虫工程师能力模型</b>——学习这条线：理解 HTTP → 会用请求库 → 精通选择器 → 会存数据 → 会提速 → 能对付反爬 → 能工程化部署。本教程的章节顺序正是按这条成长路径设计的。</div>
 </section>
@@ -243,7 +250,8 @@ footer{padding:56px 0 72px;color:var(--txt3);font-size:13px;text-align:center;li
   <p>工欲善其事，必先利其器。本章搭建一套可长期使用的爬虫开发环境。</p>
 
   <h3>2.1 Python 与包管理</h3>
-  <p>推荐使用 <strong>Python 3.11+</strong>。包管理用 conda 或 venv 均可，关键是把爬虫依赖装进隔离环境，避免污染系统 Python。</p>
+  <p>推荐使用 <strong>Python 3.12+</strong>（3.11 仍受支持，也够用）。包管理用 <strong>venv</strong>、<strong>conda</strong> 或 <strong>uv</strong> 均可，关键是把爬虫依赖装进隔离环境，避免污染系统 Python。<code>uv</code> 是近两年最流行的新选择，装库快很多。</p>
+  <div class="callout info"><b>装库报错 <code>externally-managed-environment</code>？</b>这不是故障——是 PEP 668 在提醒你「别直接往系统环境装包」，按下面命令先建虚拟环境即可。确需强装才加 <code>--break-system-packages</code>，不推荐。</div>
 <pre><code><span class="c-cm"># 查看 Python 版本（建议 3.11+）</span>
 python --version
 
@@ -858,6 +866,7 @@ page = StealthyFetcher.fetch(
     headless=<span class="c-kw">True</span>,
     solve_cloudflare=<span class="c-kw">True</span>,     <span class="c-cm"># 自动过 Turnstile 盾</span>
 )</code></pre>
+  <div class="callout warn"><b>关于「过盾」的边界</b>：<code>solve_cloudflare</code> 这类能力只应用于<b>你自有或已获授权的站点</b>（比如测试自己站点的防护配置）。把它用在他人站点上绕过安全防护，很可能踩中第 1.3 节讲的法律红线——<b>技术上能做 ≠ 做了没事</b>。学习中遇到强防护站点，正确做法是换数据源或用官方 API，而不是硬破。</div>
 
   <h3>9.4 截获 XHR：绕过渲染直拿数据</h3>
   <p>scrapling 的 <code>capture_xhr</code> 能拦截页面发出的接口请求——<strong>既不用解析渲染后 HTML，也不用自己逆向接口</strong>：</p>
