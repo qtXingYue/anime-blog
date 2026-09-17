@@ -3,11 +3,14 @@ import type { Project } from '../data/projects';
 
 interface Props {
   project: Project;
+  index?: number;
 }
-const { project: p } = Astro.props;
+const { project: p, index: i = 0 } = Astro.props;
 ---
 <article
   class="project-card"
+  id={`p-${p.num}`}
+  style={`--card-i:${i}; z-index:${i + 1};`}
   data-reveal
   data-accent={p.accent}
   data-pp

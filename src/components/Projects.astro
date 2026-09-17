@@ -46,7 +46,7 @@ import { featured, projectsFeature, projectsDepth, projectsIndex } from '../data
     </a>
 
     <div class="projects-stack projects-stack--feature">
-      {projectsFeature.map(p => <ProjectCard project={p} />)}
+      {projectsFeature.map((p, i) => <ProjectCard project={p} index={i} />)}
     </div>
   </div>
 </section>

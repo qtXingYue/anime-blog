@@ -283,6 +283,11 @@ function setCurrentProjectByIndex(index) {
   if (projectProgress) {
     const progress = progressAnchors.length > 1 ? index / (progressAnchors.length - 1) : 1;
     projectProgress.style.setProperty('--project-progress-fill', progress.toFixed(3));
+    if (el.dataset.accent) {
+      projectProgress.setAttribute('data-accent', el.dataset.accent);
+    } else {
+      projectProgress.removeAttribute('data-accent');
+    }
   }
   if (projectProgressCount) projectProgressCount.innerHTML = `<b>${current}</b><small>/ ${total}</small>`;
   if (projectProgressType) projectProgressType.textContent = el.dataset.ppType || '项目';
