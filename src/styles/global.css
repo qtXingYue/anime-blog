@@ -589,36 +589,56 @@ a:hover { color: var(--gold); }
 }
 .project-link:hover { gap: var(--space-sm); color: var(--gold); }
 
-/* ── 特写级大卡（.projects-stack 里只剩这三张，所以直接用作用域选择器升级）── */
+/* ── 特写级大卡（.projects-stack 里只剩这三张，采用 Star Border 双星流光边框）── */
 .projects-stack .project-card {
   position: relative;
-  grid-template-columns: 1.05fr 1fr;
-  gap: var(--space-2xl);
-  border-radius: 22px;
+  display: block !important;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 2px !important;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: 0 20px 50px oklch(0% 0 0 / 0.35);
+  transition: transform 350ms var(--ease-out-expo), box-shadow 350ms var(--ease-out-expo);
 }
-/* Star Border 光束流动边框 */
-.projects-stack .project-card::after {
-  content: ''; position: absolute; inset: -1px;
-  border-radius: inherit; padding: 1.5px;
+/* Star Border：旋转专属双星流光层 */
+.projects-stack .project-card::before {
+  content: ''; position: absolute; inset: -150%;
   background: conic-gradient(
-    from var(--star-angle, 0deg) at 50% 50%,
+    from 0deg,
     transparent 0deg,
-    transparent 60deg,
-    var(--project-accent, oklch(75% 0.2 280)) 105deg,
-    color-mix(in oklab, var(--project-accent, oklch(75% 0.2 280)) 40%, var(--gold)) 125deg,
-    transparent 165deg
+    transparent 40deg,
+    var(--project-accent, oklch(75% 0.2 280)) 90deg,
+    color-mix(in oklab, var(--project-accent, oklch(75% 0.2 280)) 45%, var(--gold)) 115deg,
+    var(--gold) 130deg,
+    transparent 160deg,
+    transparent 220deg,
+    var(--project-accent, oklch(75% 0.2 280)) 270deg,
+    color-mix(in oklab, var(--project-accent, oklch(75% 0.2 280)) 45%, var(--gold)) 295deg,
+    var(--gold) 310deg,
+    transparent 340deg
   );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none; z-index: 2;
-  animation: starBorderRotate 7s linear infinite;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  animation: starBorderRotate 6.5s linear infinite;
+  z-index: 0; pointer-events: none;
+  opacity: 1 !important;
 }
-.projects-stack .project-card:hover::after {
-  opacity: 1;
-  animation-duration: 3.5s;
+.projects-stack .project-card:hover::before,
+.projects-stack .project-card.is-current::before {
+  opacity: 1 !important;
+  animation-duration: 3.2s;
+}
+.projects-stack .project-card:hover {
+  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.45), 0 0 30px color-mix(in oklab, var(--project-accent, var(--accent)) 25%, transparent);
+}
+/* Star Border 内部内容实体面板（外层 2px padding 留出清晰边缘轨道） */
+.projects-stack .project-card-inner {
+  position: relative; z-index: 1;
+  background: linear-gradient(150deg, var(--bg-raised), var(--bg-high));
+  padding: var(--space-2xl);
+  display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--space-2xl);
+  border-radius: 22px;
+  height: 100%;
+  transition: background 0.3s ease;
 }
 .projects-stack .project-visual { aspect-ratio: 4 / 3; min-height: 260px; border-radius: 14px; }
 .projects-stack .project-title {
@@ -782,51 +802,58 @@ a:hover { color: var(--gold); }
 [data-theme="light"] .project-highlight-value { text-shadow: none; }
 
 /* ═══ STAR BORDER: 硬件加速流光边框 ═══ */
-@property --star-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
 @keyframes starBorderRotate {
-  to { --star-angle: 360deg; }
+  100% { transform: rotate(360deg); }
 }
 
 /* Featured card */
 .featured-card {
   position: relative;
   display: block; margin-bottom: var(--space-3xl);
-  border-radius: 20px; overflow: hidden;
-  background: linear-gradient(145deg, oklch(22% 0.04 280), oklch(16% 0.02 280));
-  border: 1px solid oklch(60% 0.18 280 / 0.15);
-  box-shadow: 0 20px 50px oklch(0% 0 0 / 0.22);
-  transition: all 400ms var(--ease-out-expo);
+  border-radius: 24px; overflow: hidden;
+  padding: 2px !important; border: none !important;
+  background: transparent !important;
+  box-shadow: 0 20px 50px oklch(0% 0 0 / 0.3);
+  transition: transform 400ms var(--ease-out-expo), box-shadow 400ms var(--ease-out-expo);
+  text-decoration: none;
 }
+/* Star Border：旋转金紫双星流光 */
 .featured-card::before {
-  content: ''; position: absolute; inset: -1px;
-  border-radius: inherit; padding: 1.5px;
+  content: ''; position: absolute; inset: -150%;
   background: conic-gradient(
-    from var(--star-angle, 0deg) at 50% 50%,
+    from 0deg,
     transparent 0deg,
-    transparent 65deg,
-    var(--gold) 100deg,
-    oklch(70% 0.22 285) 125deg,
-    transparent 165deg
+    transparent 40deg,
+    var(--gold) 90deg,
+    oklch(80% 0.22 285) 120deg,
+    var(--gold) 135deg,
+    transparent 165deg,
+    transparent 220deg,
+    var(--gold) 270deg,
+    oklch(80% 0.22 285) 300deg,
+    var(--gold) 315deg,
+    transparent 345deg
   );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none; z-index: 2;
   animation: starBorderRotate 6s linear infinite;
-  opacity: 0.75;
-  transition: opacity 0.3s ease;
+  z-index: 0; pointer-events: none;
+  opacity: 1 !important;
+}
+.featured-card:hover {
+  transform: translateY(-3px) scale(1.005);
+  box-shadow: 0 24px 64px oklch(0% 0 0 / 0.45), 0 0 35px oklch(75% 0.22 285 / 0.25);
 }
 .featured-card:hover::before {
-  opacity: 1;
-  animation-duration: 3.2s;
+  animation-duration: 3s;
+  opacity: 1 !important;
 }
-.featured-card:hover { border-color: oklch(60% 0.18 280 / 0.35); transform: translateY(-3px) scale(1.005); box-shadow: 0 24px 64px oklch(0% 0 0 / 0.25), 0 0 0 1px oklch(60% 0.18 280 / 0.15); }
-.featured-card-inner { padding: var(--space-2xl); display: grid; grid-template-columns: 380px 1fr auto; gap: var(--space-xl); align-items: center; }
+/* Star Border 内部内容实体面板（2px padding 留出清晰边缘轨道） */
+.featured-card-inner {
+  position: relative; z-index: 1;
+  border-radius: 22px;
+  background: linear-gradient(145deg, oklch(21% 0.038 280), oklch(14% 0.02 280));
+  padding: var(--space-2xl); display: grid; grid-template-columns: 380px 1fr auto; gap: var(--space-xl); align-items: center;
+  transition: background 0.3s ease;
+}
 .featured-card-media {
   aspect-ratio: 16 / 10; border-radius: 14px; overflow: hidden; position: relative;
   border: 1px solid oklch(60% 0.18 280 / 0.25);
@@ -1162,10 +1189,12 @@ html:not(.theme-transitioning)::view-transition-new(root) {
   .hero-cta .btn { width: 100%; justify-content: center; }
   .about-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: 1fr 1fr; }
-  .project-card { grid-template-columns: 1fr !important; gap: var(--space-xl); padding: var(--space-xl); }
+  .project-card { grid-template-columns: 1fr !important; gap: var(--space-xl); }
   .project-card:nth-child(even) .project-visual { order: 0; }
   .projects-stack { padding-bottom: var(--space-2xl); }
   .project-card { position: relative; top: auto; }
+  .projects-stack .project-card { padding: 2px !important; }
+  .projects-stack .project-card-inner { grid-template-columns: 1fr !important; gap: var(--space-xl); padding: var(--space-xl); border-radius: 20px; }
   .project-visual { min-height: 160px; }
   /* 封面原图是 880×550(16:10)。桌面堆叠卡刻意用 4/3 高构图，cover 裁掉左右各 ~8%；
      手机单列没有堆叠构图需求，容器比例对齐原图就不裁了 */
@@ -1173,7 +1202,8 @@ html:not(.theme-transitioning)::view-transition-new(root) {
   .project-visual-emoji { font-size: 3rem; }
   .contact-grid { grid-template-columns: 1fr 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .featured-card-inner { grid-template-columns: 1fr; gap: var(--space-md); }
+  .featured-card { padding: 2px !important; }
+  .featured-card-inner { grid-template-columns: 1fr !important; gap: var(--space-md); padding: var(--space-lg); border-radius: 20px; }
   .featured-card-cta { display: none; }
   .section { padding-block: var(--space-3xl); }
   /* 三级卡片的移动端形态 */
@@ -1224,9 +1254,12 @@ html:not(.theme-transitioning)::view-transition-new(root) {
 }
 .projects-stack .project-card.is-current {
   filter: brightness(1) contrast(1.02);
-  box-shadow: 0 30px 78px oklch(0% 0 0 / 0.42), 0 0 0 1px var(--project-accent, var(--accent)), 0 0 35px oklch(60% 0.18 280 / 0.16), inset 0 1px 0 oklch(100% 0 0 / 0.22);
+  box-shadow: 0 30px 78px oklch(0% 0 0 / 0.42), 0 0 35px color-mix(in oklab, var(--project-accent, var(--accent)) 30%, transparent);
 }
-.projects-stack .project-card.is-current::before { opacity: 0.36; }
+.projects-stack .project-card.is-current::before {
+  animation-duration: 3.2s;
+  opacity: 1 !important;
+}
 .projects-stack .project-card:not(.is-current) .project-visual,
 .projects-stack .project-card:not(.is-current) .project-title,
 .projects-stack .project-card:not(.is-current) .project-desc,
@@ -1276,8 +1309,6 @@ html:not(.theme-transitioning)::view-transition-new(root) {
 
 /* ═══ LIGHT THEME REFINED CARDS & ACCENTS (Apple/Linear 质感) ═══ */
 [data-theme="light"] .hero-card,
-[data-theme="light"] .featured-card,
-[data-theme="light"] .project-card,
 [data-theme="light"] .project-card-m,
 [data-theme="light"] .stat-card,
 [data-theme="light"] .about-card,
@@ -1286,10 +1317,19 @@ html:not(.theme-transitioning)::view-transition-new(root) {
   border-color: oklch(0% 0 0 / 0.08) !important;
   box-shadow: 0 12px 32px oklch(30% 0.05 280 / 0.06), 0 1px 3px oklch(0% 0 0 / 0.03) !important;
 }
+[data-theme="light"] .featured-card,
+[data-theme="light"] .projects-stack .project-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: 0 12px 32px oklch(30% 0.05 280 / 0.06), 0 1px 3px oklch(0% 0 0 / 0.03) !important;
+}
+[data-theme="light"] .featured-card-inner,
+[data-theme="light"] .projects-stack .project-card-inner {
+  background: oklch(100% 0 0 / 0.96) !important;
+}
 [data-theme="light"] .featured-card:hover,
-[data-theme="light"] .project-card:hover,
+[data-theme="light"] .projects-stack .project-card:hover,
 [data-theme="light"] .project-card-m:hover {
-  border-color: oklch(60% 0.18 280 / 0.45) !important;
   box-shadow: 0 20px 48px oklch(30% 0.06 280 / 0.12), 0 2px 6px oklch(0% 0 0 / 0.04) !important;
 }
 /* 移动端档案卡在 768px 媒体查询里已拆壳(只留状态+胶囊),日间精修卡样式
@@ -1322,22 +1362,14 @@ html:not(.theme-transitioning)::view-transition-new(root) {
   border-color: color-mix(in oklab, var(--project-accent, var(--accent)) 60%, transparent);
   box-shadow: 0 8px 24px oklch(30% 0.05 280 / 0.06);
 }
-[data-theme="light"] .project-card::before {
-  opacity: 0.06;
-}
-[data-theme="light"] .project-card:hover::before {
-  opacity: 0.14;
-}
-/* 亮色模式 Star Border 流光透明度微调 */
-[data-theme="light"] .featured-card::before {
-  opacity: 0.85;
-}
-[data-theme="light"] .projects-stack .project-card::after {
-  opacity: 0.75;
+/* 亮色模式 Star Border 流光保持鲜明 */
+[data-theme="light"] .featured-card::before,
+[data-theme="light"] .projects-stack .project-card::before {
+  opacity: 1 !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .featured-card::before,
-  .projects-stack .project-card::after {
+  .projects-stack .project-card::before {
     animation: none !important;
   }
 }
