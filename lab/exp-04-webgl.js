@@ -1,7 +1,7 @@
 /**
- * 实验品四 · WebGL 星云 (raw WebGL, 零依赖)
- * 粒子星系:螺旋星云 + 自定义 GLSL 着色器
- * 交互:鼠标扰动星尘 / 点击释放冲击波 / 三种配色主题
+ * 实验品四 · 星云项目宇宙 (raw WebGL, 零依赖)
+ * 背景:26k 粒子星云 + 自定义 GLSL
+ * 前景:9 个项目化作星球环绕运行,点击查看详情
  */
 (function () {
 'use strict';
@@ -20,7 +20,38 @@ var THEMES = {
 var themeKeys = Object.keys(THEMES);
 var themeIdx = 0;
 
-/* ---------------- mat4 helpers ---------------- */
+/* 项目星球数据 */
+var PROJECTS = [
+  { name: '多平台广告数据系统', en: 'Ads Data Pipeline', color: '#f5c542',
+    desc: '海客熵连实习项目。Playwright 驱动浏览器 + Token 双重认证采集多平台广告数据，Streamlit 仪表盘一键生成报表，日常监控 300+ 广告账号消耗。',
+    tags: ['Playwright', 'Streamlit', 'Python'], orbitR: 6.4, orbitY: 1.1, speed: 0.055, size: 1.25 },
+  { name: '手势控制 PPT 系统', en: 'Gesture PPT', color: '#7dd3fc',
+    desc: '毕业设计。MediaPipe 追踪 21 个手部关键点，识别 6 种手势，滑动窗口防抖，720P 下稳定 20+ FPS，挥手翻页、捏合缩放。',
+    tags: ['MediaPipe', 'OpenCV', 'Python'], orbitR: 5.2, orbitY: -0.7, speed: 0.075, size: 1.1 },
+  { name: '卡通风格迁移', en: 'CartoonGAN', color: '#f0abfc',
+    desc: 'AnimeGAN2 + ArcaneGAN 多模型风格迁移，图片视频双模式，支持新海诚、宫崎骏等多种画风，一键二次元化。',
+    tags: ['PyTorch', 'AnimeGAN2', 'CV'], orbitR: 7.3, orbitY: 0.4, speed: 0.045, size: 1.2 },
+  { name: '日语假名手写识别', en: 'Kana OCR', color: '#fda4af',
+    desc: 'CNN 识别 49 类日语假名草书字符，BatchNorm + Dropout + 早停，测试集准确率 88.2%，N2 备考时的练手之作。',
+    tags: ['CNN', 'PyTorch', 'OCR'], orbitR: 4.6, orbitY: 1.6, speed: 0.09, size: 0.95 },
+  { name: '动漫商城管理系统', en: 'Anime Mall', color: '#86efac',
+    desc: 'Java Servlet MVC + 微信小程序全栈：7 个 API、图片上传、批量操作，6 个小程序页面走通下单全流程。',
+    tags: ['Java', '微信小程序', 'MySQL'], orbitR: 6.9, orbitY: -1.2, speed: 0.05, size: 1.05 },
+  { name: 'AI 生图作品集', en: 'AI Gallery', color: '#c4b5fd',
+    desc: 'ChatGPT / Gemini / SD WebUI / ComfyUI 四类工具作品合集：产品广告、海报设计、风格迁移，提示词工程实战。',
+    tags: ['Stable Diffusion', 'ComfyUI', 'Prompt'], orbitR: 5.7, orbitY: 0.1, speed: 0.065, size: 1.0 },
+  { name: '梅州美食地理可视化', en: 'Meizhou Food Map', color: '#fdba74',
+    desc: 'Pyecharts 地图 + 柱状图交互可视化，呈现客家美食与水果的地理分布，一次数据可视化的小品。',
+    tags: ['Pyecharts', '数据可视化'], orbitR: 4.9, orbitY: -1.7, speed: 0.085, size: 0.9 },
+  { name: '浏览器 RPA 系统', en: 'Browser RPA', color: '#93c5fd',
+    desc: 'Selenium + ixBrowser Profile 调度，批量流程的隔离执行、并发控制与日志回写，解放重复性网页操作。',
+    tags: ['Selenium', 'RPA', 'Python'], orbitR: 7.8, orbitY: 1.8, speed: 0.04, size: 1.05 },
+  { name: '全栈作品集网站', en: 'Portfolio', color: '#5eead4',
+    desc: '就是你现在看到的这个站。Astro 5 + Vue 岛屿架构 + GSAP 动效系统，自托管字体，Nginx 部署在阿里云。',
+    tags: ['Astro', 'Vue', 'GSAP'], orbitR: 6.0, orbitY: -0.2, speed: 0.06, size: 1.15 }
+];
+
+/* ---------------- mat4 ---------------- */
 function mat4Perspective(fovy, aspect, near, far) {
   var f = 1.0 / Math.tan(fovy / 2), nf = 1 / (near - far);
   return [f / aspect, 0, 0, 0,  0, f, 0, 0,  0, 0, (far + near) * nf, -1,  0, 0, 2 * far * near * nf, 0];
@@ -65,14 +96,13 @@ function mat4Invert(m) {
   return inv;
 }
 
-/* ---------------- gl setup ---------------- */
+/* ---------------- gl ---------------- */
 var gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'high-performance' });
 if (!gl) { document.getElementById('nogl').style.display = 'flex'; return; }
 
 function compile(type, src) {
   var s = gl.createShader(type);
-  gl.shaderSource(s, src);
-  gl.compileShader(s);
+  gl.shaderSource(s, src); gl.compileShader(s);
   if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
     console.error(gl.getShaderInfoLog(s));
     document.getElementById('nogl').style.display = 'flex';
@@ -80,7 +110,7 @@ function compile(type, src) {
   }
   return s;
 }
-function program(vs, fs) {
+function makeProgram(vs, fs) {
   var p = gl.createProgram();
   gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
   gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
@@ -88,12 +118,11 @@ function program(vs, fs) {
   if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.error(gl.getProgramInfoLog(p)); throw new Error('link failed'); }
   return p;
 }
-
 gl.disable(gl.DEPTH_TEST);
 gl.enable(gl.BLEND);
-gl.blendFunc(gl.SRC_ALPHA, gl.ONE); // additive
+gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
 
-/* ---------------- galaxy ---------------- */
+/* ---------------- 星云 ---------------- */
 var GALAXY_VS = [
   'attribute vec3 position;',
   'attribute float aMix;',
@@ -113,16 +142,16 @@ var GALAXY_VS = [
   'void main() {',
   '  vec3 p = position;',
   '  float r = length(p.xz) + 0.0001;',
-  '  float ang = uTime * (0.28 / (0.35 + r));', // 差速旋转:内快外慢
+  '  float ang = uTime * (0.28 / (0.35 + r));',
   '  float ca = cos(ang), sa = sin(ang);',
   '  p.xz = mat2(ca, -sa, sa, ca) * p.xz;',
-  '  vec2 toM = uMouse.xz - p.xz;',              // 鼠标扰动
+  '  vec2 toM = uMouse.xz - p.xz;',
   '  float md = length(toM);',
   '  float infl = exp(-md * md * 0.32) * uMouseActive;',
   '  vec2 perp = vec2(-toM.y, toM.x) / (md + 0.0001);',
   '  p.xz += perp * infl * 0.7;',
   '  p.y += infl * 0.4;',
-  '  float age = uTime - uBurstTime;',            // 点击冲击波
+  '  float age = uTime - uBurstTime;',
   '  if (uBurstTime > 0.0 && age > 0.0 && age < 4.0) {',
   '    vec3 toP = p - uBurstPos;',
   '    float d = length(toP);',
@@ -139,7 +168,6 @@ var GALAXY_VS = [
   '  gl_Position = uProj * mv;',
   '}'
 ].join('\n');
-
 var GALAXY_FS = [
   'precision mediump float;',
   'uniform vec3 uCore;',
@@ -156,8 +184,7 @@ var GALAXY_FS = [
   '  gl_FragColor = vec4(col, a);',
   '}'
 ].join('\n');
-
-var galaxyProg = program(GALAXY_VS, GALAXY_FS);
+var galaxyProg = makeProgram(GALAXY_VS, GALAXY_FS);
 var gA = {
   position: gl.getAttribLocation(galaxyProg, 'position'),
   aMix: gl.getAttribLocation(galaxyProg, 'aMix'),
@@ -168,11 +195,9 @@ var gU = {};
 ['uView','uProj','uTime','uMouse','uMouseActive','uBurstTime','uBurstPos','uSize','uPixelRatio','uCore','uMid','uOuter']
   .forEach(function (n) { gU[n] = gl.getUniformLocation(galaxyProg, n); });
 
-function buildGalaxy(count) {
+var galaxy = (function (count) {
   var pos = new Float32Array(count * 3);
-  var aMix = new Float32Array(count);
-  var aScale = new Float32Array(count);
-  var aPhase = new Float32Array(count);
+  var aMix = new Float32Array(count), aScale = new Float32Array(count), aPhase = new Float32Array(count);
   var R = 5.2;
   for (var i = 0; i < count; i++) {
     var branch = i % 3;
@@ -182,50 +207,44 @@ function buildGalaxy(count) {
     var rx = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? -1 : 1) * 0.7 * flat;
     var ry = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? -1 : 1) * 0.38 * flat;
     var rz = Math.pow(Math.random(), 3) * (Math.random() < 0.5 ? -1 : 1) * 0.7 * flat;
-    pos[i*3]   = Math.cos(branchAngle) * radius + rx;
+    pos[i*3] = Math.cos(branchAngle) * radius + rx;
     pos[i*3+1] = ry;
     pos[i*3+2] = Math.sin(branchAngle) * radius + rz;
-    aMix[i] = radius / R;
-    aScale[i] = Math.random();
-    aPhase[i] = Math.random() * Math.PI * 2;
+    aMix[i] = radius / R; aScale[i] = Math.random(); aPhase[i] = Math.random() * Math.PI * 2;
   }
-  function buf(data, size) {
+  function buf(data) {
     var b = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, b);
     gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
     return b;
   }
-  return { pos: buf(pos, 3), aMix: buf(aMix, 1), aScale: buf(aScale, 1), aPhase: buf(aPhase, 1), count: count };
-}
-var galaxy = buildGalaxy(COUNT);
-function bindAttr(prog, loc, buffer, size) {
+  return { pos: buf(pos), aMix: buf(aMix), aScale: buf(aScale), aPhase: buf(aPhase), count: count };
+})(COUNT);
+
+function bindAttr(loc, buffer, size) {
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.enableVertexAttribArray(loc);
   gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
 }
 
-/* ---------------- background stars ---------------- */
-var STAR_VS = [
-  'attribute vec3 position;',
-  'uniform mat4 uVP;',
-  'uniform float uPixelRatio;',
-  'varying float vA;',
-  'void main() {',
-  '  gl_Position = uVP * vec4(position, 1.0);',
-  '  gl_PointSize = 2.0 * uPixelRatio;',
-  '  vA = 0.25 + 0.35 * fract(sin(dot(position.xy, vec2(12.9898, 78.233))) * 43758.5453);',
-  '}'
-].join('\n');
-var STAR_FS = [
-  'precision mediump float;',
-  'varying float vA;',
-  'void main() {',
-  '  float d = length(gl_PointCoord - vec2(0.5));',
-  '  float a = smoothstep(0.5, 0.1, d) * vA;',
-  '  gl_FragColor = vec4(0.54, 0.53, 0.72, a);',
-  '}'
-].join('\n');
-var starProg = program(STAR_VS, STAR_FS);
+/* ---------------- 背景星 ---------------- */
+var starProg = makeProgram(
+  ['attribute vec3 position;',
+   'uniform mat4 uVP;',
+   'uniform float uPixelRatio;',
+   'varying float vA;',
+   'void main() {',
+   '  gl_Position = uVP * vec4(position, 1.0);',
+   '  gl_PointSize = 2.0 * uPixelRatio;',
+   '  vA = 0.25 + 0.35 * fract(sin(dot(position.xy, vec2(12.9898, 78.233))) * 43758.5453);',
+   '}'].join('\n'),
+  ['precision mediump float;',
+   'varying float vA;',
+   'void main() {',
+   '  float d = length(gl_PointCoord - vec2(0.5));',
+   '  float a = smoothstep(0.5, 0.1, d) * vA;',
+   '  gl_FragColor = vec4(0.54, 0.53, 0.72, a);',
+   '}'].join('\n'));
 var sA = { position: gl.getAttribLocation(starProg, 'position') };
 var sU = { uVP: gl.getUniformLocation(starProg, 'uVP'), uPixelRatio: gl.getUniformLocation(starProg, 'uPixelRatio') };
 var starBuf = (function () {
@@ -242,7 +261,90 @@ var starBuf = (function () {
   return { buf: b, count: n };
 })();
 
-/* ---------------- state & interaction ---------------- */
+/* ---------------- 轨道环 ---------------- */
+var ringProg = makeProgram(
+  'attribute vec3 position; uniform mat4 uVP; void main() { gl_Position = uVP * vec4(position, 1.0); }',
+  'precision mediump float; uniform vec4 uColor; void main() { gl_FragColor = uColor; }');
+var rA = { position: gl.getAttribLocation(ringProg, 'position') };
+var rU = { uVP: gl.getUniformLocation(ringProg, 'uVP'), uColor: gl.getUniformLocation(ringProg, 'uColor') };
+var rings = [];
+function buildRings() {
+  rings.forEach(function (rg) { gl.deleteBuffer(rg.buf); });
+  rings = [];
+  var seen = {};
+  PROJECTS.forEach(function (p) {
+    var key = p.orbitR.toFixed(2) + '|' + p.orbitY.toFixed(2);
+    if (seen[key]) return; seen[key] = 1;
+    var seg = 96, pos = new Float32Array(seg * 3);
+    for (var i = 0; i < seg; i++) {
+      var a = i / seg * Math.PI * 2;
+      pos[i*3] = Math.cos(a) * p.orbitR * ORBIT_SCALE;
+      pos[i*3+1] = p.orbitY;
+      pos[i*3+2] = Math.sin(a) * p.orbitR * ORBIT_SCALE;
+    }
+    var b = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, b);
+    gl.bufferData(gl.ARRAY_BUFFER, pos, gl.STATIC_DRAW);
+    rings.push({ buf: b, seg: seg });
+  });
+}
+
+/* ---------------- 星球 DOM ---------------- */
+var planetLayer = document.getElementById('planets');
+var tip = document.getElementById('tip');
+PROJECTS.forEach(function (pr, i) {
+  pr.baseAngle = (i / PROJECTS.length) * Math.PI * 2 + Math.random() * 0.6;
+  var d = document.createElement('div');
+  d.className = 'planet';
+  d.style.setProperty('--c', pr.color);
+  d.innerHTML = '<span class="halo"></span><span class="orb"></span><span class="plabel">' + pr.name + '</span>';
+  d.addEventListener('click', function (e) { e.stopPropagation(); openPanel(i); });
+  if (!isMobile) {
+    d.addEventListener('mouseenter', function () {
+      tip.innerHTML = pr.name + '<small>' + pr.en + ' · 点击查看</small>';
+      tip.style.display = 'block'; tipFor = i;
+    });
+    d.addEventListener('mouseleave', function () { tip.style.display = 'none'; tipFor = -1; });
+  }
+  planetLayer.appendChild(d);
+  pr.el = d; pr.orbEl = d.querySelector('.orb');
+  pr.sx = -100; pr.sy = -100; pr.vis = false;
+});
+var tipFor = -1;
+
+/* ---------------- 详情面板 ---------------- */
+var panel = document.getElementById('panel');
+var cur = -1;
+function openPanel(i) {
+  cur = (i + PROJECTS.length) % PROJECTS.length;
+  var pr = PROJECTS[cur];
+  document.getElementById('pNo').textContent = ('0' + (cur + 1)).slice(-2) + ' / 09';
+  document.getElementById('pName').textContent = pr.name;
+  document.getElementById('pDesc').textContent = pr.desc;
+  document.getElementById('pTags').innerHTML = pr.tags.map(function (t) { return '<span>' + t + '</span>'; }).join('');
+  panel.style.setProperty('--pc', pr.color);
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden', 'false');
+  PROJECTS.forEach(function (p, j) { p.el.classList.toggle('active', j === cur); });
+}
+function closePanel() {
+  panel.classList.remove('open');
+  panel.setAttribute('aria-hidden', 'true');
+  PROJECTS.forEach(function (p) { p.el.classList.remove('active'); });
+  cur = -1;
+}
+document.getElementById('panelClose').addEventListener('click', closePanel);
+document.getElementById('prevBtn').addEventListener('click', function () { openPanel(cur - 1); });
+document.getElementById('nextBtn').addEventListener('click', function () { openPanel(cur + 1); });
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closePanel();
+  if (panel.classList.contains('open')) {
+    if (e.key === 'ArrowLeft') openPanel(cur - 1);
+    if (e.key === 'ArrowRight') openPanel(cur + 1);
+  }
+});
+
+/* ---------------- 交互:拖拽旋转 / 点击冲击波 ---------------- */
 var mouseNdc = [0, 0];
 var mouseWorld = [0, -100, 0];
 var camOff = [0, 0];
@@ -250,40 +352,47 @@ var mouseActive = 0;
 var burstTime = -10;
 var burstPos = [0, 0, 0];
 var autoRotate = !reduceMotion;
-var startT = performance.now();
-
-function unproject(nx, ny, invVP) {
-  function xform(x, y, z) {
-    var w = invVP[3]*x + invVP[7]*y + invVP[11]*z + invVP[15];
-    return [(invVP[0]*x + invVP[4]*y + invVP[8]*z + invVP[12]) / w,
-            (invVP[1]*x + invVP[5]*y + invVP[9]*z + invVP[13]) / w,
-            (invVP[2]*x + invVP[6]*y + invVP[10]*z + invVP[14]) / w];
-  }
-  var p1 = xform(nx, ny, -1), p2 = xform(nx, ny, 1);
-  var dx = p2[0]-p1[0], dy = p2[1]-p1[1], dz = p2[2]-p1[2];
-  var t = -p1[1] / dy;
-  return [p1[0] + dx*t, 0, p1[2] + dz*t];
-}
-
+var userAz = 0;
 var invVP = null;
+var dragging = false, dragMoved = 0, lastX = 0, downX = 0, downY = 0;
+
+function unproject(nx, ny, inv) {
+  function xf(x, y, z) {
+    var w = inv[3]*x + inv[7]*y + inv[11]*z + inv[15];
+    return [(inv[0]*x + inv[4]*y + inv[8]*z + inv[12]) / w,
+            (inv[1]*x + inv[5]*y + inv[9]*z + inv[13]) / w,
+            (inv[2]*x + inv[6]*y + inv[10]*z + inv[14]) / w];
+  }
+  var p1 = xf(nx, ny, -1), p2 = xf(nx, ny, 1);
+  var t = -p1[1] / (p2[1] - p1[1]);
+  return [p1[0] + (p2[0]-p1[0])*t, 0, p1[2] + (p2[2]-p1[2])*t];
+}
+canvas.addEventListener('pointerdown', function (e) {
+  dragging = true; dragMoved = 0; lastX = e.clientX; downX = e.clientX; downY = e.clientY;
+  canvas.setPointerCapture && canvas.setPointerCapture(e.pointerId);
+});
 window.addEventListener('pointermove', function (e) {
   mouseNdc = [(e.clientX / window.innerWidth) * 2 - 1, -((e.clientY / window.innerHeight) * 2 - 1)];
   mouseActive = 1;
+  if (dragging) {
+    var dx = e.clientX - lastX; lastX = e.clientX;
+    dragMoved += Math.abs(dx);
+    userAz += dx * 0.0045;
+  }
 }, { passive: true });
-window.addEventListener('pointerdown', function (e) {
-  if (e.target !== canvas) return; // 只响应画布上的点击,不干扰 UI 按钮
-  var nx = (e.clientX / window.innerWidth) * 2 - 1;
-  var ny = -((e.clientY / window.innerHeight) * 2 - 1);
-  if (invVP) {
+window.addEventListener('pointerup', function (e) {
+  if (dragging && dragMoved < 6 && invVP) {
+    var nx = (e.clientX / window.innerWidth) * 2 - 1;
+    var ny = -((e.clientY / window.innerHeight) * 2 - 1);
     burstPos = unproject(nx, ny, invVP);
     burstTime = (performance.now() - startT) / 1000;
   }
+  dragging = false;
 });
 document.addEventListener('mouseleave', function () { mouseActive = 0; });
 
-/* ---------------- ui ---------------- */
+/* ---------------- UI ---------------- */
 var themeName = document.getElementById('themeName');
-document.getElementById('countLabel').textContent = COUNT.toLocaleString('en-US') + ' 粒子';
 document.getElementById('themeBtn').addEventListener('click', function () {
   themeIdx = (themeIdx + 1) % themeKeys.length;
   var t = THEMES[themeKeys[themeIdx]];
@@ -293,11 +402,13 @@ document.getElementById('themeBtn').addEventListener('click', function () {
 });
 var rotBtn = document.getElementById('rotBtn');
 function syncRotBtn() {
-  rotBtn.textContent = autoRotate ? '自动旋转 · 开' : '自动旋转 · 关';
+  rotBtn.textContent = autoRotate ? '视角旋转 · 开' : '视角旋转 · 关';
   rotBtn.classList.toggle('off', !autoRotate);
 }
 rotBtn.addEventListener('click', function () { autoRotate = !autoRotate; syncRotBtn(); });
 syncRotBtn();
+
+var bgColor = THEMES.violet.css;
 function applyTheme(t) {
   gl.useProgram(galaxyProg);
   gl.uniform3fv(gU.uCore, t.core);
@@ -305,45 +416,66 @@ function applyTheme(t) {
   gl.uniform3fv(gU.uOuter, t.outer);
   bgColor = t.css;
 }
-var bgColor = THEMES.violet.css;
 
+var aspect = 1, FOV = 58, camBoost = 1, ORBIT_SCALE = 0.92;
 function resize() {
   canvas.width = Math.floor(window.innerWidth * DPR);
   canvas.height = Math.floor(window.innerHeight * DPR);
   gl.viewport(0, 0, canvas.width, canvas.height);
+  aspect = window.innerWidth / window.innerHeight;
+  FOV = aspect < 0.85 ? 68 : 58;
+  camBoost = aspect < 0.85 ? (1 + (0.85 - aspect) * 1.6) : 1;
+  ORBIT_SCALE = aspect < 0.85 ? 0.78 : 0.92;
+  proj = mat4Perspective(FOV * Math.PI / 180, aspect, 0.1, 200);
+  buildRings();
 }
-window.addEventListener('resize', resize);
-resize();
+var resizeTimer = null;
+window.addEventListener('resize', function () {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(resize, 200);
+});
 
-/* ---------------- main loop ---------------- */
+/* ---------------- 主循环 ---------------- */
 var proj = mat4Perspective(58 * Math.PI / 180, window.innerWidth / window.innerHeight, 0.1, 200);
+var startT = performance.now();
+var W = 0, H = 0;
 
 function frame() {
   var t = (performance.now() - startT) / 1000;
-  var orb = autoRotate ? t * 0.06 : 0;
+  W = window.innerWidth; H = window.innerHeight;
+  var az = (autoRotate ? t * 0.06 : 0) + userAz;
   camOff[0] += (mouseNdc[0] * 0.9 - camOff[0]) * 0.04;
   camOff[1] += (mouseNdc[1] * 0.5 - camOff[1]) * 0.04;
-  var eye = [Math.sin(orb) * 1.4 + camOff[0], 2.4 + camOff[1], Math.cos(orb) * 1.4 + 7.8];
+  var eye = [Math.sin(az) * 1.4 + camOff[0], 2.4 + camOff[1], Math.cos(az) * 1.4 + 7.8 * camBoost];
   var view = mat4LookAt(eye, [0, 0, 0], [0, 1, 0]);
   var vp = mat4Mul(proj, view);
   invVP = mat4Invert(vp);
 
-  // mouse -> world (lerped)
   var hit = unproject(mouseNdc[0], mouseNdc[1], invVP);
   mouseWorld[0] += (hit[0] - mouseWorld[0]) * 0.12;
   mouseWorld[2] += (hit[2] - mouseWorld[2]) * 0.12;
 
   gl.clearColor(bgColor[0], bgColor[1], bgColor[2], 1);
   gl.clear(gl.COLOR_BUFFER_BIT);
+  var fvp = new Float32Array(vp);
 
-  // stars
+  // 背景星
   gl.useProgram(starProg);
-  gl.uniformMatrix4fv(sU.uVP, false, new Float32Array(vp));
+  gl.uniformMatrix4fv(sU.uVP, false, fvp);
   gl.uniform1f(sU.uPixelRatio, DPR);
-  bindAttr(starProg, sA.position, starBuf.buf, 3);
+  bindAttr(sA.position, starBuf.buf, 3);
   gl.drawArrays(gl.POINTS, 0, starBuf.count);
 
-  // galaxy
+  // 轨道环
+  gl.useProgram(ringProg);
+  gl.uniformMatrix4fv(rU.uVP, false, fvp);
+  gl.uniform4f(rU.uColor, 0.75, 0.7, 1.0, 0.055);
+  rings.forEach(function (rg) {
+    bindAttr(rA.position, rg.buf, 3);
+    gl.drawArrays(gl.LINE_LOOP, 0, rg.seg);
+  });
+
+  // 星云
   gl.useProgram(galaxyProg);
   gl.uniformMatrix4fv(gU.uView, false, new Float32Array(view));
   gl.uniformMatrix4fv(gU.uProj, false, new Float32Array(proj));
@@ -354,24 +486,55 @@ function frame() {
   gl.uniform3fv(gU.uBurstPos, burstPos);
   gl.uniform1f(gU.uSize, 42.0);
   gl.uniform1f(gU.uPixelRatio, DPR);
-  bindAttr(galaxyProg, gA.position, galaxy.pos, 3);
-  bindAttr(galaxyProg, gA.aMix, galaxy.aMix, 1);
-  bindAttr(galaxyProg, gA.aScale, galaxy.aScale, 1);
-  bindAttr(galaxyProg, gA.aPhase, galaxy.aPhase, 1);
+  bindAttr(gA.position, galaxy.pos, 3);
+  bindAttr(gA.aMix, galaxy.aMix, 1);
+  bindAttr(gA.aScale, galaxy.aScale, 1);
+  bindAttr(gA.aPhase, galaxy.aPhase, 1);
   gl.drawArrays(gl.POINTS, 0, galaxy.count);
+
+  // 星球投影
+  var p0 = proj[0], p5 = proj[5];
+  for (var i = 0; i < PROJECTS.length; i++) {
+    var pr = PROJECTS[i];
+    var a = pr.baseAngle + t * pr.speed;
+    var wx = Math.cos(a) * pr.orbitR * ORBIT_SCALE, wy = pr.orbitY, wz = Math.sin(a) * pr.orbitR * ORBIT_SCALE;
+    var vx = view[0]*wx + view[4]*wy + view[8]*wz + view[12];
+    var vy = view[1]*wx + view[5]*wy + view[9]*wz + view[13];
+    var vz = view[2]*wx + view[6]*wy + view[10]*wz + view[14];
+    var dist = -vz;
+    if (dist < 0.6) { pr.el.style.display = 'none'; pr.vis = false; continue; }
+    var cw = dist; // clip.w = -vz
+    var nx = (p0 * vx) / cw, ny = (p5 * vy) / cw;
+    if (nx < -1.35 || nx > 1.35 || ny < -1.35 || ny > 1.35) { pr.el.style.display = 'none'; pr.vis = false; continue; }
+    var sx = (nx + 1) / 2 * W, sy = (1 - ny) / 2 * H;
+    var s = Math.min(1.8, Math.max(0.42, 8.5 / dist));
+    var fade = Math.min(1, Math.max(0.22, (15 - dist) / 8));
+    pr.el.style.display = 'block';
+    pr.el.style.left = sx.toFixed(1) + 'px';
+    pr.el.style.top = sy.toFixed(1) + 'px';
+    pr.el.style.opacity = fade.toFixed(2);
+    pr.el.style.zIndex = Math.round(1000 - dist * 40);
+    var osz = Math.round(24 * pr.size * s);
+    pr.orbEl.style.width = osz + 'px';
+    pr.orbEl.style.height = osz + 'px';
+    pr.sx = sx; pr.sy = sy; pr.vis = true;
+  }
+  if (tipFor >= 0 && PROJECTS[tipFor].vis) {
+    tip.style.left = PROJECTS[tipFor].sx.toFixed(1) + 'px';
+    tip.style.top = PROJECTS[tipFor].sy.toFixed(1) + 'px';
+  }
 
   if (!reduceMotion) requestAnimationFrame(frame);
 }
 
+resize();
 applyTheme(THEMES.violet);
 if (reduceMotion) {
-  // 静态渲染一帧
-  var t0 = 8.0;
-  var _now = performance.now;
+  var t0 = 8.0, _now = performance.now;
   performance.now = function () { return startT + t0 * 1000; };
   frame();
   performance.now = _now;
-  document.getElementById('hint').textContent = '已为减少动态效果偏好渲染静态星云';
+  document.getElementById('hint').textContent = '已为减少动态效果偏好渲染静态星云 · 点击星球查看项目';
 } else {
   frame();
 }
