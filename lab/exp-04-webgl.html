@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>实验品四 · WebGL 星云 — QT新月实验室</title>
+<meta name="description" content="Three.js 粒子星系实验:26000 点自定义 GLSL 螺旋星云,鼠标扰动星尘、点击释放冲击波。">
+<style>
+  :root { --accent: #a855f7; --gold: #e8c476; --text: #ede9fe; --muted: #8f8aa8; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
+  body { background: #060310; color: var(--text);
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    transition: background 800ms ease; }
+  #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
+  .vignette { position: fixed; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%); }
+  .ui { position: fixed; z-index: 10; }
+  .top-left { top: 22px; left: 24px; pointer-events: none; }
+  .kicker { font-size: 11px; letter-spacing: .28em; color: var(--gold); margin-bottom: 8px; }
+  h1 { font-size: clamp(22px, 3.4vw, 34px); font-weight: 800; letter-spacing: .04em; }
+  h1 .thin { font-weight: 300; color: var(--muted); }
+  .sub { margin-top: 8px; font-size: 13px; color: var(--muted); letter-spacing: .06em; }
+  .sub b { color: var(--accent); font-weight: 600; }
+  .top-right { top: 22px; right: 24px; display: flex; gap: 10px; }
+  .btn { pointer-events: auto; cursor: pointer; font-size: 13px; color: var(--text);
+    background: rgba(20,12,40,.55); border: 1px solid rgba(168,85,247,.35);
+    padding: 9px 16px; border-radius: 100px; backdrop-filter: blur(12px);
+    transition: border-color .25s, transform .25s, background .25s; white-space: nowrap; }
+  .btn:hover { border-color: var(--accent); transform: translateY(-1px); background: rgba(40,20,80,.6); }
+  .btn.off { opacity: .55; }
+  .btn .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); margin-right: 7px; vertical-align: 1px; }
+  .bottom { bottom: 20px; left: 0; right: 0; text-align: center; pointer-events: none; }
+  #hint { display: inline-block; font-size: 12.5px; color: var(--muted); letter-spacing: .12em;
+    background: rgba(10,6,24,.5); border: 1px solid rgba(255,255,255,.08);
+    padding: 8px 18px; border-radius: 100px; backdrop-filter: blur(10px); }
+  .back { position: fixed; z-index: 10; bottom: 20px; left: 24px; font-size: 13px;
+    color: var(--muted); text-decoration: none; letter-spacing: .08em;
+    border: 1px solid rgba(255,255,255,.1); padding: 8px 16px; border-radius: 100px;
+    background: rgba(10,6,24,.5); backdrop-filter: blur(10px); transition: color .25s, border-color .25s; }
+  .back:hover { color: var(--text); border-color: var(--accent); }
+  #nogl { position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center;
+    background: #060310; color: var(--muted); font-size: 14px; text-align: center; padding: 24px; line-height: 2; }
+  @media (max-width: 640px) {
+    .top-right { top: auto; bottom: 64px; right: 16px; flex-direction: column; }
+    .back { left: 16px; bottom: 64px; }
+    .bottom { bottom: 16px; }
+    #hint { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+<div class="vignette"></div>
+
+<div class="ui top-left">
+  <p class="kicker">实验品四 · LAB-04</p>
+  <h1>WebGL 星云 <span class="thin">/ Nebula</span></h1>
+  <p class="sub"><b id="countLabel">26,000 粒子</b> · <span id="themeName">紫金星云</span> · Three.js + 自定义 GLSL</p>
+</div>
+
+<div class="ui top-right">
+  <button class="btn" id="themeBtn"><span class="dot"></span>切换配色</button>
+  <button class="btn" id="rotBtn">自动旋转 · 开</button>
+</div>
+
+<div class="ui bottom"><span id="hint">移动鼠标扰动星尘 · 点击释放冲击波</span></div>
+<a class="back" href="/lab.html">← 返回实验室</a>
+
+<div id="nogl"><p>当前浏览器不支持 WebGL<br>换个现代浏览器再来看这片星云吧</p></div>
+
+<script src="exp-04-webgl.bundle.js"></script>
+</body>
+</html>
