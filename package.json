@@ -8,8 +8,7 @@
     "build": "astro build && node scripts/generate-sitemap.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test:api": "cd ../server && python -m pytest test_main.py -v",
-    "build:lab04": "esbuild lab-src/exp-04/main.js --bundle --minify --format=iife --outfile=public/lab/exp-04-webgl.bundle.js"
+    "test:api": "cd ../server && python -m pytest test_main.py -v"
   },
   "devDependencies": {
     "astro": "^5.0.0",
