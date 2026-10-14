@@ -1,0 +1,977 @@
+---
+// 实验品五：SHINKAI NEO-ZINE // 新海诚 · 晴空日系映画画报
+// 灵感源自站长博文《你的名字》：“线条与色彩的情绪表达、叙事节奏的留白”
+// 100% 绑定 src/data 真实数据，融合日式竖排杂志排版 + 三段天色切换 + 35mm 胶片目录检视器
+import { featured, projectsMain, projectsAI, projectsWeb } from '../../data/projects';
+import { skillCategories, stats } from '../../data/skills';
+import { honors, experience } from '../../data/timeline';
+
+const safeHref = (href: string) => (href.startsWith('/') ? href : '/' + href);
+
+const allProjects = [
+  {
+    num: '00',
+    category: '全栈架构',
+    emoji: featured.emoji,
+    title: featured.title,
+    desc: featured.desc,
+    highlight: { value: '100/100', label: 'Lighthouse 性能满分 · Astro 5 + GSAP' },
+    metrics: ['19 个静态编译页', '15 个 FastAPI 端点', 'OKLCH 双主题系统'],
+    tech: featured.tags.map(t => t.label),
+    cover: featured.cover,
+    link: { href: safeHref(featured.href), label: '阅读详情报告' },
+    group: 'web'
+  },
+  ...projectsMain.map(p => ({ ...p, link: p.link ? { ...p.link, href: safeHref(p.link.href) } : undefined, group: 'data' })),
+  ...projectsAI.map(p => ({ ...p, link: p.link ? { ...p.link, href: safeHref(p.link.href) } : undefined, group: 'ai' })),
+  ...projectsWeb.map(p => ({ ...p, link: p.link ? { ...p.link, href: safeHref(p.link.href) } : undefined, group: 'web' })),
+].sort((a, b) => a.num.localeCompare(b.num));
+---
+<!DOCTYPE html>
+<html lang="zh-CN" data-sky="daylight">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>实验品五 · 新月画報 Shinkai Neo-Zine — QT新月实验室</title>
+  <meta name="description" content="QT新月作品集 实验品五：致敬新海诚色彩美学与日式竖排画报的个人作品集特刊。" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="/fonts/noto-serif-sc-900.woff2" as="font" type="font/woff2" crossorigin />
+</head>
+<body>
+  <!-- 纸张微纹理遮罩 -->
+  <div class="paper-grain" aria-hidden="true"></div>
+  <!-- 天空背景光影与彗星粒子画布 -->
+  <canvas class="sky-canvas" id="skyCanvas" aria-hidden="true"></canvas>
+
+  <!-- ═══ 顶部出版物眉栏 (ZINE MASTHEAD BAR) ═══ -->
+  <header class="zine-topbar">
+    <div class="zine-topbar-inner">
+      <div class="zt-left">
+        <a href="/lab.html" class="zt-back">← 実験室へ戻る / LAB</a>
+        <span class="zt-issue">新月画報 · 2026 特刊号 (VOL.05)</span>
+      </div>
+
+      <nav class="zt-nav" aria-label="画报章节导航">
+        <a href="#sec-prologue">序章 · 人物</a>
+        <a href="#sec-works">目録 · 作品 (15)</a>
+        <a href="#sec-craft">技芸 · 技能</a>
+        <a href="#sec-chronicle">軌跡 · 履历</a>
+      </nav>
+
+      <div class="zt-sky-switch" role="group" aria-label="新海诚天色切换">
+        <button type="button" class="sky-btn active" data-sky-mode="daylight">☀️ 晴空</button>
+        <button type="button" class="sky-btn" data-sky-mode="twilight">🌅 黄昏之时</button>
+        <button type="button" class="sky-btn" data-sky-mode="comet">🌠 彗星夜空</button>
+      </div>
+    </div>
+    <!-- 结绳红线装饰条 (Musubi Red Cord) -->
+    <div class="musubi-cord" aria-hidden="true"></div>
+  </header>
+
+  <main class="zine-container">
+    <!-- ═══ 第一幕：日系画报刊头 (HERO SPREAD) ═══ -->
+    <section class="zine-hero" id="sec-prologue">
+      <div class="hero-spread">
+        <!-- 左栏：主文案与个人序言 -->
+        <div class="spread-main">
+          <div class="kicker-row">
+            <span class="seal-red">新月</span>
+            <span class="kicker-text">SHINKAI NEO-ZINE // PORTFOLIO ARCHIVE 2026</span>
+          </div>
+
+          <h1 class="zine-title">
+            <span class="title-main">QT新月</span>
+            <span class="title-sub">钟文清 · 个人全栈与 AI 作品特刊</span>
+          </h1>
+
+          <p class="zine-lead">
+            <strong>AI / 数据工程 / 浏览器自动化 / 全栈开发。</strong>
+            深圳职业技术大学人工智能技术应用专业 2026 届毕业生。在海客熵连科技独立负责多平台广告数据聚合监控系统（5800 行代码 / 日均监控 300+ 活跃账户），专注于用 <strong>Python、TensorFlow、MediaPipe、Playwright</strong> 解决真实世界的工程问题。
+          </p>
+
+          <!-- 引用自《你的名字》博文的核心设计哲学 -->
+          <blockquote class="shinkai-quote">
+            <p>“线条与色彩的情绪表达、叙事节奏的留白，其实和做个人作品集是相通的。每一次页面改版，我都试图留住那种‘似曾相识的悸动’。”</p>
+            <cite>—— 摘自站长随笔《最爱电影分享：〈你的名字〉》</cite>
+          </blockquote>
+
+          <div class="hero-actions">
+            <a href="#sec-works" class="zine-btn-primary">翻阅作品目録 (15) ↓</a>
+            <a href="/blog/your-name.html" class="zine-btn-ghost">阅读《你的名字》随笔 →</a>
+            <a href="/" class="zine-btn-ghost">返回主站</a>
+          </div>
+        </div>
+
+        <!-- 中栏：新海诚式天空取景窗卡片 -->
+        <div class="spread-window">
+          <div class="window-frame">
+            <div class="window-sky-art">
+              <div class="comet-streak" aria-hidden="true"></div>
+              <img src="/projects/covers/06-cartoon-gan.webp" alt="新海诚动漫风格迁移预览" class="window-img" />
+              <div class="window-caption">
+                <span>FIG.01 // 风景与代码交汇之处</span>
+                <span>SHENZHEN · 22°32'N</span>
+              </div>
+            </div>
+            <div class="dossier-mini">
+              <div class="dm-row"><span>氏名 / NAME</span><b>钟文清 (Zhong Wenqing)</b></div>
+              <div class="dm-row"><span>専攻 / MAJOR</span><b>人工智能技术应用 (2026届)</b></div>
+              <div class="dm-row"><span>語学 / LANG</span><b>中文 · 日语 JLPT N2 (冲刺 N1) · EN</b></div>
+              <div class="dm-row"><span>状態 / STATUS</span><b class="status-available">● 开放工作机会 (AI / 数据工程)</b></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏：纯正日式竖排刊头标语 (Vertical Japanese Typography) -->
+        <aside class="spread-vertical" aria-hidden="true">
+          <p class="vert-jp">光と影の交差する場所、コードで描く物語。</p>
+          <p class="vert-cn">似曾相识的悸动 · 二〇二六年作品集</p>
+        </aside>
+      </div>
+
+      <!-- 6 大量化看板 (出版物大字报排版) -->
+      <div class="zine-stats-bar">
+        {stats.map((s, i) => (
+          <div class="z-stat-cell">
+            <span class="z-stat-idx">0{i + 1}</span>
+            <strong class="z-stat-num">{s.number}</strong>
+            <span class="z-stat-label">{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══ 第二幕：作品映画目録 (15 PROJECTS CATALOG & 35MM FILM VIEWER) ═══ -->
+    <section class="zine-section" id="sec-works">
+      <div class="sec-header">
+        <div>
+          <p class="sec-kicker">CHAPTER 01 // WORKS CATALOG & FILMSTRIP</p>
+          <h2 class="sec-title">作品映画目録 <span>全十五篇</span></h2>
+        </div>
+        <div class="catalog-filters" role="tablist" aria-label="项目分类筛选">
+          <button type="button" class="cat-btn active" data-cat="all">全て · 全部 (15)</button>
+          <button type="button" class="cat-btn" data-cat="data">データ · 核心与数据 (4)</button>
+          <button type="button" class="cat-btn" data-cat="ai">視覚 · AI 与视觉 (6)</button>
+          <button type="button" class="cat-btn" data-cat="web">創作 · 全栈与 AIGC (5)</button>
+        </div>
+      </div>
+
+      <div class="catalog-layout">
+        <!-- 左侧：日本展览图录式项目清单 -->
+        <div class="catalog-list" id="catalogList">
+          {allProjects.map((p, idx) => (
+            <article
+              class={`catalog-item ${idx === 1 ? 'active' : ''}`}
+              data-cat={p.group}
+              data-idx={idx}
+              tabindex="0"
+            >
+              <div class="ci-num">{p.num}</div>
+              <div class="ci-body">
+                <div class="ci-top">
+                  <span class="ci-cat">{p.category}</span>
+                  <h3 class="ci-title">{p.title}</h3>
+                  {p.highlight && <span class="ci-badge">{p.highlight.value}</span>}
+                </div>
+                <p class="ci-desc">{p.desc}</p>
+                <div class="ci-meta">
+                  <span class="ci-tech">{p.tech.join(' / ')}</span>
+                  {p.link && <a href={p.link.href} class="ci-direct-link">{p.link.label}</a>}
+                </div>
+              </div>
+              <div class="ci-arrow" aria-hidden="true">→</div>
+            </article>
+          ))}
+        </div>
+
+        <!-- 右侧：Sticky 吸附的 35mm 胶片取景检视器 -->
+        <aside class="film-inspector" aria-live="polite">
+          <div class="film-card">
+            <div class="film-sprockets" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="film-frame">
+              <img id="zineCover" src="/projects/covers/01-data-crawler.webp" alt="项目胶片预览" />
+              <div id="zineEmojiFallback" class="film-emoji" hidden>🕷️</div>
+              <span class="film-stamp" id="zineStamp">SCENE #01 // 核心工程</span>
+            </div>
+
+            <div class="film-sprockets" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+
+            <div class="film-details">
+              <div class="fd-head">
+                <h3 id="zineTitle">多平台广告数据爬取系统</h3>
+                <p id="zineHighlight" class="fd-hl">328+ 活跃广告账号在跑 · 覆盖 5 个平台</p>
+              </div>
+
+              <p id="zineDesc" class="fd-desc">
+                一套覆盖五大广告平台的自动化数据采集系统。Playwright 驱动浏览器、Token 双重认证，Streamlit 仪表盘一键生成报表，日常监控 300+ 广告账号的消耗数据。
+              </p>
+
+              <div class="fd-block">
+                <span class="fd-label">核心成果指标 / METRICS</span>
+                <ul id="zineMetrics" class="fd-metrics">
+                  <li>5 个广告平台</li>
+                  <li>328+ 活跃账号</li>
+                  <li>CSV/Excel 自动报表</li>
+                </ul>
+              </div>
+
+              <div class="fd-block">
+                <span class="fd-label">使用技术 / TECH SPEC</span>
+                <div id="zineTech" class="fd-tags">
+                  <span>Python</span><span>Playwright</span><span>Streamlit</span><span>REST API</span>
+                </div>
+              </div>
+
+              <a id="zineLink" href="/projects/data-crawler-report" class="zine-cta-full">
+                阅读完整技术拆解报告 →
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══ 第三幕：技芸見本帳 (SKILLS SPECIMEN TABLE) ═══ -->
+    <section class="zine-section" id="sec-craft">
+      <div class="sec-header">
+        <div>
+          <p class="sec-kicker">CHAPTER 02 // CRAFT & TECHNICAL SPECIMEN</p>
+          <h2 class="sec-title">技芸見本帳 <span>技术矩阵</span></h2>
+        </div>
+      </div>
+
+      <div class="specimen-grid">
+        {skillCategories.map((cat, idx) => (
+          <div class="specimen-box">
+            <div class="sp-head">
+              <span class="sp-no">第 0{idx + 1} 類</span>
+              <h3>{cat.title}</h3>
+            </div>
+            <div class="sp-tags">
+              {cat.tags.map(t => (
+                <span class={t.primary ? 'sp-tag primary' : 'sp-tag'}>
+                  {t.primary && <i>★</i>}
+                  {t.label}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ═══ 第四幕：軌跡と栄誉 (HONORS & EXPERIENCE CHRONICLE) ═══ -->
+    <section class="zine-section" id="sec-chronicle">
+      <div class="sec-header">
+        <div>
+          <p class="sec-kicker">CHAPTER 03 // CHRONICLE & HONORS</p>
+          <h2 class="sec-title">軌跡と栄誉 <span>成长年表</span></h2>
+        </div>
+      </div>
+
+      <div class="chronicle-spread">
+        <div class="ch-column">
+          <h3 class="ch-col-title"><span>賞</span> 荣誉与专业认证</h3>
+          <div class="ch-list">
+            {honors.map(h => (
+              <div class="ch-card">
+                <span class="ch-date">{h.date}</span>
+                <h4>{h.title}</h4>
+                <p>{h.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="ch-column">
+          <h3 class="ch-col-title"><span>歴</span> 工程实践与校园履历</h3>
+          <div class="ch-list">
+            {experience.map(e => (
+              <div class="ch-card">
+                <div class="ch-meta-row">
+                  <span class="ch-date">{e.date}</span>
+                  {e.org && <span class="ch-org">{e.org}</span>}
+                </div>
+                <h4>{e.title}</h4>
+                <p>{e.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="zine-footer">
+    <div class="musubi-cord" aria-hidden="true"></div>
+    <div class="zf-inner">
+      <p class="zf-brand">新月画報 // QT-XINGYUE EDITORIAL ZINE · 钟文清</p>
+      <div class="zf-links">
+        <a href="/">回到作品集主站</a>
+        <a href="/lab.html">实验室目录</a>
+        <a href="/blog.html">技术与随笔博客</a>
+        <a href="https://github.com/qtXingYue" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline define:vars={{ allProjects }}>
+    window.__ZINE_PROJECTS__ = allProjects;
+  </script>
+
+  <script is:inline>
+  (function initShinkaiZine() {
+    const projects = window.__ZINE_PROJECTS__ || [];
+
+    // 1. 三段天色切换 (晴空 / 黄昏之时 / 彗星夜空)
+    const skyBtns = document.querySelectorAll('.sky-btn');
+    skyBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-sky-mode') || 'daylight';
+        document.documentElement.setAttribute('data-sky', mode);
+        skyBtns.forEach(b => b.classList.toggle('active', b === btn));
+      });
+    });
+
+    // 2. 项目图录悬停/点击切换右侧 35mm 胶片检视器
+    const zineCover = document.getElementById('zineCover');
+    const zineEmojiFallback = document.getElementById('zineEmojiFallback');
+    const zineStamp = document.getElementById('zineStamp');
+    const zineTitle = document.getElementById('zineTitle');
+    const zineHighlight = document.getElementById('zineHighlight');
+    const zineDesc = document.getElementById('zineDesc');
+    const zineMetrics = document.getElementById('zineMetrics');
+    const zineTech = document.getElementById('zineTech');
+    const zineLink = document.getElementById('zineLink');
+
+    function updateFilmInspector(idx) {
+      const p = projects[idx];
+      if (!p) return;
+
+      document.querySelectorAll('.catalog-item').forEach(el => {
+        el.classList.toggle('active', Number(el.getAttribute('data-idx')) === idx);
+      });
+
+      if (zineStamp) zineStamp.textContent = `SCENE #${p.num} // ${p.category}`;
+      if (zineTitle) zineTitle.textContent = p.title;
+      if (zineDesc) zineDesc.textContent = p.desc;
+
+      if (p.highlight) {
+        zineHighlight.hidden = false;
+        zineHighlight.textContent = `${p.highlight.value} — ${p.highlight.label}`;
+      } else {
+        zineHighlight.hidden = true;
+      }
+
+      if (p.cover && !p.cover.endsWith('.svg')) {
+        zineCover.src = p.cover;
+        zineCover.hidden = false;
+        zineEmojiFallback.hidden = true;
+      } else {
+        zineCover.hidden = true;
+        zineEmojiFallback.textContent = p.emoji || '🎬';
+        zineEmojiFallback.hidden = false;
+      }
+
+      if (zineMetrics) {
+        zineMetrics.innerHTML = (p.metrics || []).map(m => `<li>${m}</li>`).join('');
+      }
+      if (zineTech) {
+        zineTech.innerHTML = (p.tech || []).map(t => `<span>${t}</span>`).join('');
+      }
+      if (zineLink && p.link) {
+        zineLink.href = p.link.href;
+        zineLink.textContent = `${p.link.label.replace('→', '').trim()} →`;
+      }
+    }
+
+    document.querySelectorAll('.catalog-item').forEach(item => {
+      const idx = Number(item.getAttribute('data-idx'));
+      item.addEventListener('mouseenter', () => updateFilmInspector(idx));
+      item.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        updateFilmInspector(idx);
+      });
+      item.addEventListener('focus', () => updateFilmInspector(idx));
+    });
+
+    // 默认检视 01 号项目
+    updateFilmInspector(1);
+
+    // 3. 分类筛选
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-cat');
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.catalog-item').forEach(item => {
+          const match = cat === 'all' || item.getAttribute('data-cat') === cat;
+          item.hidden = !match;
+        });
+      });
+    });
+
+    // 4. 新海诚式天空光粒背景 Canvas (轻量合成器友好)
+    const canvas = document.getElementById('skyCanvas');
+    if (canvas && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const ctx = canvas.getContext('2d');
+      let w = 0, h = 0;
+      const motes = [];
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      for (let i = 0; i < 36; i++) {
+        motes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 2.2 + 0.8,
+          vx: (Math.random() - 0.3) * 0.35,
+          vy: -Math.random() * 0.4 - 0.1,
+          a: Math.random() * 0.55 + 0.15
+        });
+      }
+
+      function drawSky() {
+        ctx.clearRect(0, 0, w, h);
+        const mode = document.documentElement.getAttribute('data-sky') || 'daylight';
+        const color = mode === 'daylight' ? '2, 132, 199' : mode === 'twilight' ? '249, 115, 22' : '125, 211, 252';
+        for (const m of motes) {
+          m.x += m.vx;
+          m.y += m.vy;
+          if (m.y < -10) m.y = h + 10;
+          if (m.x > w + 10) m.x = -10;
+          if (m.x < -10) m.x = w + 10;
+          ctx.beginPath();
+          ctx.fillStyle = `rgba(${color}, ${m.a})`;
+          ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        requestAnimationFrame(drawSky);
+      }
+      requestAnimationFrame(drawSky);
+    }
+  })();
+  </script>
+
+  <style is:global>
+    @font-face {
+      font-family: 'Noto Serif SC';
+      font-weight: 700;
+      font-display: swap;
+      src: url('/fonts/noto-serif-sc-700.woff2') format('woff2');
+    }
+    @font-face {
+      font-family: 'Noto Serif SC';
+      font-weight: 900;
+      font-display: swap;
+      src: url('/fonts/noto-serif-sc-900.woff2') format('woff2');
+    }
+
+    /* ═══ 三段新海诚天色主题 Token ═══ */
+    :root, [data-sky="daylight"] {
+      --z-bg: #f7f6f1;
+      --z-paper: #ffffff;
+      --z-paper-alt: #eef2f6;
+      --z-ink: #0f172a;
+      --z-sub: #334155;
+      --z-muted: #64748b;
+      --z-line: rgba(15, 23, 42, 0.12);
+      --z-line-strong: rgba(15, 23, 42, 0.82);
+      --z-azure: #0284c7;         /* 新海诚晴空蓝 */
+      --z-azure-soft: rgba(2, 132, 199, 0.1);
+      --z-musubi: #e11d48;        /* 结绳朱红 */
+      --z-sky-grad: linear-gradient(180deg, rgba(186, 230, 253, 0.55) 0%, rgba(247, 246, 241, 0) 480px);
+      --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+      --font-sans: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', Consolas, monospace;
+    }
+
+    /* 02 黄昏之时 (Kataware-doki / かたわれ時) */
+    [data-sky="twilight"] {
+      --z-bg: #fdf5ef;
+      --z-paper: #fffaf5;
+      --z-paper-alt: #f9eae1;
+      --z-ink: #1e1324;
+      --z-sub: #4a354f;
+      --z-muted: #846587;
+      --z-line: rgba(74, 53, 79, 0.15);
+      --z-line-strong: #2e1a36;
+      --z-azure: #ea580c;
+      --z-azure-soft: rgba(234, 88, 12, 0.12);
+      --z-musubi: #db2777;
+      --z-sky-grad: linear-gradient(180deg, rgba(251, 146, 60, 0.32) 0%, rgba(236, 72, 153, 0.18) 260px, transparent 580px);
+    }
+
+    /* 03 彗星夜空 (Tiamat Comet Night) */
+    [data-sky="comet"] {
+      --z-bg: #080d1a;
+      --z-paper: #0f172a;
+      --z-paper-alt: #16223b;
+      --z-ink: #f1f5f9;
+      --z-sub: #cbd5e1;
+      --z-muted: #7c93b6;
+      --z-line: rgba(148, 163, 184, 0.16);
+      --z-line-strong: rgba(226, 232, 240, 0.65);
+      --z-azure: #38bdf8;
+      --z-azure-soft: rgba(56, 189, 248, 0.14);
+      --z-musubi: #f43f5e;
+      --z-sky-grad: radial-gradient(ellipse 80% 50% at 70% 0%, rgba(56, 189, 248, 0.25), rgba(99, 102, 241, 0.12) 55%, transparent 80%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--z-bg);
+      background-image: var(--z-sky-grad);
+      background-repeat: no-repeat;
+      color: var(--z-ink);
+      font-family: var(--font-sans);
+      line-height: 1.75;
+      transition: background-color 0.45s ease, color 0.35s ease;
+    }
+
+    .paper-grain {
+      position: fixed; inset: 0; z-index: 900; pointer-events: none; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .sky-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ═══ 顶部画报眉栏 ═══ */
+    .zine-topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: color-mix(in oklab, var(--z-bg) 86%, transparent);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--z-line);
+    }
+    .zine-topbar-inner {
+      max-width: 1220px; margin: 0 auto; padding: 10px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .zt-left { display: flex; align-items: center; gap: 16px; }
+    .zt-back {
+      font-size: 12px; font-weight: 700; color: var(--z-ink);
+      text-decoration: none; padding: 4px 12px;
+      border: 1px solid var(--z-line-strong);
+      transition: all 200ms;
+    }
+    .zt-back:hover { background: var(--z-ink); color: var(--z-paper); }
+    .zt-issue {
+      font-family: var(--font-serif); font-size: 12px; font-weight: 700;
+      color: var(--z-muted); letter-spacing: 0.12em;
+    }
+    .zt-nav { display: flex; gap: 22px; }
+    .zt-nav a {
+      font-family: var(--font-serif); font-size: 13px; font-weight: 700;
+      color: var(--z-sub); text-decoration: none; letter-spacing: 0.06em;
+    }
+    .zt-nav a:hover { color: var(--z-musubi); }
+
+    .zt-sky-switch { display: flex; gap: 6px; }
+    .sky-btn {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      padding: 4px 10px; border-radius: 999px;
+      border: 1px solid var(--z-line); background: var(--z-paper);
+      color: var(--z-sub); cursor: pointer; transition: all 200ms;
+    }
+    .sky-btn.active, .sky-btn:hover {
+      border-color: var(--z-azure); background: var(--z-azure); color: #fff;
+    }
+
+    /* 结绳红线 (《你的名字》标志性视觉线索) */
+    .musubi-cord {
+      height: 2px; width: 100%;
+      background: linear-gradient(90deg, transparent 0%, var(--z-musubi) 25%, var(--z-azure) 75%, transparent 100%);
+      opacity: 0.85;
+    }
+
+    /* ═══ 主画报版心 ═══ */
+    .zine-container {
+      position: relative; z-index: 1;
+      max-width: 1220px; margin: 0 auto; padding: 0 24px;
+    }
+
+    /* ═══ 第一幕：Hero 三栏画报折页 ═══ */
+    .zine-hero {
+      padding: 44px 0 36px;
+      border-bottom: 2px solid var(--z-line-strong);
+    }
+    .hero-spread {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr 68px;
+      gap: 32px;
+      align-items: stretch;
+    }
+    .kicker-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .seal-red {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 2px 8px; background: var(--z-musubi); color: #fff;
+      font-family: var(--font-serif); font-weight: 900; font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+    .kicker-text {
+      font-family: var(--font-mono); font-size: 11px; color: var(--z-azure);
+      letter-spacing: 0.14em; font-weight: 700;
+    }
+    .zine-title { margin-bottom: 20px; }
+    .title-main {
+      display: block; font-family: var(--font-serif); font-weight: 900;
+      font-size: clamp(3.2rem, 6vw, 4.8rem); line-height: 1.08;
+      letter-spacing: -0.02em; color: var(--z-ink);
+    }
+    .title-sub {
+      display: block; font-family: var(--font-serif); font-weight: 700;
+      font-size: 1.15rem; color: var(--z-azure);
+      margin-top: 8px; letter-spacing: 0.08em;
+    }
+    .zine-lead {
+      font-size: 15px; color: var(--z-sub); line-height: 1.9;
+      margin-bottom: 20px; text-wrap: pretty;
+    }
+    .zine-lead strong { color: var(--z-ink); font-weight: 700; }
+
+    .shinkai-quote {
+      padding: 16px 20px; margin-bottom: 24px;
+      background: var(--z-paper);
+      border: 1px solid var(--z-line);
+      border-left: 3px solid var(--z-musubi);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    }
+    .shinkai-quote p {
+      font-family: var(--font-serif); font-weight: 700; font-size: 14px;
+      color: var(--z-ink); line-height: 1.75; margin-bottom: 6px;
+    }
+    .shinkai-quote cite {
+      font-style: normal; font-size: 12px; color: var(--z-muted);
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .zine-btn-primary {
+      padding: 11px 24px; background: var(--z-ink); color: var(--z-paper);
+      font-size: 13px; font-weight: 700; text-decoration: none;
+      letter-spacing: 0.06em; transition: all 200ms;
+    }
+    .zine-btn-primary:hover { background: var(--z-azure); color: #fff; transform: translateY(-2px); }
+    .zine-btn-ghost {
+      padding: 11px 20px; background: var(--z-paper); color: var(--z-ink);
+      border: 1px solid var(--z-line-strong); font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: all 200ms;
+    }
+    .zine-btn-ghost:hover { border-color: var(--z-musubi); color: var(--z-musubi); transform: translateY(-2px); }
+
+    /* 中栏：天空画框与个人档案 */
+    .window-frame {
+      height: 100%; background: var(--z-paper);
+      border: 1px solid var(--z-line-strong);
+      padding: 14px; display: flex; flex-direction: column; justify-content: space-between;
+      box-shadow: 0 20px 50px rgba(2, 132, 199, 0.08);
+    }
+    .window-sky-art {
+      position: relative; aspect-ratio: 16 / 10; overflow: hidden;
+      border: 1px solid var(--z-line); background: #0c192c;
+    }
+    .window-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s ease;
+    }
+    .window-frame:hover .window-img { transform: scale(1.04); }
+    .window-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 6px 10px; background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(6px); color: #fff;
+      font-family: var(--font-mono); font-size: 10px;
+      display: flex; justify-content: space-between;
+    }
+    .dossier-mini { margin-top: 14px; display: flex; flex-direction: column; }
+    .dm-row {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 8px 0; border-bottom: 1px dashed var(--z-line); font-size: 12.5px;
+    }
+    .dm-row:last-child { border-bottom: none; }
+    .dm-row span { font-family: var(--font-mono); font-size: 10.5px; color: var(--z-muted); }
+    .dm-row b { color: var(--z-ink); font-weight: 700; }
+    .status-available { color: #10b981 !important; }
+
+    /* 右栏：日式竖排大字 */
+    .spread-vertical {
+      border-left: 1px solid var(--z-line);
+      padding-left: 16px;
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      writing-mode: vertical-rl; text-orientation: mixed;
+      user-select: none;
+    }
+    .vert-jp {
+      font-family: var(--font-serif); font-weight: 900; font-size: 18px;
+      letter-spacing: 0.22em; color: var(--z-ink);
+    }
+    .vert-cn {
+      font-family: var(--font-serif); font-size: 12px;
+      letter-spacing: 0.25em; color: var(--z-musubi); font-weight: 700;
+    }
+
+    /* 6 大量化看板条 */
+    .zine-stats-bar {
+      margin-top: 36px;
+      display: grid; grid-template-columns: repeat(6, 1fr);
+      border-top: 1px solid var(--z-line-strong);
+      border-left: 1px solid var(--z-line);
+    }
+    .z-stat-cell {
+      padding: 18px 16px; background: var(--z-paper);
+      border-right: 1px solid var(--z-line);
+      border-bottom: 1px solid var(--z-line);
+      display: flex; flex-direction: column;
+    }
+    .z-stat-idx { font-family: var(--font-mono); font-size: 10px; color: var(--z-musubi); font-weight: 700; }
+    .z-stat-num {
+      font-family: var(--font-serif); font-weight: 900; font-size: 2rem;
+      color: var(--z-azure); line-height: 1.15; margin: 4px 0;
+    }
+    .z-stat-label { font-size: 12px; color: var(--z-muted); font-weight: 600; }
+
+    /* ═══ 通用章节头 ═══ */
+    .zine-section {
+      padding: 56px 0;
+      border-bottom: 2px solid var(--z-line-strong);
+    }
+    .sec-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+      padding-bottom: 18px; margin-bottom: 28px;
+      border-bottom: 1px solid var(--z-line);
+    }
+    .sec-kicker {
+      font-family: var(--font-mono); font-size: 11px; color: var(--z-musubi);
+      letter-spacing: 0.16em; font-weight: 700; margin-bottom: 4px;
+    }
+    .sec-title {
+      font-family: var(--font-serif); font-weight: 900; font-size: 2.1rem;
+      color: var(--z-ink); line-height: 1.2;
+    }
+    .sec-title span {
+      font-size: 0.95rem; color: var(--z-muted); font-weight: 700;
+      margin-left: 10px; letter-spacing: 0.12em;
+    }
+
+    /* ═══ 第二幕：作品目録 + 35mm 胶片检视器 ═══ */
+    .catalog-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .cat-btn {
+      padding: 6px 14px; font-size: 12px; font-weight: 700;
+      background: var(--z-paper); color: var(--z-sub);
+      border: 1px solid var(--z-line); cursor: pointer; transition: all 180ms;
+    }
+    .cat-btn.active, .cat-btn:hover {
+      background: var(--z-ink); color: var(--z-paper); border-color: var(--z-ink);
+    }
+
+    .catalog-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 32px;
+      align-items: start;
+    }
+    .catalog-list {
+      border-top: 1px solid var(--z-line-strong);
+    }
+    .catalog-item {
+      display: grid; grid-template-columns: 48px minmax(0, 1fr) 28px;
+      gap: 16px; align-items: start;
+      padding: 18px 14px;
+      border-bottom: 1px solid var(--z-line);
+      background: transparent;
+      cursor: pointer; transition: background 180ms, padding-left 180ms;
+    }
+    .catalog-item[hidden] { display: none !important; }
+    .catalog-item:hover, .catalog-item.active {
+      background: var(--z-paper);
+      padding-left: 22px;
+      box-shadow: inset 4px 0 0 var(--z-musubi);
+    }
+    .ci-num {
+      font-family: var(--font-serif); font-weight: 900; font-size: 1.45rem;
+      color: var(--z-azure); line-height: 1.1;
+    }
+    .ci-top { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px; }
+    .ci-cat {
+      font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+      padding: 1px 7px; border: 1px solid var(--z-line); color: var(--z-muted);
+    }
+    .ci-title { font-family: var(--font-serif); font-weight: 900; font-size: 1.12rem; color: var(--z-ink); }
+    .ci-badge {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+      color: var(--z-musubi); background: rgba(225, 29, 72, 0.08);
+      padding: 1px 8px; border-radius: 99px;
+    }
+    .ci-desc {
+      font-size: 13px; color: var(--z-sub); line-height: 1.7;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .ci-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 11.5px; color: var(--z-muted);
+    }
+    .ci-tech { font-family: var(--font-mono); }
+    .ci-direct-link {
+      font-weight: 700; color: var(--z-azure); text-decoration: none;
+    }
+    .ci-direct-link:hover { color: var(--z-musubi); text-decoration: underline; }
+    .ci-arrow { font-size: 16px; color: var(--z-muted); align-self: center; }
+    .catalog-item.active .ci-arrow { color: var(--z-musubi); transform: translateX(3px); }
+
+    /* 右侧 Sticky 35mm 胶片取景器 */
+    .film-inspector {
+      position: sticky; top: 76px;
+    }
+    .film-card {
+      background: var(--z-paper);
+      border: 1px solid var(--z-line-strong);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+    }
+    .film-sprockets {
+      height: 18px; background: #111827;
+      display: flex; align-items: center; justify-content: space-around; padding: 0 12px;
+    }
+    .film-sprockets span {
+      width: 14px; height: 8px; border-radius: 2px;
+      background: rgba(255, 255, 255, 0.25);
+    }
+    .film-frame {
+      position: relative; aspect-ratio: 16 / 10; background: #0f172a;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .film-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .film-emoji { font-size: 4.2rem; }
+    .film-stamp {
+      position: absolute; top: 10px; left: 10px;
+      padding: 3px 10px; background: rgba(15, 23, 42, 0.78);
+      color: #fff; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em;
+    }
+    .film-details { padding: 20px; }
+    .fd-head h3 { font-family: var(--font-serif); font-weight: 900; font-size: 1.3rem; color: var(--z-ink); }
+    .fd-hl {
+      margin-top: 4px; font-family: var(--font-mono); font-size: 12px;
+      font-weight: 700; color: var(--z-musubi);
+    }
+    .fd-desc { font-size: 13px; color: var(--z-sub); line-height: 1.75; margin: 12px 0; }
+    .fd-block {
+      padding-top: 12px; margin-top: 12px; border-top: 1px dashed var(--z-line);
+    }
+    .fd-label {
+      display: block; font-family: var(--font-mono); font-size: 10px;
+      color: var(--z-muted); letter-spacing: 0.12em; margin-bottom: 8px;
+    }
+    .fd-metrics {
+      list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    }
+    .fd-metrics li {
+      font-size: 12px; color: var(--z-ink); font-weight: 600;
+      padding-left: 8px; border-left: 2px solid var(--z-azure);
+    }
+    .fd-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .fd-tags span {
+      font-family: var(--font-mono); font-size: 11px;
+      padding: 2px 9px; background: var(--z-paper-alt); color: var(--z-sub);
+    }
+    .zine-cta-full {
+      margin-top: 18px; display: block; text-align: center;
+      padding: 11px; background: var(--z-azure); color: #fff;
+      font-weight: 700; font-size: 13px; text-decoration: none;
+      transition: background 200ms;
+    }
+    .zine-cta-full:hover { background: var(--z-musubi); }
+
+    /* ═══ 第三幕：技芸見本帳 (Skills) ═══ */
+    .specimen-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      border-top: 1px solid var(--z-line-strong);
+      border-left: 1px solid var(--z-line);
+    }
+    .specimen-box {
+      padding: 24px; background: var(--z-paper);
+      border-right: 1px solid var(--z-line);
+      border-bottom: 1px solid var(--z-line);
+    }
+    .sp-head {
+      display: flex; align-items: baseline; gap: 10px;
+      margin-bottom: 14px; padding-bottom: 10px;
+      border-bottom: 1px dashed var(--z-line);
+    }
+    .sp-no { font-family: var(--font-mono); font-size: 11px; color: var(--z-musubi); font-weight: 700; }
+    .sp-head h3 { font-family: var(--font-serif); font-weight: 900; font-size: 1.15rem; }
+    .sp-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .sp-tag {
+      font-family: var(--font-mono); font-size: 12px;
+      padding: 5px 12px; border: 1px solid var(--z-line);
+      background: var(--z-bg); color: var(--z-sub);
+    }
+    .sp-tag.primary {
+      border-color: var(--z-azure); background: var(--z-azure-soft);
+      color: var(--z-ink); font-weight: 700;
+    }
+    .sp-tag i { font-style: normal; color: var(--z-musubi); margin-right: 3px; }
+
+    /* ═══ 第四幕：軌跡と栄誉 ═══ */
+    .chronicle-spread {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    }
+    .ch-col-title {
+      font-family: var(--font-serif); font-weight: 900; font-size: 1.25rem;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 18px;
+    }
+    .ch-col-title span {
+      width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+      background: var(--z-ink); color: var(--z-paper); font-size: 13px;
+    }
+    .ch-list { display: flex; flex-direction: column; gap: 14px; }
+    .ch-card {
+      padding: 18px 20px; background: var(--z-paper);
+      border: 1px solid var(--z-line);
+      border-left: 3px solid var(--z-azure);
+    }
+    .ch-meta-row { display: flex; justify-content: space-between; align-items: center; }
+    .ch-date { font-family: var(--font-mono); font-size: 11.5px; font-weight: 700; color: var(--z-musubi); }
+    .ch-org { font-size: 12px; font-weight: 700; color: var(--z-azure); }
+    .ch-card h4 { font-family: var(--font-serif); font-weight: 900; font-size: 1.05rem; margin: 4px 0 6px; }
+    .ch-card p { font-size: 13px; color: var(--z-sub); line-height: 1.7; }
+
+    /* ═══ 页脚 ═══ */
+    .zine-footer { margin-top: 40px; padding-bottom: 48px; }
+    .zf-inner {
+      max-width: 1220px; margin: 0 auto; padding: 24px 24px 0;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .zf-brand { font-family: var(--font-serif); font-weight: 700; font-size: 13px; color: var(--z-muted); }
+    .zf-links { display: flex; gap: 20px; }
+    .zf-links a { font-size: 13px; color: var(--z-sub); text-decoration: none; font-weight: 600; }
+    .zf-links a:hover { color: var(--z-musubi); }
+
+    /* ═══ 响应式适配 ═══ */
+    @media (max-width: 960px) {
+      .zt-nav { display: none; }
+      .hero-spread { grid-template-columns: 1fr; }
+      .spread-vertical { display: none; }
+      .zine-stats-bar { grid-template-columns: repeat(3, 1fr); }
+      .catalog-layout { grid-template-columns: 1fr; }
+      .film-inspector { position: static; order: -1; }
+      .specimen-grid, .chronicle-spread { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .zine-topbar-inner { flex-direction: column; align-items: flex-start; }
+      .zine-stats-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</body>
+</html>
