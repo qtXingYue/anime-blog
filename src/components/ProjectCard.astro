@@ -19,12 +19,17 @@ const { project: p, index: i = 0 } = Astro.props;
 >
   <div class="project-card-inner">
     <div class="project-visual" style={`background:${p.gradient}`}>
+      <div class="project-visual-bar" aria-hidden="true">
+        <span class="pv-dots"><i></i><i></i><i></i></span>
+        <span class="pv-path">qtxingyue://projects/{p.num}-{p.accent}</span>
+      </div>
       {p.cover
         ? <img class="project-cover" src={p.cover} alt={`${p.title} 预览`} loading="lazy" decoding="async" width="880" height="550" />
         : <span class="project-visual-emoji" aria-hidden="true">{p.emoji}</span>}
       <span class="project-visual-tint" aria-hidden="true"></span>
     </div>
     <div class="project-card-body">
+      <span class="project-watermark" aria-hidden="true">{p.num}</span>
       <p class="project-number">{p.num} / {p.category}</p>
       <!-- 共享元素:标题与详情页 h1 同名,ClientRouter 导航时做 morph -->
       <h3 class="project-title" transition:name={p.link ? `pt-${p.link.href.split('/').pop()}` : undefined}>{p.title}</h3>

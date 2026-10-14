@@ -18,7 +18,7 @@ const ACCENT_SHADOW =
  */
 export function bindCardFx(root = document, {
   tiltSelector = '.project-card',
-  glowSelector = '.project-card, .stat-card, .contact-item',
+  glowSelector = '.project-card, .project-card-m, .stat-card, .contact-item, .hero-card, .skill-bento-card, .honor-card, .timeline-content',
   skipWithin = null,
   tiltMax = 7,
   accentShadow = true,
@@ -80,7 +80,7 @@ export function bindCardFx(root = document, {
 }
 
 /** 统计卡与联系卡只需要 focus 时把光晕居中，没有倾斜 */
-export function bindGlowFocus(root = document, selector = '.stat-card, .contact-item') {
+export function bindGlowFocus(root = document, selector = '.stat-card, .contact-item, .skill-bento-card, .honor-card') {
   if (DISABLED) return;
   root.querySelectorAll(selector).forEach(card => {
     if (card.dataset.cardFxGlowFocus) return;

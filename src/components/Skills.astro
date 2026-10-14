@@ -1,20 +1,29 @@
 ---
 import { skillCategories } from '../data/skills';
+const codes = ['01 / CORE STACK', '02 / AI & VISION', '03 / DATA & RPA', '04 / INFRA & WEB'];
 ---
 <section class="section" id="skills">
   <div class="container">
     <p class="section-label reveal">技能</p>
     <h2 class="section-title reveal">技能栈</h2>
     <div class="section-divider reveal"></div>
-    {skillCategories.map(cat => (
-      <div class="skill-category reveal">
-        <h3 class="skill-category-title">{cat.title}</h3>
-        <div class="skill-tags">
-          {cat.tags.map(tag => (
-            <span class={tag.primary ? 'skill-tag primary' : 'skill-tag'}>{tag.label}</span>
-          ))}
+    <div class="skills-bento">
+      {skillCategories.map((cat, idx) => (
+        <div class="skill-category skill-bento-card reveal" data-reveal-delay={idx * 70}>
+          <div class="skill-bento-head">
+            <h3 class="skill-category-title">{cat.title}</h3>
+            <span class="skill-bento-code">{codes[idx] || `0${idx + 1}`}</span>
+          </div>
+          <div class="skill-tags">
+            {cat.tags.map(tag => (
+              <span class={tag.primary ? 'skill-tag primary' : 'skill-tag'}>
+                {tag.primary && <i class="skill-star" aria-hidden="true">✦</i>}
+                {tag.label}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
+      ))}
+    </div>
   </div>
 </section>

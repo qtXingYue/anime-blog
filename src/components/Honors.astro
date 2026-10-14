@@ -1,12 +1,23 @@
 ---
-import Timeline from './Timeline.astro';
 import { honors } from '../data/timeline';
+const icons = ['🏆', '☁️', '🗾', '🎖️'];
 ---
-<section class="section">
+<section class="section" id="honors">
   <div class="container">
     <p class="section-label reveal">荣誉</p>
     <h2 class="section-title reveal">荣誉与证书</h2>
     <div class="section-divider reveal"></div>
-    <Timeline entries={honors} />
+    <div class="honors-grid">
+      {honors.map((h, i) => (
+        <article class="honor-card reveal" data-reveal-delay={i * 70}>
+          <div class="honor-card-top">
+            <span class="honor-icon" aria-hidden="true">{icons[i] || '✦'}</span>
+            <span class="honor-date">{h.date}</span>
+          </div>
+          <h3 class="honor-title">{h.title}</h3>
+          <p class="honor-desc">{h.desc}</p>
+        </article>
+      ))}
+    </div>
   </div>
 </section>

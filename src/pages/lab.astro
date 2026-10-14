@@ -31,6 +31,14 @@ const experiments = [
     tags: ['字符解密', 'Star Border', 'True Focus', '像素力场'],
     thumb: '/lab/exp-03-thumb.webp',
     href: '/lab/exp-03-bits.html'
+  },
+  {
+    no: '实验品四 · NEW',
+    title: 'Obsidian 黑金高定重构',
+    desc: '针对主站视觉的杂志化精修实验：非对称暗角遮罩、凝脂白金主标题、东方黑金印章、2×2 极客技能舱、香槟金荣誉勋章墙与极客终端项目卡。',
+    tags: ['黑金杂志风', '2×2 技能舱', '勋章矩阵', '全域聚光灯'],
+    thumb: '/projects/covers/00-featured.webp',
+    href: '/lab/exp-04-editorial.html'
   }
 ];
 ---
@@ -71,12 +79,6 @@ const experiments = [
             </div>
           </a>
         ))}
-        <div class="lab-card lab-card-next reveal" aria-hidden="true">
-          <div class="lab-next-inner">
-            <span class="lab-next-plus">+</span>
-            <p>实验品四 · 孵化中</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -141,15 +143,6 @@ const experiments = [
     line-height: 1.8; margin-bottom: var(--space-md);
   }
   .lab-card-tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-  .lab-card-next {
-    border-style: dashed; align-items: center; justify-content: center;
-    min-height: 260px; opacity: 0.6;
-  }
-  .lab-next-inner { text-align: center; color: var(--text-muted); }
-  .lab-next-plus {
-    display: block; font-size: 2.5rem; font-weight: 200;
-    margin-bottom: var(--space-sm); color: var(--accent);
-  }
   @media (max-width: 768px) {
     .lab-grid { grid-template-columns: 1fr; }
   }
