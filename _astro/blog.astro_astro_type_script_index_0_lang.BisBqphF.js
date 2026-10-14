@@ -1,4 +1,4 @@
-import{b as p}from"./card-fx.CHQN92zN.js";function l(e){return String(e??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}const c=document.getElementById("articleList"),n=document.getElementById("articleDetail"),d=document.getElementById("articleContent");async function m(){if(c)try{const a=await(await fetch("/api/articles")).json();if(!a.length){c.innerHTML=`
+import{b as p}from"./card-fx.B4hPt3XE.js";function l(e){return String(e??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}const c=document.getElementById("articleList"),n=document.getElementById("articleDetail"),d=document.getElementById("articleContent");async function m(){if(c)try{const a=await(await fetch("/api/articles")).json();if(!a.length){c.innerHTML=`
         <div class="blog-empty reveal visible">
           <div class="blog-empty-icon">📝</div>
           <h3>还没有文章</h3>
