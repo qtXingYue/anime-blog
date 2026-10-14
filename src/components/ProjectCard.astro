@@ -6,6 +6,8 @@ interface Props {
   index?: number;
 }
 const { project: p, index: i = 0 } = Astro.props;
+const isRpa = p.num === '03';
+const isAndroid = p.num === '04';
 ---
 <article
   class="project-card"
@@ -23,9 +25,51 @@ const { project: p, index: i = 0 } = Astro.props;
         <span class="pv-dots"><i></i><i></i><i></i></span>
         <span class="pv-path">qtxingyue://projects/{p.num}-{p.accent}</span>
       </div>
-      {p.cover
-        ? <img class="project-cover" src={p.cover} alt={`${p.title} 预览`} loading="lazy" decoding="async" width="880" height="550" />
-        : <span class="project-visual-emoji" aria-hidden="true">{p.emoji}</span>}
+
+      {isRpa ? (
+        <!-- 03 专属：8 并发浏览器 Profile 实时调度遥测矩阵 -->
+        <div class="pv-telemetry pv-rpa" aria-hidden="true">
+          <div class="pv-rpa-head">
+            <span>THREAD_POOL // 8 CONCURRENT PROFILES</span>
+            <span class="pv-badge-live">● MUTEX LOCKED</span>
+          </div>
+          <div class="pv-rpa-grid">
+            {['cgo01', 'cgo02', 'cgo03', 'cgo04', 'cgo05', 'cgo06', 'cgo07', 'cgo08'].map((id, idx) => (
+              <div class="pv-rpa-node" style={`--delay:${idx * 0.25}s`}>
+                <div class="pv-rpa-node-top">
+                  <b>{id}</b>
+                  <i>200 OK</i>
+                </div>
+                <div class="pv-rpa-bar"><span style={`--w:${72 + (idx * 7) % 26}%`}></span></div>
+              </div>
+            ))}
+          </div>
+          <div class="pv-rpa-log">
+            <code>[ixBrowser] Profile isolated → CDP port connected → CSV writeback ✓</code>
+          </div>
+        </div>
+      ) : isAndroid ? (
+        <!-- 04 专属：mitmproxy + Frida Native TLS 动态抓包视窗（移植并强化自详情页） -->
+        <div class="pv-telemetry pv-android" aria-hidden="true">
+          <div class="pv-android-streams">
+            <div class="pv-pkt pv-pkt-1"><span>TLSv1.3 · SSL_write()</span><i>200</i></div>
+            <div class="pv-pkt pv-pkt-2"><span>Frida Hook · libsscronet.so</span><i>HOOK</i></div>
+            <div class="pv-pkt pv-pkt-3"><span>mitmproxy · /api/v2/feed</span><i>JSON</i></div>
+            <div class="pv-pkt pv-pkt-4"><span>ADB Bridge · MuMu:16384</span><i>SYNC</i></div>
+          </div>
+          <div class="pv-phone-mock">
+            <div class="pv-phone-notch"></div>
+            <div class="pv-phone-screen">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+      ) : p.cover ? (
+        <img class="project-cover" src={p.cover} alt={`${p.title} 预览`} loading="lazy" decoding="async" width="880" height="550" />
+      ) : (
+        <span class="project-visual-emoji" aria-hidden="true">{p.emoji}</span>
+      )}
+
       <span class="project-visual-tint" aria-hidden="true"></span>
     </div>
     <div class="project-card-body">
