@@ -3,9 +3,31 @@
 </script><script>
   // 首屏前应用已保存主题，避免闪烁
   try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
-</script><link rel="stylesheet" href="/_astro/blog.0E_LIW2o.css">
+</script><script>
+  // 开屏加载：只在「会话内首次全量进入」且未开启减弱动效时启用。
+  // 必须在首帧前打标记，否则会先闪一下正文再被盖住。
+  (function () {
+    try {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var seen = sessionStorage.getItem('qtx:splash-v1');
+      if (!reduce && !seen) {
+        document.documentElement.dataset.splash = '1';
+        document.documentElement.classList.add('is-splashing');
+      }
+    } catch (e) {}
+    // 兜底：万一脚本被禁用，3.6s 后 JS 仍未收场就直接把遮罩摘掉
+    setTimeout(function () {
+      var el = document.getElementById('splash');
+      if (el && !el.dataset.done) {
+        el.remove();
+        document.documentElement.classList.remove('is-splashing');
+        document.documentElement.removeAttribute('data-splash');
+      }
+    }, 3600);
+  })();
+</script><link rel="stylesheet" href="/_astro/blog.D3IBuXjh.css">
 <link rel="stylesheet" href="/_astro/blog.BdSlArtn.css">
-<link rel="stylesheet" href="/_astro/blog.DHyfeW1r.css"></head> <body> <a href="#main" class="skip-link">跳至主要内容</a> <main id="main">  <div class="scroll-progress" id="scrollProgress" data-astro-cid-ijnerlr2></div> <div class="noise-overlay" aria-hidden="true" data-astro-cid-ijnerlr2></div> <div class="bg-video-stack" id="bgVideoStack"> <div class="bg-video-placeholder" id="bgVideoPlaceholder"></div> <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> <video class="bg-video-layer" id="bgVideoB" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> </div> <!-- 实验一（/lab/exp-01-motion.html）的极光 + 粒子星网，作为背景的第二种选择 --> <div class="bg-lab" id="bgLab" aria-hidden="true"> <div class="bg-lab-aurora"><i></i><i></i><i></i><i></i></div> <canvas class="bg-lab-net" id="bgLabNet"></canvas> </div> <div class="bg-video-overlay" id="bgOverlay" aria-hidden="true"></div> <script>
+<link rel="stylesheet" href="/_astro/blog.DHyfeW1r.css"></head> <body> <div id="splash" aria-hidden="true"> <div class="splash-inner"> <div class="splash-mark"> <svg class="splash-ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false"> <circle cx="60" cy="60" r="56"></circle> </svg> <span class="splash-glyph">月</span> </div> <p class="splash-brand">QT 新月<span>PORTFOLIO · 2026</span></p> <div class="splash-bar" aria-hidden="true"><i></i></div> <p class="splash-hint">正在装载作品集</p> </div> </div> <a href="#main" class="skip-link">跳至主要内容</a> <main id="main">  <div class="scroll-progress" id="scrollProgress" data-astro-cid-ijnerlr2></div> <div class="noise-overlay" aria-hidden="true" data-astro-cid-ijnerlr2></div> <div class="bg-video-stack" id="bgVideoStack"> <div class="bg-video-placeholder" id="bgVideoPlaceholder"></div> <video class="bg-video-layer" id="bgVideoA" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> <video class="bg-video-layer" id="bgVideoB" muted playsinline preload="none" poster="/bg-poster.jpg" aria-hidden="true"> <source src="/desktop-bg.webm#t=0.1" type="video/webm"> <source src="/desktop-bg.mp4#t=0.1" type="video/mp4"> </video> </div> <!-- 实验一（/lab/exp-01-motion.html）的极光 + 粒子星网，作为背景的第二种选择 --> <div class="bg-lab" id="bgLab" aria-hidden="true"> <div class="bg-lab-aurora"><i></i><i></i><i></i><i></i></div> <canvas class="bg-lab-net" id="bgLabNet"></canvas> </div> <div class="bg-video-overlay" id="bgOverlay" aria-hidden="true"></div> <script>
 // 省流/减少动态/2G 网络不预加载 760KB 视频；正常环境立即升级 preload=auto，
 // 让首屏视频与页面资源并行加载
 (function () {
@@ -185,4 +207,4 @@
   document.addEventListener('astro:page-load', setup);
   setup();
 })();
-</script> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.CxnlAtYz.js"></script> </body> </html>  <script type="module" src="/_astro/blog.astro_astro_type_script_index_0_lang.BisBqphF.js"></script>
+</script> <script type="module" src="/_astro/Base.astro_astro_type_script_index_0_lang.nnMBpakD.js"></script> </body> </html>  <script type="module" src="/_astro/blog.astro_astro_type_script_index_0_lang.BisBqphF.js"></script>
