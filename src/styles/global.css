@@ -1829,7 +1829,7 @@ html[data-splash="1"] #splash {
   background: var(--bg-deep);
   clip-path: inset(0 0 0 0);
   will-change: clip-path;
-  animation: splash-guard .5s ease 3.4s forwards;
+  animation: splash-guard .5s ease 4.8s forwards;
 }
 
 @keyframes splash-guard {

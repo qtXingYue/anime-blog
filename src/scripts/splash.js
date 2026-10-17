@@ -46,8 +46,15 @@ if (el) {
       dismiss(false);
     };
 
-    // 兜底：无论资源卡在哪，最多 3s 一定收场
-    const hardStop = window.setTimeout(end, 3000);
+    // 动画有「最短展示时长」：移动端资源和字体常命中缓存，若不设下限，
+    // 从出现到退场可能只有 300ms，观感就是一眨眼没了。
+    const startedAt = performance.now();
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const MIN_VISIBLE = isMobile ? 2000 : 1650;
+    const HOLD_AFTER_FULL = 220;
+
+    // 兜底：资源再慢也最多 4.2s 收场（需大于 MIN_VISIBLE + HOLD + 退场 750ms）
+    const hardStop = window.setTimeout(end, 4200);
 
     // 进度条：先快速走到 82%，资源就绪后再补满
     requestAnimationFrame(() => {
@@ -66,17 +73,20 @@ if (el) {
       else window.addEventListener('load', resolve, { once: true });
     });
 
-    // 字体 + load 都就绪，或最多等 1.4s，二者取先
+    // 字体 + load 都就绪，或最多等 1.4s，二者取先。
+    // 就绪后补满进度，但退场还要等「最短展示时长」走完。
     Promise.race([
       Promise.all([fontsReady, loaded]),
       new Promise((r) => window.setTimeout(r, 1400)),
     ]).then(() => {
       if (ended) return;
       if (bar) bar.style.transform = 'scaleX(1)';
+      const elapsed = performance.now() - startedAt;
+      const wait = Math.max(0, MIN_VISIBLE - elapsed) + HOLD_AFTER_FULL;
       window.setTimeout(() => {
         window.clearTimeout(hardStop);
         end();
-      }, 240);
+      }, wait);
     });
 
     // 不耐烦的访客：点一下或按 Esc/Enter 直接跳过

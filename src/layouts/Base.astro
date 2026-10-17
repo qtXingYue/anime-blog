@@ -63,7 +63,7 @@ const {
         document.documentElement.classList.add('is-splashing');
       }
     } catch (e) {}
-    // 兜底：万一脚本被禁用，3.6s 后 JS 仍未收场就直接把遮罩摘掉
+    // 兜底：万一脚本异常，JS 仍未收场就直接把遮罩摘掉（需大于最短展示时长）
     setTimeout(function () {
       var el = document.getElementById('splash');
       if (el && !el.dataset.done) {
@@ -71,7 +71,7 @@ const {
         document.documentElement.classList.remove('is-splashing');
         document.documentElement.removeAttribute('data-splash');
       }
-    }, 3600);
+    }, 5200);
   })();
 </script>
 </head>
