@@ -1814,3 +1814,124 @@ html:not(.theme-transitioning)::view-transition-new(root) {
   .contact-bento { grid-template-columns: 1fr; gap: var(--space-xl); }
   .pv-rpa-grid { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   开屏加载 SPLASH（黑金印章式）
+   仅在会话首次全量进入时显示；data-splash 由 Base.astro 内联脚本提前写入。
+   兜底：3.4s 后 CSS 动画强制淡出，防止 JS 失败时遮死页面。
+   ═══════════════════════════════════════════════════════════════ */
+#splash { display: none; }
+
+html[data-splash="1"] #splash {
+  display: flex;
+  position: fixed; inset: 0; z-index: 9999;
+  align-items: center; justify-content: center;
+  background: var(--bg-deep);
+  clip-path: inset(0 0 0 0);
+  will-change: clip-path;
+  animation: splash-guard .5s ease 3.4s forwards;
+}
+
+@keyframes splash-guard {
+  to { opacity: 0; visibility: hidden; }
+}
+
+/* 细网格底纹，避免纯色平板 */
+html[data-splash="1"] #splash::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 72%);
+  mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 72%);
+  opacity: .55;
+}
+
+html.is-splashing,
+html.is-splashing body { overflow: hidden; }
+
+.splash-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 0 24px; text-align: center;
+}
+
+.splash-mark {
+  position: relative; width: 132px; height: 132px;
+  display: grid; place-items: center;
+}
+
+.splash-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.splash-ring circle {
+  fill: none; stroke: var(--gold); stroke-width: 1.1;
+  stroke-dasharray: 352; stroke-dashoffset: 352;
+  opacity: .8;
+  animation: splash-ring 1.05s cubic-bezier(.65,0,.35,1) .05s forwards;
+}
+@keyframes splash-ring { to { stroke-dashoffset: 0; } }
+
+.splash-glyph {
+  font-family: var(--font-serif); font-weight: 900;
+  font-size: 54px; line-height: 1; color: var(--gold);
+  opacity: 0; transform: scale(.88);
+  text-shadow: 0 0 36px color-mix(in oklch, var(--gold) 26%, transparent);
+  animation: splash-glyph .85s cubic-bezier(.22,1,.36,1) .2s forwards;
+}
+@keyframes splash-glyph { to { opacity: 1; transform: scale(1); } }
+
+.splash-brand {
+  margin: 2px 0 0;
+  font-size: 11px; letter-spacing: .42em; text-indent: .42em;
+  color: var(--text-secondary);
+  opacity: 0; transform: translateY(8px);
+  animation: splash-rise .7s cubic-bezier(.22,1,.36,1) .42s forwards;
+}
+.splash-brand span {
+  display: block; margin-top: 7px;
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: .34em; text-indent: .34em;
+  color: var(--text-muted);
+}
+
+.splash-bar {
+  width: 168px; height: 1px; margin-top: 4px;
+  background: var(--border); overflow: hidden;
+}
+.splash-bar i {
+  display: block; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--gold) 45%, var(--gold));
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform .9s cubic-bezier(.33,1,.68,1);
+}
+
+.splash-hint {
+  margin: 0; font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: .22em; text-indent: .22em;
+  color: var(--text-muted);
+  opacity: 0; animation: splash-rise .7s ease .62s forwards;
+}
+@keyframes splash-rise { to { opacity: 1; transform: none; } }
+
+/* 退场：幕布上提 + 内容微微上浮消失 */
+#splash.is-out {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path .75s cubic-bezier(.76,0,.24,1);
+  animation: none;
+}
+#splash.is-out .splash-inner {
+  opacity: 0; transform: translateY(-16px);
+  transition: opacity .34s ease, transform .34s ease;
+}
+
+@media (max-width: 480px) {
+  .splash-mark { width: 112px; height: 112px; }
+  .splash-glyph { font-size: 46px; }
+  .splash-bar { width: 140px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-splash="1"] #splash { display: none !important; }
+  html.is-splashing,
+  html.is-splashing body { overflow: auto; }
+}
