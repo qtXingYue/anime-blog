@@ -4,7 +4,7 @@
 </script><style>.screenshot[data-astro-cid-tc5zo3tw]{margin:1.4rem 0}.screenshot[data-astro-cid-tc5zo3tw] img[data-astro-cid-tc5zo3tw]{width:100%;border-radius:14px;border:1px solid var(--border);display:block}.screenshot[data-astro-cid-tc5zo3tw] .caption[data-astro-cid-tc5zo3tw]{font-size:.8rem;color:var(--text-muted);margin-top:.6rem;text-align:center}
 @keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/_astro/blog.BdSlArtn.css">
+<link rel="stylesheet" href="/_astro/blog.DdBXZk6a.css">
 <style>.theme-toggle[data-astro-cid-x3pjskd3] .ico-sun[data-astro-cid-x3pjskd3]{display:none}.theme-toggle[data-astro-cid-x3pjskd3] .ico-moon[data-astro-cid-x3pjskd3],[data-theme=light] .theme-toggle[data-astro-cid-x3pjskd3] .ico-sun[data-astro-cid-x3pjskd3]{display:block}[data-theme=light] .theme-toggle[data-astro-cid-x3pjskd3] .ico-moon[data-astro-cid-x3pjskd3]{display:none}
 </style>
 <link rel="stylesheet" href="/_astro/ai-gallery.DIVp9Kph.css"><style>[data-astro-transition-scope="astro-aqimry2d-1"] { view-transition-name: pt-omr-grader-report; }@layer astro { ::view-transition-old(pt-omr-grader-report) { 
@@ -251,6 +251,38 @@ initProjectLayout();
       return div.innerHTML.replace(/\n/g, '<br>');
     }
 
+    // 在「已转义」的文本上做极简富文本：只认 [文字](链接) 与 **粗体**。
+    // 链接域名受限（站内路径或 https），避免模型被注入后吐出 javascript:
+    function renderRich(str) {
+      let s = escapeHtml(str);
+      s = s.replace(
+        /\[([^\]]{1,60})\]\((\/[A-Za-z0-9\-_\/.#=%]*|https?:\/\/[^\s)]+)\)/g,
+        (_m, label, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+      );
+      s = s.replace(/\*\*([^*]{1,60})\*\*/g, '<strong>$1</strong>');
+      return s;
+    }
+
+    // 来源小标签：让「有据可查」看得见
+    function appendSources(container, sources) {
+      if (!sources || !sources.length) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'msg-sources';
+      const label = document.createElement('span');
+      label.className = 'msg-sources-label';
+      label.textContent = '参考来源';
+      wrap.appendChild(label);
+      sources.slice(0, 4).forEach((s) => {
+        const a = document.createElement('a');
+        a.href = s.url || '#';
+        a.textContent = s.title || '来源';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        wrap.appendChild(a);
+      });
+      container.appendChild(wrap);
+    }
+
     // 添加气泡
     function appendMessage(role, text, isHtml = false) {
       const msgDiv = document.createElement('div');
@@ -276,7 +308,7 @@ initProjectLayout();
       return msgDiv;
     }
 
-    // 发送消息
+    // 发送消息（SSE 流式：先拿来源，再逐字渲染）
     async function sendMessage(text) {
       if (!text.trim() || isSending) return;
       isSending = true;
@@ -292,30 +324,92 @@ initProjectLayout();
       // 35s 超时兜底(后端公开路径已限 30s):避免打点动画一直转到两分钟
       const controller = new AbortController();
       const abortTimer = setTimeout(() => controller.abort(), 35000);
+      let bubble = null;
+      let contentEl = null;
+      let full = '';
+      let sources = [];
+
+      const ensureBubble = () => {
+        if (bubble) return;
+        loadingBubble.remove();
+        bubble = appendMessage('assistant', '');
+        contentEl = bubble.querySelector('.msg-content');
+      };
+
       try {
-        const res = await fetch('/api/chat/assistant', {
+        const res = await fetch('/api/chat/assistant/stream', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
           body: JSON.stringify({ prompt: text.trim().slice(0, 150) }),
           signal: controller.signal
         });
 
-        const data = await res.json();
-        loadingBubble.remove();
-
-        if (res.ok && data.ok) {
-          appendMessage('assistant', data.reply);
-        } else if (res.status === 429) {
+        if (res.status === 429) {
+          loadingBubble.remove();
           appendMessage('assistant', '提问太频繁啦，请稍等一分钟后再试哦 ☕');
-        } else {
-          appendMessage('assistant', data.detail || '抱歉，暂时未能连通 AI 助手，请稍后再试！');
+          return;
         }
+        if (!res.ok || !res.body) throw new Error('stream unavailable');
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          let sep;
+          while ((sep = buffer.indexOf('\n\n')) >= 0) {
+            const chunk = buffer.slice(0, sep).trim();
+            buffer = buffer.slice(sep + 2);
+            if (!chunk.startsWith('data:')) continue;
+            const payload = chunk.slice(5).trim();
+            if (payload === '[DONE]') continue;
+
+            let evt;
+            try { evt = JSON.parse(payload); } catch (_) { continue; }
+
+            if (evt.type === 'sources') {
+              sources = evt.sources || [];
+            } else if (evt.type === 'delta' && evt.text) {
+              ensureBubble();
+              full += evt.text;
+              contentEl.innerHTML = renderRich(full);
+              messages.scrollTop = messages.scrollHeight;
+            }
+          }
+        }
+
+        ensureBubble();
+        if (!full.trim()) {
+          contentEl.innerHTML = '抱歉，暂时没有拿到回答，请稍后再试一次！';
+        }
+        appendSources(bubble, sources);
       } catch (err) {
-        loadingBubble.remove();
+        if (!bubble) loadingBubble.remove();
         if (err && err.name === 'AbortError') {
-          appendMessage('assistant', 'AI 助手响应超时了，请稍后再试一次！');
+          if (!bubble) appendMessage('assistant', 'AI 助手响应超时了，请稍后再试一次！');
         } else {
-          appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+          // 流式不可用时退回一次性接口，保证任何环境都答得上
+          try {
+            const res2 = await fetch('/api/chat/assistant', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ prompt: text.trim().slice(0, 150) })
+            });
+            const data = await res2.json();
+            if (!bubble) loadingBubble.remove();
+            if (res2.ok && data.ok) {
+              if (!bubble) appendMessage('assistant', data.reply, true);
+              else { full = data.reply; contentEl.innerHTML = renderRich(full); }
+            } else if (!bubble) {
+              appendMessage('assistant', data.detail || '抱歉，暂时未能连通 AI 助手，请稍后再试！');
+            }
+          } catch (_) {
+            if (!bubble) appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+          }
         }
       } finally {
         clearTimeout(abortTimer);
