@@ -1,0 +1,48 @@
+name: Quality Gate
+
+# 质量门禁：与 deploy.yml 并行，不阻塞发布，但失败会明确标红。
+#   1. e2e：Playwright 跑真实浏览器（主题切换、跨页保持、报告页内容）
+#   2. lighthouse：性能/无障碍/SEO 预算，不达标直接 fail
+on:
+  push:
+    branches: [astro]
+  pull_request:
+    branches: [astro]
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    name: Playwright e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  lighthouse:
+    name: Lighthouse budgets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Run Lighthouse CI
+        run: |
+          npm i -g @lhci/cli@0.14.x
+          lhci autorun

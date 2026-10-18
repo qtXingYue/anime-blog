@@ -8,10 +8,15 @@
     "build": "astro build && node scripts/generate-sitemap.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "test:api": "cd ../server && python -m pytest test_main.py -v"
+    "test:api": "cd ../server && python -m pytest test_main.py -v",
+    "types:api": "openapi-typescript openapi.json -o src/types/api.ts",
+    "test:e2e": "playwright test",
+    "quality": "npm run check && npm run build && npm run test:e2e"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
     "astro": "^5.0.0",
     "typescript": "^5.6.0"
   }
