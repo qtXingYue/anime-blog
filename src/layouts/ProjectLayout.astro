@@ -2,7 +2,7 @@
 import { projectNav } from '../data/projects';
 import { ClientRouter } from 'astro:transitions';
 import AiAssistant from '../components/AiAssistant.astro';
-import ThemeToggle from '../components/ThemeToggle.vue';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
   title: string;           // 页面标题
@@ -571,7 +571,7 @@ a:hover { color: var(--gold); }
         {next && (<><span class="nav-label">{next.title}</span><span class="nav-emoji">{next.emoji}</span></>)}
         <span>→</span>
       </a>
-      <ThemeToggle client:idle />
+      <ThemeToggle />
     </nav>
   </div>
 </header>

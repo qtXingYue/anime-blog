@@ -1,0 +1,95 @@
+---
+// 无框架主题切换：0 依赖、0 水合。
+// 图标由 CSS 依据 html[data-theme] 切换，脚本只负责「点一下」这一件事。
+---
+<button class="theme-toggle" type="button" aria-label="切换主题" data-theme-toggle>
+  <svg class="ico-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" />
+    <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8" />
+  </svg>
+  <svg class="ico-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z" />
+  </svg>
+</button>
+
+<style>
+  /* 暗色（默认）：显示月亮；亮色：显示太阳 */
+  .theme-toggle .ico-sun { display: none; }
+  .theme-toggle .ico-moon { display: block; }
+  :global([data-theme='light']) .theme-toggle .ico-sun { display: block; }
+  :global([data-theme='light']) .theme-toggle .ico-moon { display: none; }
+</style>
+
+<script>
+  type Theme = 'light' | 'dark';
+
+  function applyTheme(next: Theme) {
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (_) { /* 隐私模式忽略 */ }
+  }
+
+  // 事件委托挂在 document 上：ClientRouter 换页替换 <body> 后依然有效，
+  // 不需要在每次导航后重新绑定，也不会随组件销毁而失效。
+  function bind() {
+    if ((window as any).__themeToggleBound) return;
+    (window as any).__themeToggleBound = true;
+
+    // ClientRouter 换页时会把新页面的 <html data-theme="dark"> 同步过来，
+    // 而 <head> 里「从存储恢复主题」的内联脚本不会重新执行 → 主题会被打回暗色。
+    // 每次导航后按存储里的值重新对齐一次。
+    const syncFromStorage = () => {
+      try {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.dataset.theme = saved;
+        }
+      } catch (_) { /* 隐私模式忽略 */ }
+    };
+    syncFromStorage();
+    document.addEventListener('astro:page-load', syncFromStorage);
+
+    document.addEventListener('click', (event) => {
+      const target = event.target as Element | null;
+      const button = target?.closest('[data-theme-toggle]');
+      if (!button) return;
+
+      const next: Theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      const startViewTransition = (document as any).startViewTransition as
+        | ((cb: () => void) => any)
+        | undefined;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!startViewTransition || reduce) {
+        applyTheme(next);
+        return;
+      }
+
+      const x = (event as MouseEvent).clientX;
+      const y = (event as MouseEvent).clientY;
+      const radius = Math.hypot(
+        Math.max(x, window.innerWidth - x),
+        Math.max(y, window.innerHeight - y),
+      );
+
+      document.documentElement.classList.add('theme-transitioning');
+      const transition = startViewTransition.call(document, () => applyTheme(next));
+
+      transition.ready.then(() => {
+        document.documentElement.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          {
+            duration: 520,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          },
+        );
+      }).catch(() => {});
+
+      transition.finished.finally(() => {
+        document.documentElement.classList.remove('theme-transitioning');
+      });
+    }, { passive: true });
+  }
+
+  bind();
+</script>
