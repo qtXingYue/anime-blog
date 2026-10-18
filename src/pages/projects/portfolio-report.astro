@@ -2,36 +2,38 @@
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
 
 const title = 'QT新月 个人作品集网站 — 设计与架构重构报告';
-const description = '从零搭建的 JAMstack 全栈个人技术作品集 — Astro 5 无缝流体路由、FastAPI 后端、GSAP 卡片堆叠、Bento Grid、Before/After 交互对比与双主题色彩系统。';
+const description = '从零搭建的 JAMstack 全栈个人技术作品集 — Astro 5 流体路由、Cloudflare 边缘加速、FastAPI 异步后端、GSAP 卡片堆叠、黑金开屏动画与 DeepSeek 驱动的站内 AI 助手。';
 const slug = 'portfolio-report';
 
-const archDiagram = `                  <span class="dim">用户浏览器</span>
-                       │
-                       ▼
-     <span class="dim">┌────────────────────────────────────────────────────────┐</span>
-     <span class="dim">│</span>  <span class="hl">Nginx</span> <span class="dim">(80/443) — 反向代理 + 静态分发 + 缓存加速       │</span>
-     <span class="dim">│</span>  <span class="gold">Let's Encrypt SSL</span> · Gzip · HTTP/2 · 90天长期缓存      <span class="dim">│</span>
-     <span class="dim">└──────────────┬─────────────────────────────────────────┘</span>
-                  │
-          ┌───────┴───────────────────────────────┐
-          ▼                                       ▼
-  <span class="dim">┌───────────────────────────────┐</span>       <span class="dim">┌───────────────────────────────┐</span>
-  <span class="dim">│</span> <span class="gold">Astro 5 SSG 纯静态站前端</span>      <span class="dim">│</span>       <span class="dim">│</span> <span class="hl">FastAPI 异步微服务后端</span>        <span class="dim">│</span>
-  <span class="dim">│</span> 19 独立页面 · ClientRouter   <span class="dim">│</span>       <span class="dim">│</span> Uvicorn ASGI (:8000)          <span class="dim">│</span>
-  <span class="dim">│</span> Turbo Loader · GSAP 卡片堆叠 <span class="dim">│</span>       <span class="dim">│</span> 15 API 端点 · 内存限流中间件  <span class="dim">│</span>
-  <span class="dim">│</span> Bento Grid · ImageCompare    <span class="dim">│</span>       <span class="dim">└───────────────┬───────────────┘</span>
-  <span class="dim">└───────────────────────────────┘</span>                       │
-                                                          ▼
-                                          <span class="dim">┌───────────────────────────────┐</span>
-                                          <span class="dim">│</span> <span class="hl">SQLite 嵌入式单文件数据库</span>     <span class="dim">│</span>
-                                          <span class="dim">│</span> 访问日志 · 文章CMS · 留言系统 <span class="dim">│</span>
-                                          <span class="dim">└───────────────┬───────────────┘</span>
-                                                          │
-                                                          ▼
-                                          <span class="dim">┌───────────────────────────────┐</span>
-                                          <span class="dim">│</span> <span class="hl">Hermes AI 智能助理 Agent</span>      <span class="dim">│</span>
-                                          <span class="dim">│</span> <span class="gold">飞书 WebSocket</span> · HMAC 签名   <span class="dim">│</span>
-                                          <span class="dim">└───────────────────────────────┘</span>`;
+const archDiagram = `                  <span class="dim">用户浏览器 / 移动端</span>
+                           │  HTTPS
+                           ▼
+      <span class="dim">┌───────────────────────────────────────────────┐</span>
+      <span class="dim">│</span>  <span class="hl">Cloudflare 边缘网络</span>（全球 Anycast 节点）        <span class="dim">│</span>
+      <span class="dim">│</span>  <span class="gold">静态资源边缘缓存</span> · WAF · DDoS 防护            <span class="dim">│</span>
+      <span class="dim">│</span>  <span class="gold">Universal SSL</span> · 源站 IP 隐身 · 真实 IP 回传     <span class="dim">│</span>
+      <span class="dim">└──────────────────────┬────────────────────────┘</span>
+                             │  仅动态请求回源
+                             ▼
+      <span class="dim">┌───────────────────────────────────────────────┐</span>
+      <span class="dim">│</span>  <span class="hl">Nginx 源站</span>（80/443）反向代理 + 静态分发        <span class="dim">│</span>
+      <span class="dim">│</span>  <span class="gold">Let's Encrypt</span> · HTTP/2 · Gzip · realip 模块    <span class="dim">│</span>
+      <span class="dim">└──────────────┬────────────────────────────────┘</span>
+                     │
+             ┌───────┴────────────────┐
+             ▼                        ▼
+  <span class="dim">┌──────────────────────┐</span>  <span class="dim">┌──────────────────────┐</span>
+  <span class="dim">│</span> <span class="gold">Astro 5 SSG 前端</span>      <span class="dim">│</span>  <span class="dim">│</span> <span class="hl">FastAPI 异步后端</span>      <span class="dim">│</span>
+  <span class="dim">│</span> 21 页面 · 流体路由    <span class="dim">│</span>  <span class="dim">│</span> Uvicorn (:8000)       <span class="dim">│</span>
+  <span class="dim">│</span> 开屏动画 · GSAP 动效  <span class="dim">│</span>  <span class="dim">│</span> 23 端点 · 内存限流    <span class="dim">│</span>
+  <span class="dim">└──────────────────────┘</span>  <span class="dim">└───────────┬──────────┘</span>
+                                          │
+                             ┌────────────┴────────────┐
+                             ▼                         ▼
+               <span class="dim">┌──────────────────────┐</span>  <span class="dim">┌──────────────────────┐</span>
+               <span class="dim">│</span> <span class="hl">SQLite 单文件数据库</span>   <span class="dim">│</span>  <span class="dim">│</span> <span class="hl">Hermes AI Agent</span>      <span class="dim">│</span>
+               <span class="dim">│</span> 访问日志·文章·留言    <span class="dim">│</span>  <span class="dim">│</span> <span class="gold">DeepSeek 官方模型</span>    <span class="dim">│</span>
+               <span class="dim">└──────────────────────┘</span>  <span class="dim">└──────────────────────┘</span>`;
 ---
 
 <ProjectLayout title={title} description={description} slug={slug}>
@@ -46,23 +48,25 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
 
   <div class="container">
     <div class="stats-strip">
-      <div class="stat-item"><div class="num">19</div><div class="label">独立编译页面</div></div>
+      <div class="stat-item"><div class="num">21</div><div class="label">独立编译页面</div></div>
       <div class="stat-item"><div class="num">14</div><div class="label">实战项目展示</div></div>
-      <div class="stat-item"><div class="num">15</div><div class="label">FastAPI 接口</div></div>
+      <div class="stat-item"><div class="num">23</div><div class="label">FastAPI 接口</div></div>
       <div class="stat-item"><div class="num">100<span style="font-size:1rem;color:var(--gold)">/100</span></div><div class="label">Lighthouse 性能</div></div>
     </div>
 
     <h2><span class="num">01</span>项目概述</h2>
     <p>这是一个<strong>从域名选型、UI/UX 交互设计、Astro 5 前端架构、Python 异步后端到云端生产运维</strong>全部独立完成的全栈技术作品集。核心设计理念是<strong>极致性能（0 白屏）、无缝交互（Fluid SPA Transition）与专业严谨的工程落地</strong>。</p>
-    <p>全站摒弃笨重的第三方 UI 模板，核心动效引擎、双主题感知色彩、每一个接口逻辑与 Nginx 反向代理配置皆为手工打磨。</p>
+    <p>全站摒弃笨重的第三方 UI 模板，核心动效引擎、双主题感知色彩、每一个接口逻辑与 Nginx 反向代理配置皆为手工打磨；边缘侧接入 Cloudflare，源站 IP 隐身、静态资源全球边缘缓存。</p>
 
     <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>Cloudflare 边缘加速层</strong><br>静态资源就近边缘缓存（实测 HIT），源站 IP 全网隐身，WAF 与 DDoS 防护免费加持</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>黑金开屏加载动画</strong><br>金色圆环描边 + 「月」字压印 + 进度线，幕布上提退场；会话内仅出现一次，可点击跳过</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>Astro 5 + ClientRouter</strong><br>无缝 SPA 流体路由，零白屏瞬时响应，顶部 Turbo Top Loader 极速光感反馈</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>OKLCH 双主题色彩系统</strong><br>全域感知均匀色彩，日间模式 Apple/Linear 质感重塑，暗色模式微光通透</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>GSAP 卡片堆叠 + Bento Grid</strong><br>物理弹性卡片堆叠（Stacking Cards），3 列非对称科技便当盒网格布局</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>Before/After 交互对比滑块</strong><br>自研纯 CSS/JS 图像对比引擎，支持触控拖拽与多波段 GPU 硬件渲染展示</div></div>
-      <div class="feature-item"><div class="dot"></div><div class="text"><strong>FastAPI 异步微服务后端</strong><br>Python 3.10 异步驱动，15 个 RESTful 端点，Cookie SHA-256 认证与内存防刷</div></div>
-      <div class="feature-item"><div class="dot"></div><div class="text"><strong>沉浸式图片灯箱与代码复制</strong><br>全站代码块一键复制、全屏图片大图灯箱预览，移动端吸顶分类胶囊导航</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>FastAPI 异步微服务后端</strong><br>Python 3.12 异步驱动，23 个 RESTful 端点，Cookie SHA-256 认证与内存防刷</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>DeepSeek 驱动的站内 AI 助手</strong><br>前台简历问答 + 后台 Hermes 交互，DeepSeek 官方模型直连，关闭思考链保证毫秒级响应</div></div>
     </div>
 
     <h2><span class="num">02</span>系统架构全景</h2>
@@ -72,13 +76,14 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
     <div class="card-grid">
       <div class="card"><div class="icon">🚀</div><div class="name">前端框架</div><div class="desc">Astro 5 (SSG 静态生成)<br>ClientRouter 流体路由<br>Vue 3 响应式岛屿</div></div>
       <div class="card"><div class="icon">🎨</div><div class="name">视觉与排版</div><div class="desc">OKLCH 色彩空间 · Design Tokens<br>思源宋体子集自托管<br>双主题无缝平滑切换</div></div>
-      <div class="card"><div class="icon">✨</div><div class="name">交互动效</div><div class="desc">GSAP 3.12 + ScrollTrigger<br>物理弹性卡片堆叠<br>Before/After 图像对比滑块</div></div>
-      <div class="card"><div class="icon">🐍</div><div class="name">后端核心</div><div class="desc">FastAPI + Uvicorn<br>Python 异步并发<br>15 个端点 · 内存限流</div></div>
+      <div class="card"><div class="icon">✨</div><div class="name">交互动效</div><div class="desc">GSAP 3.12 + ScrollTrigger<br>物理弹性卡片堆叠<br>开屏印章动画 · 图像对比滑块</div></div>
+      <div class="card"><div class="icon">🐍</div><div class="name">后端核心</div><div class="desc">FastAPI + Uvicorn<br>Python 3.12 异步并发<br>23 个端点 · 内存限流</div></div>
       <div class="card"><div class="icon">🗄️</div><div class="name">嵌入式数据库</div><div class="desc">SQLite 单文件数据源<br>4 张核心表 · 零运维开销<br>访问日志/文章/文件/留言</div></div>
-      <div class="card"><div class="icon">🔒</div><div class="name">反向代理与安全</div><div class="desc">Nginx · Let's Encrypt HTTPS<br>HTTP/2 · Gzip 压缩 · 90天缓存<br>UFW 防火墙端口白名单</div></div>
+      <div class="card"><div class="icon">🌐</div><div class="name">边缘加速与防护</div><div class="desc">Cloudflare Anycast 边缘缓存<br>WAF · DDoS · Universal SSL<br>源站 IP 隐身 · 真实 IP 回传</div></div>
+      <div class="card"><div class="icon">🔒</div><div class="name">反向代理与安全</div><div class="desc">Nginx 1.24 · Let's Encrypt HTTPS<br>HTTP/2 · Gzip · immutable 缓存头<br>fail2ban 防爆破 · 密钥登录</div></div>
       <div class="card"><div class="icon">📱</div><div class="name">响应式与无障碍</div><div class="desc">Fluid 响应式系统<br>移动端分类吸顶胶囊导航<br>prefers-reduced-motion 降级</div></div>
-      <div class="card"><div class="icon">🤖</div><div class="name">AI 自动化</div><div class="desc">Hermes Agent 接入<br>飞书 WebSocket 长连接<br>HMAC-SHA256 安全校验</div></div>
-      <div class="card"><div class="icon">📦</div><div class="name">持续集成与部署</div><div class="desc">Git + GitHub Actions<br>云端生产环境自动构建<br>systemd 守护进程保障</div></div>
+      <div class="card"><div class="icon">🤖</div><div class="name">AI 智能助理</div><div class="desc">Hermes Agent + DeepSeek 官方<br>飞书 WebSocket 长连接<br>HMAC-SHA256 回调校验</div></div>
+      <div class="card"><div class="icon">📦</div><div class="name">持续集成与部署</div><div class="desc">Git + GitHub Actions<br>astro 分支构建 → main 产物<br>systemd 守护 · Crontab 自动同步</div></div>
     </div>
 
     <h2><span class="num">04</span>核心功能与交互创新</h2>
@@ -99,7 +104,12 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>代码块一键复制与智能语言标识</strong><br>自动解析 Prism/Shiki 代码块类型，右上角悬浮一键复制按钮与反馈动效</div></div>
     </div>
 
+    <h3>5. 黑金开屏加载动画（Splash）</h3>
+    <p>首次进入站点时呈现的定制开屏：金色圆环以 <code>stroke-dashoffset</code> 描边展开，「月」字印章式压印浮现，随后进度线填充、幕布以 <code>clip-path</code> 上提揭幕。全流程纯 CSS 合成层实现，无图片、无额外请求。</p>
+    <p>工程上做了三处克制：<strong>会话内只出现一次</strong>（sessionStorage 标记，内部路由跳转绝不重复）；<strong>资源就绪即走</strong>但设有最短展示时长（移动端 2.0s / 桌面 1.65s），避免移动端缓存命中时一闪而过；<strong>三重兜底</strong>（JS 4.2s 硬超时 + CSS 4.8s 强制淡出 + 内联脚本 5.2s 摘遮罩）确保任何环节异常都不会把人锁在遮罩里。同时尊重 <code>prefers-reduced-motion</code>，点击或 Esc 可跳过。</p>
+
     <h2><span class="num">05</span>后端接口与微服务架构</h2>
+    <p>FastAPI 共提供 <strong>23 个端点</strong>（含 1 个后台页面路由），下表列出核心业务接口：</p>
     <table>
       <thead><tr><th>方法</th><th>路径</th><th>功能</th><th>认证机制</th></tr></thead>
       <tr><td>POST</td><td>/api/analytics/hit</td><td>前端无感访问数据上报</td><td>公开</td></tr>
@@ -107,35 +117,42 @@ const archDiagram = `                  <span class="dim">用户浏览器</span>
       <tr><td>GET</td><td>/api/articles</td><td>博客文章发布列表检索</td><td>公开</td></tr>
       <tr><td>GET</td><td>{'/api/articles/{slug}'}</td><td>文章 Markdown 详情获取</td><td>公开</td></tr>
       <tr><td>POST</td><td>/api/contact</td><td>联系表单提交（带 IP 内存限流）</td><td>公开（限流）</td></tr>
+      <tr><td>POST</td><td>/api/chat/assistant</td><td>站内 AI 简历问答（DeepSeek 驱动）</td><td>公开（限流）</td></tr>
       <tr><td>POST</td><td>/api/admin/login</td><td>后台管理登录鉴权</td><td>密码</td></tr>
+      <tr><td>GET</td><td>/api/admin/session</td><td>登录态校验与续期</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>GET / POST</td><td>/api/admin/articles</td><td>文章创建、发布与管理</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>PUT / DELETE</td><td>{'/api/admin/articles/{id}'}</td><td>文章动态编辑与物理删除</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>POST</td><td>/api/admin/upload</td><td>大文件分片/直传（支持 200MB）</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>GET</td><td>/api/admin/files</td><td>服务器资源文件列表查询</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>GET</td><td>/api/admin/contacts</td><td>访客留言实时查看与审核</td><td>Cookie (HttpOnly)</td></tr>
       <tr><td>POST</td><td>/api/admin/hermes</td><td>Hermes AI 助手交互调用</td><td>Cookie (HttpOnly)</td></tr>
+      <tr><td>POST</td><td>/api/hermes/callback</td><td>Hermes 异步回调（人工回复回流）</td><td>HMAC-SHA256</td></tr>
     </table>
 
     <h2><span class="num">06</span>安全工程与 SEO 优化</h2>
     <div class="card-grid">
-      <div class="card"><div class="icon">🛡️</div><div class="name">无感防御</div><div class="desc">基于真实客户端 IP 的内存限流<br>登录失败熔断 · 留言防刷机制</div></div>
-      <div class="card"><div class="icon">🔐</div><div class="name">安全鉴权</div><div class="desc">Cookie Token · SHA-256 加盐哈希<br>HttpOnly · SameSite 防 CSRF</div></div>
-      <div class="card"><div class="icon">📁</div><div class="name">文件保护</div><div class="desc">MIME 类型严格白名单<br>UUID 重命名 · 隔离存储</div></div>
+      <div class="card"><div class="icon">🛡️</div><div class="name">无感防御</div><div class="desc">基于真实客户端 IP 的内存限流<br>Cloudflare 真实 IP 回传还原<br>登录失败熔断 · 留言防刷机制</div></div>
+      <div class="card"><div class="icon">🔐</div><div class="name">安全鉴权</div><div class="desc">Cookie Token · SHA-256 加盐哈希<br>HttpOnly · SameSite · Secure<br>密钥从环境变量注入，不落盘</div></div>
+      <div class="card"><div class="icon">🧼</div><div class="name">XSS 纵深防御</div><div class="desc">后台所有动态值强制 esc() 转义<br>匿名写入接口限长与类型校验<br>XSS 回归测试用例守护</div></div>
+      <div class="card"><div class="icon">📁</div><div class="name">文件保护</div><div class="desc">MIME 类型严格白名单<br>UUID 重命名 · 隔离存储<br>200MB 体积上限</div></div>
+      <div class="card"><div class="icon">🔑</div><div class="name">主机层加固</div><div class="desc">fail2ban 自动封禁爆破 IP<br>ed25519 密钥登录<br>非标准端口运维通道</div></div>
       <div class="card"><div class="icon">🔍</div><div class="name">结构化 SEO</div><div class="desc">Schema.org Person / CreativeWork<br>OpenGraph · Twitter Cards · Sitemap</div></div>
       <div class="card"><div class="icon">♿</div><div class="name">无障碍标准</div><div class="desc">语义化 HTML5 标签体系<br>全站 WCAG AAA 级对比度适配</div></div>
-      <div class="card"><div class="icon">⚡</div><div class="name">极限性能</div><div class="desc">静态预编译 · 图片 WebP / 异步解码<br>自托管字体子集 · Gzip / HTTP2</div></div>
+      <div class="card"><div class="icon">⚡</div><div class="name">极限性能</div><div class="desc">静态预编译 · 图片 WebP / 异步解码<br>自托管字体子集 · 边缘缓存 HIT</div></div>
     </div>
 
     <h2><span class="num">07</span>生产部署与运维拓扑</h2>
     <table class="deploy-table">
       <thead><tr><th>部署维度</th><th>具体配置与技术实现</th></tr></thead>
-      <tr><td>云服务器</td><td>阿里云轻量应用服务器（Ubuntu 22.04 LTS · 2vCPU / 2GB RAM / 40GB ESSD）</td></tr>
-      <tr><td>域名与 DNS</td><td>qtxingyue.me（Namecheap DNS CNAME 解析 + HTTPS 强跳）</td></tr>
-      <tr><td>SSL 证书</td><td>Let's Encrypt 泛域名证书（Certbot 守护定时自动续签）</td></tr>
-      <tr><td>服务守护</td><td>systemd 管理（sakura-backend / hermes-gateway / hermes-dashboard）</td></tr>
-      <tr><td>静态资源策略</td><td>Nginx 直出（静态 HTML 强缓存 + Gzip 压缩 + Cache-Control: max-age=7776000）</td></tr>
-      <tr><td>自动化流程</td><td>Git push origin astro → GitHub Actions 自动编译 → 生产环境无缝热更新</td></tr>
-      <tr><td>网络防火墙</td><td>UFW 严格白名单策略（仅对公网开放 80 与 443 端口）</td></tr>
+      <tr><td>云服务器</td><td>阿里云轻量应用服务器（Ubuntu 24.04.2 LTS · 2vCPU / 2GB RAM / 40GB ESSD）</td></tr>
+      <tr><td>域名与 DNS</td><td>qtxingyue.me（Namecheap 注册 · Cloudflare 托管解析并开启橙云代理）</td></tr>
+      <tr><td>边缘加速</td><td>Cloudflare Anycast 网络：静态资源边缘缓存（cf-cache-status: HIT）、WAF、DDoS 防护、源站 IP 隐身</td></tr>
+      <tr><td>SSL 证书</td><td>Cloudflare Universal SSL（边缘）+ Let's Encrypt（回源），Full (Strict) 校验模式</td></tr>
+      <tr><td>服务守护</td><td>systemd 管理（sakura-backend / hermes-gateway），异常自动重启</td></tr>
+      <tr><td>静态资源策略</td><td>Nginx 直出 + Cache-Control immutable → Cloudflare 边缘缓存，HTML 强制 no-cache 保持实时</td></tr>
+      <tr><td>自动化流程</td><td>Git push origin astro → GitHub Actions 自动编译并推 main → 服务器 Crontab 每分钟 fetch + reset</td></tr>
+      <tr><td>主机安全</td><td>fail2ban（sshd jail，10 分钟 5 次失败即封禁，递增至 1 周）+ ed25519 密钥 + 阿里云安全组</td></tr>
+      <tr><td>真实 IP 还原</td><td>Nginx realip 模块 + Cloudflare IP 段白名单，限流与日志始终基于真实访客 IP</td></tr>
     </table>
   </div>
 </ProjectLayout>
