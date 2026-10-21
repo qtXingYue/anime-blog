@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="dark"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>月忆 · 桌面 AI 记忆库 — 架构与工程拆解</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CDGfc0hd.js"></script><meta name="description" content="Tauri 2 + Rust + React 的本地优先桌面 AI 记忆应用：GDI 截图、WinRT 离线 OCR、DeepSeek 结构化理解、SQLite 归档、Ctrl+K 检索问答，13.7k 行自研代码、55 个 Tauri 命令。"><meta property="og:title" content="月忆 · 桌面 AI 记忆库 — 架构与工程拆解"><meta property="og:description" content="Tauri 2 + Rust + React 的本地优先桌面 AI 记忆应用：GDI 截图、WinRT 离线 OCR、DeepSeek 结构化理解、SQLite 归档、Ctrl+K 检索问答，13.7k 行自研代码、55 个 Tauri 命令。"><meta property="og:type" content="article"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><script>
+  // 与主站 Base.astro 保持一致：首屏前读取已保存的明暗主题，杜绝跳详情页闪黑屏
+  try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+</style>
+<link rel="stylesheet" href="/_astro/blog.DdBXZk6a.css">
+<style>.theme-toggle[data-astro-cid-x3pjskd3] .ico-sun[data-astro-cid-x3pjskd3]{display:none}.theme-toggle[data-astro-cid-x3pjskd3] .ico-moon[data-astro-cid-x3pjskd3],[data-theme=light] .theme-toggle[data-astro-cid-x3pjskd3] .ico-sun[data-astro-cid-x3pjskd3]{display:block}[data-theme=light] .theme-toggle[data-astro-cid-x3pjskd3] .ico-moon[data-astro-cid-x3pjskd3]{display:none}
+</style>
+<link rel="stylesheet" href="/_astro/ai-gallery.DIVp9Kph.css"><style>[data-astro-transition-scope="astro-xbkqe5ki-1"] { view-transition-name: pt-yueyi-report; }@layer astro { ::view-transition-old(pt-yueyi-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(pt-yueyi-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(pt-yueyi-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(pt-yueyi-report) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-xbkqe5ki-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-xbkqe5ki-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-xbkqe5ki-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-xbkqe5ki-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-xbkqe5ki-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-xbkqe5ki-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-xbkqe5ki-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-xbkqe5ki-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body> <div class="noise-overlay" aria-hidden="true"></div> <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div> <!-- 顶部导航 Header --> <header class="site-header"> <div class="header-inner"> <a href="/" class="header-brand"> <span class="brand-mark">月</span> <span>QT新月</span> </a> <div class="header-crumbs"> <span class="crumb-num">15</span> <span class="crumb-title">月忆 · 桌面 AI 记忆库</span> </div> <nav class="header-nav"> <a href="/projects/ai-video" class="nav-btn " aria-label="上一个项目"> <span>←</span> <span class="nav-emoji">🎬</span><span class="nav-label">AI 视频作品</span> </a> <a href="#" class="nav-btn disabled" aria-label="下一个项目">  <span>→</span> </a> <button class="theme-toggle" type="button" aria-label="切换主题" data-theme-toggle data-astro-cid-x3pjskd3> <svg class="ico-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-x3pjskd3> <circle cx="12" cy="12" r="4.5" data-astro-cid-x3pjskd3></circle> <path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M19.4 4.6l-1.8 1.8M6.4 17.6l-1.8 1.8" data-astro-cid-x3pjskd3></path> </svg> <svg class="ico-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-x3pjskd3> <path d="M21 12.8A9 9 0 1 1 11.2 3a7.2 7.2 0 0 0 9.8 9.8z" data-astro-cid-x3pjskd3></path> </svg> </button>  <script type="module">function d(e){document.documentElement.dataset.theme=e;try{localStorage.setItem("theme",e)}catch{}}function s(){if(window.__themeToggleBound)return;window.__themeToggleBound=!0;const e=()=>{try{const t=localStorage.getItem("theme");(t==="light"||t==="dark")&&(document.documentElement.dataset.theme=t)}catch{}};e(),document.addEventListener("astro:page-load",e),document.addEventListener("click",t=>{if(!t.target?.closest("[data-theme-toggle]"))return;const a=document.documentElement.dataset.theme==="light"?"dark":"light",c=document.startViewTransition,r=window.matchMedia("(prefers-reduced-motion: reduce)").matches;if(!c||r){d(a);return}const n=t.clientX,o=t.clientY,m=Math.hypot(Math.max(n,window.innerWidth-n),Math.max(o,window.innerHeight-o));document.documentElement.classList.add("theme-transitioning");const i=c.call(document,()=>d(a));i.ready.then(()=>{document.documentElement.animate({clipPath:[`circle(0px at ${n}px ${o}px)`,`circle(${m}px at ${n}px ${o}px)`]},{duration:520,easing:"cubic-bezier(0.16, 1, 0.3, 1)",pseudoElement:"::view-transition-new(root)"})}).catch(()=>{}),i.finished.finally(()=>{document.documentElement.classList.remove("theme-transitioning")})},{passive:!0})}s();</script> </nav> </div> </header> <!-- 页面内容 --> <div class="container">  <div class="hero"> <div class="container"> <div class="hero-icon">🧠</div> <h1 data-astro-transition-scope="astro-xbkqe5ki-1">月忆 · 桌面 AI 记忆库</h1> <p class="domain">Windows 桌面应用 · 本地优先</p> <p class="tagline">不是笔记软件，是电脑端的 AI 第二大脑——截图即记录，AI 自动整理，随时检索</p> </div> </div> <div class="container"> <div class="stats-strip"> <div class="stat-item"><div class="num">13.7k</div><div class="label">行自研代码</div></div> <div class="stat-item"><div class="num">55</div><div class="label">Tauri 命令</div></div> <div class="stat-item"><div class="num">9</div><div class="label">张本地数据表</div></div> <div class="stat-item"><div class="num">2.6<span style="font-size:1rem;color:var(--gold)">MB</span></div><div class="label">安装包体积</div></div> </div> <h2><span class="num">01</span>项目概述</h2> <p>日常最有价值的画面往往来不及记：一段报错、一页文档、一张数据表、一个配置项。截图容易，但截图之后散落在相册里就再也找不回来了。<strong>月忆解决的是「捕获之后的整理与回忆」</strong>——按下快捷键，剩下的全自动。</p> <p>形态上是 <strong>Tauri 2 桌面应用</strong>（Rust 外壳 + WebView2 前端），技术选择上坚持 <strong>Local First</strong>：数据库、截图、附件全部存在本地；只有用户主动触发 AI 时，相关片段才会发给模型，<strong>绝不默认上传整个记忆库</strong>。</p> <div class="feature-list"> <div class="feature-item"><div class="dot"></div><div class="text"><strong>一键捕获闭环</strong><br>Alt+Shift+S 全屏截图 → 立即入库（不阻塞）→ 后台 OCR → AI 整理 → 系统通知</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>离线 OCR 不联网</strong><br>直接调 Windows WinRT OcrEngine，中英混排界面实测识别 353 字，无需第三方 OCR 服务</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>AI 结构化理解</strong><br>一次捕获拆成标题 / 摘要 / 标签 / 分类四项，单项失败不影响其余，异常 JSON 容错解析</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>Ctrl+K 检索问答</strong><br>命令面板兼全局搜索，问答只带 8 条相关记忆摘要，回答里的 [1] 可点回原始截图</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>系统级集成</strong><br>全局快捷键、系统托盘、自定义 memex-img 协议、DPI 感知截图、DWM 圆角小窗</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>自带设计系统</strong><br>Token 单一来源、13 种基元组件、应用内 UI 实验室、非标准字号审计、像素级视觉回归</div></div> </div> <h2><span class="num">02</span>系统架构全景</h2> <div class="arch-diagram">        <span class="dim">用户（Windows 11）</span>
+                 │
+   <span class="dim">┌─────────────▼──────────────────┐</span>
+   <span class="dim">│</span> 全局快捷键 · 托盘 · 悬浮速记条   <span class="dim">│</span>
+   <span class="dim">│</span> <span class="gold">Alt+Shift+S</span> 截屏 · <span class="gold">Alt+Shift+M</span> 速记 <span class="dim">│</span>
+   <span class="dim">└─────────────┬──────────────────┘</span>
+                 │  Tauri IPC（invoke / event）
+   <span class="dim">┌─────────────▼──────────────────┐</span>
+   <span class="dim">│</span> <span class="hl">Rust 核心（Tauri 2）</span>            <span class="dim">│</span>
+   <span class="dim">│</span> capture.rs  GDI BitBlt 全屏截图  <span class="dim">│</span>
+   <span class="dim">│</span> ocr.rs      WinRT 离线文字识别   <span class="dim">│</span>
+   <span class="dim">│</span> worker.rs   后台 AI 流水线       <span class="dim">│</span>
+   <span class="dim">│</span> ai.rs       AiProvider 抽象      <span class="dim">│</span>
+   <span class="dim">└──────┬──────────────────┬───────┘</span>
+          │                  │
+          ▼                  ▼
+   <span class="dim">┌──────────────┐</span>   <span class="dim">┌──────────────────┐</span>
+   <span class="dim">│</span> <span class="gold">SQLite 本地库</span> <span class="dim">│</span>   <span class="dim">│</span> <span class="hl">DeepSeek API</span>      <span class="dim">│</span>
+   <span class="dim">│</span> 9 张表 · 零上传 <span class="dim">│</span>   <span class="dim">│</span> 4 次结构化调用    <span class="dim">│</span>
+   <span class="dim">└──────────────┘</span>   <span class="dim">└──────────────────┘</span>
+          ▲                  ▲
+          └──────────┬───────┘
+                     │  invoke 返回 / 事件广播
+   <span class="dim">┌─────────────────▼──────────────┐</span>
+   <span class="dim">│</span> <span class="gold">React 18 前端（WebView2）</span>         <span class="dim">│</span>
+   <span class="dim">│</span> 时间线 / 合集 / 搜索问答 / 设置    <span class="dim">│</span>
+   <span class="dim">│</span> Zustand · 自研设计系统 · Ctrl+K  <span class="dim">│</span>
+   <span class="dim">└────────────────────────────────┘</span></div> <p>三层职责边界很清晰：<strong>前端只管呈现与交互</strong>（React + Zustand），<strong>Rust 核心管能力</strong>（截图、OCR、文件、调度），<strong>数据与模型都在进程外</strong>（SQLite 文件 + DeepSeek API）。AI 调用被抽象成 <code>AiProvider</code> trait，换供应商只需实现一个 trait。</p> <h2><span class="num">03</span>技术栈全景</h2> <div class="card-grid"> <div class="card"><div class="icon">🦀</div><div class="name">桌面外壳</div><div class="desc">Tauri 2（Rust）<br>单文件 7.3 MB · NSIS 安装包 2.6 MB<br>内存占用远低于 Electron</div></div> <div class="card"><div class="icon">⚛️</div><div class="name">前端</div><div class="desc">React 18 + TypeScript<br>Vite 5 · Tailwind 3 · Zustand<br>WebView2 渲染</div></div> <div class="card"><div class="icon">🗄️</div><div class="name">本地存储</div><div class="desc">SQLite（rusqlite bundled）<br>9 张表 · schema 迁移<br>数据目录可用环境变量覆盖</div></div> <div class="card"><div class="icon">👁️</div><div class="name">截图与 OCR</div><div class="desc">Windows GDI BitBlt + CAPTUREBLT<br>WinRT OcrEngine（离线）<br>纯 Rust 进程内调用</div></div> <div class="card"><div class="icon">🤖</div><div class="name">AI 层</div><div class="desc">DeepSeek（OpenAI 兼容）<br>AiProvider trait 抽象<br>4 次结构化调用 · 容错解析</div></div> <div class="card"><div class="icon">🧵</div><div class="name">并发模型</div><div class="desc">后台线程跑 AI 流水线<br>UI 立即返回「已捕获」<br>ai_tasks 记录任务状态</div></div> <div class="card"><div class="icon">🎨</div><div class="name">设计系统</div><div class="desc">双层 Token（Pearl / Night）<br>13 种基元 · Lucide 统一 1.7 描边<br>UI 实验室 + 视觉回归</div></div> <div class="card"><div class="icon">⌨️</div><div class="name">系统集成</div><div class="desc">全局快捷键 / 托盘 / 悬浮速记窗<br>自定义 memex-img 协议<br>storage 事件跨窗同步主题</div></div> <div class="card"><div class="icon">🧪</div><div class="name">质量保障</div><div class="desc">Rust 单测（含真实 API 调用）<br>CLI 冒烟测试 --capture-once<br>npm run audit:ui 护栏</div></div> </div> <h2><span class="num">04</span>核心闭环：一次捕获发生了什么</h2> <div class="feature-list"> <div class="feature-item"><div class="dot"></div><div class="text"><strong>① 捕获</strong> — Alt+Shift+S 触发 GDI 全屏位图（含分层窗口），编码 PNG 写入 <code>MemexData/screenshots/</code>，同时插入 memories 记录，状态标为「待整理」，UI 立刻提示「已捕获」</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>② 识别</strong> — 后台线程调 WinRT OCR 提取文字；语言包缺失或识别失败时<b>原图照常保留</b>，只记录降级原因，不影响后续手动整理</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>③ 理解</strong> — 把 OCR 文本交给 DeepSeek 做四件事：起标题、写摘要、打标签、归分类。四项分别调用，<b>任一项失败其余继续</b>，不会整体回滚</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>④ 归档</strong> — 回写 memories / tags / memory_tags / collections，ai_status 置为 done，发系统通知；时间线上出现带「新捕获」标记的卡片</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>⑤ 回忆</strong> — 任意时刻 Ctrl+K 打开命令面板，走关键词搜索或 AI 问答；问答上下文只给 8 条相关记忆摘要，回答带 [1][2] 引用，点击直接回到原始截图</div></div> </div> <p>这条链路上最容易出事的是 ③：模型返回的 JSON 经常带 ```json 包裹、前后废话、字段名漂移。于是写了一个 <code>parse_json_loose</code>——先剥围栏、再截取第一个完整 JSON 片段、最后逐字段兜底，实测未再因格式问题丢数据。</p> <h2><span class="num">05</span>数据模型</h2> <table> <thead><tr><th>表</th><th>职责</th><th>设计要点</th></tr></thead> <tr><td>memories</td><td>记忆主体</td><td>title / content / summary / type / source / ocr_text / ai_status</td></tr> <tr><td>collections</td><td>合集（含颜色）</td><td>sort_order 持久化，支持侧栏拖拽排序</td></tr> <tr><td>tags / memory_tags</td><td>标签多对多</td><td>标签去重靠唯一约束 + 关联表</td></tr> <tr><td>attachments</td><td>附件</td><td>与记忆一对多，文件落在数据目录</td></tr> <tr><td>ai_tasks</td><td>AI 任务记录</td><td>可观测每次处理的耗时与结果，失败可追溯</td></tr> <tr><td>search_history</td><td>搜索历史</td><td>为「最近搜索」与后续排序实验留数据</td></tr> <tr><td>settings</td><td>键值配置</td><td>含 API Key；优先级：应用设置 &gt; 环境变量</td></tr> </table> <h2><span class="num">06</span>工程细节：降级与护栏</h2> <table class="deploy-table"> <thead><tr><th>异常场景</th><th>实际行为</th></tr></thead> <tr><td>API Key 未配置 / 错误</td><td>AI 标记失败，记忆完整保存，UI 明确提示「AI 离线」</td></tr> <tr><td>网络断开</td><td>本地记录、搜索、截图、合集全部可用</td></tr> <tr><td>OCR 失败（缺语言包）</td><td>保留原图，ocr_text 留空并写日志，不阻塞入库</td></tr> <tr><td>模型返回异常 JSON</td><td>parse_json_loose 三段容错：剥围栏 → 截取 JSON → 字段兜底</td></tr> <tr><td>AI 单项失败（如标签）</td><td>其余项继续写入，不整体回滚</td></tr> <tr><td>数据库错误</td><td>命令返回 Result，前端 toast 提示，进程不崩</td></tr> <tr><td>截图失败</td><td>托盘与快捷键路径 emit capture-error，前端提示原因</td></tr> </table> <p>设计系统同样有护栏：所有颜色/字号/间距只允许来自 <code>src/ui/tokens.css</code>，<code>npm run audit:ui</code> 会扫描页面里的裸色值与非标准字号（<code>--strict</code> 可在 CI 中失败）；再加一个 <code>ui-diff.py</code> 做像素级回归，改完 UI 能一眼看出哪里动了。</p> <h2><span class="num">07</span>实测数据（本机 Windows 11）</h2> <div class="feature-list"> <div class="feature-item"><div class="dot"></div><div class="text"><strong>应用启动与系统集成</strong><br>启动无崩溃，托盘图标与全局快捷键注册成功，最小化到任务栏行为符合预期</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>SQLite 初始化</strong><br>9 张表 + 5 个默认合集 + 8 项默认设置，首次启动即用</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>捕获链路</strong><br>1440×900 全屏 PNG 落盘；WinRT OCR 识别 353 字中英混排文本</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>AI 真实调用</strong><br>标题「WorkBuddy 任务助手开发与调试」、标签 5 个、分类「工作记录」全部正确落库</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>防编造验证</strong><br>提问记忆库中不存在的内容时，明确回答「我没有在你的记忆中找到相关内容」，不硬编</div></div> </div> <h2><span class="num">08</span>已知限制与后续</h2> <div class="feature-list"> <div class="feature-item"><div class="dot"></div><div class="text"><strong>区域截图</strong><br>已实现冻结屏幕 + 鼠标框选，多显示器暂只覆盖主屏</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>检索方式</strong><br>相关记忆当前用标签交集计算，<code>related_memories</code> 接口已预留 embedding 扩展位</div></div> <div class="feature-item"><div class="dot"></div><div class="text"><strong>打包</strong><br>NSIS 安装包需联网拉工具链；release 产物可直接免安装运行</div></div> </div> </div>  </div> <!-- 底部项目导航 --> <div class="container"> <div class="project-nav-bottom"> <a href="/projects/ai-video" class="nav-card prev"> <span class="nav-card-emoji">🎬</span> <div class="nav-card-info"> <span class="nav-card-dir">← 上一个</span> <span class="nav-card-num">14</span> <span class="nav-card-title">AI 视频作品</span> </div> </a> <div class="nav-card placeholder"></div> </div> </div> <!-- Footer --> <div class="container"> <div class="footer"> <p class="footer-decor" aria-hidden="true">新 · 月 · 作 · 品</p> <a href="/">← 回到作品集</a> <p style="margin-top:1rem;color:var(--text-muted);font-size:0.8rem">月忆 · 桌面 AI 记忆库 — 架构与工程拆解</p> </div> </div> <!-- 返回顶部 --> <button class="back-to-top" id="backToTop" aria-label="返回顶部"> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"></path></svg> </button> <!-- 沉浸式图片预览灯箱 --> <div class="image-lightbox" id="imageLightbox" aria-hidden="true" role="dialog" aria-modal="true"> <div class="lightbox-backdrop" id="lightboxBackdrop"></div> <img class="lightbox-img" id="lightboxImg" alt="大图预览"> <button class="lightbox-close" id="lightboxClose" aria-label="关闭预览">✕</button> </div> <script>
+function initProjectLayout() {
+  const btn = document.getElementById('backToTop');
+  const prog = document.getElementById('scrollProgress');
+  const cssScrollDriven = typeof CSS !== 'undefined' && !!CSS.supports && CSS.supports('animation-timeline: scroll()');
+  let ticking = false;
+  function updateBtn() {
+    if (btn) {
+      if (window.scrollY > 600) btn.classList.add('visible');
+      else btn.classList.remove('visible');
+    }
+    if (prog && !cssScrollDriven) {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      prog.style.width = (scrollable > 0 ? Math.min(window.scrollY / scrollable * 100, 100) : 0) + '%';
+    }
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) { requestAnimationFrame(updateBtn); ticking = true; }
+  }, { passive: true });
+  if (btn) {
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  document.querySelectorAll('pre').forEach(pre => {
+    if (pre.closest('.code-block-wrapper')) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    pre.parentNode.insertBefore(wrapper, pre);
+    
+    const header = document.createElement('div');
+    header.className = 'code-block-header';
+    
+    let lang = 'CODE';
+    const codeEl = pre.querySelector('code');
+    if (codeEl) {
+      const classes = codeEl.className.split(' ');
+      for (const c of classes) {
+        if (c.startsWith('language-')) {
+          lang = c.replace('language-', '').toUpperCase();
+          break;
+        }
+      }
+    }
+    
+    const titleSpan = document.createElement('span');
+    titleSpan.textContent = lang;
+    
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'code-block-copy-btn';
+    copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+    
+    copyBtn.addEventListener('click', async () => {
+      const textToCopy = pre.innerText;
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        copyBtn.classList.add('copied');
+        copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> 已复制';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          copyBtn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> 复制';
+        }, 1800);
+      } catch (err) {
+        copyBtn.textContent = '复制失败';
+      }
+    });
+    
+    header.appendChild(titleSpan);
+    header.appendChild(copyBtn);
+    wrapper.appendChild(header);
+    wrapper.appendChild(pre);
+  });
+
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const lightboxBackdrop = document.getElementById('lightboxBackdrop');
+
+  function openLightbox(src, alt) {
+    if (!lightbox || !lightboxImg) return;
+    lightboxImg.src = src;
+    lightboxImg.alt = alt || '大图预览';
+    lightbox.classList.add('active');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('active');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (lightbox) {
+    document.querySelectorAll('.screenshot img, .gallery-card-img, .card-grid img, table img, .container img').forEach(img => {
+      if (img.closest('.site-header') || img.closest('.brand')) return;
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', (e) => {
+        e.preventDefault();
+        openLightbox(img.currentSrc || img.src, img.alt);
+      });
+    });
+
+    if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+    if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
+    
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+  }
+}
+
+document.addEventListener('astro:page-load', initProjectLayout);
+initProjectLayout();
+</script> <div class="ai-assistant-wrapper" id="aiAssistantWrapper" data-astro-cid-ik6s2ofx> <!-- 遮罩层 (移动端专用) --> <div class="ai-backdrop" id="aiBackdrop" aria-hidden="true" data-astro-cid-ik6s2ofx></div> <!-- 浮动唤起入口按钮 --> <button class="ai-trigger-btn" id="aiTriggerBtn" type="button" aria-label="打开 AI 简历导览助手" aria-expanded="false" data-astro-cid-ik6s2ofx> <span class="ai-trigger-dot" aria-hidden="true" data-astro-cid-ik6s2ofx></span> <span class="ai-trigger-icon" aria-hidden="true" data-astro-cid-ik6s2ofx>✦</span> <span class="ai-trigger-text" data-astro-cid-ik6s2ofx>AI 助手</span> </button> <!-- 聊天悬浮面板 --> <section class="ai-panel" id="aiPanel" role="dialog" aria-label="Hermes AI 简历讲解助手" aria-hidden="true" data-astro-cid-ik6s2ofx> <!-- 头部栏 --> <header class="ai-header" data-astro-cid-ik6s2ofx> <div class="ai-header-info" data-astro-cid-ik6s2ofx> <div class="ai-avatar" aria-hidden="true" data-astro-cid-ik6s2ofx> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-ik6s2ofx><path d="M12 2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" data-astro-cid-ik6s2ofx></path><rect x="3" y="8" width="18" height="12" rx="4" data-astro-cid-ik6s2ofx></rect><circle cx="9" cy="13" r="1.5" fill="currentColor" data-astro-cid-ik6s2ofx></circle><circle cx="15" cy="13" r="1.5" fill="currentColor" data-astro-cid-ik6s2ofx></circle><path d="M10 17h4" data-astro-cid-ik6s2ofx></path></svg> </div> <div data-astro-cid-ik6s2ofx> <h3 class="ai-title" data-astro-cid-ik6s2ofx>Hermes · 简历讲解员</h3> <p class="ai-status" data-astro-cid-ik6s2ofx><span class="status-pulse" data-astro-cid-ik6s2ofx></span>在线 · 钟文清数字分身</p> </div> </div> <button class="ai-close-btn" id="aiCloseBtn" type="button" aria-label="关闭对话" data-astro-cid-ik6s2ofx>✕</button> </header> <!-- 预设快捷问题推荐 --> <div class="ai-quick-prompts" id="aiQuickPrompts" data-astro-cid-ik6s2ofx> <button type="button" class="quick-chip" data-query="钟文清最擅长哪些核心技术？" data-astro-cid-ik6s2ofx>🎯 核心技术特长</button> <button type="button" class="quick-chip" data-query="介绍一下手势控制 PPT 项目的实现原理与亮点" data-astro-cid-ik6s2ofx>🤖 手势控制 PPT</button> <button type="button" class="quick-chip" data-query="文清获得过哪些竞赛荣誉与证书？" data-astro-cid-ik6s2ofx>🏆 竞赛荣誉与证书</button> <button type="button" class="quick-chip" data-query="如何联系作者钟文清？" data-astro-cid-ik6s2ofx>📬 联系方式</button> </div> <!-- 消息对话流 --> <div class="ai-messages" id="aiMessages" role="log" aria-live="polite" data-astro-cid-ik6s2ofx> <div class="message-bubble assistant" data-astro-cid-ik6s2ofx> <div class="msg-avatar" aria-hidden="true" data-astro-cid-ik6s2ofx>✦</div> <div class="msg-content" data-astro-cid-ik6s2ofx>
+你好！我是钟文清的 AI 简历导览助手 <strong data-astro-cid-ik6s2ofx>Hermes</strong>。<br data-astro-cid-ik6s2ofx><br data-astro-cid-ik6s2ofx>
+我对文清的 <strong data-astro-cid-ik6s2ofx>15 个实战项目</strong>、<strong data-astro-cid-ik6s2ofx>深度学习与爬虫工程</strong>以及<strong data-astro-cid-ik6s2ofx>竞赛荣誉</strong>了如指掌。想了解什么尽管问我，也可以直接点击上方的快捷标签！
+</div> </div> </div> <!-- 底部输入框与状态 --> <footer class="ai-footer" data-astro-cid-ik6s2ofx> <form class="ai-form" id="aiForm" data-astro-cid-ik6s2ofx> <div class="ai-input-wrap" data-astro-cid-ik6s2ofx> <input type="text" id="aiInput" class="ai-input" placeholder="问问文清的项目难点、技能或经历..." maxlength="150" autocomplete="off" aria-label="输入您的问题" data-astro-cid-ik6s2ofx> <span class="ai-char-count" id="aiCharCount" data-astro-cid-ik6s2ofx>0/150</span> </div> <button type="submit" class="ai-send-btn" id="aiSendBtn" aria-label="发送消息" data-astro-cid-ik6s2ofx> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-ik6s2ofx><line x1="22" y1="2" x2="11" y2="13" data-astro-cid-ik6s2ofx></line><polygon points="22 2 15 22 11 13 2 9 22 2" data-astro-cid-ik6s2ofx></polygon></svg> </button> </form> <p class="ai-disclaimer" data-astro-cid-ik6s2ofx>由本地模型驱动 · 严守只读沙箱安全</p> </footer> </section> </div>  <script>
+(function initAiAssistant() {
+  function setup() {
+    const triggerBtn = document.getElementById('aiTriggerBtn');
+    const panel = document.getElementById('aiPanel');
+    const closeBtn = document.getElementById('aiCloseBtn');
+    const backdrop = document.getElementById('aiBackdrop');
+    const form = document.getElementById('aiForm');
+    const input = document.getElementById('aiInput');
+    const sendBtn = document.getElementById('aiSendBtn');
+    const charCount = document.getElementById('aiCharCount');
+    const messages = document.getElementById('aiMessages');
+    const quickPrompts = document.getElementById('aiQuickPrompts');
+
+    if (!triggerBtn || !panel || !form || !input) return;
+
+    let isOpen = false;
+    let isSending = false;
+
+    function openPanel() {
+      isOpen = true;
+      panel.classList.add('active');
+      panel.setAttribute('aria-hidden', 'false');
+      triggerBtn.setAttribute('aria-expanded', 'true');
+      if (backdrop) backdrop.classList.add('active');
+      setTimeout(() => input.focus(), 150);
+    }
+
+    function closePanel() {
+      isOpen = false;
+      panel.classList.remove('active');
+      panel.setAttribute('aria-hidden', 'true');
+      triggerBtn.setAttribute('aria-expanded', 'false');
+      if (backdrop) backdrop.classList.remove('active');
+    }
+
+    triggerBtn.onclick = () => {
+      if (isOpen) closePanel();
+      else openPanel();
+    };
+
+    if (closeBtn) closeBtn.onclick = closePanel;
+    if (backdrop) backdrop.onclick = closePanel;
+
+    // 字数统计
+    input.oninput = () => {
+      if (charCount) charCount.textContent = `${input.value.length}/150`;
+    };
+
+    // 快捷标签点击直接发送
+    if (quickPrompts) {
+      quickPrompts.querySelectorAll('.quick-chip').forEach(chip => {
+        chip.onclick = () => {
+          const query = chip.getAttribute('data-query');
+          if (query && !isSending) {
+            input.value = query;
+            if (charCount) charCount.textContent = `${query.length}/150`;
+            sendMessage(query);
+          }
+        };
+      });
+    }
+
+    // 安全转义 HTML，杜绝 XSS
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML.replace(/\n/g, '<br>');
+    }
+
+    // 在「已转义」的文本上做极简富文本：只认 [文字](链接) 与 **粗体**。
+    // 链接域名受限（站内路径或 https），避免模型被注入后吐出 javascript:
+    function renderRich(str) {
+      let s = escapeHtml(str);
+      s = s.replace(
+        /\[([^\]]{1,60})\]\((\/[A-Za-z0-9\-_\/.#=%]*|https?:\/\/[^\s)]+)\)/g,
+        (_m, label, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`
+      );
+      s = s.replace(/\*\*([^*]{1,60})\*\*/g, '<strong>$1</strong>');
+      return s;
+    }
+
+    // 来源小标签：让「有据可查」看得见
+    function appendSources(container, sources) {
+      if (!sources || !sources.length) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'msg-sources';
+      const label = document.createElement('span');
+      label.className = 'msg-sources-label';
+      label.textContent = '参考来源';
+      wrap.appendChild(label);
+      sources.slice(0, 4).forEach((s) => {
+        const a = document.createElement('a');
+        a.href = s.url || '#';
+        a.textContent = s.title || '来源';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        wrap.appendChild(a);
+      });
+      container.appendChild(wrap);
+    }
+
+    // 添加气泡
+    function appendMessage(role, text, isHtml = false) {
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message-bubble ${role}`;
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'msg-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = role === 'assistant' ? '✦' : '我';
+
+      const content = document.createElement('div');
+      content.className = 'msg-content';
+      if (isHtml) {
+        content.innerHTML = text;
+      } else {
+        content.innerHTML = escapeHtml(text);
+      }
+
+      msgDiv.appendChild(avatar);
+      msgDiv.appendChild(content);
+      messages.appendChild(msgDiv);
+      messages.scrollTop = messages.scrollHeight;
+      return msgDiv;
+    }
+
+    // 发送消息（SSE 流式：先拿来源，再逐字渲染）
+    async function sendMessage(text) {
+      if (!text.trim() || isSending) return;
+      isSending = true;
+      if (sendBtn) sendBtn.disabled = true;
+
+      appendMessage('user', text);
+      input.value = '';
+      if (charCount) charCount.textContent = '0/150';
+
+      // 展现等待动效
+      const loadingBubble = appendMessage('assistant', '<div class="typing-dots"><span></span><span></span><span></span></div>', true);
+
+      // 35s 超时兜底(后端公开路径已限 30s):避免打点动画一直转到两分钟
+      const controller = new AbortController();
+      const abortTimer = setTimeout(() => controller.abort(), 35000);
+      let bubble = null;
+      let contentEl = null;
+      let full = '';
+      let sources = [];
+
+      const ensureBubble = () => {
+        if (bubble) return;
+        loadingBubble.remove();
+        bubble = appendMessage('assistant', '');
+        contentEl = bubble.querySelector('.msg-content');
+      };
+
+      try {
+        const res = await fetch('/api/chat/assistant/stream', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'text/event-stream' },
+          body: JSON.stringify({ prompt: text.trim().slice(0, 150) }),
+          signal: controller.signal
+        });
+
+        if (res.status === 429) {
+          loadingBubble.remove();
+          appendMessage('assistant', '提问太频繁啦，请稍等一分钟后再试哦 ☕');
+          return;
+        }
+        if (!res.ok || !res.body) throw new Error('stream unavailable');
+
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder('utf-8');
+        let buffer = '';
+
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+
+          let sep;
+          while ((sep = buffer.indexOf('\n\n')) >= 0) {
+            const chunk = buffer.slice(0, sep).trim();
+            buffer = buffer.slice(sep + 2);
+            if (!chunk.startsWith('data:')) continue;
+            const payload = chunk.slice(5).trim();
+            if (payload === '[DONE]') continue;
+
+            let evt;
+            try { evt = JSON.parse(payload); } catch (_) { continue; }
+
+            if (evt.type === 'sources') {
+              sources = evt.sources || [];
+            } else if (evt.type === 'delta' && evt.text) {
+              ensureBubble();
+              full += evt.text;
+              contentEl.innerHTML = renderRich(full);
+              messages.scrollTop = messages.scrollHeight;
+            }
+          }
+        }
+
+        ensureBubble();
+        if (!full.trim()) {
+          contentEl.innerHTML = '抱歉，暂时没有拿到回答，请稍后再试一次！';
+        }
+        appendSources(bubble, sources);
+      } catch (err) {
+        if (!bubble) loadingBubble.remove();
+        if (err && err.name === 'AbortError') {
+          if (!bubble) appendMessage('assistant', 'AI 助手响应超时了，请稍后再试一次！');
+        } else {
+          // 流式不可用时退回一次性接口，保证任何环境都答得上
+          try {
+            const res2 = await fetch('/api/chat/assistant', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ prompt: text.trim().slice(0, 150) })
+            });
+            const data = await res2.json();
+            if (!bubble) loadingBubble.remove();
+            if (res2.ok && data.ok) {
+              if (!bubble) appendMessage('assistant', data.reply, true);
+              else { full = data.reply; contentEl.innerHTML = renderRich(full); }
+            } else if (!bubble) {
+              appendMessage('assistant', data.detail || '抱歉，暂时未能连通 AI 助手，请稍后再试！');
+            }
+          } catch (_) {
+            if (!bubble) appendMessage('assistant', '网络连接出现一点小波动，欢迎直接通过页面底部的联系表单向文清留言！');
+          }
+        }
+      } finally {
+        clearTimeout(abortTimer);
+        isSending = false;
+        if (sendBtn) sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      sendMessage(input.value);
+    };
+
+    // ESC 键关闭:用 onkeydown 赋值而非 addEventListener——
+    // setup 每次 SPA 导航都会重跑,addEventListener 会累积出越叠越多的监听器
+    window.onkeydown = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        closePanel();
+      }
+    };
+  }
+
+  // 挂载到 astro:page-load 生命周期（Astro 5 ClientRouter）
+  document.addEventListener('astro:page-load', setup);
+  setup();
+})();
+</script> </body></html>
