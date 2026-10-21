@@ -90,6 +90,18 @@ export const projectsMain: Project[] = [
     metrics: ['mitmproxy 抓包', 'Frida Hook', 'ADB 调试'],
     tech: ['Python', 'mitmproxy', 'Frida', 'ADB'],
     link: { href: 'projects/android-network-analysis', label: '查看技术拆解 →' }
+  },
+  {
+    num: '15', category: '桌面应用', emoji: '🧠',
+    gradient: 'linear-gradient(135deg,#0e1320,#0a0f1a)',
+    accent: 'azure',
+    cover: '/projects/covers/15-yueyi.svg',
+    title: '月忆 · 桌面 AI 记忆库',
+    highlight: { value: '13.7k 行', label: '自研代码 · Rust 5.8k + TS 7.9k' },
+    desc: '看到值得记下的东西按一下 Alt+Shift+S：全屏截图 → 本地 OCR → AI 拆出标题/摘要/标签/分类 → 时间线归档；日后 Ctrl+K 检索问答，点引用直接回到原始截图。数据全部留在本地 SQLite。',
+    metrics: ['2.6 MB 安装包', '9 张表本地存储', '离线 OCR · 零上传'],
+    tech: ['Rust', 'Tauri 2', 'React 18', 'TypeScript', 'SQLite', 'WinRT OCR', 'DeepSeek'],
+    link: { href: 'projects/yueyi-report', label: '查看架构拆解 →' }
   }
 ];
 
@@ -230,7 +242,7 @@ const tier = (nums: string[]): Project[] =>
   nums.map(byNum).sort((a, b) => a.num.localeCompare(b.num));
 
 /** 特写级：工程体量最大、有硬指标的三个 */
-export const projectsFeature: Project[] = tier(['01', '03', '04']);
+export const projectsFeature: Project[] = tier(['01', '03', '04', '15']);
 /** 专题级：有完整技术拆解、但没有生产体量的六个 */
 export const projectsDepth: Project[] = tier(['02', '05', '06', '08', '10', '12']);
 /** 索引级：小品与作品合集，一行一条即可 */
@@ -261,4 +273,5 @@ export const projectNav: ProjectNavEntry[] = [
   { slug: 'wx-store-report', href: 'projects/wx-store-report', num: '12', title: '动漫商城管理', emoji: '🛒' },
   { slug: 'ai-gallery', href: 'projects/ai-gallery', num: '13', title: 'AI 生图作品集', emoji: '✨' },
   { slug: 'ai-video', href: 'projects/ai-video', num: '14', title: 'AI 视频作品', emoji: '🎬' },
+  { slug: 'yueyi-report', href: 'projects/yueyi-report', num: '15', title: '月忆 · 桌面 AI 记忆库', emoji: '🧠' },
 ];

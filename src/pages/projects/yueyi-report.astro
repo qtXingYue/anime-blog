@@ -1,0 +1,137 @@
+---
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+
+const title = '月忆 · 桌面 AI 记忆库 — 架构与工程拆解';
+const description = 'Tauri 2 + Rust + React 的本地优先桌面 AI 记忆应用：GDI 截图、WinRT 离线 OCR、DeepSeek 结构化理解、SQLite 归档、Ctrl+K 检索问答，13.7k 行自研代码、55 个 Tauri 命令。';
+const slug = 'yueyi-report';
+
+const archDiagram = `        <span class="dim">用户（Windows 11）</span>
+                 │
+   <span class="dim">┌─────────────▼──────────────────┐</span>
+   <span class="dim">│</span> 全局快捷键 · 托盘 · 悬浮速记条   <span class="dim">│</span>
+   <span class="dim">│</span> <span class="gold">Alt+Shift+S</span> 截屏 · <span class="gold">Alt+Shift+M</span> 速记 <span class="dim">│</span>
+   <span class="dim">└─────────────┬──────────────────┘</span>
+                 │  Tauri IPC（invoke / event）
+   <span class="dim">┌─────────────▼──────────────────┐</span>
+   <span class="dim">│</span> <span class="hl">Rust 核心（Tauri 2）</span>            <span class="dim">│</span>
+   <span class="dim">│</span> capture.rs  GDI BitBlt 全屏截图  <span class="dim">│</span>
+   <span class="dim">│</span> ocr.rs      WinRT 离线文字识别   <span class="dim">│</span>
+   <span class="dim">│</span> worker.rs   后台 AI 流水线       <span class="dim">│</span>
+   <span class="dim">│</span> ai.rs       AiProvider 抽象      <span class="dim">│</span>
+   <span class="dim">└──────┬──────────────────┬───────┘</span>
+          │                  │
+          ▼                  ▼
+   <span class="dim">┌──────────────┐</span>   <span class="dim">┌──────────────────┐</span>
+   <span class="dim">│</span> <span class="gold">SQLite 本地库</span> <span class="dim">│</span>   <span class="dim">│</span> <span class="hl">DeepSeek API</span>      <span class="dim">│</span>
+   <span class="dim">│</span> 9 张表 · 零上传 <span class="dim">│</span>   <span class="dim">│</span> 4 次结构化调用    <span class="dim">│</span>
+   <span class="dim">└──────────────┘</span>   <span class="dim">└──────────────────┘</span>
+          ▲                  ▲
+          └──────────┬───────┘
+                     │  invoke 返回 / 事件广播
+   <span class="dim">┌─────────────────▼──────────────┐</span>
+   <span class="dim">│</span> <span class="gold">React 18 前端（WebView2）</span>         <span class="dim">│</span>
+   <span class="dim">│</span> 时间线 / 合集 / 搜索问答 / 设置    <span class="dim">│</span>
+   <span class="dim">│</span> Zustand · 自研设计系统 · Ctrl+K  <span class="dim">│</span>
+   <span class="dim">└────────────────────────────────┘</span>`;
+---
+
+<ProjectLayout title={title} description={description} slug={slug}>
+  <div class="hero">
+    <div class="container">
+      <div class="hero-icon">🧠</div>
+      <h1 transition:name="pt-yueyi-report">月忆 · 桌面 AI 记忆库</h1>
+      <p class="domain">Windows 桌面应用 · 本地优先</p>
+      <p class="tagline">不是笔记软件，是电脑端的 AI 第二大脑——截图即记录，AI 自动整理，随时检索</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-item"><div class="num">13.7k</div><div class="label">行自研代码</div></div>
+      <div class="stat-item"><div class="num">55</div><div class="label">Tauri 命令</div></div>
+      <div class="stat-item"><div class="num">9</div><div class="label">张本地数据表</div></div>
+      <div class="stat-item"><div class="num">2.6<span style="font-size:1rem;color:var(--gold)">MB</span></div><div class="label">安装包体积</div></div>
+    </div>
+
+    <h2><span class="num">01</span>项目概述</h2>
+    <p>日常最有价值的画面往往来不及记：一段报错、一页文档、一张数据表、一个配置项。截图容易，但截图之后散落在相册里就再也找不回来了。<strong>月忆解决的是「捕获之后的整理与回忆」</strong>——按下快捷键，剩下的全自动。</p>
+    <p>形态上是 <strong>Tauri 2 桌面应用</strong>（Rust 外壳 + WebView2 前端），技术选择上坚持 <strong>Local First</strong>：数据库、截图、附件全部存在本地；只有用户主动触发 AI 时，相关片段才会发给模型，<strong>绝不默认上传整个记忆库</strong>。</p>
+
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>一键捕获闭环</strong><br>Alt+Shift+S 全屏截图 → 立即入库（不阻塞）→ 后台 OCR → AI 整理 → 系统通知</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>离线 OCR 不联网</strong><br>直接调 Windows WinRT OcrEngine，中英混排界面实测识别 353 字，无需第三方 OCR 服务</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>AI 结构化理解</strong><br>一次捕获拆成标题 / 摘要 / 标签 / 分类四项，单项失败不影响其余，异常 JSON 容错解析</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>Ctrl+K 检索问答</strong><br>命令面板兼全局搜索，问答只带 8 条相关记忆摘要，回答里的 [1] 可点回原始截图</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>系统级集成</strong><br>全局快捷键、系统托盘、自定义 memex-img 协议、DPI 感知截图、DWM 圆角小窗</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>自带设计系统</strong><br>Token 单一来源、13 种基元组件、应用内 UI 实验室、非标准字号审计、像素级视觉回归</div></div>
+    </div>
+
+    <h2><span class="num">02</span>系统架构全景</h2>
+    <div class="arch-diagram" set:html={archDiagram}></div>
+    <p>三层职责边界很清晰：<strong>前端只管呈现与交互</strong>（React + Zustand），<strong>Rust 核心管能力</strong>（截图、OCR、文件、调度），<strong>数据与模型都在进程外</strong>（SQLite 文件 + DeepSeek API）。AI 调用被抽象成 <code>AiProvider</code> trait，换供应商只需实现一个 trait。</p>
+
+    <h2><span class="num">03</span>技术栈全景</h2>
+    <div class="card-grid">
+      <div class="card"><div class="icon">🦀</div><div class="name">桌面外壳</div><div class="desc">Tauri 2（Rust）<br>单文件 7.3 MB · NSIS 安装包 2.6 MB<br>内存占用远低于 Electron</div></div>
+      <div class="card"><div class="icon">⚛️</div><div class="name">前端</div><div class="desc">React 18 + TypeScript<br>Vite 5 · Tailwind 3 · Zustand<br>WebView2 渲染</div></div>
+      <div class="card"><div class="icon">🗄️</div><div class="name">本地存储</div><div class="desc">SQLite（rusqlite bundled）<br>9 张表 · schema 迁移<br>数据目录可用环境变量覆盖</div></div>
+      <div class="card"><div class="icon">👁️</div><div class="name">截图与 OCR</div><div class="desc">Windows GDI BitBlt + CAPTUREBLT<br>WinRT OcrEngine（离线）<br>纯 Rust 进程内调用</div></div>
+      <div class="card"><div class="icon">🤖</div><div class="name">AI 层</div><div class="desc">DeepSeek（OpenAI 兼容）<br>AiProvider trait 抽象<br>4 次结构化调用 · 容错解析</div></div>
+      <div class="card"><div class="icon">🧵</div><div class="name">并发模型</div><div class="desc">后台线程跑 AI 流水线<br>UI 立即返回「已捕获」<br>ai_tasks 记录任务状态</div></div>
+      <div class="card"><div class="icon">🎨</div><div class="name">设计系统</div><div class="desc">双层 Token（Pearl / Night）<br>13 种基元 · Lucide 统一 1.7 描边<br>UI 实验室 + 视觉回归</div></div>
+      <div class="card"><div class="icon">⌨️</div><div class="name">系统集成</div><div class="desc">全局快捷键 / 托盘 / 悬浮速记窗<br>自定义 memex-img 协议<br>storage 事件跨窗同步主题</div></div>
+      <div class="card"><div class="icon">🧪</div><div class="name">质量保障</div><div class="desc">Rust 单测（含真实 API 调用）<br>CLI 冒烟测试 --capture-once<br>npm run audit:ui 护栏</div></div>
+    </div>
+
+    <h2><span class="num">04</span>核心闭环：一次捕获发生了什么</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>① 捕获</strong> — Alt+Shift+S 触发 GDI 全屏位图（含分层窗口），编码 PNG 写入 <code>MemexData/screenshots/</code>，同时插入 memories 记录，状态标为「待整理」，UI 立刻提示「已捕获」</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>② 识别</strong> — 后台线程调 WinRT OCR 提取文字；语言包缺失或识别失败时<b>原图照常保留</b>，只记录降级原因，不影响后续手动整理</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>③ 理解</strong> — 把 OCR 文本交给 DeepSeek 做四件事：起标题、写摘要、打标签、归分类。四项分别调用，<b>任一项失败其余继续</b>，不会整体回滚</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>④ 归档</strong> — 回写 memories / tags / memory_tags / collections，ai_status 置为 done，发系统通知；时间线上出现带「新捕获」标记的卡片</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>⑤ 回忆</strong> — 任意时刻 Ctrl+K 打开命令面板，走关键词搜索或 AI 问答；问答上下文只给 8 条相关记忆摘要，回答带 [1][2] 引用，点击直接回到原始截图</div></div>
+    </div>
+    <p>这条链路上最容易出事的是 ③：模型返回的 JSON 经常带 ```json 包裹、前后废话、字段名漂移。于是写了一个 <code>parse_json_loose</code>——先剥围栏、再截取第一个完整 JSON 片段、最后逐字段兜底，实测未再因格式问题丢数据。</p>
+
+    <h2><span class="num">05</span>数据模型</h2>
+    <table>
+      <thead><tr><th>表</th><th>职责</th><th>设计要点</th></tr></thead>
+      <tr><td>memories</td><td>记忆主体</td><td>title / content / summary / type / source / ocr_text / ai_status</td></tr>
+      <tr><td>collections</td><td>合集（含颜色）</td><td>sort_order 持久化，支持侧栏拖拽排序</td></tr>
+      <tr><td>tags / memory_tags</td><td>标签多对多</td><td>标签去重靠唯一约束 + 关联表</td></tr>
+      <tr><td>attachments</td><td>附件</td><td>与记忆一对多，文件落在数据目录</td></tr>
+      <tr><td>ai_tasks</td><td>AI 任务记录</td><td>可观测每次处理的耗时与结果，失败可追溯</td></tr>
+      <tr><td>search_history</td><td>搜索历史</td><td>为「最近搜索」与后续排序实验留数据</td></tr>
+      <tr><td>settings</td><td>键值配置</td><td>含 API Key；优先级：应用设置 &gt; 环境变量</td></tr>
+    </table>
+
+    <h2><span class="num">06</span>工程细节：降级与护栏</h2>
+    <table class="deploy-table">
+      <thead><tr><th>异常场景</th><th>实际行为</th></tr></thead>
+      <tr><td>API Key 未配置 / 错误</td><td>AI 标记失败，记忆完整保存，UI 明确提示「AI 离线」</td></tr>
+      <tr><td>网络断开</td><td>本地记录、搜索、截图、合集全部可用</td></tr>
+      <tr><td>OCR 失败（缺语言包）</td><td>保留原图，ocr_text 留空并写日志，不阻塞入库</td></tr>
+      <tr><td>模型返回异常 JSON</td><td>parse_json_loose 三段容错：剥围栏 → 截取 JSON → 字段兜底</td></tr>
+      <tr><td>AI 单项失败（如标签）</td><td>其余项继续写入，不整体回滚</td></tr>
+      <tr><td>数据库错误</td><td>命令返回 Result，前端 toast 提示，进程不崩</td></tr>
+      <tr><td>截图失败</td><td>托盘与快捷键路径 emit capture-error，前端提示原因</td></tr>
+    </table>
+    <p>设计系统同样有护栏：所有颜色/字号/间距只允许来自 <code>src/ui/tokens.css</code>，<code>npm run audit:ui</code> 会扫描页面里的裸色值与非标准字号（<code>--strict</code> 可在 CI 中失败）；再加一个 <code>ui-diff.py</code> 做像素级回归，改完 UI 能一眼看出哪里动了。</p>
+
+    <h2><span class="num">07</span>实测数据（本机 Windows 11）</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>应用启动与系统集成</strong><br>启动无崩溃，托盘图标与全局快捷键注册成功，最小化到任务栏行为符合预期</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>SQLite 初始化</strong><br>9 张表 + 5 个默认合集 + 8 项默认设置，首次启动即用</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>捕获链路</strong><br>1440×900 全屏 PNG 落盘；WinRT OCR 识别 353 字中英混排文本</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>AI 真实调用</strong><br>标题「WorkBuddy 任务助手开发与调试」、标签 5 个、分类「工作记录」全部正确落库</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>防编造验证</strong><br>提问记忆库中不存在的内容时，明确回答「我没有在你的记忆中找到相关内容」，不硬编</div></div>
+    </div>
+
+    <h2><span class="num">08</span>已知限制与后续</h2>
+    <div class="feature-list">
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>区域截图</strong><br>已实现冻结屏幕 + 鼠标框选，多显示器暂只覆盖主屏</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>检索方式</strong><br>相关记忆当前用标签交集计算，<code>related_memories</code> 接口已预留 embedding 扩展位</div></div>
+      <div class="feature-item"><div class="dot"></div><div class="text"><strong>打包</strong><br>NSIS 安装包需联网拉工具链；release 产物可直接免安装运行</div></div>
+    </div>
+  </div>
+</ProjectLayout>

@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 550" role="img" aria-label="月忆 · 桌面 AI 记忆库界面示意">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0E1320"/>
+      <stop offset="1" stop-color="#070A11"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="24%" cy="18%" r="76%">
+      <stop offset="0" stop-color="#5C88F6" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#5C88F6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moonGlow" cx="82%" cy="14%" r="34%">
+      <stop offset="0" stop-color="#E0BC74" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#E0BC74" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="cardFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1D2536"/>
+      <stop offset="1" stop-color="#141A26"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="880" height="550" fill="url(#bg)"/>
+  <rect width="880" height="550" fill="url(#glow)"/>
+  <rect width="880" height="550" fill="url(#moonGlow)"/>
+  <rect width="880" height="550" fill="url(#grid)"/>
+  <rect x="0" y="0" width="880" height="2" fill="#E0BC74" opacity="0.6"/>
+
+  <!-- 月相 -->
+  <g transform="translate(792,96)">
+    <circle r="30" fill="#E0BC74" opacity="0.10"/>
+    <path d="M6 -22a22 22 0 1 0 0 44 17 17 0 0 1 0-44z" fill="#E0BC74" opacity="0.85"/>
+  </g>
+
+  <!-- 应用窗口 -->
+  <g>
+    <rect x="96" y="86" width="640" height="396" rx="16" fill="#0F1521" stroke="#5C88F6" stroke-opacity="0.35" stroke-width="1.5"/>
+    <!-- 标题栏 -->
+    <line x1="96" y1="124" x2="736" y2="124" stroke="#ffffff" stroke-opacity="0.08"/>
+    <circle cx="120" cy="105" r="4" fill="#FB7185" opacity="0.7"/>
+    <circle cx="136" cy="105" r="4" fill="#F59E0B" opacity="0.7"/>
+    <circle cx="152" cy="105" r="4" fill="#5DCAA5" opacity="0.7"/>
+    <text x="176" y="109" font-family="-apple-system,Segoe UI,Microsoft YaHei,sans-serif" font-size="12" fill="#98A6BC" opacity="0.9">月忆 · 时间线</text>
+
+    <!-- 侧栏 -->
+    <rect x="112" y="140" width="132" height="326" rx="10" fill="#111825"/>
+    <g fill="#5C88F6">
+      <rect x="124" y="156" width="106" height="26" rx="7" opacity="0.18"/>
+      <rect x="132" y="163" width="10" height="10" rx="3"/>
+    </g>
+    <rect x="150" y="164" width="52" height="7" rx="3.5" fill="#E6ECF6" opacity="0.75"/>
+    <g fill="#75839C" opacity="0.55">
+      <rect x="132" y="196" width="10" height="10" rx="3"/>
+      <rect x="150" y="197" width="44" height="7" rx="3.5"/>
+      <rect x="132" y="226" width="10" height="10" rx="3"/>
+      <rect x="150" y="227" width="60" height="7" rx="3.5"/>
+      <rect x="132" y="256" width="10" height="10" rx="3"/>
+      <rect x="150" y="257" width="38" height="7" rx="3.5"/>
+    </g>
+    <!-- 侧栏统计条 -->
+    <rect x="124" y="292" width="106" height="58" rx="8" fill="#0C1220"/>
+    <polyline points="132,336 146,322 158,330 172,314 186,324 200,310 216,318"
+              fill="none" stroke="#5C88F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.9"/>
+    <rect x="132" y="302" width="34" height="6" rx="3" fill="#75839C" opacity="0.6"/>
+
+    <!-- 记忆卡片流 -->
+    <g>
+      <rect x="262" y="140" width="458" height="86" rx="10" fill="url(#cardFill)" stroke="#ffffff" stroke-opacity="0.06"/>
+      <circle cx="286" cy="166" r="9" fill="#5C88F6" opacity="0.22"/>
+      <rect x="282" y="162" width="8" height="8" rx="2" fill="#5C88F6"/>
+      <rect x="306" y="158" width="196" height="9" rx="4.5" fill="#E6ECF6" opacity="0.82"/>
+      <rect x="306" y="176" width="330" height="7" rx="3.5" fill="#98A6BC" opacity="0.45"/>
+      <rect x="306" y="190" width="252" height="7" rx="3.5" fill="#98A6BC" opacity="0.32"/>
+      <rect x="306" y="206" width="44" height="14" rx="7" fill="#5C88F6" opacity="0.16"/>
+      <rect x="356" y="206" width="52" height="14" rx="7" fill="#E0BC74" opacity="0.14"/>
+
+      <rect x="262" y="238" width="458" height="86" rx="10" fill="url(#cardFill)" stroke="#ffffff" stroke-opacity="0.06"/>
+      <circle cx="286" cy="264" r="9" fill="#E0BC74" opacity="0.20"/>
+      <rect x="282" y="260" width="8" height="8" rx="2" fill="#E0BC74"/>
+      <rect x="306" y="256" width="148" height="9" rx="4.5" fill="#E6ECF6" opacity="0.82"/>
+      <rect x="306" y="274" width="300" height="7" rx="3.5" fill="#98A6BC" opacity="0.45"/>
+      <rect x="306" y="288" width="212" height="7" rx="3.5" fill="#98A6BC" opacity="0.32"/>
+      <rect x="306" y="304" width="58" height="14" rx="7" fill="#5C88F6" opacity="0.16"/>
+
+      <rect x="262" y="336" width="458" height="72" rx="10" fill="url(#cardFill)" stroke="#ffffff" stroke-opacity="0.06" opacity="0.75"/>
+      <circle cx="286" cy="360" r="9" fill="#5DCAA5" opacity="0.18"/>
+      <rect x="282" y="356" width="8" height="8" rx="2" fill="#5DCAA5"/>
+      <rect x="306" y="352" width="170" height="9" rx="4.5" fill="#E6ECF6" opacity="0.7"/>
+      <rect x="306" y="370" width="286" height="7" rx="3.5" fill="#98A6BC" opacity="0.38"/>
+    </g>
+
+    <!-- Ctrl+K 命令面板 -->
+    <g>
+      <rect x="380" y="402" width="340" height="58" rx="12" fill="#1A2233" stroke="#E0BC74" stroke-opacity="0.45" stroke-width="1.2"/>
+      <rect x="396" y="418" width="16" height="16" rx="5" fill="none" stroke="#E0BC74" stroke-width="1.6" opacity="0.9"/>
+      <line x1="408" y1="430" x2="414" y2="436" stroke="#E0BC74" stroke-width="1.6" stroke-linecap="round" opacity="0.9"/>
+      <rect x="424" y="422" width="150" height="8" rx="4" fill="#98A6BC" opacity="0.55"/>
+      <rect x="646" y="416" width="58" height="22" rx="6" fill="#0C1220" stroke="#ffffff" stroke-opacity="0.08"/>
+      <text x="660" y="432" font-family="-apple-system,Segoe UI,sans-serif" font-size="11" fill="#75839C">Ctrl K</text>
+    </g>
+  </g>
+
+  <!-- 左下角标注 -->
+  <text x="96" y="512" font-family="-apple-system,Segoe UI,Microsoft YaHei,sans-serif" font-size="13" fill="#98A6BC" opacity="0.7">月忆 · 本地优先的 AI 记忆库</text>
+  <text x="736" y="512" text-anchor="end" font-family="-apple-system,Segoe UI,sans-serif" font-size="12" fill="#E0BC74" opacity="0.75">Tauri 2 · Rust · React</text>
+</svg>
