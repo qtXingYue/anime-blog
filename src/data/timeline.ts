@@ -30,6 +30,12 @@ export const honors: TimelineEntry[] = [
 
 export const experience: TimelineEntry[] = [
   {
+    date: '2026.09 — 至今',
+    title: '计算机科学与技术（创新卓越班）· 本科在读',
+    org: '广州新华学院',
+    desc: '计算机科学与技术专业（创新卓越班）在读，延续人工智能与工程项目实践的双线积累；同时维护个人作品集与桌面端 AI 记忆库等项目。'
+  },
+  {
     date: '2026.04 — 2026.07',
     title: '广告运营 · 多平台数据系统负责人',
     org: '海客熵连科技',
