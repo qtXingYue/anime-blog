@@ -127,7 +127,20 @@ const archDiagram = `        <span class="dim">用户（Windows 11）</span>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>防编造验证</strong><br>提问记忆库中不存在的内容时，明确回答「我没有在你的记忆中找到相关内容」，不硬编</div></div>
     </div>
 
-    <h2><span class="num">08</span>已知限制与后续</h2>
+    <h2><span class="num">08</span>界面实拍</h2>
+    <p>以下为应用在 Windows 11 下的真实运行截图（记忆内容为日常使用数据）。</p>
+    <div class="shot-stack">
+      <figure class="shot">
+        <img src="/projects/memex/timeline.webp" alt="月忆时间线主界面：左侧合集分类，右侧记忆卡片流，顶部 Ctrl+K 搜索栏" loading="lazy" decoding="async" width="1600" height="1018">
+        <figcaption>时间线主界面 · 左侧合集分类与趋势 · 卡片带截图预览、AI 标题、摘要与标签</figcaption>
+      </figure>
+      <figure class="shot shot-narrow">
+        <img src="/projects/memex/detail.webp" alt="月忆记忆详情：来源、原始链接、AI 摘要、AI 分析与原图对照" loading="lazy" decoding="async" width="900" height="1190">
+        <figcaption>记忆详情 · 原始链接、AI 摘要、AI 分析与原图对照</figcaption>
+      </figure>
+    </div>
+
+    <h2><span class="num">09</span>已知限制与后续</h2>
     <div class="feature-list">
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>区域截图</strong><br>已实现冻结屏幕 + 鼠标框选，多显示器暂只覆盖主屏</div></div>
       <div class="feature-item"><div class="dot"></div><div class="text"><strong>检索方式</strong><br>相关记忆当前用标签交集计算，<code>related_memories</code> 接口已预留 embedding 扩展位</div></div>
@@ -135,3 +148,29 @@ const archDiagram = `        <span class="dim">用户（Windows 11）</span>
     </div>
   </div>
 </ProjectLayout>
+
+<style>
+  .shot-stack { display: grid; gap: 1.2rem; margin: 1.5rem 0 2rem; }
+  .shot {
+    margin: 0;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0.75rem;
+    transition: border-color 260ms var(--ease-out-expo), transform 260ms var(--ease-out-expo);
+  }
+  .shot:hover {
+    border-color: oklch(66% 0.19 285 / 0.28);
+    transform: translateY(-2px);
+  }
+  .shot img { width: 100%; height: auto; border-radius: 8px; display: block; }
+  .shot figcaption {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.6rem;
+    text-align: center;
+    line-height: 1.6;
+  }
+  /* 详情是竖图，收窄居中，避免在宽屏上过度放大 */
+  .shot-narrow { max-width: 460px; margin: 0 auto; }
+</style>

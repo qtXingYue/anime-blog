@@ -95,7 +95,7 @@ export const projectsMain: Project[] = [
     num: '15', category: '桌面应用', emoji: '🧠',
     gradient: 'linear-gradient(135deg,#0e1320,#0a0f1a)',
     accent: 'azure',
-    cover: '/projects/covers/15-yueyi.svg',
+    cover: '/projects/covers/15-yueyi.webp',
     title: '月忆 · 桌面 AI 记忆库',
     highlight: { value: '13.7k 行', label: '自研代码 · Rust 5.8k + TS 7.9k' },
     desc: '看到值得记下的东西按一下 Alt+Shift+S：全屏截图 → 本地 OCR → AI 拆出标题/摘要/标签/分类 → 时间线归档；日后 Ctrl+K 检索问答，点引用直接回到原始截图。数据全部留在本地 SQLite。',
