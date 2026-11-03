@@ -52,7 +52,9 @@ test('站内跳转后主题不丢失且开关仍可用', async ({ page }) => {
 
 test('架构报告页包含最新章节', async ({ page }) => {
   await page.goto('/projects/portfolio-report.html');
-  await expect(page.locator('body')).toContainText('Cloudflare 边缘网络');
-  await expect(page.locator('body')).toContainText('黑金开屏加载动画');
-  await expect(page.locator('body')).toContainText('23 端点');
+  // 断言结构性的东西，而不是易变的具体文案（文案会随架构演进修改）
+  await expect(page.locator('.arch-diagram')).toBeVisible();
+  await expect(page.locator('.arch-diagram')).toContainText('Pages Functions');
+  await expect(page.locator('.stats-strip')).toBeVisible();
+  await expect(page.locator('body')).toContainText('迁移纪实');
 });
