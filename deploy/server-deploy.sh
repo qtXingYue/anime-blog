@@ -6,7 +6,7 @@
 # ═══════════════════════════════════════════════════════════
 set -e
 
-REPO="https://github.com/qtXingYue/anime-blog.git"
+REPO="https://github.com/qtXingYue/qtxingyue.git"
 BRANCH="astro"
 SRC_DIR="/var/www/portfolio-src"
 WEB_ROOT="/var/www/portfolio"
@@ -125,7 +125,7 @@ if [ -d "$BACKEND_DIR" ]; then
     systemctl restart sakura-backend 2>/dev/null || echo "  后端服务未安装，请运行 deploy-backend.sh"
 else
     echo "  后端目录 $BACKEND_DIR 不存在"
-    echo "  如需后端功能，请从 anime-blog/server/ 部署"
+    echo "  如需后端功能，请从 qtxingyue/server/ 部署"
 fi
 
 echo ""
