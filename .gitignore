@@ -4,3 +4,7 @@ node_modules
 *.mp4
 repomix-output.*
 
+
+# Playwright
+test-results/
+playwright-report/
