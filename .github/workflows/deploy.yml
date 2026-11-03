@@ -65,7 +65,9 @@ jobs:
             exit 0
           fi
           npm install -g wrangler@4
-          wrangler pages deploy . --project-name qtxingyue --commit-dirty=true
+          # 必须显式 --branch main：工作流跑在 astro 分支上，不指定会发布成预览环境、
+          # 生产域名不更新（历史坑：冒烟测试因为打的是旧生产站而误判成功）。
+          wrangler pages deploy . --project-name qtxingyue --branch main --commit-dirty=true
           echo "skipped=false" >> "$GITHUB_OUTPUT"
 
       - name: Smoke check（验证线上域名）
