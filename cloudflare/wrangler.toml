@@ -1,0 +1,17 @@
+name = "qtxingyue"
+pages_build_output_dir = "."
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sakura"
+database_id = "28555c45-5bae-4ada-a684-ac76573c6226"
+
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "sakura-uploads"
+
+[vars]
+AI_BASE_URL = "https://api.deepseek.com/v1"
+AI_MODEL = "deepseek-flash"
+AI_EXTRA_PARAMS = "{\"thinking\":{\"type\":\"disabled\"}}"

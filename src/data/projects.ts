@@ -30,13 +30,13 @@ export const featured = {
   cover: '/projects/covers/00-featured.webp',
   label: 'COVER STORY · 00',
   title: '全栈作品集网站',
-  titleSub: 'Astro + Vue 岛 + GSAP 动效系统',
-  desc: '用 Astro 5 组件化重构的暗色杂志风作品集，集成视频背景、GSAP 滚动堆叠、右侧项目进度导航、明暗主题切换与 Nginx 部署。',
+  titleSub: 'Astro 5 + GSAP + 无服务器边缘部署',
+  desc: '用 Astro 5 组件化重构的暗色杂志风作品集，集成视频背景、GSAP 滚动堆叠、右侧项目进度导航与明暗主题切换；整站跑在 Cloudflare Pages + Functions 边缘，数据在 D1、文件在 R2。',
   tags: [
     { label: 'Astro 5', primary: true },
     { label: 'GSAP', primary: true },
-    { label: 'Vue 岛', primary: false },
-    { label: 'Nginx', primary: false }
+    { label: 'Cloudflare Pages', primary: false },
+    { label: 'D1 + R2', primary: false }
   ],
   cta: '📄 详解 →',
   href: 'projects/portfolio-report'

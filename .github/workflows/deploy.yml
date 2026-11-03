@@ -1,18 +1,24 @@
-name: Build & Deploy
+name: Build & Deploy (Cloudflare Pages)
 
-# 部署流程（两分支，无 force-push、无服务器端 merge）：
+# 部署流程（2026-11-02 起，替代旧的「推 main + 服务器 cron 拉取」）：
 #   1. 源码推送到 `astro` 分支（或手动触发）→ 本工作流构建静态站
-#   2. 构建产物作为普通提交推送到 `main` 分支（main = 线上内容，历史线性）
-#   3. 服务器 crontab 每分钟 git fetch origin main && git reset --hard origin/main
-#      → 一分钟内线上生效
-# 注意：main 上只放构建产物，源码改动一律走 `astro` 分支。
+#   2. 构建产物 dist/ 与仓库 cloudflare/ 覆盖层（后端 Functions、绑定配置、后台页）
+#      合并为一个部署包，用 Wrangler 发布到 Cloudflare Pages 项目 qtxingyue
+#   3. qtxingyue.me / www 已绑在该 Pages 项目上，发布后约十秒生效
+# 注意：
+#   - main 分支已冻结（旧服务器 2026-11-05 到期），不要再往 main 推产物。
+#   - cloudflare/ 目录是线上后端的命根子（/api、/admin、/uploads 都靠它），勿删。
+#   - 需要的仓库 Secrets：CLOUDFLARE_API_TOKEN、CLOUDFLARE_ACCOUNT_ID。
+#     未配置时发布会自动跳过（黄字警告），不会把工作流跑成红色。
+#   - 回滚：在 Pages 后台 Deployments 里对旧版本点 Rollback，或 git revert 后重推。
+
 on:
   push:
     branches: [astro]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: deploy
@@ -23,12 +29,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        uses: actions/checkout@v4
         with:
           ref: astro
 
       - name: Setup Node
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
@@ -38,31 +44,34 @@ jobs:
           npm ci
           npm run build
 
-      - name: Deploy dist to main
+      - name: Assemble Pages package（静态站 + 后端覆盖层）
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          mkdir -p /tmp/deploy-dist
-          cp -r dist/. /tmp/deploy-dist/
-          git fetch origin main
-          git checkout -B deploy origin/main
-          # 清空旧产物（保留 .git/.gitignore/node_modules），再放入新构建
-          find . -mindepth 1 -maxdepth 1 \
-            ! -name '.git' ! -name '.gitignore' ! -name 'node_modules' \
-            -exec rm -rf {} +
-          cp -r /tmp/deploy-dist/. .
-          rm -rf /tmp/deploy-dist node_modules
-          git add -A
-          if git diff --cached --quiet; then
-            echo "no changes to deploy"
-          else
-            git commit -m "deploy: build $(date -u +'%Y%m%d-%H%M%S')"
-            git push origin deploy:main
-          fi
+          mkdir -p /tmp/pages-dist
+          cp -r dist/. /tmp/pages-dist/
+          cp -r cloudflare/. /tmp/pages-dist/
+          ls /tmp/pages-dist/functions
+          test -f /tmp/pages-dist/functions/_lib/kb-data.js || { echo "缺少 functions/_lib/kb-data.js，发布中止"; exit 1; }
 
-      - name: Smoke check（等服务器 cron 拉取后验证线上）
+      - name: Deploy to Cloudflare Pages
+        id: deploy
+        working-directory: /tmp/pages-dist
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
-          sleep 70
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::warning::缺少 CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID，本次跳过发布（线上仍为上一版）"
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          npm install -g wrangler@4
+          wrangler pages deploy . --project-name qtxingyue --commit-dirty=true
+          echo "skipped=false" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke check（验证线上域名）
+        if: steps.deploy.outputs.skipped != 'true'
+        run: |
+          sleep 20
           curl -fsS --max-time 15 https://qtxingyue.me/ -o /dev/null
           curl -fsS --max-time 15 https://qtxingyue.me/api/articles | python3 -c "import json,sys; json.load(sys.stdin)"
           code=$(curl -s --max-time 15 -o /dev/null -w '%{http_code}' https://qtxingyue.me/api/analytics/summary)
